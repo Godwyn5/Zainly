@@ -188,7 +188,7 @@ export default function RegisterPage() {
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="8 caractères minimum"
+              placeholder="Crée un mot de passe"
               style={{ ...inputStyle, paddingRight: '48px' }}
               onFocus={(e) => (e.target.style.borderColor = '#163026')}
               onBlur={(e) => (e.target.style.borderColor = '#E2D9CC')}
@@ -214,6 +214,7 @@ export default function RegisterPage() {
               {showPassword ? <EyeOff /> : <EyeOn />}
             </button>
           </div>
+          <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '12px', color: '#6B6357', margin: '4px 0 0 2px' }}>8 caractères minimum</p>
 
           {/* Erreur */}
           {error && (

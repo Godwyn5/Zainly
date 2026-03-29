@@ -219,9 +219,7 @@ export default function SessionPage() {
       }));
 
       const { error: revErr } = await supabase.from('review_items').insert(reviewRows);
-      console.log('[session] revErr:', JSON.stringify(revErr));
       if (revErr) {
-        console.error('[session] review_items insert error:', revErr);
         setError('Erreur lors de la sauvegarde des révisions. Réessaie.');
         setSaving(false);
         return;

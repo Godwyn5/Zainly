@@ -56,7 +56,7 @@ function AudioButton({ globalNum }) {
     const a = new Audio(`https://cdn.islamic.network/quran/audio/128/ar.alafasy/${globalNum}.mp3`);
     audioRef.current = a;
     setPlaying(true);
-    a.play();
+    a.play().catch(() => setPlaying(false));
     a.onended = () => setPlaying(false);
     a.onerror = () => setPlaying(false);
   }

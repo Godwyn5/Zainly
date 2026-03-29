@@ -105,14 +105,11 @@ export default function DashboardPage() {
 
   useEffect(() => {
     async function loadData() {
-      console.log('[dashboard] getUser...');
       const { data: { user: authUser }, error: userError } = await supabase.auth.getUser();
-      console.log('[dashboard] authUser:', authUser?.id, '| userError:', userError);
       if (userError || !authUser) { router.push('/login'); return; }
       setUser(authUser);
 
       const today = todayStr();
-      console.log('[dashboard] fetching plans/progress/reviews for user:', authUser.id);
 
       const [
         { data: planRows,      error: planFetchErr },
@@ -127,12 +124,8 @@ export default function DashboardPage() {
       const planData     = planRows?.[0] ?? null;
       const progressData = progressRows?.[0] ?? null;
 
-      console.log('[dashboard] plans fetch — data:', planData, '| error:', planFetchErr);
-      console.log('[dashboard] progress fetch — data:', progressData, '| error:', progFetchErr);
-      console.log('[dashboard] reviews fetch — data:', reviewData, '| error:', revFetchErr);
 
       const realPlanError = planFetchErr ?? null;
-      if (realPlanError) console.error('[dashboard] unexpected plans error:', realPlanError);
 
       setPlan(planData);
       setProgress(progressData);
@@ -185,7 +178,7 @@ export default function DashboardPage() {
   const memEnd          = Math.min(currentAyah + ayahPerDay, surahTotalAyat);
   const surahExhausted  = memStart > surahTotalAyat;
   const surahName       = plan.first_surah_name ?? getSurahName(currentSurah);
-  const totalMemorized  = progress?.total_memorized ?? currentAyah;
+  const totalMemorized  = progress?.total_memorized ?? 0;
   const progressPct     = Math.min((totalMemorized / 6236) * 100, 100);
   const today           = todayStr();
   const sessionDone     = progress?.last_session_date === today;

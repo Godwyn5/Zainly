@@ -249,6 +249,7 @@ export default function SessionPage() {
       router.push('/revision');
     } catch (err) {
       console.error('[session] saveAndContinue error:', err);
+      setError('Une erreur inattendue est survenue. Réessaie.');
       setSaving(false);
     }
   }

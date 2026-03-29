@@ -12,7 +12,7 @@ function todayStr() {
 
 function tomorrowStr() {
   const d = new Date();
-  d.setDate(d.getDate() + 1);
+  d.setUTCDate(d.getUTCDate() + 1);
   return d.toISOString().slice(0, 10);
 }
 

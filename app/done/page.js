@@ -10,9 +10,17 @@ function todayStr() {
   return new Date().toISOString().slice(0, 10);
 }
 
-function startOfTodayISO() {
+// UTC midnight of today — safe for comparing with Supabase timestamptz
+function startOfTodayUTC() {
   const d = new Date();
-  d.setHours(0, 0, 0, 0);
+  d.setUTCHours(0, 0, 0, 0);
+  return d.toISOString();
+}
+
+function startOfTomorrowUTC() {
+  const d = new Date();
+  d.setUTCHours(0, 0, 0, 0);
+  d.setUTCDate(d.getUTCDate() + 1);
   return d.toISOString();
 }
 
@@ -57,32 +65,34 @@ export default function DonePage() {
       const { data: { user: authUser }, error: userErr } = await supabase.auth.getUser();
       if (userErr || !authUser) { router.push('/login'); return; }
 
-      const today       = todayStr();
-      const startOfDay  = startOfTodayISO();
+      const startToday    = startOfTodayUTC();
+      const startTomorrow = startOfTomorrowUTC();
+      const today         = todayStr();
 
-      // Fetch progress + review_items in parallel
-      const [{ data: progRows }, { data: reviewItems }] = await Promise.all([
+      // Fetch progress + memorized today + revised today in parallel
+      const [
+        { data: progRows },
+        { data: memorizedItems },
+        { data: revisedItems },
+      ] = await Promise.all([
         supabase.from('progress').select('*').eq('user_id', authUser.id)
           .order('created_at', { ascending: false }).limit(1),
-        supabase.from('review_items').select('*').eq('user_id', authUser.id),
+        // Items created today = memorized this session
+        supabase.from('review_items').select('id')
+          .eq('user_id', authUser.id)
+          .gte('created_at', startToday)
+          .lt('created_at', startTomorrow),
+        // Items created before today AND next_review is after today = revised today
+        supabase.from('review_items').select('id')
+          .eq('user_id', authUser.id)
+          .lt('created_at', startToday)
+          .gt('next_review', today),
       ]);
 
       const prog = Array.isArray(progRows) ? progRows[0] : progRows;
       setProgress(prog ?? null);
-
-      if (reviewItems) {
-        // todayMemorized = items created today (initial review_cycle = 1 and created today)
-        const memorized = reviewItems.filter(r => {
-          return r.created_at >= startOfDay && r.review_cycle === 1;
-        });
-        setTodayMemorized(memorized.length);
-
-        // todayRevised = items whose next_review was updated to beyond today (reviewed today, cycle > 1)
-        const revised = reviewItems.filter(r => {
-          return r.created_at < startOfDay && r.next_review > today;
-        });
-        setTodayRevised(revised.length);
-      }
+      setTodayMemorized(memorizedItems?.length ?? 0);
+      setTodayRevised(revisedItems?.length ?? 0);
 
       setLoading(false);
     }

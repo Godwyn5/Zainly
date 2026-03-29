@@ -10,7 +10,7 @@ const CYCLE_DAYS = [1, 3, 7, 14, 30, 60];
 
 function addDays(days) {
   const d = new Date();
-  d.setDate(d.getDate() + days);
+  d.setUTCDate(d.getUTCDate() + days);
   return d.toISOString().slice(0, 10);
 }
 

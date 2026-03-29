@@ -129,28 +129,56 @@ export default function SessionPage() {
       const quranFr = await frRes.json();
       setQuranData(quran);
 
-      const surahIdx = (progRow.current_surah ?? 1) - 1;
-      const surah    = quran[surahIdx];
-      const surahFr  = quranFr[surahIdx];
-      if (!surah) { router.push('/dashboard'); return; }
-
-      setSurahName(surah.transliteration ?? surah.name ?? `Sourate ${progRow.current_surah}`);
-      setSurahNumber(progRow.current_surah ?? 1);
-
-      const startAyah  = (progRow.current_ayah ?? 0) + 1;
+      let currentSurah = progRow.current_surah ?? 1;
+      let currentAyah  = progRow.current_ayah ?? 0;
       const ayahPerDay = plRow.ayah_per_day ?? 2;
-      const endAyah    = startAyah + ayahPerDay - 1;
 
-      const slice = surah.verses
-        .filter(v => v.id >= startAyah && v.id <= endAyah)
-        .map(v => ({
-          ...v,
-          translation: surahFr?.verses?.find(fv => fv.id === v.id)?.translation ?? '',
-        }));
+      // ── End-of-surah detection loop ──
+      // Advance surah(s) until we find one with remaining ayats
+      while (true) {
+        if (currentSurah > 114) {
+          // Completed the entire Quran
+          setError('QURAN_COMPLETE');
+          setLoading(false);
+          return;
+        }
 
-      if (slice.length === 0) { router.push('/dashboard'); return; }
-      setAyats(slice);
-      setLoading(false);
+        const surahIdx = currentSurah - 1;
+        const surah    = quran[surahIdx];
+        if (!surah) { router.push('/dashboard'); return; }
+
+        const startAyah = currentAyah + 1;
+        if (startAyah > surah.verses.length) {
+          // Surah finished — advance to next surah
+          const newSurah = currentSurah + 1;
+          const { error: advErr } = await supabase
+            .from('progress')
+            .update({ current_surah: newSurah, current_ayah: 0 })
+            .eq('user_id', authUser.id);
+          if (advErr) console.error('[session] surah advance error:', advErr);
+          currentSurah = newSurah;
+          currentAyah  = 0;
+          continue;
+        }
+
+        // Surah has remaining ayats — load them
+        const surahFr  = quranFr[surahIdx];
+        const endAyah  = startAyah + ayahPerDay - 1;
+        const slice = surah.verses
+          .filter(v => v.id >= startAyah && v.id <= endAyah)
+          .map(v => ({
+            ...v,
+            translation: surahFr?.verses?.find(fv => fv.id === v.id)?.translation ?? '',
+          }));
+
+        setSurahName(surah.transliteration ?? surah.name ?? `Sourate ${currentSurah}`);
+        setSurahNumber(currentSurah);
+        // Keep progress in sync with potentially-advanced surah
+        setProgress({ ...progRow, current_surah: currentSurah, current_ayah: currentAyah });
+        setAyats(slice);
+        setLoading(false);
+        break;
+      }
     }
 
     loadSession().catch(err => {
@@ -184,13 +212,17 @@ export default function SessionPage() {
         review_cycle: 1,
       }));
 
-      console.log('[session] reviewRows payload:', JSON.stringify(reviewRows, null, 2));
       const { error: revErr } = await supabase.from('review_items').insert(reviewRows);
-      console.log('[session] review_items insert result — error:', revErr ?? 'null (success)');
+      if (revErr) {
+        console.error('[session] review_items insert error:', revErr);
+        setError('Erreur lors de la sauvegarde des révisions. Réessaie.');
+        setSaving(false);
+        return;
+      }
 
-      const newAyah          = (progress.current_ayah ?? 0) + ayats.length;
-      const alreadyDoneToday = progress.last_session_date === today;
-      const newStreak        = alreadyDoneToday ? (progress.streak ?? 0) : (progress.streak ?? 0) + 1;
+      const newAyah           = (progress.current_ayah ?? 0) + ayats.length;
+      const alreadyDoneToday  = progress.last_session_date === today;
+      const newStreak         = alreadyDoneToday ? (progress.streak ?? 0) : (progress.streak ?? 0) + 1;
       const newTotalMemorized = (progress.total_memorized ?? 0) + ayats.length;
 
       // Append today to session_dates without duplicates
@@ -200,14 +232,19 @@ export default function SessionPage() {
       const { error: progErr } = await supabase
         .from('progress')
         .update({
-          current_ayah:    newAyah,
+          current_ayah:      newAyah,
           last_session_date: today,
-          streak:          newStreak,
-          total_memorized: newTotalMemorized,
-          session_dates:   newSessionDates,
+          streak:            newStreak,
+          total_memorized:   newTotalMemorized,
+          session_dates:     newSessionDates,
         })
         .eq('user_id', user.id);
-      if (progErr) console.error('[session] progress update error:', progErr);
+      if (progErr) {
+        console.error('[session] progress update error:', progErr);
+        setError('Erreur lors de la mise à jour de ta progression. Réessaie.');
+        setSaving(false);
+        return;
+      }
 
       router.push('/revision');
     } catch (err) {
@@ -232,6 +269,23 @@ export default function SessionPage() {
     return (
       <div style={{ minHeight: '100vh', backgroundColor: '#F5F0E6', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <p className="font-playfair" style={{ fontSize: '18px', fontStyle: 'italic', color: '#6B6357' }}>Chargement...</p>
+      </div>
+    );
+  }
+
+  if (error === 'QURAN_COMPLETE') {
+    return (
+      <div style={{ minHeight: '100vh', backgroundColor: '#F5F0E6', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '16px', padding: '32px', textAlign: 'center' }}>
+        <span className="font-amiri" style={{ fontSize: '64px', color: '#B8962E' }}>الله</span>
+        <h1 className="font-playfair" style={{ fontSize: '32px', fontWeight: 600, color: '#163026', margin: 0, lineHeight: 1.3 }}>
+          Tu as mémorisé tout le Coran.
+        </h1>
+        <p className="font-playfair" style={{ fontSize: '20px', fontStyle: 'italic', color: '#B8962E', margin: 0 }}>
+          MashaAllah.
+        </p>
+        <button onClick={() => router.push('/dashboard')} className="font-playfair" style={{ marginTop: '8px', padding: '14px 40px', backgroundColor: '#163026', color: '#fff', border: 'none', borderRadius: '12px', cursor: 'pointer', fontSize: '16px', fontWeight: 600 }}>
+          Retour au dashboard
+        </button>
       </div>
     );
   }

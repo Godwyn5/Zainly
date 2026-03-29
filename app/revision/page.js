@@ -137,7 +137,7 @@ export default function RevisionPage() {
         const surahIdx  = (item.surah_number ?? 1) - 1;
         const surah     = quran[surahIdx];
         const surahFr   = quranFr[surahIdx];
-        const ayatId    = item.ayah_start;
+        const ayatId    = item.ayah;
         const verse     = surah?.verses?.find(v => v.id === ayatId);
         const verseFr   = surahFr?.verses?.find(v => v.id === ayatId);
         const globalNum = globalAyatNumber(quran, item.surah_number ?? 1, ayatId);
@@ -296,7 +296,7 @@ export default function RevisionPage() {
 
           {/* Surah label */}
           <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '12px', color: '#6B6357', textAlign: 'center', margin: '0 0 20px 0' }}>
-            {item?.surahLabel} — Ayat {item?.ayah_start}
+            {item?.surahLabel} — Ayat {item?.ayah}
           </p>
 
           {/* Instruction */}

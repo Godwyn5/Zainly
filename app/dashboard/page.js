@@ -298,7 +298,7 @@ export default function DashboardPage() {
             <ul style={{ margin: '10px 0 0 0', padding: '0 0 0 18px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
               {reviews.map((r) => (
                 <li key={r.id} style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '14px', color: '#163026' }}>
-                  {r.surah_name ?? `Sourate ${r.surah_number}`} — ayat {r.ayah_start}
+                  {r.surah_name ?? `Sourate ${r.surah_number}`} — ayat {r.ayah}
                 </li>
               ))}
             </ul>
@@ -539,16 +539,16 @@ export default function DashboardPage() {
                       {isExpanded && (
                         <div style={{ borderTop: '1px solid #F0EBE0', padding: '8px 0 16px 0' }}>
                           {items
-                            .sort((a, b) => (a.ayah_start ?? 0) - (b.ayah_start ?? 0))
+                            .sort((a, b) => (a.ayah ?? 0) - (b.ayah ?? 0))
                             .map((item, i) => {
-                              const verse   = surahData?.verses?.find(v => v.id === item.ayah_start);
-                              const verseFr = surahFrData?.verses?.find(v => v.id === item.ayah_start);
+                              const verse   = surahData?.verses?.find(v => v.id === item.ayah);
+                              const verseFr = surahFrData?.verses?.find(v => v.id === item.ayah);
                               return (
                                 <div key={item.id}>
                                   {i > 0 && <div style={{ height: '1px', backgroundColor: '#F0EBE0', margin: '0 24px' }} />}
                                   <div style={{ padding: '16px 24px' }}>
                                     <p style={{ fontFamily: 'DM Sans, sans-serif', fontWeight: 500, fontSize: '12px', color: '#B8962E', margin: '0 0 10px 0', letterSpacing: '0.5px' }}>
-                                      Ayat {item.ayah_start}
+                                      Ayat {item.ayah}
                                     </p>
                                     {verse?.text ? (
                                       <p className="font-amiri" style={{ fontSize: '28px', fontWeight: 700, color: '#163026', direction: 'rtl', textAlign: 'right', lineHeight: 1.8, margin: '0 0 10px 0' }}>

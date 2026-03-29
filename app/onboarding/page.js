@@ -259,9 +259,11 @@ export default function OnboardingPage() {
       const { error: planErr } = await supabase
         .from('plans')
         .upsert(planPayload, { onConflict: 'user_id' });
-      console.log('[onboarding] plan upsert result — error:', planErr ?? 'null (success)');
+      if (planErr) {
+        allTimers.forEach(clearTimeout);
+        throw new Error('Erreur de sauvegarde. V\u00e9rifie ta connexion et r\u00e9essaie.');
+      }
 
-      console.log('[onboarding] inserting progress (only if no existing row)...');
       const progressPayload = {
         user_id: user.id,
         current_surah: planData.surahStart ?? 78,
@@ -270,11 +272,13 @@ export default function OnboardingPage() {
         total_memorized: 0,
         session_dates: [],
       };
-      console.log('[onboarding] progress payload:', progressPayload);
       const { error: progErr } = await supabase
         .from('progress')
         .insert(progressPayload, { ignoreDuplicates: true });
-      console.log('[onboarding] progress insert result — error:', progErr ?? 'null (success)');
+      if (progErr) {
+        allTimers.forEach(clearTimeout);
+        throw new Error('Erreur de sauvegarde. V\u00e9rifie ta connexion et r\u00e9essaie.');
+      }
 
       allTimers.forEach(clearTimeout);
       setLoadingPercent(100);

@@ -104,7 +104,7 @@ export default function DonePage() {
   }, [router]);
 
   const streak         = progress?.streak ?? 0;
-  const totalMemorized = progress?.total_memorized ?? progress?.current_ayah ?? 0;
+  const totalMemorized = progress?.total_memorized ?? 0;
 
   if (loading) {
     return (

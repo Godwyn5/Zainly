@@ -55,7 +55,7 @@ function AudioButton({ globalNum }) {
     const a = new Audio(url);
     audioRef.current = a;
     setPlaying(true);
-    a.play();
+    a.play().catch(() => setPlaying(false));
     a.onended = () => setPlaying(false);
     a.onerror = () => setPlaying(false);
   }

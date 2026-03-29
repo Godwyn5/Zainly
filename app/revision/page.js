@@ -268,7 +268,7 @@ export default function RevisionPage() {
             Révision
           </span>
           <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '13px', color: 'rgba(255,255,255,0.6)', display: 'block', marginTop: '2px' }}>
-            {items.length} ayat {items.length > 1 ? 'dus' : 'dû'}
+            {items.length} ayat{items.length > 1 ? 's' : ''} à réviser
           </span>
         </div>
         <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '14px', color: '#fff', justifySelf: 'end' }}>

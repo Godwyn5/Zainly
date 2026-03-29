@@ -161,9 +161,22 @@ export default function OnboardingPage() {
   const [planVisible, setPlanVisible] = useState(false);
 
   useEffect(() => {
-    const t = setTimeout(() => setPageVisible(true), 50);
-    return () => clearTimeout(t);
-  }, []);
+    async function checkExistingPlan() {
+      const { data: { user }, error: userErr } = await supabase.auth.getUser();
+      if (userErr || !user) { router.push('/login'); return; }
+      const { data: existingPlan } = await supabase
+        .from('plans')
+        .select('id')
+        .eq('user_id', user.id)
+        .limit(1);
+      if (existingPlan && existingPlan.length > 0) {
+        router.push('/dashboard');
+        return;
+      }
+      setTimeout(() => setPageVisible(true), 50);
+    }
+    checkExistingPlan();
+  }, [router]);
 
   // Animate question transitions
   function goToStep(next) {
@@ -248,18 +261,20 @@ export default function OnboardingPage() {
         .upsert(planPayload, { onConflict: 'user_id' });
       console.log('[onboarding] plan upsert result — error:', planErr ?? 'null (success)');
 
-      console.log('[onboarding] inserting progress...');
+      console.log('[onboarding] inserting progress (only if no existing row)...');
       const progressPayload = {
         user_id: user.id,
         current_surah: planData.surahStart ?? 78,
         current_ayah: 0,
         streak: 0,
+        total_memorized: 0,
+        session_dates: [],
       };
       console.log('[onboarding] progress payload:', progressPayload);
       const { error: progErr } = await supabase
         .from('progress')
-        .upsert(progressPayload, { onConflict: 'user_id' });
-      console.log('[onboarding] progress upsert result — error:', progErr ?? 'null (success)');
+        .insert(progressPayload, { ignoreDuplicates: true });
+      console.log('[onboarding] progress insert result — error:', progErr ?? 'null (success)');
 
       allTimers.forEach(clearTimeout);
       setLoadingPercent(100);

@@ -213,7 +213,6 @@ export default function SessionPage() {
       const reviewRows = ayats.map(ayat => ({
         user_id:      user.id,
         surah_number: progress.current_surah,
-        surah_name:   surahName,
         ayah:         ayat.id,
         next_review:  tomorrow,
         review_cycle: 1,

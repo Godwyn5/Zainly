@@ -502,7 +502,7 @@ export default function DashboardPage() {
               <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                 {surahNumbers.map((sn, idx) => {
                   const items      = grouped[sn];
-                  const name       = items[0]?.surah_name ?? getSurahName(sn);
+                  const name       = getSurahName(sn);
                   const isExpanded = expandedSurah === sn;
                   const surahData  = hifzQuran ? hifzQuran[sn - 1] : null;
                   const surahFrData = hifzQuranFr ? hifzQuranFr[sn - 1] : null;

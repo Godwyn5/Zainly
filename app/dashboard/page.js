@@ -103,6 +103,14 @@ export default function DashboardPage() {
   const [fetchError, setFetchError] = useState(null);
   const [activeTab, setActiveTab]   = useState('today');
 
+  // ── Mon Hifz state ──
+  const [hifzItems, setHifzItems]       = useState([]);   // all review_items
+  const [hifzQuran, setHifzQuran]       = useState(null); // quran.json
+  const [hifzQuranFr, setHifzQuranFr]   = useState(null); // quran_fr.json
+  const [hifzLoading, setHifzLoading]   = useState(false);
+  const [hifzLoaded, setHifzLoaded]     = useState(false);
+  const [expandedSurah, setExpandedSurah] = useState(null);
+
   useEffect(() => {
     async function loadData() {
       const { data: { user: authUser }, error: userError } = await supabase.auth.getUser();
@@ -135,6 +143,28 @@ export default function DashboardPage() {
     }
     loadData();
   }, [router]);
+
+  async function loadHifz(userId) {
+    if (hifzLoaded) return;
+    setHifzLoading(true);
+    const [{ data: allItems }, quranRes, frRes] = await Promise.all([
+      supabase.from('review_items').select('*').eq('user_id', userId).order('surah_number', { ascending: true }),
+      fetch('/data/quran.json'),
+      fetch('/data/quran_fr.json'),
+    ]);
+    const quran   = quranRes.ok  ? await quranRes.json()  : null;
+    const quranFr = frRes.ok     ? await frRes.json()     : null;
+    setHifzItems(allItems ?? []);
+    setHifzQuran(quran);
+    setHifzQuranFr(quranFr);
+    setHifzLoading(false);
+    setHifzLoaded(true);
+  }
+
+  function handleTabChange(tab) {
+    setActiveTab(tab);
+    if (tab === 'hifz' && user) loadHifz(user.id);
+  }
 
   async function handleSignOut() {
     await supabase.auth.signOut();
@@ -415,6 +445,142 @@ export default function DashboardPage() {
 
       </div>{/* end progress tab */}
 
+      {/* ══════════════════════ MON HIFZ TAB ══════════════════════ */}
+      <div style={{ display: activeTab === 'hifz' ? 'block' : 'none' }}>
+
+        {/* ── HEADER MON HIFZ ── */}
+        <div style={{
+          background: 'linear-gradient(160deg, #163026 0%, #1e4535 60%, #2d5a42 100%)',
+          padding: '32px 24px 48px 24px',
+          position: 'relative', overflow: 'hidden',
+          animation: 'slideDown 0.5s ease both',
+        }}>
+          <span className="font-amiri" style={{
+            position: 'absolute', right: '-20px', bottom: '-20px',
+            fontSize: '160px', color: '#fff', opacity: 0.04,
+            lineHeight: 1, pointerEvents: 'none', userSelect: 'none',
+          }}>الله</span>
+          <h2 className="font-playfair" style={{ fontSize: '28px', fontWeight: 600, color: '#fff', margin: 0 }}>
+            Mon Hifz
+          </h2>
+        </div>
+
+        {/* ── CONTENT ── */}
+        <div style={{ padding: '16px' }}>
+          {hifzLoading ? (
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', paddingTop: '48px' }}>
+              <p className="font-playfair" style={{ fontSize: '18px', fontStyle: 'italic', color: '#6B6357' }}>Chargement...</p>
+            </div>
+          ) : hifzItems.length === 0 ? (
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', paddingTop: '48px', gap: '16px', textAlign: 'center' }}>
+              <span style={{ fontSize: '48px' }}>📖</span>
+              <p className="font-playfair" style={{ fontSize: '18px', fontWeight: 600, color: '#163026', margin: 0, lineHeight: 1.4 }}>
+                Tu n&apos;as pas encore mémorisé d&apos;ayat.
+              </p>
+              <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '14px', color: '#6B6357', margin: 0 }}>
+                Lance ta première session.
+              </p>
+              <button type="button" className="font-playfair" onClick={() => handleTabChange('today')} style={{
+                marginTop: '8px', padding: '14px 32px', fontSize: '15px', fontWeight: 600,
+                backgroundColor: '#163026', color: '#fff', border: 'none', borderRadius: '12px', cursor: 'pointer',
+                boxShadow: '0 8px 24px rgba(15,35,24,0.25)',
+              }}>
+                Commencer →
+              </button>
+            </div>
+          ) : (() => {
+            // Group by surah_number
+            const grouped = {};
+            for (const item of hifzItems) {
+              const sn = item.surah_number ?? 1;
+              if (!grouped[sn]) grouped[sn] = [];
+              grouped[sn].push(item);
+            }
+            const surahNumbers = Object.keys(grouped).map(Number).sort((a, b) => a - b);
+
+            return (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                {surahNumbers.map((sn, idx) => {
+                  const items      = grouped[sn];
+                  const name       = items[0]?.surah_name ?? getSurahName(sn);
+                  const isExpanded = expandedSurah === sn;
+                  const surahData  = hifzQuran ? hifzQuran[sn - 1] : null;
+                  const surahFrData = hifzQuranFr ? hifzQuranFr[sn - 1] : null;
+
+                  return (
+                    <div key={sn} style={{
+                      ...card,
+                      padding: 0,
+                      overflow: 'hidden',
+                      animation: `fadeUp 0.4s ease ${idx * 0.05}s both`,
+                    }}>
+                      {/* Surah header row */}
+                      <button
+                        type="button"
+                        onClick={() => setExpandedSurah(isExpanded ? null : sn)}
+                        style={{
+                          width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                          padding: '20px 24px', background: 'none', border: 'none', cursor: 'pointer',
+                          textAlign: 'left',
+                        }}
+                      >
+                        <div>
+                          <p className="font-playfair" style={{ fontSize: '18px', fontWeight: 600, color: '#163026', margin: 0 }}>
+                            {name}
+                          </p>
+                          <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '13px', color: '#6B6357', margin: '4px 0 0 0' }}>
+                            {items.length} ayat mémorisé{items.length > 1 ? 's' : ''}
+                          </p>
+                        </div>
+                        <span style={{ fontSize: '18px', color: '#B8962E', transition: 'transform 0.2s', transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)', display: 'inline-block' }}>▾</span>
+                      </button>
+
+                      {/* Expanded ayat */}
+                      {isExpanded && (
+                        <div style={{ borderTop: '1px solid #F0EBE0', padding: '8px 0 16px 0' }}>
+                          {items
+                            .sort((a, b) => (a.ayah_start ?? 0) - (b.ayah_start ?? 0))
+                            .map((item, i) => {
+                              const verse   = surahData?.verses?.find(v => v.id === item.ayah_start);
+                              const verseFr = surahFrData?.verses?.find(v => v.id === item.ayah_start);
+                              return (
+                                <div key={item.id}>
+                                  {i > 0 && <div style={{ height: '1px', backgroundColor: '#F0EBE0', margin: '0 24px' }} />}
+                                  <div style={{ padding: '16px 24px' }}>
+                                    <p style={{ fontFamily: 'DM Sans, sans-serif', fontWeight: 500, fontSize: '12px', color: '#B8962E', margin: '0 0 10px 0', letterSpacing: '0.5px' }}>
+                                      Ayat {item.ayah_start}
+                                    </p>
+                                    {verse?.text ? (
+                                      <p className="font-amiri" style={{ fontSize: '28px', fontWeight: 700, color: '#163026', direction: 'rtl', textAlign: 'right', lineHeight: 1.8, margin: '0 0 10px 0' }}>
+                                        {verse.text}
+                                      </p>
+                                    ) : null}
+                                    {verse?.transliteration ? (
+                                      <p style={{ fontFamily: 'DM Sans, sans-serif', fontStyle: 'italic', fontSize: '14px', color: '#6B6357', margin: '0 0 6px 0', lineHeight: 1.5 }}>
+                                        {verse.transliteration}
+                                      </p>
+                                    ) : null}
+                                    {verseFr?.translation ? (
+                                      <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '13px', color: '#999', margin: 0, lineHeight: 1.5 }}>
+                                        {verseFr.translation}
+                                      </p>
+                                    ) : null}
+                                  </div>
+                                </div>
+                              );
+                            })}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            );
+          })()}
+        </div>
+
+      </div>{/* end hifz tab */}
+
       {/* ══════════════════════ BOTTOM NAV ══════════════════════ */}
       <div style={{
         position: 'fixed', bottom: 0, left: 0, right: 0,
@@ -423,11 +589,11 @@ export default function DashboardPage() {
         WebkitBackdropFilter: 'blur(20px)',
         borderTop: '1px solid rgba(22,48,38,0.08)',
         padding: '12px 0 20px 0',
-        display: 'flex', justifyContent: 'center', gap: '48px',
+        display: 'flex', justifyContent: 'center', gap: '32px',
         zIndex: 100,
       }}>
         {/* Aujourd'hui */}
-        <button type="button" onClick={() => setActiveTab('today')} style={{
+        <button type="button" onClick={() => handleTabChange('today')} style={{
           display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px',
           background: 'none', border: 'none', cursor: 'pointer', padding: '0 8px',
           position: 'relative',
@@ -445,7 +611,7 @@ export default function DashboardPage() {
         </button>
 
         {/* Progression */}
-        <button type="button" onClick={() => setActiveTab('progress')} style={{
+        <button type="button" onClick={() => handleTabChange('progress')} style={{
           display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px',
           background: 'none', border: 'none', cursor: 'pointer', padding: '0 8px',
           position: 'relative',
@@ -459,6 +625,24 @@ export default function DashboardPage() {
             Progression
           </span>
           {activeTab === 'progress' && (
+            <span style={{ position: 'absolute', bottom: '-8px', width: '4px', height: '4px', borderRadius: '50%', backgroundColor: '#B8962E' }} />
+          )}
+        </button>
+
+        {/* Mon Hifz */}
+        <button type="button" onClick={() => handleTabChange('hifz')} style={{
+          display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px',
+          background: 'none', border: 'none', cursor: 'pointer', padding: '0 8px',
+          position: 'relative',
+        }}>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={activeTab === 'hifz' ? '#163026' : '#C8BFB2'} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+          </svg>
+          <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '11px', fontWeight: 500, color: activeTab === 'hifz' ? '#163026' : '#C8BFB2' }}>
+            Mon Hifz
+          </span>
+          {activeTab === 'hifz' && (
             <span style={{ position: 'absolute', bottom: '-8px', width: '4px', height: '4px', borderRadius: '50%', backgroundColor: '#B8962E' }} />
           )}
         </button>

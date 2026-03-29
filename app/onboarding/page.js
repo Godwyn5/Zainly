@@ -221,21 +221,16 @@ export default function OnboardingPage() {
     const allTimers = [...phraseTimers, ...pctTimers];
 
     try {
-      console.log('[onboarding] getUser...');
       const { data: { user }, error: userError } = await supabase.auth.getUser();
       if (userError || !user) throw new Error('Utilisateur non connecté.');
-      console.log('[onboarding] user ok:', user.id);
       setPrenom(user.user_metadata?.prenom || '');
 
-      console.log('[onboarding] calling /api/generate-plan...');
       const res = await fetch('/api/generate-plan', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ intention, niveau, temps, objectif, sourates }),
       });
-      console.log('[onboarding] API response status:', res.status);
       const planData = await res.json();
-      console.log('[onboarding] planData:', planData);
 
       if (!res.ok) throw new Error(planData.error || 'Erreur lors de la génération du plan.');
 
@@ -243,10 +238,6 @@ export default function OnboardingPage() {
       const memMin = planData.memorizationMinutes ?? Math.round(tempsMin * 0.4);
       const revMin = planData.revisionMinutes ?? (tempsMin - memMin);
 
-      // Supabase inserts — log full result, don't block plan display
-      console.log('[onboarding] user.id used for insert:', user.id);
-
-      console.log('[onboarding] inserting plan...');
       const planPayload = {
         user_id: user.id,
         ayah_per_day: planData.ayahPerDay ?? 2,
@@ -255,7 +246,6 @@ export default function OnboardingPage() {
         motivation_phrase: planData.motivationPhrase ?? intention,
         first_surah_name: planData.firstSurahName ?? 'An-Naba',
       };
-      console.log('[onboarding] plan payload:', planPayload);
       const { error: planErr } = await supabase
         .from('plans')
         .upsert(planPayload, { onConflict: 'user_id' });

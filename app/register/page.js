@@ -17,9 +17,13 @@ export default function RegisterPage() {
   const [pageVisible, setPageVisible] = useState(false);
 
   useEffect(() => {
-    const t = setTimeout(() => setPageVisible(true), 50);
-    return () => clearTimeout(t);
-  }, []);
+    async function checkAuth() {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) { router.push('/dashboard'); return; }
+      setTimeout(() => setPageVisible(true), 50);
+    }
+    checkAuth();
+  }, [router]);
 
   async function handleSubmit(e) {
     e.preventDefault();

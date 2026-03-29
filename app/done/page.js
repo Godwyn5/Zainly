@@ -82,11 +82,11 @@ export default function DonePage() {
           .eq('user_id', authUser.id)
           .gte('created_at', startToday)
           .lt('created_at', startTomorrow),
-        // Items created before today AND next_review is after today = revised today
+        // Items created before today AND review_cycle > 1 = revised at least once
         supabase.from('review_items').select('id')
           .eq('user_id', authUser.id)
           .lt('created_at', startToday)
-          .gt('next_review', today),
+          .gt('review_cycle', 1),
       ]);
 
       const prog = Array.isArray(progRows) ? progRows[0] : progRows;

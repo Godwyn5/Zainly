@@ -117,6 +117,13 @@ export default function SessionPage() {
       const progRow = Array.isArray(prog) ? prog[0] : prog;
       const plRow   = Array.isArray(pl)   ? pl[0]   : pl;
       if (!progRow || !plRow) { router.push('/dashboard'); return; }
+
+      // If session already done today, don't reload — go straight to dashboard
+      if (progRow.last_session_date === todayStr()) {
+        router.push('/dashboard');
+        return;
+      }
+
       setProgress(progRow);
       setPlan(plRow);
 

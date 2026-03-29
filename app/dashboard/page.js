@@ -28,6 +28,14 @@ function getSurahName(num) {
   return SURAH_NAMES[(num ?? 1) - 1] ?? `Sourate ${num}`;
 }
 
+const SURAH_AYAT_COUNT = [
+  7,286,200,176,120,165,206,75,129,109,123,111,43,52,99,128,111,110,98,135,112,78,118,64,77,
+  227,93,88,69,60,34,30,73,54,45,83,182,88,75,85,54,53,89,59,37,35,38,29,18,45,
+  60,49,62,55,78,96,29,22,24,13,14,11,11,18,12,12,30,52,52,44,28,28,20,56,40,31,
+  50,22,31,13,54,55,43,34,31,10,13,10,9,8,8,3,9,5,9,6,8,3,11,11,10,7,
+  3,3,11,4,5,4,7,3,6,3,5,4,5,6,
+];
+
 function todayStr() {
   return new Date().toISOString().slice(0, 10);
 }
@@ -171,9 +179,12 @@ export default function DashboardPage() {
   const streak          = progress?.streak ?? 0;
   const currentAyah     = progress?.current_ayah ?? 0;
   const ayahPerDay      = plan.ayah_per_day ?? 2;
+  const currentSurah    = progress?.current_surah ?? 1;
+  const surahTotalAyat  = SURAH_AYAT_COUNT[currentSurah - 1] ?? 7;
   const memStart        = currentAyah + 1;
-  const memEnd          = currentAyah + ayahPerDay;
-  const surahName       = plan.first_surah_name ?? getSurahName(progress?.current_surah ?? 1);
+  const memEnd          = Math.min(currentAyah + ayahPerDay, surahTotalAyat);
+  const surahExhausted  = memStart > surahTotalAyat;
+  const surahName       = plan.first_surah_name ?? getSurahName(currentSurah);
   const totalMemorized  = progress?.total_memorized ?? currentAyah;
   const progressPct     = Math.min((totalMemorized / 6236) * 100, 100);
   const today           = todayStr();
@@ -249,7 +260,9 @@ export default function DashboardPage() {
           <div style={{ marginTop: '16px' }}>
             <span style={{ fontFamily: 'DM Sans, sans-serif', fontWeight: 500, fontSize: '10px', color: '#B8962E', textTransform: 'uppercase', letterSpacing: '1.5px' }}>Nouvelle mémorisation</span>
             <p className="font-playfair" style={{ fontSize: '20px', fontWeight: 600, color: '#163026', margin: '6px 0 2px 0' }}>{surahName}</p>
-            <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '14px', color: '#6B6357', margin: '0 0 10px 0' }}>Ayat {memStart} à {memEnd}</p>
+            <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '14px', color: '#6B6357', margin: '0 0 10px 0' }}>
+              {surahExhausted ? 'Passage à la sourate suivante...' : `Ayat ${memStart} à ${memEnd}`}
+            </p>
             <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '12px', backgroundColor: 'rgba(22,48,38,0.08)', borderRadius: '20px', padding: '4px 12px', color: '#163026' }}>
               {ayahPerDay} ayat · {plan.memorization_minutes ?? Math.round(minutesSession * 0.4)} min
             </span>

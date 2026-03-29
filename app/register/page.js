@@ -29,6 +29,17 @@ export default function RegisterPage() {
       setPrenomError('Le prénom est obligatoire.');
       return;
     }
+    // Client-side validation
+    if (password.length < 8) {
+      setError('Le mot de passe doit faire au moins 8 caractères.');
+      return;
+    }
+    const emailParts = email.split('@');
+    if (emailParts.length !== 2 || !emailParts[1].includes('.')) {
+      setError('Adresse email invalide.');
+      return;
+    }
+
     setLoading(true);
 
     // Pre-check: if signIn succeeds, account already exists
@@ -67,6 +78,7 @@ export default function RegisterPage() {
       setLoading(false);
       return;
     }
+    setLoading(false);
     router.push('/onboarding');
   }
 

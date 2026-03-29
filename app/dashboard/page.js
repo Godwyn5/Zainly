@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 
@@ -38,6 +38,14 @@ const SURAH_AYAT_COUNT = [
 
 function todayStr() {
   return new Date().toISOString().slice(0, 10);
+}
+
+function globalAyatNumber(quran, surahNumber, ayahId) {
+  let total = 0;
+  for (let i = 0; i < surahNumber - 1; i++) {
+    total += quran[i]?.verses?.length ?? 0;
+  }
+  return total + ayahId;
 }
 
 function formatDate() {
@@ -565,6 +573,9 @@ export default function DashboardPage() {
                                         {verseFr.translation}
                                       </p>
                                     ) : null}
+                                    {hifzQuran && (
+                                      <AudioButton globalNum={globalAyatNumber(hifzQuran, sn, item.ayah)} />
+                                    )}
                                   </div>
                                 </div>
                               );
@@ -649,6 +660,46 @@ export default function DashboardPage() {
       </div>
 
     </div>
+  );
+}
+
+function AudioButton({ globalNum }) {
+  const [playing, setPlaying] = useState(false);
+  const audioRef = useRef(null);
+
+  function handleAudio() {
+    if (playing) return;
+    if (audioRef.current) { audioRef.current.pause(); audioRef.current = null; }
+    const url = `https://cdn.islamic.network/quran/audio/128/ar.alafasy/${globalNum}.mp3`;
+    const a = new Audio(url);
+    audioRef.current = a;
+    setPlaying(true);
+    a.play().catch(() => setPlaying(false));
+    a.onended = () => setPlaying(false);
+    a.onerror = () => setPlaying(false);
+  }
+
+  useEffect(() => {
+    return () => { if (audioRef.current) { audioRef.current.pause(); audioRef.current = null; } };
+  }, []);
+
+  useEffect(() => {
+    if (audioRef.current) { audioRef.current.pause(); audioRef.current = null; }
+    setPlaying(false);
+  }, [globalNum]);
+
+  return (
+    <button type="button" onClick={handleAudio} style={{
+      display: 'flex', alignItems: 'center', gap: '6px',
+      marginTop: '10px',
+      background: 'none', border: 'none', cursor: playing ? 'default' : 'pointer',
+      fontFamily: 'DM Sans, sans-serif', fontSize: '13px',
+      color: '#B8962E', opacity: playing ? 0.7 : 1,
+      transition: 'opacity 0.2s', padding: 0,
+    }}>
+      <span>🔊</span>
+      <span>{playing ? 'En cours...' : 'Écouter'}</span>
+    </button>
   );
 }
 

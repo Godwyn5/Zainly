@@ -15,9 +15,13 @@ export default function LoginPage() {
   const [pageVisible, setPageVisible] = useState(false);
 
   useEffect(() => {
-    const t = setTimeout(() => setPageVisible(true), 50);
-    return () => clearTimeout(t);
-  }, []);
+    async function checkAuth() {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) { router.push('/dashboard'); return; }
+      setTimeout(() => setPageVisible(true), 50);
+    }
+    checkAuth();
+  }, [router]);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -25,7 +29,14 @@ export default function LoginPage() {
     setLoading(true);
     const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
     if (signInError) {
-      setError(signInError.message);
+      const msg = signInError.message?.toLowerCase() ?? '';
+      if (msg.includes('invalid login credentials') || msg.includes('invalid credentials')) {
+        setError('Email ou mot de passe incorrect.');
+      } else if (msg.includes('email not confirmed') || msg.includes('not confirmed')) {
+        setError('Vérifie ta boîte mail pour confirmer ton compte.');
+      } else {
+        setError('Une erreur est survenue. Réessaie.');
+      }
       setLoading(false);
       return;
     }

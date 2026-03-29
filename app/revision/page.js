@@ -94,6 +94,7 @@ export default function RevisionPage() {
   const [loading, setLoading]           = useState(true);
   const [saving, setSaving]             = useState(false);
   const [userId, setUserId]             = useState(null);
+  const [error, setError]               = useState('');
 
   useEffect(() => {
     async function loadRevision() {
@@ -104,11 +105,22 @@ export default function RevisionPage() {
       const today = todayStr();
 
       // Fetch review items + quran files in parallel
-      const [{ data: reviewData }, quranRes, frRes] = await Promise.all([
+      const [{ data: reviewData, error: reviewErr }, quranRes, frRes] = await Promise.all([
         supabase.from('review_items').select('*').eq('user_id', authUser.id).lte('next_review', today),
         fetch('/data/quran.json'),
         fetch('/data/quran_fr.json'),
       ]);
+
+      if (reviewErr) {
+        setError('Erreur lors du chargement des révisions. Réessaie.');
+        setLoading(false);
+        return;
+      }
+      if (!quranRes.ok || !frRes.ok) {
+        setError('Erreur lors du chargement des données Coran. Vérifie ta connexion.');
+        setLoading(false);
+        return;
+      }
 
       const quran   = await quranRes.json();
       const quranFr = await frRes.json();
@@ -145,6 +157,7 @@ export default function RevisionPage() {
 
     loadRevision().catch(err => {
       console.error('[revision] load error:', err);
+      setError('Une erreur inattendue est survenue. Réessaie.');
       setLoading(false);
     });
   }, [router]);
@@ -159,11 +172,17 @@ export default function RevisionPage() {
     const nextCycle    = remembered ? Math.min(currentCycle + 1, CYCLE_DAYS.length - 1) : 1;
     const nextReview   = addDays(CYCLE_DAYS[nextCycle]);
 
-    const { error } = await supabase
+    const { error: updateErr } = await supabase
       .from('review_items')
       .update({ review_cycle: nextCycle, next_review: nextReview })
       .eq('id', item.id);
-    if (error) console.error('[revision] update error:', error);
+
+    if (updateErr) {
+      console.error('[revision] update error:', updateErr);
+      setError('Erreur lors de la sauvegarde. Réessaie.');
+      setSaving(false);
+      return;
+    }
 
     setSaving(false);
 
@@ -189,6 +208,18 @@ export default function RevisionPage() {
     return (
       <div style={{ minHeight: '100vh', backgroundColor: '#F5F0E6', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <p className="font-playfair" style={{ fontSize: '18px', fontStyle: 'italic', color: '#6B6357' }}>Chargement...</p>
+      </div>
+    );
+  }
+
+  // ── Error ──
+  if (error) {
+    return (
+      <div style={{ minHeight: '100vh', backgroundColor: '#F5F0E6', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '16px', padding: '32px' }}>
+        <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '15px', color: '#c0392b', textAlign: 'center' }}>{error}</p>
+        <button onClick={() => { setError(''); setSaving(false); }} style={{ padding: '10px 24px', backgroundColor: '#163026', color: '#fff', border: 'none', borderRadius: '10px', cursor: 'pointer', fontFamily: 'DM Sans, sans-serif' }}>
+          Réessayer
+        </button>
       </div>
     );
   }

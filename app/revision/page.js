@@ -179,7 +179,7 @@ export default function RevisionPage() {
 
     if (updateErr) {
       console.error('[revision] update error:', updateErr);
-      setError('Erreur lors de la sauvegarde. Réessaie.');
+      setError(updateErr.message || 'Erreur lors de la sauvegarde. Réessaie.');
       setSaving(false);
       return;
     }

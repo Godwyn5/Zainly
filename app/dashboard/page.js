@@ -126,7 +126,7 @@ export default function DashboardPage() {
     setTimeout(() => {
       setFeedbackText('');
       setFeedbackDone(false);
-      setFeedbackOpen(true);
+      setFeedbackOpen(false);
     }, 2000);
   }
 
@@ -234,7 +234,7 @@ export default function DashboardPage() {
   const memStart        = currentAyah + 1;
   const memEnd          = Math.min(currentAyah + ayahPerDay, surahTotalAyat);
   const surahExhausted  = memStart > surahTotalAyat;
-  const surahName       = plan.first_surah_name ?? getSurahName(currentSurah);
+  const surahName       = getSurahName(currentSurah);
   const totalMemorized  = progress?.total_memorized ?? 0;
   const progressPct     = Math.min((totalMemorized / 6236) * 100, 100);
   const today           = todayStr();
@@ -325,7 +325,7 @@ export default function DashboardPage() {
             <ul style={{ margin: '10px 0 0 0', padding: '0 0 0 18px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
               {reviews.map((r) => (
                 <li key={r.id} style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '14px', color: '#163026' }}>
-                  {r.surah_name ?? `Sourate ${r.surah_number}`} — ayat {r.ayah}
+                  {getSurahName(r.surah_number)} — ayat {r.ayah}
                 </li>
               ))}
             </ul>

@@ -46,25 +46,6 @@ export default function RegisterPage() {
 
     setLoading(true);
 
-    // Pre-check: if signIn succeeds, account already exists
-    const { error: signInCheck } = await supabase.auth.signInWithPassword({ email, password: 'dummy_check_zainly_2026' });
-    if (!signInCheck) {
-      setError('already_registered');
-      setLoading(false);
-      return;
-    }
-    if (!signInCheck.message.toLowerCase().includes('invalid login credentials') &&
-        !signInCheck.message.toLowerCase().includes('invalid credentials')) {
-      // Any error other than wrong password means the email exists (e.g. "Email not confirmed")
-      if (signInCheck.message.toLowerCase().includes('email') ||
-          signInCheck.message.toLowerCase().includes('confirm') ||
-          signInCheck.message.toLowerCase().includes('not confirmed')) {
-        setError('already_registered');
-        setLoading(false);
-        return;
-      }
-    }
-
     const { error: signUpError } = await supabase.auth.signUp({
       email,
       password,
@@ -75,7 +56,7 @@ export default function RegisterPage() {
       if (msg.toLowerCase().includes('already registered') || msg.toLowerCase().includes('already been registered') || msg.toLowerCase().includes('email already')) {
         setError('already_registered');
       } else if (msg.toLowerCase().includes('password')) {
-        setError('Le mot de passe doit faire au moins 6 caractères.');
+        setError('Le mot de passe doit faire au moins 8 caractères.');
       } else {
         setError(msg);
       }

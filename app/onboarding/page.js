@@ -294,7 +294,7 @@ export default function OnboardingPage() {
       allTimers.forEach(clearTimeout);
       setError(err.message);
       setLoadingPercent(0);
-      // Stay on loading screen so error is visible
+      setLoading(false);
     }
   }
 
@@ -614,7 +614,7 @@ export default function OnboardingPage() {
                     <input
                       type="checkbox"
                       checked={sourates.includes(s)}
-                      onChange={() => { toggleSourate(s); if (sourates.length === 0 && !sourates.includes(s)) {} }}
+                      onChange={() => toggleSourate(s)}
                       style={{ accentColor: '#163026', width: '16px', height: '16px', cursor: 'pointer' }}
                     />
                     <span style={{ fontSize: '15px', color: '#163026' }}>

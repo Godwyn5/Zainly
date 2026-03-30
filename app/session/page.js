@@ -49,7 +49,7 @@ const CSS = `
 
 // ─── Session audio button (with listen counter) ───────────────────────────────
 
-function SessionAudioButton({ globalNum, listenCount, onListen }) {
+function SessionAudioButton({ globalNum, listenCount, onListen, onError }) {
   const [playing, setPlaying] = useState(false);
   const audioRef = useRef(null);
 
@@ -63,9 +63,9 @@ function SessionAudioButton({ globalNum, listenCount, onListen }) {
     const a = new Audio(`https://cdn.islamic.network/quran/audio/128/ar.alafasy/${globalNum}.mp3`);
     audioRef.current = a;
     setPlaying(true);
-    a.play().then(() => onListen()).catch(() => setPlaying(false));
+    a.play().then(() => onListen()).catch(() => { setPlaying(false); onError && onError(); });
     a.onended = () => setPlaying(false);
-    a.onerror = () => setPlaying(false);
+    a.onerror = () => { setPlaying(false); onError && onError(); };
   }
 
   useEffect(() => {
@@ -115,6 +115,7 @@ export default function SessionPage() {
   const [listenCount, setListenCount]   = useState(0);
   const [sessionPhase, setSessionPhase] = useState('listen'); // 'listen'|'test'|'reveal'|'validated'
   const [retryMsg, setRetryMsg]         = useState(false);
+  const [audioError, setAudioError]     = useState(false);
 
   useEffect(() => {
     async function loadSession() {
@@ -212,6 +213,7 @@ export default function SessionPage() {
     setVisible(false);
     setListenCount(0);
     setSessionPhase('listen');
+    setAudioError(false);
     setTimeout(() => {
       setCurrentIndex(i => i + 1);
       setVisible(true);
@@ -455,7 +457,8 @@ export default function SessionPage() {
                 <SessionAudioButton
                   globalNum={globalNum}
                   listenCount={listenCount}
-                  onListen={() => setListenCount(c => c + 1)}
+                  onListen={() => { setListenCount(c => c + 1); setAudioError(false); }}
+                  onError={() => setAudioError(true)}
                 />
               )}
 
@@ -482,6 +485,13 @@ export default function SessionPage() {
               {sessionPhase === 'test' && (
                 <p className="font-playfair" style={{ fontSize: '16px', fontStyle: 'italic', color: '#6B6357', textAlign: 'center', margin: '16px 0 0 0', lineHeight: 1.6 }}>
                   Essaie de réciter cet ayat de mémoire
+                </p>
+              )}
+
+              {/* Audio error message */}
+              {audioError && (
+                <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '13px', color: '#c0392b', textAlign: 'center', margin: '12px 0 0 0' }}>
+                  Impossible de charger l’audio. Vérifie ta connexion.
                 </p>
               )}
 

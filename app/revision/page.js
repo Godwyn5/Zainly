@@ -99,6 +99,7 @@ export default function RevisionPage() {
   const [saving, setSaving]             = useState(false);
   const [userId, setUserId]             = useState(null);
   const [error, setError]               = useState('');
+  const answerHandledRef                = useRef(false);
 
   useEffect(() => {
     async function loadRevision() {
@@ -168,7 +169,8 @@ export default function RevisionPage() {
 
   // ── SRS update and advance ──
   async function handleAnswer(remembered) {
-    if (saving) return;
+    if (answerHandledRef.current) return;
+    answerHandledRef.current = true;
     setSaving(true);
 
     const item = items[currentIndex];
@@ -185,9 +187,11 @@ export default function RevisionPage() {
       console.error('[revision] update error:', updateErr);
       setError(updateErr.message || 'Erreur lors de la sauvegarde. Réessaie.');
       setSaving(false);
+      answerHandledRef.current = false;
       return;
     }
 
+    answerHandledRef.current = false;
     setSaving(false);
 
     // Advance or finish
@@ -221,7 +225,7 @@ export default function RevisionPage() {
     return (
       <div style={{ minHeight: '100vh', backgroundColor: '#F5F0E6', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '16px', padding: '32px' }}>
         <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '15px', color: '#c0392b', textAlign: 'center' }}>{error}</p>
-        <button onClick={() => { setError(''); setSaving(false); }} style={{ padding: '10px 24px', backgroundColor: '#163026', color: '#fff', border: 'none', borderRadius: '10px', cursor: 'pointer', fontFamily: 'DM Sans, sans-serif' }}>
+        <button onClick={() => { setError(''); setSaving(false); answerHandledRef.current = false; setLoading(true); }} style={{ padding: '10px 24px', backgroundColor: '#163026', color: '#fff', border: 'none', borderRadius: '10px', cursor: 'pointer', fontFamily: 'DM Sans, sans-serif' }}>
           Réessayer
         </button>
       </div>

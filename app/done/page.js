@@ -82,10 +82,11 @@ export default function DonePage() {
           .eq('user_id', authUser.id)
           .gte('created_at', startToday)
           .lt('created_at', startTomorrow),
-        // Items created before today AND review_cycle > 1 = revised at least once
+        // Items revised today = next_review was updated today (review_cycle advanced)
         supabase.from('review_items').select('id')
           .eq('user_id', authUser.id)
-          .lt('created_at', startToday)
+          .gte('updated_at', startToday)
+          .lt('updated_at', startTomorrow)
           .gt('review_cycle', 1),
       ]);
 
@@ -110,6 +111,17 @@ export default function DonePage() {
     return (
       <div style={{ minHeight: '100vh', backgroundColor: '#F5F0E6', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <p className="font-playfair" style={{ fontSize: '18px', fontStyle: 'italic', color: '#6B6357' }}>Chargement...</p>
+      </div>
+    );
+  }
+
+  if (!progress) {
+    return (
+      <div style={{ minHeight: '100vh', backgroundColor: '#F5F0E6', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '16px' }}>
+        <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '15px', color: '#163026' }}>Une erreur est survenue. Reviens au dashboard.</p>
+        <button onClick={() => router.push('/dashboard')} style={{ padding: '10px 24px', backgroundColor: '#163026', color: '#fff', border: 'none', borderRadius: '10px', cursor: 'pointer', fontFamily: 'DM Sans, sans-serif' }}>
+          Retour
+        </button>
       </div>
     );
   }

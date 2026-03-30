@@ -147,7 +147,7 @@ export default function OnboardingPage() {
   const [niveau, setNiveau] = useState('');
   const [temps, setTemps] = useState('');
   const [objectif, setObjectif] = useState('');
-  const [sourates, setSourates] = useState([]);
+  const [sourates, setSourates] = useState(['Al-Fatiha']);
   const [visible, setVisible] = useState(true);
   const [pageVisible, setPageVisible] = useState(false);
 
@@ -598,6 +598,9 @@ export default function OnboardingPage() {
                   padding: '8px 0',
                 }}
               >
+                <p style={{ fontFamily: 'DM Sans, sans-serif', fontStyle: 'italic', fontSize: '14px', color: '#6B6357', textAlign: 'center', marginBottom: '16px' }}>
+                  Coche toutes les sourates que tu maîtrises déjà — elles ne seront pas reproposées.
+                </p>
                 {SOURATES.map((s, i) => (
                   <label
                     key={s}

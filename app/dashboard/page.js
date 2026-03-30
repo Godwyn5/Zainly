@@ -123,7 +123,11 @@ export default function DashboardPage() {
     await supabase.from('feedbacks').insert({ user_id: user?.id, message: feedbackText.trim() });
     setFeedbackSaving(false);
     setFeedbackDone(true);
-    setFeedbackText('');
+    setTimeout(() => {
+      setFeedbackText('');
+      setFeedbackDone(false);
+      setFeedbackOpen(true);
+    }, 2000);
   }
 
   // ── Mon Hifz state ──

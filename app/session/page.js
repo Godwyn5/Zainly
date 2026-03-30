@@ -49,7 +49,11 @@ function AudioButton({ globalNum }) {
   const audioRef = useRef(null);
 
   function handleAudio() {
-    if (playing) return;
+    if (playing) {
+      if (audioRef.current) { audioRef.current.pause(); audioRef.current = null; }
+      setPlaying(false);
+      return;
+    }
     if (audioRef.current) { audioRef.current.pause(); audioRef.current = null; }
     const url = `https://cdn.islamic.network/quran/audio/128/ar.alafasy/${globalNum}.mp3`;
     const a = new Audio(url);
@@ -74,13 +78,12 @@ function AudioButton({ globalNum }) {
     <button type="button" onClick={handleAudio} style={{
       display: 'flex', alignItems: 'center', gap: '6px',
       margin: '16px auto 0',
-      background: 'none', border: 'none', cursor: playing ? 'default' : 'pointer',
+      background: 'none', border: 'none', cursor: 'pointer',
       fontFamily: 'DM Sans, sans-serif', fontSize: '13px',
-      color: '#B8962E', opacity: playing ? 0.7 : 1,
-      transition: 'opacity 0.2s',
+      color: '#B8962E', transition: 'opacity 0.2s',
     }}>
-      <span>🔊</span>
-      <span>{playing ? 'En cours...' : 'Écouter'}</span>
+      <span>{playing ? '⏸' : '🔊'}</span>
+      <span>{playing ? 'Pause' : 'Écouter'}</span>
     </button>
   );
 }

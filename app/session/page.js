@@ -78,7 +78,7 @@ function SessionAudioButton({ globalNum, listenCount, onListen }) {
     setPlaying(false);
   }, [globalNum]);
 
-  const displayCount = Math.min(listenCount + 1, 3);
+  const displayCount = listenCount === 0 ? 1 : Math.min(listenCount, 3);
 
   return (
     <button type="button" onClick={handleAudio} style={{
@@ -274,8 +274,10 @@ export default function SessionPage() {
       gain.connect(ctx.destination);
       osc.frequency.value = 523;
       gain.gain.value = 0.3;
-      osc.start();
-      osc.stop(ctx.currentTime + 0.15);
+      ctx.resume().then(() => {
+        osc.start();
+        osc.stop(ctx.currentTime + 0.15);
+      });
     } catch (e) {}
   }
 
@@ -283,8 +285,9 @@ export default function SessionPage() {
     if (remembered) {
       playSuccessSound();
       setSessionPhase('validated');
+      const idx = currentIndex;
       setTimeout(() => {
-        if (currentIndex < ayats.length - 1) goNext();
+        if (idx < ayats.length - 1) goNext();
         else saveAndContinue();
       }, 600);
     } else {

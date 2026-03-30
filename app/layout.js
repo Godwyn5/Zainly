@@ -24,6 +24,18 @@ const amiri = Amiri({
 export const metadata = {
   title: 'Zainly',
   description: 'Deviens Hafiz. Un ayat à la fois.',
+  manifest: '/manifest.json',
+  themeColor: '#163026',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: 'Zainly',
+  },
+  viewport: {
+    width: 'device-width',
+    initialScale: 1,
+    maximumScale: 1,
+  },
 };
 
 export default function RootLayout({ children }) {

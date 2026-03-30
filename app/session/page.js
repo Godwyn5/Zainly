@@ -63,8 +63,7 @@ function SessionAudioButton({ globalNum, listenCount, onListen }) {
     const a = new Audio(`https://cdn.islamic.network/quran/audio/128/ar.alafasy/${globalNum}.mp3`);
     audioRef.current = a;
     setPlaying(true);
-    onListen();
-    a.play().catch(() => setPlaying(false));
+    a.play().then(() => onListen()).catch(() => setPlaying(false));
     a.onended = () => setPlaying(false);
     a.onerror = () => setPlaying(false);
   }
@@ -90,52 +89,6 @@ function SessionAudioButton({ globalNum, listenCount, onListen }) {
     }}>
       <span>{playing ? '⏸' : '🔊'}</span>
       <span>{playing ? 'Pause' : `Écoute ${displayCount}/3`}</span>
-    </button>
-  );
-}
-
-// ─── Audio button ─────────────────────────────────────────────────────────────
-
-function AudioButton({ globalNum }) {
-  const [playing, setPlaying] = useState(false);
-  const audioRef = useRef(null);
-
-  function handleAudio() {
-    if (playing) {
-      if (audioRef.current) { audioRef.current.pause(); audioRef.current = null; }
-      setPlaying(false);
-      return;
-    }
-    if (audioRef.current) { audioRef.current.pause(); audioRef.current = null; }
-    const url = `https://cdn.islamic.network/quran/audio/128/ar.alafasy/${globalNum}.mp3`;
-    const a = new Audio(url);
-    audioRef.current = a;
-    setPlaying(true);
-    a.play().catch(() => setPlaying(false));
-    a.onended = () => setPlaying(false);
-    a.onerror = () => setPlaying(false);
-  }
-
-  useEffect(() => {
-    return () => { if (audioRef.current) { audioRef.current.pause(); audioRef.current = null; } };
-  }, []);
-
-  // reset when globalNum changes
-  useEffect(() => {
-    if (audioRef.current) { audioRef.current.pause(); audioRef.current = null; }
-    setPlaying(false);
-  }, [globalNum]);
-
-  return (
-    <button type="button" onClick={handleAudio} style={{
-      display: 'flex', alignItems: 'center', gap: '6px',
-      margin: '16px auto 0',
-      background: 'none', border: 'none', cursor: 'pointer',
-      fontFamily: 'DM Sans, sans-serif', fontSize: '13px',
-      color: '#B8962E', transition: 'opacity 0.2s',
-    }}>
-      <span>{playing ? '⏸' : '🔊'}</span>
-      <span>{playing ? 'Pause' : 'Écouter'}</span>
     </button>
   );
 }
@@ -281,12 +234,17 @@ export default function SessionPage() {
     } catch (e) {}
   }
 
+  const revealHandledRef = useRef(false);
+
   function handleRevealChoice(remembered) {
+    if (revealHandledRef.current) return;
+    revealHandledRef.current = true;
     if (remembered) {
       playSuccessSound();
       setSessionPhase('validated');
       const idx = currentIndex;
       setTimeout(() => {
+        revealHandledRef.current = false;
         if (idx < ayats.length - 1) goNext();
         else saveAndContinue();
       }, 600);
@@ -294,6 +252,7 @@ export default function SessionPage() {
       setListenCount(0);
       setSessionPhase('listen');
       setRetryMsg(true);
+      revealHandledRef.current = false;
       setTimeout(() => setRetryMsg(false), 1500);
     }
   }
@@ -366,7 +325,8 @@ export default function SessionPage() {
     { key: 'validated', label: 'Validé' },
   ];
   function phaseIndex(p) {
-    if (p === 'reveal') return 1;
+    if (p === 'reveal')    return 1;
+    if (p === 'validated') return 3; // all 3 pills done
     return PHASES.findIndex(x => x.key === p);
   }
   const currentPhaseIdx = phaseIndex(sessionPhase);

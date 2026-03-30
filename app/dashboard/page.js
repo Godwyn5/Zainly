@@ -159,13 +159,12 @@ export default function DashboardPage() {
       const planData     = planRows?.[0] ?? null;
       const progressData = progressRows?.[0] ?? null;
 
-
-      const realPlanError = planFetchErr ?? null;
+      const realError = planFetchErr ?? progFetchErr ?? revFetchErr ?? null;
 
       setPlan(planData);
       setProgress(progressData);
       setReviews(reviewData ?? []);
-      setFetchError(realPlanError);
+      setFetchError(realError);
       setLoading(false);
     }
     loadData();
@@ -174,18 +173,24 @@ export default function DashboardPage() {
   async function loadHifz(userId) {
     if (hifzLoaded) return;
     setHifzLoading(true);
-    const [{ data: allItems }, quranRes, frRes] = await Promise.all([
-      supabase.from('review_items').select('*').eq('user_id', userId).order('surah_number', { ascending: true }),
-      fetch('/data/quran.json'),
-      fetch('/data/quran_fr.json'),
-    ]);
-    const quran   = quranRes.ok  ? await quranRes.json()  : null;
-    const quranFr = frRes.ok     ? await frRes.json()     : null;
-    setHifzItems(allItems ?? []);
-    setHifzQuran(quran);
-    setHifzQuranFr(quranFr);
-    setHifzLoading(false);
-    setHifzLoaded(true);
+    try {
+      const [{ data: allItems, error: hifzErr }, quranRes, frRes] = await Promise.all([
+        supabase.from('review_items').select('*').eq('user_id', userId).order('surah_number', { ascending: true }),
+        fetch('/data/quran.json'),
+        fetch('/data/quran_fr.json'),
+      ]);
+      if (hifzErr) throw hifzErr;
+      const quran   = quranRes.ok  ? await quranRes.json()  : null;
+      const quranFr = frRes.ok     ? await frRes.json()     : null;
+      setHifzItems(allItems ?? []);
+      setHifzQuran(quran);
+      setHifzQuranFr(quranFr);
+    } catch (err) {
+      console.error('[dashboard] loadHifz error:', err);
+    } finally {
+      setHifzLoading(false);
+      setHifzLoaded(true);
+    }
   }
 
   function handleTabChange(tab) {
@@ -244,7 +249,7 @@ export default function DashboardPage() {
   // Estimated months remaining
   const ayatLeft   = Math.max(0, 6236 - totalMemorized);
   const estDays    = ayahPerDay > 0 ? Math.ceil(ayatLeft / ayahPerDay) : 0;
-  const estMonths  = Math.max(1, Math.round(estDays / 30));
+  const estMonths  = ayatLeft === 0 ? 0 : Math.max(1, Math.round(estDays / 30));
 
   // session_dates calendar
   const sessionDates = new Set(Array.isArray(progress?.session_dates) ? progress.session_dates : []);
@@ -359,7 +364,7 @@ export default function DashboardPage() {
           </div>
           <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '13px', color: '#6B6357', margin: '10px 0 0 0' }}>{totalMemorized} / 6236 ayat</p>
           <p className="font-playfair" style={{ fontSize: '14px', fontStyle: 'italic', color: '#6B6357', margin: '8px 0 0 0', lineHeight: 1.6 }}>
-            Il te reste environ {estMonths} mois pour atteindre ton objectif.
+            {estMonths === 0 ? 'Tu as mémorisé tout le Coran. MashaAllah !' : `Il te reste environ ${estMonths} mois pour atteindre ton objectif.`}
           </p>
         </div>
 

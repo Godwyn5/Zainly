@@ -237,6 +237,7 @@ export default function SessionPage() {
   }
 
   const revealHandledRef = useRef(false);
+  const saveHandledRef   = useRef(false);
 
   function handleRevealChoice(remembered) {
     if (revealHandledRef.current) return;
@@ -260,7 +261,8 @@ export default function SessionPage() {
   }
 
   async function saveAndContinue() {
-    if (saving) return;
+    if (saveHandledRef.current) return;
+    saveHandledRef.current = true;
     setSaving(true);
     try {
       const tomorrow = tomorrowStr();
@@ -312,6 +314,7 @@ export default function SessionPage() {
       console.error('[session] saveAndContinue error:', err);
       setError('Une erreur inattendue est survenue. Réessaie.');
       setSaving(false);
+      saveHandledRef.current = false;
     }
   }
 
@@ -469,6 +472,7 @@ export default function SessionPage() {
                 fontFamily: 'DM Sans, sans-serif', fontStyle: 'italic', fontSize: '15px',
                 color: '#6B6357', textAlign: 'center', lineHeight: 1.6, margin: 0,
                 opacity: sessionPhase === 'test' ? 0 : 1,
+                visibility: sessionPhase === 'test' ? 'hidden' : 'visible',
                 transition: 'opacity 0.4s ease',
               }}>
                 {ayat?.transliteration}
@@ -488,8 +492,8 @@ export default function SessionPage() {
                 </p>
               )}
 
-              {/* Audio error message */}
-              {audioError && (
+              {/* Audio error message — only in listen phase */}
+              {audioError && sessionPhase === 'listen' && (
                 <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '13px', color: '#c0392b', textAlign: 'center', margin: '12px 0 0 0' }}>
                   Impossible de charger l’audio. Vérifie ta connexion.
                 </p>

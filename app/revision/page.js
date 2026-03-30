@@ -91,7 +91,7 @@ export default function RevisionPage() {
   const router = useRouter();
 
   const [items, setItems]               = useState([]);   // review_items enriched
-  const [quranData, setQuranData]       = useState(null);
+  const [reloadKey, setReloadKey]       = useState(0);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [revealed, setRevealed]         = useState(false);
   const [visible, setVisible]           = useState(true);
@@ -129,7 +129,6 @@ export default function RevisionPage() {
 
       const quran   = await quranRes.json();
       const quranFr = await frRes.json();
-      setQuranData(quran);
 
       if (!reviewData || reviewData.length === 0) {
         setItems([]);
@@ -165,7 +164,7 @@ export default function RevisionPage() {
       setError('Une erreur inattendue est survenue. Réessaie.');
       setLoading(false);
     });
-  }, [router]);
+  }, [router, reloadKey]);
 
   // ── SRS update and advance ──
   async function handleAnswer(remembered) {
@@ -225,7 +224,7 @@ export default function RevisionPage() {
     return (
       <div style={{ minHeight: '100vh', backgroundColor: '#F5F0E6', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '16px', padding: '32px' }}>
         <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '15px', color: '#c0392b', textAlign: 'center' }}>{error}</p>
-        <button onClick={() => { setError(''); setSaving(false); answerHandledRef.current = false; setLoading(true); }} style={{ padding: '10px 24px', backgroundColor: '#163026', color: '#fff', border: 'none', borderRadius: '10px', cursor: 'pointer', fontFamily: 'DM Sans, sans-serif' }}>
+        <button onClick={() => { setError(''); setSaving(false); answerHandledRef.current = false; setItems([]); setCurrentIndex(0); setRevealed(false); setLoading(true); setReloadKey(k => k + 1); }} style={{ padding: '10px 24px', backgroundColor: '#163026', color: '#fff', border: 'none', borderRadius: '10px', cursor: 'pointer', fontFamily: 'DM Sans, sans-serif' }}>
           Réessayer
         </button>
       </div>

@@ -181,7 +181,7 @@ export default function DonePage() {
           margin: '8px 0 0 0',
           animation: 'fadeUp 0.5s ease 0.6s both',
         }}>
-          🔥 {streak} jour{streak > 1 ? 's' : ''} consécutif{streak > 1 ? 's' : ''}
+          {streak === 0 ? '🔥 1er jour !' : `🔥 ${streak} jour${streak > 1 ? 's' : ''} consécutif${streak > 1 ? 's' : ''}`}
         </p>
 
         {/* ── STATS CARD ── */}

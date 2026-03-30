@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 
@@ -126,14 +126,16 @@ function ProgressCircle({ percent }) {
 function CountUp({ target, duration = 1200, suffix = '' }) {
   const [val, setVal] = useState(0);
   useEffect(() => {
+    let rafId;
     const start = performance.now();
     function tick(now) {
       const elapsed = now - start;
       const progress = Math.min(elapsed / duration, 1);
       setVal(Math.round(progress * target));
-      if (progress < 1) requestAnimationFrame(tick);
+      if (progress < 1) rafId = requestAnimationFrame(tick);
     }
-    requestAnimationFrame(tick);
+    rafId = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(rafId);
   }, [target, duration]);
   return <>{val}{suffix}</>;
 }
@@ -264,10 +266,10 @@ export default function OnboardingPage() {
       };
       const { error: progErr } = await supabase
         .from('progress')
-        .insert(progressPayload, { ignoreDuplicates: true });
+        .upsert(progressPayload, { onConflict: 'user_id', ignoreDuplicates: true });
       if (progErr) {
         allTimers.forEach(clearTimeout);
-        throw new Error('Erreur de sauvegarde. V\u00e9rifie ta connexion et r\u00e9essaie.');
+        throw new Error('Erreur de sauvegarde. Vérifie ta connexion et réessaie.');
       }
 
       allTimers.forEach(clearTimeout);

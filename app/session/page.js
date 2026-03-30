@@ -40,7 +40,59 @@ const CSS = `
   from { opacity: 0; transform: translateY(-16px); }
   to   { opacity: 1; transform: translateY(0); }
 }
+@keyframes checkPop {
+  0%   { transform: scale(0.4); opacity: 0; }
+  60%  { transform: scale(1.2); opacity: 1; }
+  100% { transform: scale(1);   opacity: 1; }
+}
 `;
+
+// ─── Session audio button (with listen counter) ───────────────────────────────
+
+function SessionAudioButton({ globalNum, listenCount, onListen }) {
+  const [playing, setPlaying] = useState(false);
+  const audioRef = useRef(null);
+
+  function handleAudio() {
+    if (playing) {
+      if (audioRef.current) { audioRef.current.pause(); audioRef.current = null; }
+      setPlaying(false);
+      return;
+    }
+    if (audioRef.current) { audioRef.current.pause(); audioRef.current = null; }
+    const a = new Audio(`https://cdn.islamic.network/quran/audio/128/ar.alafasy/${globalNum}.mp3`);
+    audioRef.current = a;
+    setPlaying(true);
+    onListen();
+    a.play().catch(() => setPlaying(false));
+    a.onended = () => setPlaying(false);
+    a.onerror = () => setPlaying(false);
+  }
+
+  useEffect(() => {
+    return () => { if (audioRef.current) { audioRef.current.pause(); audioRef.current = null; } };
+  }, []);
+
+  useEffect(() => {
+    if (audioRef.current) { audioRef.current.pause(); audioRef.current = null; }
+    setPlaying(false);
+  }, [globalNum]);
+
+  const displayCount = Math.min(listenCount + 1, 3);
+
+  return (
+    <button type="button" onClick={handleAudio} style={{
+      display: 'flex', alignItems: 'center', gap: '6px',
+      margin: '16px auto 0',
+      background: 'none', border: 'none', cursor: 'pointer',
+      fontFamily: 'DM Sans, sans-serif', fontSize: '13px',
+      color: '#B8962E', transition: 'opacity 0.2s',
+    }}>
+      <span>{playing ? '⏸' : '🔊'}</span>
+      <span>{playing ? 'Pause' : `Écoute ${displayCount}/3`}</span>
+    </button>
+  );
+}
 
 // ─── Audio button ─────────────────────────────────────────────────────────────
 
@@ -105,6 +157,11 @@ export default function SessionPage() {
   const [loading, setLoading]           = useState(true);
   const [saving, setSaving]             = useState(false);
   const [error, setError]               = useState('');
+
+  // ── 4-step memorization flow ──
+  const [listenCount, setListenCount]   = useState(0);
+  const [sessionPhase, setSessionPhase] = useState('listen'); // 'listen'|'test'|'reveal'|'validated'
+  const [retryMsg, setRetryMsg]         = useState(false);
 
   useEffect(() => {
     async function loadSession() {
@@ -200,10 +257,42 @@ export default function SessionPage() {
 
   function goNext() {
     setVisible(false);
+    setListenCount(0);
+    setSessionPhase('listen');
     setTimeout(() => {
       setCurrentIndex(i => i + 1);
       setVisible(true);
     }, 220);
+  }
+
+  function playSuccessSound() {
+    try {
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.frequency.value = 523;
+      gain.gain.value = 0.3;
+      osc.start();
+      osc.stop(ctx.currentTime + 0.15);
+    } catch (e) {}
+  }
+
+  function handleRevealChoice(remembered) {
+    if (remembered) {
+      playSuccessSound();
+      setSessionPhase('validated');
+      setTimeout(() => {
+        if (currentIndex < ayats.length - 1) goNext();
+        else saveAndContinue();
+      }, 600);
+    } else {
+      setListenCount(0);
+      setSessionPhase('listen');
+      setRetryMsg(true);
+      setTimeout(() => setRetryMsg(false), 1500);
+    }
   }
 
   async function saveAndContinue() {
@@ -262,17 +351,22 @@ export default function SessionPage() {
     }
   }
 
-  function handleButton() {
-    if (currentIndex < ayats.length - 1) goNext();
-    else saveAndContinue();
-  }
-
-  const isLast    = currentIndex === ayats.length - 1;
   const ayat      = ayats[currentIndex];
   const pct       = ayats.length > 0 ? ((currentIndex + 1) / ayats.length) * 100 : 0;
   const startAyah = ayats[0]?.id ?? 1;
   const endAyah   = ayats[ayats.length - 1]?.id ?? 1;
   const globalNum = quranData ? globalAyatNumber(quranData, surahNumber, ayat?.id ?? 1) : 1;
+
+  const PHASES = [
+    { key: 'listen',    label: 'Écouter' },
+    { key: 'test',      label: 'Tester' },
+    { key: 'validated', label: 'Validé' },
+  ];
+  function phaseIndex(p) {
+    if (p === 'reveal') return 1;
+    return PHASES.findIndex(x => x.key === p);
+  }
+  const currentPhaseIdx = phaseIndex(sessionPhase);
 
   if (loading) {
     return (
@@ -345,39 +439,97 @@ export default function SessionPage() {
           backgroundColor: '#fff',
           borderRadius: '24px',
           boxShadow: '0 20px 60px rgba(15,35,24,0.15)',
-          padding: '40px 32px',
+          padding: '32px 32px 28px',
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
           animation: visible ? 'fadeIn 0.35s ease both' : 'fadeOut 0.2s ease both',
         }}>
+
+          {/* ── Phase progress bar ── */}
+          <div style={{ display: 'flex', gap: '8px', justifyContent: 'center', marginBottom: '24px' }}>
+            {PHASES.map((p, i) => {
+              const done   = i < currentPhaseIdx;
+              const active = i === currentPhaseIdx;
+              return (
+                <span key={p.key} style={{
+                  fontFamily: 'DM Sans, sans-serif', fontWeight: 500, fontSize: '13px',
+                  padding: '6px 16px', borderRadius: '20px',
+                  backgroundColor: done ? '#B8962E' : active ? '#163026' : '#E2D9CC',
+                  color: (done || active) ? '#fff' : '#6B6357',
+                  transition: 'all 0.3s',
+                }}>{p.label}</span>
+              );
+            })}
+          </div>
+
           {/* Badge */}
-          <p style={{ fontFamily: 'DM Sans, sans-serif', fontWeight: 500, fontSize: '12px', letterSpacing: '1px', color: '#B8962E', textAlign: 'center', textTransform: 'uppercase', margin: '0 0 24px 0' }}>
+          <p style={{ fontFamily: 'DM Sans, sans-serif', fontWeight: 500, fontSize: '12px', letterSpacing: '1px', color: '#B8962E', textAlign: 'center', textTransform: 'uppercase', margin: '0 0 20px 0' }}>
             Ayat {ayat?.id}
           </p>
 
-          {/* Arabic */}
-          <p className="font-amiri" style={{ fontSize: '42px', fontWeight: 700, color: '#163026', textAlign: 'center', direction: 'rtl', lineHeight: 1.8, margin: 0 }}>
-            {ayat?.text}
-          </p>
+          {/* ── VALIDATED screen ── */}
+          {sessionPhase === 'validated' && (
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '32px 0' }}>
+              <span style={{ fontSize: '72px', animation: 'checkPop 0.4s ease both', color: '#2d5a42' }}>✓</span>
+            </div>
+          )}
 
-          {/* Audio */}
-          <AudioButton globalNum={globalNum} />
+          {/* ── Arabic + audio (hidden during test) ── */}
+          {sessionPhase !== 'validated' && (
+            <>
+              <p className="font-amiri" style={{
+                fontSize: '42px', fontWeight: 700, color: '#163026', textAlign: 'center',
+                direction: 'rtl', lineHeight: 1.8, margin: 0,
+                opacity: sessionPhase === 'test' ? 0 : 1,
+                transition: 'opacity 0.4s ease',
+              }}>
+                {ayat?.text}
+              </p>
 
-          {/* Divider */}
-          <div style={{ borderTop: '1px solid #E2D9CC', margin: '24px 0' }} />
+              {/* Audio button — only in listen phase */}
+              {sessionPhase === 'listen' && (
+                <SessionAudioButton
+                  globalNum={globalNum}
+                  listenCount={listenCount}
+                  onListen={() => setListenCount(c => c + 1)}
+                />
+              )}
 
-          {/* Transliteration */}
-          <p style={{ fontFamily: 'DM Sans, sans-serif', fontStyle: 'italic', fontSize: '15px', color: '#6B6357', textAlign: 'center', lineHeight: 1.6, margin: 0 }}>
-            {ayat?.transliteration}
-          </p>
+              <div style={{ borderTop: '1px solid #E2D9CC', margin: '24px 0' }} />
 
-          {/* French translation */}
-          {ayat?.translation ? (
-            <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '14px', color: '#999', textAlign: 'center', lineHeight: 1.6, margin: '8px 0 0 0' }}>
-              {ayat.translation}
-            </p>
-          ) : null}
+              {/* Transliteration */}
+              <p style={{
+                fontFamily: 'DM Sans, sans-serif', fontStyle: 'italic', fontSize: '15px',
+                color: '#6B6357', textAlign: 'center', lineHeight: 1.6, margin: 0,
+                opacity: sessionPhase === 'test' ? 0 : 1,
+                transition: 'opacity 0.4s ease',
+              }}>
+                {ayat?.transliteration}
+              </p>
+
+              {/* French translation — always visible */}
+              {ayat?.translation ? (
+                <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '14px', color: '#999', textAlign: 'center', lineHeight: 1.6, margin: '8px 0 0 0' }}>
+                  {ayat.translation}
+                </p>
+              ) : null}
+
+              {/* TEST phase instruction */}
+              {sessionPhase === 'test' && (
+                <p className="font-playfair" style={{ fontSize: '16px', fontStyle: 'italic', color: '#6B6357', textAlign: 'center', margin: '16px 0 0 0', lineHeight: 1.6 }}>
+                  Essaie de réciter cet ayat de mémoire
+                </p>
+              )}
+
+              {/* Retry message */}
+              {retryMsg && (
+                <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '14px', color: '#B8962E', textAlign: 'center', margin: '12px 0 0 0' }}>
+                  Pas de souci. Réessaie.
+                </p>
+              )}
+            </>
+          )}
         </div>
       </div>
 
@@ -391,19 +543,52 @@ export default function SessionPage() {
         </p>
       </div>
 
-      {/* ── BUTTON ── */}
+      {/* ── ACTION BUTTONS ── */}
       <div style={{ margin: '0 16px' }}>
-        <button type="button" className="font-playfair" onClick={handleButton} disabled={saving} style={{
-          width: '100%', padding: '14px', fontSize: '16px', fontWeight: 600, color: '#fff',
-          background: 'linear-gradient(135deg, #163026, #2d5a42)', border: 'none', borderRadius: '12px',
-          cursor: saving ? 'wait' : 'pointer', boxShadow: '0 8px 24px rgba(15,35,24,0.3)',
-          opacity: saving ? 0.7 : 1, transition: 'transform 0.15s, box-shadow 0.15s, opacity 0.2s',
-        }}
-          onMouseEnter={(e) => { if (!saving) { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 12px 32px rgba(15,35,24,0.38)'; } }}
-          onMouseLeave={(e) => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 8px 24px rgba(15,35,24,0.3)'; }}
-        >
-          {saving ? 'Sauvegarde...' : isLast ? 'Terminer la mémorisation ✓' : 'Suivant →'}
-        </button>
+
+        {/* LISTEN phase — show 'Je suis prêt' only after 3 listens */}
+        {sessionPhase === 'listen' && listenCount >= 3 && (
+          <button type="button" className="font-playfair" onClick={() => setSessionPhase('test')} style={{
+            width: '100%', padding: '14px', fontSize: '16px', fontWeight: 600, color: '#fff',
+            backgroundColor: '#163026', border: 'none', borderRadius: '12px', cursor: 'pointer',
+            boxShadow: '0 8px 24px rgba(15,35,24,0.3)', marginTop: '0',
+          }}>
+            Je suis prêt →
+          </button>
+        )}
+
+        {/* TEST phase — Révéler button */}
+        {sessionPhase === 'test' && (
+          <button type="button" className="font-playfair" onClick={() => setSessionPhase('reveal')} style={{
+            width: '100%', padding: '14px', fontSize: '16px', fontWeight: 600, color: '#163026',
+            background: 'transparent', border: '1.5px solid #163026', borderRadius: '12px', cursor: 'pointer',
+          }}>
+            Révéler l&apos;ayat
+          </button>
+        )}
+
+        {/* REVEAL phase — two buttons */}
+        {sessionPhase === 'reveal' && (
+          <div style={{ display: 'flex', gap: '12px' }}>
+            <button type="button" className="font-playfair" onClick={() => handleRevealChoice(true)} style={{
+              width: '48%', padding: '14px', fontSize: '15px', fontWeight: 600, color: '#fff',
+              background: 'linear-gradient(135deg, #163026, #2d5a42)', border: 'none', borderRadius: '12px', cursor: 'pointer',
+            }}>
+              Je m&apos;en souvenais ✓
+            </button>
+            <button type="button" className="font-playfair" onClick={() => handleRevealChoice(false)} style={{
+              width: '48%', padding: '14px', fontSize: '15px', fontWeight: 600, color: '#999',
+              background: 'transparent', border: '1.5px solid #E2D9CC', borderRadius: '12px', cursor: 'pointer',
+            }}>
+              Je dois revoir ✗
+            </button>
+          </div>
+        )}
+
+        {/* Saving state */}
+        {saving && (
+          <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '14px', color: '#6B6357', textAlign: 'center', margin: '12px 0 0' }}>Sauvegarde...</p>
+        )}
       </div>
     </div>
   );

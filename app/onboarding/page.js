@@ -227,9 +227,15 @@ export default function OnboardingPage() {
       if (userError || !user) throw new Error('Utilisateur non connecté.');
       setPrenom(user.user_metadata?.prenom || '');
 
+      const { data: { session } } = await supabase.auth.getSession();
+      const accessToken = session?.access_token ?? '';
+
       const res = await fetch('/api/generate-plan', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`,
+        },
         body: JSON.stringify({ intention, niveau, temps, objectif, sourates }),
       });
       const planData = await res.json();

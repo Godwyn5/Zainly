@@ -40,8 +40,8 @@ export default function RegisterPage() {
       setError('Le mot de passe doit faire au moins 8 caractères.');
       return;
     }
-    const emailParts = email.split('@');
-    if (emailParts.length !== 2 || !emailParts[1].includes('.')) {
+    const emailParts = email.trim().split('@');
+    if (emailParts.length !== 2 || !emailParts[0] || !emailParts[1].includes('.')) {
       setError('Adresse email invalide.');
       return;
     }

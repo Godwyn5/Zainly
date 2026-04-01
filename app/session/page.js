@@ -286,6 +286,10 @@ export default function SessionPage() {
 
   async function saveAndContinue() {
     if (saveHandledRef.current) return;
+    if (!progress) {
+      setError('Données de progression manquantes. Retourne au dashboard.');
+      return;
+    }
     saveHandledRef.current = true;
     setSaving(true);
     try {
@@ -302,7 +306,7 @@ export default function SessionPage() {
 
       const { error: revErr } = await supabase
         .from('review_items')
-        .upsert(reviewRows, { onConflict: 'user_id,surah_number,ayah', ignoreDuplicates: true });
+        .upsert(reviewRows, { onConflict: 'user_id,surah_number,ayah' });
       if (revErr) {
         setError('Erreur lors de la sauvegarde des révisions. Réessaie.');
         setSaving(false);

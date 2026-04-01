@@ -259,6 +259,8 @@ export default function OnboardingPage() {
         motivation_phrase: planData.motivationPhrase ?? intention,
         first_surah_name: planData.firstSurahName ?? 'An-Naba',
         surah_start: planData.surahStart ?? 78,
+        estimated_days: planData.estimatedDays ?? null,
+        estimated_months: planData.estimatedMonths ?? null,
       };
       const { error: planErr } = await supabase
         .from('plans')
@@ -278,7 +280,7 @@ export default function OnboardingPage() {
       };
       const { error: progErr } = await supabase
         .from('progress')
-        .upsert(progressPayload, { onConflict: 'user_id' });
+        .upsert(progressPayload, { onConflict: 'user_id', ignoreDuplicates: true });
       if (progErr) {
         allTimers.forEach(clearTimeout);
         throw new Error('Erreur de sauvegarde. Vérifie ta connexion et réessaie.');

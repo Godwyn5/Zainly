@@ -14,7 +14,7 @@ const SURAH_NAMES = [
   'Saba','Fatir','Ya-Sin','As-Saffat','Sad','Az-Zumar','Ghafir','Fussilat','Ash-Shura',
   'Az-Zukhruf','Ad-Dukhan','Al-Jathiya','Al-Ahqaf','Muhammad','Al-Fath','Al-Hujurat','Qaf',
   'Adh-Dhariyat','At-Tur','An-Najm','Al-Qamar','Ar-Rahman','Al-Waqia','Al-Hadid','Al-Mujadila',
-  'Al-Hashr','Al-Mumtahina','As-Saf','Al-Jumua','Al-Munafiqun','At-Taghabun','At-Talaq',
+  'Al-Hashr','Al-Mumtahana','As-Saf','Al-Jumua','Al-Munafiqun','At-Taghabun','At-Talaq',
   'At-Tahrim','Al-Mulk','Al-Qalam','Al-Haqqa','Al-Maarij','Nuh','Al-Jinn','Al-Muzzammil',
   'Al-Muddaththir','Al-Qiyama','Al-Insan','Al-Mursalat','An-Naba','An-Naziat','Abasa',
   'At-Takwir','Al-Infitar','Al-Mutaffifin','Al-Inshiqaq','Al-Buruj','At-Tariq','Al-Ala',
@@ -123,8 +123,12 @@ export default function DashboardPage() {
   async function submitFeedback() {
     if (!feedbackText.trim() || feedbackSaving) return;
     setFeedbackSaving(true);
-    await supabase.from('feedbacks').insert({ user_id: user?.id, message: feedbackText.trim() });
+    const { error: fbErr } = await supabase.from('feedbacks').insert({ user_id: user?.id, message: feedbackText.trim() });
     setFeedbackSaving(false);
+    if (fbErr) {
+      console.error('[dashboard] feedback insert error:', fbErr);
+      return;
+    }
     setFeedbackDone(true);
     setTimeout(() => {
       setFeedbackText('');
@@ -138,7 +142,6 @@ export default function DashboardPage() {
   const [hifzQuran, setHifzQuran]       = useState(null); // quran.json
   const [hifzQuranFr, setHifzQuranFr]   = useState(null); // quran_fr.json
   const [hifzLoading, setHifzLoading]   = useState(false);
-  const [hifzLoaded, setHifzLoaded]     = useState(false);
   const [expandedSurah, setExpandedSurah] = useState(null);
   const [quranData, setQuranData]       = useState(null);
   const [quranFrData, setQuranFrData]   = useState(null);
@@ -211,7 +214,6 @@ export default function DashboardPage() {
       console.error('[dashboard] loadHifz error:', err);
     } finally {
       setHifzLoading(false);
-      setHifzLoaded(true);
     }
   }
 

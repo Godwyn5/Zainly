@@ -144,6 +144,7 @@ export async function POST(request) {
       estimatedDays,
       estimatedMonths,
       motivationPhrase,
+      estimatedWeeks,
     })
   } catch (error) {
     console.error('[generate-plan] error:', error)

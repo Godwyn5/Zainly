@@ -311,8 +311,8 @@ export default function RevisionPage() {
         alignItems: 'center',
         animation: 'slideDown 0.5s ease both',
       }}>
-        <button onClick={() => router.push('/dashboard')}
-          style={{ background: 'none', border: 'none', color: '#fff', fontSize: '22px', cursor: 'pointer', padding: '11px', justifySelf: 'start', lineHeight: 1, minWidth: '44px', minHeight: '44px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <button onClick={() => { if (!saving) router.push('/dashboard'); }}
+          style={{ background: 'none', border: 'none', color: '#fff', fontSize: '22px', cursor: saving ? 'default' : 'pointer', padding: '11px', justifySelf: 'start', lineHeight: 1, minWidth: '44px', minHeight: '44px', display: 'flex', alignItems: 'center', justifyContent: 'center', opacity: saving ? 0.4 : 1, pointerEvents: saving ? 'none' : 'auto' }}>
           ←
         </button>
         <div style={{ textAlign: 'center' }}>

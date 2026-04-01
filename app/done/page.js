@@ -11,18 +11,16 @@ function localDateStr(d = new Date()) {
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 }
 
-// UTC midnight of today — safe for comparing with Supabase timestamptz
-function startOfTodayUTC() {
+// Local midnight ISO string with timezone offset, e.g. "2026-04-01T00:00:00+02:00"
+function localMidnightISO(offsetDays = 0) {
   const d = new Date();
-  d.setUTCHours(0, 0, 0, 0);
-  return d.toISOString();
-}
-
-function startOfTomorrowUTC() {
-  const d = new Date();
-  d.setUTCHours(0, 0, 0, 0);
-  d.setUTCDate(d.getUTCDate() + 1);
-  return d.toISOString();
+  d.setDate(d.getDate() + offsetDays);
+  d.setHours(0, 0, 0, 0);
+  const off = -d.getTimezoneOffset(); // minutes ahead of UTC
+  const sign = off >= 0 ? '+' : '-';
+  const hh = String(Math.floor(Math.abs(off) / 60)).padStart(2, '0');
+  const mm = String(Math.abs(off) % 60).padStart(2, '0');
+  return `${localDateStr(d)}T00:00:00${sign}${hh}:${mm}`;
 }
 
 function getMotivation(streak) {
@@ -70,9 +68,8 @@ export default function DonePage() {
       // Lance adaptPlan en arrière-plan sans bloquer l'affichage
       adaptPlan(supabase, authUser.id).catch(e => console.error('adaptPlan:', e));
 
-      const todayLocal   = localDateStr();
-      const startToday    = startOfTodayUTC();
-      const startTomorrow = startOfTomorrowUTC();
+      const startToday    = localMidnightISO(0);
+      const startTomorrow = localMidnightISO(1);
 
       // Fetch progress + plan + memorized today + revised today in parallel
       const [
@@ -88,13 +85,13 @@ export default function DonePage() {
         // Items created today in local time = memorized this session
         supabase.from('review_items').select('id')
           .eq('user_id', authUser.id)
-          .gte('created_at', todayLocal + 'T00:00:00')
-          .lt('created_at', todayLocal + 'T23:59:59'),
+          .gte('created_at', startToday)
+          .lt('created_at', startTomorrow),
         // Items revised today = next_review was updated today (review_cycle advanced)
         supabase.from('review_items').select('id')
           .eq('user_id', authUser.id)
-          .gte('updated_at', todayLocal + 'T00:00:00')
-          .lt('updated_at', todayLocal + 'T23:59:59')
+          .gte('updated_at', startToday)
+          .lt('updated_at', startTomorrow)
           .gt('review_cycle', 1),
       ]);
 

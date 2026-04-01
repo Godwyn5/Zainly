@@ -513,7 +513,7 @@ export default function OnboardingPage() {
           style={{
             height: '100%',
             backgroundColor: '#B8962E',
-            width: `${(currentStep / 5) * 100}%`,
+            width: `${(willGenerateOnContinue ? 5 : currentStep) / 5 * 100}%`,
             transition: 'width 0.6s ease',
           }}
         />

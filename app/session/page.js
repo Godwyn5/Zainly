@@ -150,9 +150,10 @@ export default function SessionPage() {
       const plRow   = Array.isArray(pl)   ? pl[0]   : pl;
       if (!progRow || !plRow) { router.push('/dashboard'); return; }
 
-      // If session already done today, don't reload — go straight to dashboard
+      // If session already done today, show message instead of silent redirect
       if (progRow.last_session_date === todayStr()) {
-        router.push('/dashboard');
+        setError('SESSION_DONE_TODAY');
+        setLoading(false);
         return;
       }
 
@@ -396,6 +397,23 @@ export default function SessionPage() {
     return (
       <div style={{ minHeight: '100vh', backgroundColor: '#F5F0E6', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <p className="font-playfair" style={{ fontSize: '18px', fontStyle: 'italic', color: '#6B6357' }}>Chargement...</p>
+      </div>
+    );
+  }
+
+  if (error === 'SESSION_DONE_TODAY') {
+    return (
+      <div style={{ minHeight: '100vh', backgroundColor: '#F5F0E6', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '16px', padding: '32px', textAlign: 'center' }}>
+        <span style={{ fontSize: '56px' }}>✓</span>
+        <h1 className="font-playfair" style={{ fontSize: '28px', fontWeight: 600, color: '#163026', margin: 0, lineHeight: 1.3 }}>
+          Session du jour déjà accomplie.
+        </h1>
+        <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '15px', color: '#6B6357', margin: 0 }}>
+          Reviens demain إن شاء الله
+        </p>
+        <button onClick={() => router.push('/dashboard')} className="font-playfair" style={{ marginTop: '8px', padding: '14px 40px', backgroundColor: '#163026', color: '#fff', border: 'none', borderRadius: '12px', cursor: 'pointer', fontSize: '16px', fontWeight: 600 }}>
+          Retour au dashboard
+        </button>
       </div>
     );
   }

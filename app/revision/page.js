@@ -114,7 +114,7 @@ export default function RevisionPage() {
 
       // Fetch review items + quran files in parallel
       const [{ data: reviewData, error: reviewErr }, quranRes, frRes] = await Promise.all([
-        supabase.from('review_items').select('*').eq('user_id', authUser.id).lte('next_review', today),
+        supabase.from('review_items').select('*').eq('user_id', authUser.id).eq('mastered', false).lte('next_review', today),
         fetch('/data/quran.json'),
         fetch('/data/quran_fr.json'),
       ]);
@@ -179,10 +179,11 @@ export default function RevisionPage() {
     const currentCycle = item.review_cycle ?? 1;
     const nextCycle    = remembered ? Math.min(currentCycle + 1, CYCLE_DAYS.length - 1) : 1;
     const nextReview   = addDays(CYCLE_DAYS[nextCycle]);
+    const mastered     = remembered && currentCycle >= CYCLE_DAYS.length - 1;
 
     const { error: updateErr } = await supabase
       .from('review_items')
-      .update({ review_cycle: nextCycle, next_review: nextReview })
+      .update({ review_cycle: nextCycle, next_review: nextReview, mastered })
       .eq('id', item.id);
 
     if (updateErr) {

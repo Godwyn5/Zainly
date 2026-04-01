@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
+import { supabase } from '@/lib/supabase';
 
 function useReveal() {
   const ref = useRef(null);
@@ -82,9 +83,11 @@ export default function Home() {
   const [newsletterEmail, setNewsletterEmail] = useState('');
   const [newsletterSubmitted, setNewsletterSubmitted] = useState(false);
 
-  function handleNewsletter(e) {
+  async function handleNewsletter(e) {
     e.preventDefault();
-    if (newsletterEmail.trim()) setNewsletterSubmitted(true);
+    if (!newsletterEmail.trim()) return;
+    await supabase.from('waitlist').insert({ email: newsletterEmail.trim() });
+    setNewsletterSubmitted(true);
   }
 
   useEffect(() => {

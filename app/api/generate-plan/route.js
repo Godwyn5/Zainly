@@ -54,66 +54,58 @@ export async function POST(request) {
       return NextResponse.json({ error: 'Champs manquants ou invalides.' }, { status: 400 })
     }
 
+    // ── Ayat par jour ──
+    const timeMap = { '10': 1, '20': 2, '30': 3, '45': 4 }
+    let ayahPerDay = timeMap[temps.trim()] ?? 2
+    if (niveau === 'Je reprends après une longue pause') ayahPerDay = Math.max(1, ayahPerDay - 1)
+    if (niveau === "J'ai déjà commencé et abandonné")    ayahPerDay = Math.max(1, ayahPerDay - 1)
+    if (objectif === 'Finir une sourate courte')         ayahPerDay = Math.min(6, ayahPerDay)
+    if (objectif === 'Mémoriser le Juz Amma')            ayahPerDay = Math.min(6, ayahPerDay)
+
     // ── Sourate de départ ──
-    let surahStart, firstSurahName
+    let surahStart    = 78
+    let firstSurahName = 'An-Naba'
+    if (objectif === 'Finir une sourate courte')    { surahStart = 112; firstSurahName = 'Al-Ikhlas' }
+    else if (objectif === 'Mémoriser le Coran complet') { surahStart = 1;   firstSurahName = 'Al-Fatiha' }
+
     if (Array.isArray(sourates) && sourates.length > 0) {
-      // Trouver la dernière sourate connue dans SURAH_LIST
-      let lastIndex = -1
-      for (const s of sourates) {
-        const idx = SURAH_LIST.indexOf(s)
-        if (idx > lastIndex) lastIndex = idx
-      }
-      if (lastIndex >= 0) {
-        const nextIndex = lastIndex + 1   // index 0-based de la suivante
-        surahStart = nextIndex + 1        // numéro 1-based
-        if (surahStart > 114) {
-          surahStart = 1
-          firstSurahName = 'Al-Fatiha'
-        } else {
+      const knownIndices = sourates.map(s => SURAH_LIST.indexOf(s)).filter(i => i >= 0)
+      if (knownIndices.length > 0) {
+        const maxKnown  = Math.max(...knownIndices)
+        const nextIndex = maxKnown + 1
+        if (nextIndex < SURAH_LIST.length) {
+          surahStart     = nextIndex + 1
           firstSurahName = SURAH_LIST[nextIndex]
         }
       }
-    }
-    if (!surahStart) {
-      const def = DEFAULT_SURAH_MAP[objectif] ?? { surahStart: 78, firstSurahName: 'An-Naba' }
-      surahStart = def.surahStart
-      firstSurahName = def.firstSurahName
-    }
-
-    // ── Ayat par jour ──
-    const tempsNum = parseInt(temps) || 20
-    let ayahPerDay =
-      tempsNum <= 10 ? 1 :
-      tempsNum <= 20 ? 2 :
-      tempsNum <= 30 ? 3 : 4
-    if (
-      niveau === "J'ai déjà commencé et abandonné" ||
-      niveau === 'Je reprends après une longue pause'
-    ) {
-      ayahPerDay = Math.max(1, ayahPerDay - 1)
     }
 
     // ── Jours par semaine ──
     const daysPerWeek = DAYS_MAP[objectif] ?? 5
 
     // ── Minutes ──
-    const minutesPerSession = tempsNum
+    const tempsNum            = parseInt(temps) || 20
+    const minutesPerSession   = tempsNum
     const memorizationMinutes = Math.round(tempsNum * 0.4)
-    const revisionMinutes = Math.round(tempsNum * 0.6)
+    const revisionMinutes     = Math.round(tempsNum * 0.6)
 
     // ── Durée estimée ──
     let totalAyats = 0
-    const startIdx = surahStart - 1   // 0-based
     if (objectif === 'Finir une sourate courte') {
-      totalAyats = SURAH_AYAT[startIdx] ?? 0
+      totalAyats = SURAH_AYAT[surahStart - 1] ?? 0
     } else if (objectif === 'Mémoriser le Juz Amma') {
-      // Sourates 78–114 (index 77–113)
       totalAyats = SURAH_AYAT.slice(77, 114).reduce((a, b) => a + b, 0)
     } else {
-      // Coran complet: toutes les sourates
       totalAyats = SURAH_AYAT.reduce((a, b) => a + b, 0)
     }
-    const estimatedDays = Math.ceil(totalAyats / ayahPerDay)
+    if (Array.isArray(sourates) && sourates.length > 0) {
+      const knownAyats = sourates.reduce((total, s) => {
+        const idx = SURAH_LIST.indexOf(s)
+        return idx >= 0 ? total + SURAH_AYAT[idx] : total
+      }, 0)
+      totalAyats = Math.max(0, totalAyats - knownAyats)
+    }
+    const estimatedDays   = Math.ceil(totalAyats / ayahPerDay)
     const estimatedMonths = Math.round(estimatedDays / 30)
 
     // ── Motivation ──

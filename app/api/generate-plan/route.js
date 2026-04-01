@@ -47,14 +47,18 @@ export async function POST(request) {
     if (existingPlans && existingPlans.length > 0) {
       const p = existingPlans[0]
       // Ensure progress row exists (may have failed on first attempt)
-      await supabase.from('progress').upsert({
-        user_id:         user.id,
-        current_surah:   p.surah_start ?? 78,
-        current_ayah:    0,
-        streak:          0,
-        total_memorized: 0,
-        session_dates:   [],
-      }, { onConflict: 'user_id', ignoreDuplicates: true })
+      const { data: existingProg } = await supabase
+        .from('progress').select('user_id').eq('user_id', user.id).limit(1)
+      if (!existingProg || existingProg.length === 0) {
+        await supabase.from('progress').insert({
+          user_id:         user.id,
+          current_surah:   p.surah_start ?? 78,
+          current_ayah:    0,
+          streak:          0,
+          total_memorized: 0,
+          session_dates:   [],
+        })
+      }
       return NextResponse.json({
         surahStart:           p.surah_start,
         firstSurahName:       p.first_surah_name,

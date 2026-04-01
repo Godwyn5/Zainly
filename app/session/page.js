@@ -308,22 +308,13 @@ export default function SessionPage() {
         review_cycle: 1,
       }));
 
-      // Insert review rows — on duplicate (ayat already exists) update next_review only if not reset
-      const { error: revErr } = await supabase
-        .from('review_items')
-        .upsert(reviewRows, { onConflict: 'user_id,surah_number,ayah', ignoreDuplicates: true });
-      if (revErr) {
-        // Fallback: try inserting one by one, skip duplicates
-        const insertErrors = [];
-        for (const row of reviewRows) {
-          const { error: e } = await supabase.from('review_items').insert(row);
-          if (e && e.code !== '23505' && !e.message?.includes('duplicate')) {
-            insertErrors.push(e.message);
-          }
-        }
-        if (insertErrors.length > 0) {
-          console.error('[session] review_items insert errors:', insertErrors);
-          setError(`Erreur révisions: ${insertErrors[0]}`);
+      // Insert each review item individually — skip if already exists (23505)
+      // Never overwrite existing SRS cycle for an ayat already memorized
+      for (const row of reviewRows) {
+        const { error: e } = await supabase.from('review_items').insert(row);
+        if (e && e.code !== '23505' && !(e.message ?? '').includes('duplicate')) {
+          console.error('[session] review_items insert error:', e);
+          setError(`Erreur lors de la sauvegarde des r\u00e9visions: ${e.message}`);
           setSaving(false);
           saveHandledRef.current = false;
           revealHandledRef.current = false;

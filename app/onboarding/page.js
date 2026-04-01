@@ -290,19 +290,23 @@ export default function OnboardingPage() {
         }
       }
 
-      // Save progress — only insert if no row yet (never reset existing progress)
-      const { error: progErr } = await supabase.from('progress').insert({
-        user_id: user.id,
-        current_surah: planData.surahStart ?? 78,
-        current_ayah: 0,
-        streak: 0,
-        total_memorized: 0,
-        session_dates: [],
-      });
-      if (progErr && progErr.code !== '23505' && !progErr.message?.includes('duplicate')) {
-        allTimers.forEach(clearTimeout);
-        console.error('[onboarding] progress insert error:', progErr);
-        throw new Error(`Sauvegarde progression échouée: ${progErr.message}`);
+      // Save progress — only insert if no row exists yet (never reset existing progress)
+      const { data: existingProg } = await supabase
+        .from('progress').select('user_id').eq('user_id', user.id).limit(1);
+      if (!existingProg || existingProg.length === 0) {
+        const { error: progErr } = await supabase.from('progress').insert({
+          user_id: user.id,
+          current_surah: planData.surahStart ?? 78,
+          current_ayah: 0,
+          streak: 0,
+          total_memorized: 0,
+          session_dates: [],
+        });
+        if (progErr) {
+          allTimers.forEach(clearTimeout);
+          console.error('[onboarding] progress insert error:', progErr);
+          throw new Error(`Sauvegarde progression échouée: ${progErr.message}`);
+        }
       }
 
       allTimers.forEach(clearTimeout);

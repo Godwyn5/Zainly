@@ -149,7 +149,7 @@ export default function OnboardingPage() {
   const [niveau, setNiveau] = useState('');
   const [temps, setTemps] = useState('');
   const [objectif, setObjectif] = useState('');
-  const [sourates, setSourates] = useState(['Al-Fatiha']);
+  const [sourates, setSourates] = useState([]);
   const [visible, setVisible] = useState(true);
   const [pageVisible, setPageVisible] = useState(false);
 
@@ -258,6 +258,7 @@ export default function OnboardingPage() {
         revision_minutes: planData.revisionMinutes ?? Math.round(tempsMin * 0.6),
         motivation_phrase: planData.motivationPhrase ?? intention,
         first_surah_name: planData.firstSurahName ?? 'An-Naba',
+        surah_start: planData.surahStart ?? 78,
       };
       const { error: planErr } = await supabase
         .from('plans')

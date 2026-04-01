@@ -83,10 +83,17 @@ export default function Home() {
   const [newsletterEmail, setNewsletterEmail] = useState('');
   const [newsletterSubmitted, setNewsletterSubmitted] = useState(false);
 
+  const [newsletterError, setNewsletterError] = useState('');
+
   async function handleNewsletter(e) {
     e.preventDefault();
     if (!newsletterEmail.trim()) return;
-    await supabase.from('waitlist').insert({ email: newsletterEmail.trim() });
+    setNewsletterError('');
+    const { error } = await supabase.from('waitlist').insert({ email: newsletterEmail.trim() });
+    if (error) {
+      setNewsletterError('Une erreur est survenue. Réessaie.');
+      return;
+    }
     setNewsletterSubmitted(true);
   }
 
@@ -389,6 +396,9 @@ export default function Home() {
                 >
                   Rejoindre
                 </button>
+                {newsletterError && (
+                  <p style={{ fontSize: '13px', color: '#c0392b', margin: '12px 0 0 0' }}>{newsletterError}</p>
+                )}
               </form>
             ) : (
               <p style={{ fontSize: '16px', fontWeight: 500, color: '#163026', margin: 0 }}>

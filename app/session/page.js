@@ -255,6 +255,7 @@ export default function SessionPage() {
       ctx.resume().then(() => {
         osc.start();
         osc.stop(ctx.currentTime + 0.15);
+        setTimeout(() => ctx.close().catch(() => {}), 300);
       });
     } catch (e) {}
   }
@@ -299,10 +300,14 @@ export default function SessionPage() {
         review_cycle: 1,
       }));
 
-      const { error: revErr } = await supabase.from('review_items').insert(reviewRows);
+      const { error: revErr } = await supabase
+        .from('review_items')
+        .upsert(reviewRows, { onConflict: 'user_id,surah_number,ayah', ignoreDuplicates: true });
       if (revErr) {
         setError('Erreur lors de la sauvegarde des révisions. Réessaie.');
         setSaving(false);
+        saveHandledRef.current = false;
+        revealHandledRef.current = false;
         return;
       }
 
@@ -332,6 +337,8 @@ export default function SessionPage() {
         console.error('[session] progress update error:', progErr);
         setError('Erreur lors de la mise à jour de ta progression. Réessaie.');
         setSaving(false);
+        saveHandledRef.current = false;
+        revealHandledRef.current = false;
         return;
       }
 

@@ -228,20 +228,22 @@ export default function RevisionPage() {
         setVisible(true);
       }, 300);
     } else {
-      // Save revision score before navigating
+      // Save revision score before navigating (only if at least one answer was given)
       try {
-        const score = totalRef.current > 0 ? Math.round((correctRef.current / totalRef.current) * 100) : 0;
-        const { data: prog } = await supabase
-          .from('progress')
-          .select('last_revision_scores')
-          .eq('user_id', userId)
-          .maybeSingle();
-        const existingScores = prog?.last_revision_scores || [];
-        const newScores = [...existingScores, score].slice(-5);
-        await supabase
-          .from('progress')
-          .update({ last_revision_scores: newScores })
-          .eq('user_id', userId);
+        if (totalRef.current > 0) {
+          const score = Math.round((correctRef.current / totalRef.current) * 100);
+          const { data: prog } = await supabase
+            .from('progress')
+            .select('last_revision_scores')
+            .eq('user_id', userId)
+            .maybeSingle();
+          const existingScores = prog?.last_revision_scores || [];
+          const newScores = [...existingScores, score].slice(-5);
+          await supabase
+            .from('progress')
+            .update({ last_revision_scores: newScores })
+            .eq('user_id', userId);
+        }
       } catch (e) {
         console.error('[revision] score save error:', e);
       }

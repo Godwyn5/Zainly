@@ -42,7 +42,7 @@ export default function LoginPage() {
     e.preventDefault();
     setError('');
     setLoading(true);
-    const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
+    const { error: signInError } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
     if (signInError) {
       const msg = signInError.message?.toLowerCase() ?? '';
       if (msg.includes('invalid login credentials') || msg.includes('invalid credentials')) {
@@ -153,6 +153,7 @@ export default function LoginPage() {
                 <input
                   type="email"
                   required
+                  autoComplete="email"
                   value={forgotEmail}
                   onChange={(e) => setForgotEmail(e.target.value)}
                   placeholder="ton@email.com"

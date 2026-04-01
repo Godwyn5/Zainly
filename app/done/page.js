@@ -93,8 +93,8 @@ export default function DonePage() {
         // Items revised today = next_review was updated today (review_cycle advanced)
         supabase.from('review_items').select('id')
           .eq('user_id', authUser.id)
-          .gte('updated_at', startToday)
-          .lt('updated_at', startTomorrow)
+          .gte('updated_at', todayLocal + 'T00:00:00')
+          .lt('updated_at', todayLocal + 'T23:59:59')
           .gt('review_cycle', 1),
       ]);
 

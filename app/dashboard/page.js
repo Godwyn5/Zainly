@@ -37,7 +37,8 @@ const SURAH_AYAT_COUNT = [
 ];
 
 function todayStr() {
-  return new Date().toISOString().slice(0, 10);
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 }
 
 function globalAyatNumber(quran, surahNumber, ayahId) {
@@ -185,7 +186,7 @@ export default function DashboardPage() {
   }, [router]);
 
   async function loadHifz(userId) {
-    if (hifzLoaded) return;
+    if (hifzLoading) return;
     setHifzLoading(true);
     try {
       const itemsPromise = supabase.from('review_items').select('*').eq('user_id', userId).order('surah_number', { ascending: true });
@@ -335,7 +336,7 @@ export default function DashboardPage() {
         {recoveryMode && !recoveryDismissed && (() => {
           const lastSession = progress?.last_session_date;
           const daysSince = lastSession
-            ? Math.floor((new Date(today) - new Date(lastSession)) / (1000 * 60 * 60 * 24))
+            ? (() => { const t = new Date(); t.setHours(0,0,0,0); const l = new Date(lastSession + 'T00:00:00'); return Math.floor((t - l) / (1000 * 60 * 60 * 24)); })()
             : 0;
           return (
             <div style={{

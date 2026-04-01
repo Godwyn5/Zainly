@@ -49,9 +49,9 @@ export default function RegisterPage() {
     setLoading(true);
 
     const { error: signUpError } = await supabase.auth.signUp({
-      email,
+      email: email.trim(),
       password,
-      options: { data: { prenom } },
+      options: { data: { prenom: prenom.trim() } },
     });
     if (signUpError) {
       const msg = signUpError.message || '';

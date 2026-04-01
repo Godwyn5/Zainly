@@ -235,8 +235,9 @@ export default function OnboardingPage() {
       if (userError || !user) throw new Error('Utilisateur non connecté.');
       setPrenom(user.user_metadata?.prenom || '');
 
-      const { data: { session } } = await supabase.auth.getSession();
-      const accessToken = session?.access_token ?? '';
+      const { data: { session }, error: sessionErr } = await supabase.auth.getSession();
+      if (sessionErr || !session?.access_token) throw new Error('Session expirée. Reconnecte-toi.');
+      const accessToken = session.access_token;
 
       // Strip to numeric string e.g. '10 minutes' -> '10'
       const tempsKey = temps.replace(/[^0-9]/g, '');
@@ -711,6 +712,11 @@ export default function OnboardingPage() {
             >
               {(currentStep === 5 || willGenerateOnContinue) ? 'Générer mon plan →' : 'Continuer →'}
             </button>
+            {error && (
+              <p style={{ marginTop: '16px', fontFamily: 'DM Sans, sans-serif', fontSize: '14px', color: '#c0392b', textAlign: 'center' }}>
+                {error}
+              </p>
+            )}
           </div>
         </div>
       </div>

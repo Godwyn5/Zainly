@@ -175,7 +175,7 @@ export default function OnboardingPage() {
         router.push('/dashboard');
         return;
       }
-      setTimeout(() => setPageVisible(true), 50);
+      setTimeout(() => setPageVisible(true), 100);
     }
     checkExistingPlan();
   }, [router]);
@@ -230,13 +230,16 @@ export default function OnboardingPage() {
       const { data: { session } } = await supabase.auth.getSession();
       const accessToken = session?.access_token ?? '';
 
+      // Strip to numeric string e.g. '10 minutes' -> '10'
+      const tempsKey = temps.replace(/[^0-9]/g, '');
+
       const res = await fetch('/api/generate-plan', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${accessToken}`,
         },
-        body: JSON.stringify({ intention, niveau, temps, objectif, sourates }),
+        body: JSON.stringify({ intention, niveau, temps: tempsKey, objectif, sourates }),
       });
       const planData = await res.json();
 
@@ -494,7 +497,7 @@ export default function OnboardingPage() {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          justifyContent: 'center',
+          justifyContent: 'flex-start',
           padding: '80px 24px 48px',
           position: 'relative',
           zIndex: 1,
@@ -603,6 +606,7 @@ export default function OnboardingPage() {
                   borderRadius: '16px',
                   maxHeight: '360px',
                   overflowY: 'scroll',
+                  WebkitOverflowScrolling: 'touch',
                   padding: '8px 0',
                 }}
               >

@@ -338,11 +338,12 @@ export default function SessionPage() {
       // Only go to revision if there are items due today
       const { data: dueItems } = await supabase
         .from('review_items')
-        .select('id', { count: 'exact', head: true })
+        .select('id')
         .eq('user_id', user.id)
         .eq('mastered', false)
-        .lte('next_review', today);
-      const hasDue = Array.isArray(dueItems) ? dueItems.length > 0 : (dueItems?.count ?? 0) > 0;
+        .lte('next_review', today)
+        .limit(1);
+      const hasDue = Array.isArray(dueItems) && dueItems.length > 0;
       router.push(hasDue ? '/revision' : '/done');
     } catch (err) {
       console.error('[session] saveAndContinue error:', err);

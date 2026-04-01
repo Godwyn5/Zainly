@@ -13,8 +13,8 @@ const CYCLE_DAYS = [1, 3, 7, 14, 30, 60];
 
 function addDays(days) {
   const d = new Date();
-  d.setUTCDate(d.getUTCDate() + days);
-  return d.toISOString().slice(0, 10);
+  d.setDate(d.getDate() + days);
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 }
 
 function todayStr() {
@@ -110,6 +110,14 @@ export default function RevisionPage() {
   const answerHandledRef                = useRef(false);
   const correctRef                      = useRef(0); // sync ref for score calculation
   const totalRef                        = useRef(0);
+
+  // Reset score refs on each reload
+  useEffect(() => {
+    correctRef.current = 0;
+    totalRef.current   = 0;
+    setCorrectCount(0);
+    setTotalCount(0);
+  }, [reloadKey]);
 
   useEffect(() => {
     async function loadRevision() {

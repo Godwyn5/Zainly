@@ -275,7 +275,7 @@ export default function OnboardingPage() {
       };
       const { error: progErr } = await supabase
         .from('progress')
-        .upsert(progressPayload, { onConflict: 'user_id', ignoreDuplicates: true });
+        .upsert(progressPayload, { onConflict: 'user_id' });
       if (progErr) {
         allTimers.forEach(clearTimeout);
         throw new Error('Erreur de sauvegarde. Vérifie ta connexion et réessaie.');

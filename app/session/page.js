@@ -77,18 +77,20 @@ function SessionAudioButton({ globalNum, listenCount, onListen, onError }) {
     setPlaying(false);
   }, [globalNum]);
 
-  const displayCount = listenCount === 0 ? 1 : Math.min(listenCount, 3);
-
   return (
     <button type="button" onClick={handleAudio} style={{
-      display: 'flex', alignItems: 'center', gap: '6px',
-      margin: '16px auto 0',
-      background: 'none', border: 'none', cursor: 'pointer',
-      fontFamily: 'DM Sans, sans-serif', fontSize: '13px',
-      color: '#B8962E', transition: 'opacity 0.2s',
+      display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
+      width: '100%', margin: '0 auto',
+      backgroundColor: listenCount >= 3 ? '#2d5a42' : '#163026',
+      color: '#fff',
+      border: 'none', borderRadius: '12px',
+      padding: '14px 24px',
+      cursor: 'pointer',
+      fontFamily: 'DM Sans, sans-serif', fontSize: '15px', fontWeight: 500,
+      transition: 'background-color 0.3s ease',
     }}>
-      <span>{playing ? '⏸' : '🔊'}</span>
-      <span>{playing ? 'Pause' : `Écoute ${displayCount}/3`}</span>
+      <span style={{ fontSize: '18px' }}>{playing ? '⏸' : '🔊'}</span>
+      <span>{playing ? 'Pause' : 'Écouter l\'ayat'}</span>
     </button>
   );
 }
@@ -457,12 +459,25 @@ export default function SessionPage() {
 
               {/* Audio button — only in listen phase */}
               {sessionPhase === 'listen' && (
-                <SessionAudioButton
-                  globalNum={globalNum}
-                  listenCount={listenCount}
-                  onListen={() => { setListenCount(c => c + 1); setAudioError(false); }}
-                  onError={() => setAudioError(true)}
-                />
+                <div style={{ marginTop: '20px' }}>
+                  {listenCount < 3 && (
+                    <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '13px', color: '#6B6357', textAlign: 'center', fontStyle: 'italic', marginBottom: '16px', marginTop: 0 }}>
+                      Écoute l&apos;ayat 3 fois avant de continuer
+                    </p>
+                  )}
+                  <SessionAudioButton
+                    globalNum={globalNum}
+                    listenCount={listenCount}
+                    onListen={() => { setListenCount(c => c + 1); setAudioError(false); }}
+                    onError={() => setAudioError(true)}
+                  />
+                  <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '13px', textAlign: 'center', marginTop: '8px', marginBottom: 0, color: listenCount >= 3 ? '#163026' : '#B8962E' }}>
+                    {listenCount === 0 && 'Clique pour écouter — écoute 1 sur 3'}
+                    {listenCount === 1 && 'Bien — écoute 2 sur 3'}
+                    {listenCount === 2 && 'Encore une fois — écoute 3 sur 3'}
+                    {listenCount >= 3 && 'Parfait — tu peux passer au test ✓'}
+                  </p>
+                </div>
               )}
 
               <div style={{ borderTop: '1px solid #E2D9CC', margin: '24px 0' }} />

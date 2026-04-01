@@ -32,8 +32,8 @@ const SURAH_AYAT_COUNT = [
   7,286,200,176,120,165,206,75,129,109,123,111,43,52,99,128,111,110,98,135,112,78,118,64,77,
   227,93,88,69,60,34,30,73,54,45,83,182,88,75,85,54,53,89,59,37,35,38,29,18,45,
   60,49,62,55,78,96,29,22,24,13,14,11,11,18,12,12,30,52,52,44,28,28,20,56,40,31,
-  50,22,31,13,54,55,43,34,31,10,13,10,9,8,8,3,9,5,9,6,8,3,11,11,10,7,
-  3,3,11,4,5,4,7,3,6,3,5,4,5,6,
+  50,40,46,42,29,19,36,25,22,17,19,26,30,20,15,21,11,8,8,19,5,8,8,11,11,8,
+  3,9,5,4,7,3,6,3,5,4,5,6,
 ];
 
 function todayStr() {
@@ -190,7 +190,7 @@ export default function DashboardPage() {
   }, [router]);
 
   async function loadHifz(userId) {
-    if (hifzLoading) return;
+    if (hifzLoading || hifzItems.length > 0) return;
     setHifzLoading(true);
     try {
       const itemsPromise = supabase.from('review_items').select('*').eq('user_id', userId).order('surah_number', { ascending: true });
@@ -264,6 +264,7 @@ export default function DashboardPage() {
   const memStart        = currentAyah + 1;
   const memEnd          = Math.min(currentAyah + ayahPerDay, surahTotalAyat);
   const surahExhausted  = memStart > surahTotalAyat;
+  const nextSurahName   = surahExhausted ? getSurahName(currentSurah + 1) : '';
   const surahName       = getSurahName(currentSurah);
   const totalMemorized  = progress?.total_memorized ?? 0;
   const progressPct     = Math.min((totalMemorized / 6236) * 100, 100);
@@ -271,12 +272,13 @@ export default function DashboardPage() {
   const sessionDone     = progress?.last_session_date === today;
   const minutesSession  = plan.minutes_per_session ?? 20;
 
-  // Estimated months remaining
+  // Estimated months remaining — prefer DB value, recalculate live as fallback
   const daysPerWeek = plan.days_per_week ?? 5;
   const ayatLeft    = Math.max(0, 6236 - totalMemorized);
-  const estMonths   = (ayahPerDay > 0 && daysPerWeek > 0)
-    ? (ayatLeft === 0 ? 0 : Math.max(1, Math.ceil(Math.ceil(ayatLeft / ayahPerDay) / daysPerWeek / 4.33)))
-    : null;
+  const estMonths   = ayatLeft === 0 ? 0
+    : (ayahPerDay > 0 && daysPerWeek > 0)
+      ? Math.max(1, Math.ceil(Math.ceil(ayatLeft / ayahPerDay) / daysPerWeek / 4.33))
+      : null;
 
   // session_dates calendar
   const sessionDates = new Set(Array.isArray(progress?.session_dates) ? progress.session_dates : []);
@@ -393,7 +395,7 @@ export default function DashboardPage() {
             <span style={{ fontFamily: 'DM Sans, sans-serif', fontWeight: 500, fontSize: '10px', color: '#B8962E', textTransform: 'uppercase', letterSpacing: '1.5px' }}>Nouvelle mémorisation</span>
             <p className="font-playfair" style={{ fontSize: '20px', fontWeight: 600, color: '#163026', margin: '6px 0 2px 0' }}>{surahName}</p>
             <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '14px', color: '#6B6357', margin: '0 0 10px 0' }}>
-              {surahExhausted ? 'Passage à la sourate suivante...' : `Ayat ${memStart} à ${memEnd}`}
+              {surahExhausted ? `Passage à ${nextSurahName}...` : `Ayat ${memStart} à ${memEnd}`}
             </p>
             <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '12px', backgroundColor: 'rgba(22,48,38,0.08)', borderRadius: '20px', padding: '4px 12px', color: '#163026' }}>
               {ayahPerDay} ayat · {plan.memorization_minutes ?? Math.round(minutesSession * 0.4)} min

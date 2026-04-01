@@ -122,7 +122,7 @@ export default function SessionPage() {
   const [surahName, setSurahName]       = useState('');
   const [surahNumber, setSurahNumber]   = useState(1);
   const [savedAyah, setSavedAyah]       = useState(0); // current_ayah at load time (after surah advance)
-  const [quranData, setQuranData]       = useState(null);
+  const quranDataRef = useRef(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [visible, setVisible]           = useState(true);
   const [loading, setLoading]           = useState(true);
@@ -170,7 +170,7 @@ export default function SessionPage() {
       }
       const quran   = cachedQuran;
       const quranFr = cachedQuranFr;
-      setQuranData(quran);
+      quranDataRef.current = quran;
 
       let currentSurah = progRow.current_surah ?? 1;
       let currentAyah  = progRow.current_ayah ?? 0;
@@ -198,7 +198,11 @@ export default function SessionPage() {
             .from('progress')
             .update({ current_surah: newSurah, current_ayah: 0 })
             .eq('user_id', authUser.id);
-          if (advErr) console.error('[session] surah advance error:', advErr);
+          if (advErr) {
+            setError('Erreur lors de la progression. Recharge la page.');
+            setLoading(false);
+            return;
+          }
           currentSurah = newSurah;
           currentAyah  = 0;
           continue;
@@ -315,7 +319,8 @@ export default function SessionPage() {
         return;
       }
 
-      const surahTotal        = quranData ? (quranData[surahNumber - 1]?.verses?.length ?? ayats.length) : ayats.length;
+      const qd = quranDataRef.current;
+      const surahTotal        = qd ? (qd[surahNumber - 1]?.verses?.length ?? ayats.length) : ayats.length;
       const newAyah           = Math.min(savedAyah + ayats.length, surahTotal);
       const alreadyDoneToday  = progress.last_session_date === today;
       const newStreak         = alreadyDoneToday ? (progress.streak ?? 0) : (progress.streak ?? 0) + 1;
@@ -370,7 +375,7 @@ export default function SessionPage() {
   const pct       = ayats.length > 0 ? ((currentIndex + 1) / ayats.length) * 100 : 0;
   const startAyah = ayats[0]?.id ?? 1;
   const endAyah   = ayats[ayats.length - 1]?.id ?? 1;
-  const globalNum = quranData ? globalAyatNumber(quranData, surahNumber, ayat?.id ?? 1) : 1;
+  const globalNum = quranDataRef.current ? globalAyatNumber(quranDataRef.current, surahNumber, ayat?.id ?? 1) : 1;
 
   const PHASES = [
     { key: 'listen',    label: 'Écouter' },
@@ -609,15 +614,17 @@ export default function SessionPage() {
         {/* REVEAL phase — two buttons */}
         {sessionPhase === 'reveal' && (
           <div style={{ display: 'flex', gap: '10px' }}>
-            <button type="button" className="font-playfair" onClick={() => handleRevealChoice(true)} style={{
+            <button type="button" className="font-playfair" onClick={() => handleRevealChoice(true)} disabled={saving} style={{
               flex: 1, minWidth: 0, padding: '14px 8px', fontSize: 'clamp(13px, 3.5vw, 15px)', fontWeight: 600, color: '#fff',
-              background: 'linear-gradient(135deg, #163026, #2d5a42)', border: 'none', borderRadius: '12px', cursor: 'pointer',
+              background: 'linear-gradient(135deg, #163026, #2d5a42)', border: 'none', borderRadius: '12px', cursor: saving ? 'wait' : 'pointer',
+              opacity: saving ? 0.7 : 1,
             }}>
               Je m&apos;en souvenais ✓
             </button>
-            <button type="button" className="font-playfair" onClick={() => handleRevealChoice(false)} style={{
+            <button type="button" className="font-playfair" onClick={() => handleRevealChoice(false)} disabled={saving} style={{
               flex: 1, minWidth: 0, padding: '14px 8px', fontSize: 'clamp(13px, 3.5vw, 15px)', fontWeight: 600, color: '#999',
-              background: 'transparent', border: '1.5px solid #E2D9CC', borderRadius: '12px', cursor: 'pointer',
+              background: 'transparent', border: '1.5px solid #E2D9CC', borderRadius: '12px', cursor: saving ? 'wait' : 'pointer',
+              opacity: saving ? 0.7 : 1,
             }}>
               Je dois revoir ✗
             </button>

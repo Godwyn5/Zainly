@@ -289,7 +289,7 @@ export default function RevisionPage() {
         <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '15px', color: '#6B6357', textAlign: 'center', margin: 0 }}>
           Tu as tout révisé. Reviens demain.
         </p>
-        <button type="button" className="font-playfair" onClick={() => router.push('/done')} style={{
+        <button type="button" className="font-playfair" onClick={() => router.push('/dashboard')} style={{
           marginTop: '8px', padding: '14px 32px', fontSize: '16px', fontWeight: 600,
           backgroundColor: '#163026', color: '#fff', border: 'none', borderRadius: '12px', cursor: 'pointer',
         }}>

@@ -82,6 +82,7 @@ export default function Home() {
   const [pageVisible, setPageVisible] = useState(false);
   const [newsletterEmail, setNewsletterEmail] = useState('');
   const [newsletterSubmitted, setNewsletterSubmitted] = useState(false);
+  const [navScrolled, setNavScrolled] = useState(false);
 
   const [newsletterError, setNewsletterError] = useState('');
 
@@ -101,6 +102,12 @@ export default function Home() {
   useEffect(() => {
     const t = setTimeout(() => setPageVisible(true), 100);
     return () => clearTimeout(t);
+  }, []);
+
+  useEffect(() => {
+    function onScroll() { setNavScrolled(window.scrollY > 20); }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
   return (
@@ -123,7 +130,10 @@ export default function Home() {
           padding: '20px 24px',
           display: 'flex',
           alignItems: 'center',
-          backgroundColor: 'transparent',
+          backgroundColor: navScrolled ? 'rgba(245,240,230,0.92)' : 'transparent',
+          backdropFilter: navScrolled ? 'blur(12px)' : 'none',
+          WebkitBackdropFilter: navScrolled ? 'blur(12px)' : 'none',
+          transition: 'background-color 0.3s ease, backdrop-filter 0.3s ease',
         }}
       >
         <span

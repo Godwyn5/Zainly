@@ -189,6 +189,8 @@ export default function OnboardingPage() {
     }, 300);
   }
 
+  const willGenerateOnContinue = currentStep === 4 && objectif === 'Finir une sourate courte';
+
   function handleContinue() {
     if (currentStep < 5) {
       // Skip step 5 (sourate selection) when objectif fixes the surah automatically
@@ -321,7 +323,8 @@ export default function OnboardingPage() {
   }
 
   const currentAnswer = [intention, niveau, temps, objectif][currentStep - 1];
-  const canContinue = currentStep < 5 ? currentAnswer !== '' : true;
+  const allAnswered = intention !== '' && niveau !== '' && temps !== '' && objectif !== '';
+  const canContinue = currentStep < 5 ? currentAnswer !== '' : allAnswered;
 
   // ── Plan screen ──
   if (plan) {
@@ -534,7 +537,7 @@ export default function OnboardingPage() {
 
         {/* Étape */}
         <p style={{ fontSize: '13px', color: '#6B6357', fontFamily: 'inherit', marginBottom: '40px', letterSpacing: '0.04em' }}>
-          Étape {currentStep} sur 5
+          Étape {Math.min(currentStep, 5)} sur 5
         </p>
 
         {/* Question block */}
@@ -706,7 +709,7 @@ export default function OnboardingPage() {
                 e.currentTarget.style.boxShadow = '0 8px 32px rgba(22,48,38,0.25)';
               }}
             >
-              {currentStep === 5 ? 'Générer mon plan →' : 'Continuer →'}
+              {(currentStep === 5 || willGenerateOnContinue) ? 'Générer mon plan →' : 'Continuer →'}
             </button>
           </div>
         </div>

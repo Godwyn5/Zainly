@@ -27,8 +27,8 @@ function getMotivation(streak) {
   if (streak >= 30) return "Un mois. Tu es hafiz en devenir. Allah facilite ton chemin.";
   if (streak >= 14) return "Deux semaines. Le Coran s\u2019installe dans ton c\u0153ur.";
   if (streak >= 7)  return "Une semaine compl\u00e8te. Tu es en train de devenir quelqu\u2019un de diff\u00e9rent.";
-  if (streak >= 3)  return "L\u2019habitude commence \u00e0 se former. Ne t\u2019arr\u00eate pas.";
-  if (streak >= 2)  return "Deux jours de suite. Continue.";
+  if (streak >= 3)  return "Tu construis quelque chose de solide. Continue.";
+  if (streak >= 2)  return "Deux jours de suite. L\u2019habitude commence \u00e0 se former.";
   return "Le premier pas est toujours le plus difficile. Tu l\u2019as fait.";
 }
 
@@ -87,11 +87,12 @@ export default function DonePage() {
           .eq('user_id', authUser.id)
           .gte('created_at', startToday)
           .lt('created_at', startTomorrow),
-        // Items revised today = next_review was updated today (review_cycle advanced)
+        // Items revised today = updated today AND created before today (excludes newly memorized)
         supabase.from('review_items').select('id')
           .eq('user_id', authUser.id)
           .gte('updated_at', startToday)
           .lt('updated_at', startTomorrow)
+          .lt('created_at', startToday)
           .gt('review_cycle', 1),
       ]);
 

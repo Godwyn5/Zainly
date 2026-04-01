@@ -17,6 +17,7 @@ export default function LoginPage() {
   const [forgotEmail, setForgotEmail] = useState('');
   const [forgotSent, setForgotSent] = useState(false);
   const [forgotLoading, setForgotLoading] = useState(false);
+  const [forgotError, setForgotError] = useState('');
 
   useEffect(() => {
     async function checkAuth() {
@@ -31,10 +32,15 @@ export default function LoginPage() {
     e.preventDefault();
     if (!forgotEmail.trim()) return;
     setForgotLoading(true);
-    await supabase.auth.resetPasswordForEmail(forgotEmail.trim(), {
+    setForgotError('');
+    const { error: resetErr } = await supabase.auth.resetPasswordForEmail(forgotEmail.trim(), {
       redirectTo: 'https://zainly-alpha.vercel.app/reset-password',
     });
     setForgotLoading(false);
+    if (resetErr) {
+      setForgotError('Une erreur est survenue. Vérifie ton adresse et réessaie.');
+      return;
+    }
     setForgotSent(true);
   }
 
@@ -164,6 +170,9 @@ export default function LoginPage() {
                 <button type="submit" disabled={forgotLoading} className="font-playfair" style={{ width: '100%', padding: '16px', fontSize: '17px', fontWeight: 600, backgroundColor: '#163026', color: '#FFFFFF', border: 'none', borderRadius: '12px', cursor: forgotLoading ? 'not-allowed' : 'pointer', opacity: forgotLoading ? 0.7 : 1 }}>
                   {forgotLoading ? 'Envoi...' : 'Envoyer le lien'}
                 </button>
+                {forgotError && (
+                  <p style={{ fontSize: '13px', color: '#c0392b', margin: '4px 0 0 0', textAlign: 'center' }}>{forgotError}</p>
+                )}
               </form>
             )}
             <p style={{ textAlign: 'center', marginTop: '16px', fontSize: '14px', color: '#6B6357' }}>

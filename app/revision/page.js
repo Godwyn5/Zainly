@@ -239,10 +239,11 @@ export default function RevisionPage() {
             .maybeSingle();
           const existingScores = prog?.last_revision_scores || [];
           const newScores = [...existingScores, score].slice(-5);
-          await supabase
+          const { error: scoreErr } = await supabase
             .from('progress')
             .update({ last_revision_scores: newScores })
             .eq('user_id', userId);
+          if (scoreErr) console.error('[revision] score update error:', scoreErr);
         }
       } catch (e) {
         console.error('[revision] score save error:', e);

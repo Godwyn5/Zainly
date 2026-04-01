@@ -57,7 +57,8 @@ function getMotivation(streak) {
   if (streak >= 30) return "Un mois. Tu es hafiz en devenir. Allah facilite ton chemin.";
   if (streak >= 14) return "Deux semaines. Le Coran s\u2019installe dans ton c\u0153ur.";
   if (streak >= 7)  return "Une semaine compl\u00e8te. Tu es en train de devenir quelqu\u2019un de diff\u00e9rent.";
-  if (streak >= 2)  return "Tu construis quelque chose de solide. Continue.";
+  if (streak >= 3)  return "Tu construis quelque chose de solide. Continue.";
+  if (streak >= 2)  return "Deux jours de suite. L\u2019habitude commence \u00e0 se former.";
   return "Bienvenue. Chaque grand hafiz a commenc\u00e9 exactement l\u00e0 o\u00f9 tu en es.";
 }
 
@@ -143,8 +144,8 @@ export default function DashboardPage() {
   const [hifzQuranFr, setHifzQuranFr]   = useState(null); // quran_fr.json
   const [hifzLoading, setHifzLoading]   = useState(false);
   const [expandedSurah, setExpandedSurah] = useState(null);
-  const [quranData, setQuranData]       = useState(null);
-  const [quranFrData, setQuranFrData]   = useState(null);
+  const quranDataRef   = useRef(null);
+  const quranFrDataRef = useRef(null);
 
   useEffect(() => {
     async function loadData() {
@@ -193,8 +194,8 @@ export default function DashboardPage() {
     setHifzLoading(true);
     try {
       const itemsPromise = supabase.from('review_items').select('*').eq('user_id', userId).order('surah_number', { ascending: true });
-      let quran   = quranData;
-      let quranFr = quranFrData;
+      let quran   = quranDataRef.current;
+      let quranFr = quranFrDataRef.current;
       if (!quran || !quranFr) {
         const [q, qfr] = await Promise.all([
           fetch('/data/quran.json').then(r => r.json()),
@@ -202,8 +203,8 @@ export default function DashboardPage() {
         ]);
         quran   = q;
         quranFr = qfr;
-        setQuranData(q);
-        setQuranFrData(qfr);
+        quranDataRef.current   = q;
+        quranFrDataRef.current = qfr;
       }
       const { data: allItems, error: hifzErr } = await itemsPromise;
       if (hifzErr) throw hifzErr;
@@ -451,6 +452,65 @@ export default function DashboardPage() {
           </p>
         </div>
 
+        {/* ── FEEDBACK (today tab only) ── */}
+        <div style={{ margin: '16px 16px 100px 16px', backgroundColor: '#EDE5D0', borderRadius: '16px', padding: '20px 24px', cursor: 'pointer' }}
+          onClick={() => { if (!feedbackDone) setFeedbackOpen(o => !o); }}
+        >
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '14px', color: '#6B6357' }}>
+              ✏️ Une idée pour améliorer Zainly ?
+            </span>
+            {!feedbackDone && (
+              <span
+                onClick={e => { e.stopPropagation(); setFeedbackOpen(o => !o); }}
+                style={{ fontFamily: 'DM Sans, sans-serif', fontWeight: 500, fontSize: '14px', color: '#B8962E', cursor: 'pointer' }}
+              >
+                Partager mon avis →
+              </span>
+            )}
+            {feedbackDone && (
+              <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '14px', color: '#163026' }}>Merci pour ton retour 🙏</span>
+            )}
+          </div>
+          {feedbackOpen && !feedbackDone && (
+            <div onClick={e => e.stopPropagation()} style={{ marginTop: '16px' }}>
+              <textarea
+                value={feedbackText}
+                onChange={e => setFeedbackText(e.target.value)}
+                placeholder="Dis nous ce qu'on peut améliorer..."
+                rows={4}
+                style={{
+                  width: '100%', boxSizing: 'border-box',
+                  fontFamily: 'DM Sans, sans-serif', fontSize: '16px',
+                  border: '1.5px solid #E2D9CC', borderRadius: '10px',
+                  padding: '12px', backgroundColor: '#FFFFFF',
+                  color: '#163026', resize: 'vertical', outline: 'none',
+                }}
+              />
+              <button
+                type="button"
+                onClick={submitFeedback}
+                disabled={feedbackSaving}
+                style={{
+                  marginTop: '12px',
+                  padding: '12px 24px',
+                  backgroundColor: '#163026',
+                  color: '#FFFFFF',
+                  border: 'none',
+                  borderRadius: '8px',
+                  cursor: feedbackSaving ? 'default' : 'pointer',
+                  fontFamily: 'Playfair Display, serif',
+                  fontWeight: 600,
+                  fontSize: '15px',
+                  opacity: feedbackSaving ? 0.7 : 1,
+                }}
+              >
+                {feedbackSaving ? 'Envoi...' : 'Envoyer'}
+              </button>
+            </div>
+          )}
+        </div>
+
       </div>{/* end today tab */}
 
       {/* ══════════════════════ PROGRESSION TAB ══════════════════════ */}
@@ -691,65 +751,6 @@ export default function DashboardPage() {
         </div>
 
       </div>{/* end hifz tab */}
-
-      {/* ══════════════════════ FEEDBACK ══════════════════════ */}
-      <div style={{ margin: '16px 16px 100px 16px', backgroundColor: '#EDE5D0', borderRadius: '16px', padding: '20px 24px', cursor: 'pointer' }}
-        onClick={() => { if (!feedbackDone) setFeedbackOpen(o => !o); }}
-      >
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '14px', color: '#6B6357' }}>
-            ✏️ Une idée pour améliorer Zainly ?
-          </span>
-          {!feedbackDone && (
-            <span
-              onClick={e => { e.stopPropagation(); setFeedbackOpen(o => !o); }}
-              style={{ fontFamily: 'DM Sans, sans-serif', fontWeight: 500, fontSize: '14px', color: '#B8962E', cursor: 'pointer' }}
-            >
-              Partager mon avis →
-            </span>
-          )}
-          {feedbackDone && (
-            <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '14px', color: '#163026' }}>Merci pour ton retour 🙏</span>
-          )}
-        </div>
-        {feedbackOpen && !feedbackDone && (
-          <div onClick={e => e.stopPropagation()} style={{ marginTop: '16px' }}>
-            <textarea
-              value={feedbackText}
-              onChange={e => setFeedbackText(e.target.value)}
-              placeholder="Dis nous ce qu'on peut améliorer..."
-              rows={4}
-              style={{
-                width: '100%', boxSizing: 'border-box',
-                fontFamily: 'DM Sans, sans-serif', fontSize: '16px',
-                border: '1.5px solid #E2D9CC', borderRadius: '10px',
-                padding: '12px', backgroundColor: '#FFFFFF',
-                color: '#163026', resize: 'vertical', outline: 'none',
-              }}
-            />
-            <button
-              type="button"
-              onClick={submitFeedback}
-              disabled={feedbackSaving}
-              style={{
-                marginTop: '12px',
-                padding: '12px 24px',
-                backgroundColor: '#163026',
-                color: '#FFFFFF',
-                border: 'none',
-                borderRadius: '8px',
-                cursor: feedbackSaving ? 'default' : 'pointer',
-                fontFamily: 'Playfair Display, serif',
-                fontWeight: 600,
-                fontSize: '15px',
-                opacity: feedbackSaving ? 0.7 : 1,
-              }}
-            >
-              {feedbackSaving ? 'Envoi...' : 'Envoyer'}
-            </button>
-          </div>
-        )}
-      </div>
 
       {/* ══════════════════════ BOTTOM NAV ══════════════════════ */}
       <div style={{

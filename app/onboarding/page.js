@@ -191,7 +191,13 @@ export default function OnboardingPage() {
 
   function handleContinue() {
     if (currentStep < 5) {
-      goToStep(currentStep + 1);
+      // Skip step 5 (sourate selection) when objectif fixes the surah automatically
+      const nextStep = currentStep + 1;
+      if (nextStep === 5 && objectif === 'Finir une sourate courte') {
+        startGeneration();
+      } else {
+        goToStep(nextStep);
+      }
     } else {
       startGeneration();
     }

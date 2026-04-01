@@ -65,8 +65,13 @@ export default function RegisterPage() {
       setLoading(false);
       return;
     }
-    const { data: { session } } = await supabase.auth.getSession();
-    setLoading(false);
+    let session = null;
+    try {
+      const { data } = await supabase.auth.getSession();
+      session = data?.session ?? null;
+    } finally {
+      setLoading(false);
+    }
     if (session) {
       router.push('/onboarding');
     } else {

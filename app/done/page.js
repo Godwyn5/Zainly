@@ -113,7 +113,7 @@ export default function DonePage() {
 
   const streak           = progress?.streak ?? 0;
   const totalMemorized   = progress?.total_memorized ?? 0;
-  const sessionIncomplete = plan !== null && todayMemorized < (plan.ayah_per_day ?? 2);
+  const sessionIncomplete = plan !== null && todayMemorized > 0 && todayMemorized < (plan.ayah_per_day ?? 2);
 
   if (loading) {
     return (

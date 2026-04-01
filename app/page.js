@@ -91,7 +91,8 @@ export default function Home() {
     setNewsletterError('');
     const { error } = await supabase.from('waitlist').insert({ email: newsletterEmail.trim() });
     if (error) {
-      setNewsletterError('Une erreur est survenue. Réessaie.');
+      const isDuplicate = error.code === '23505' || (error.message ?? '').toLowerCase().includes('duplicate');
+      setNewsletterError(isDuplicate ? 'Tu es déjà inscrit(e) avec cet email.' : 'Une erreur est survenue. Réessaie.');
       return;
     }
     setNewsletterSubmitted(true);

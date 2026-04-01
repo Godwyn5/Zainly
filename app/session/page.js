@@ -315,7 +315,8 @@ export default function SessionPage() {
         return;
       }
 
-      const newAyah           = savedAyah + ayats.length; // use snapshotted ayah after surah advance
+      const surahTotal        = quranData ? (quranData[surahNumber - 1]?.verses?.length ?? ayats.length) : ayats.length;
+      const newAyah           = Math.min(savedAyah + ayats.length, surahTotal);
       const alreadyDoneToday  = progress.last_session_date === today;
       const newStreak         = alreadyDoneToday ? (progress.streak ?? 0) : (progress.streak ?? 0) + 1;
       const newTotalMemorized = (progress.total_memorized ?? 0) + ayats.length;
@@ -378,7 +379,7 @@ export default function SessionPage() {
   ];
   function phaseIndex(p) {
     if (p === 'reveal')    return 1;
-    if (p === 'validated') return 3; // all 3 pills done
+    if (p === 'validated') return PHASES.length; // all 3 pills done (i < PHASES.length → all done)
     return PHASES.findIndex(x => x.key === p);
   }
   const currentPhaseIdx = phaseIndex(sessionPhase);
@@ -439,7 +440,7 @@ export default function SessionPage() {
         <div style={{ textAlign: 'center' }}>
           <span className="font-playfair" style={{ fontSize: '18px', fontWeight: 600, color: '#fff', display: 'block' }}>{surahName}</span>
           <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '13px', color: 'rgba(255,255,255,0.6)', display: 'block', marginTop: '2px' }}>
-            Ayat {startAyah} à {endAyah}
+            {startAyah === endAyah ? `Ayat ${startAyah}` : `Ayat ${startAyah} à ${endAyah}`}
           </span>
         </div>
         <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '14px', color: '#fff', justifySelf: 'end' }}>

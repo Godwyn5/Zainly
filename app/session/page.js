@@ -47,6 +47,17 @@ const CSS = `
 }
 `;
 
+// ─── Ayah difficulty scorer ─────────────────────────────────────────────────
+
+function getAyahDifficulty(arabicText) {
+  const wordCount = arabicText.trim().split(/\s+/).length;
+  if (wordCount <= 5)  return 1;
+  if (wordCount <= 10) return 2;
+  if (wordCount <= 15) return 3;
+  if (wordCount <= 20) return 4;
+  return 5;
+}
+
 // ─── Session audio button (with listen counter) ───────────────────────────────
 
 function SessionAudioButton({ globalNum, listenCount, onListen, onError }) {
@@ -294,14 +305,17 @@ export default function SessionPage() {
       const existingDates   = Array.isArray(progress.session_dates) ? progress.session_dates : [];
       const newSessionDates = existingDates.includes(today) ? existingDates : [...existingDates, today];
 
+      const avgDifficulty = ayats.reduce((sum, a) => sum + getAyahDifficulty(a.text), 0) / ayats.length;
+
       const { error: progErr } = await supabase
         .from('progress')
         .update({
-          current_ayah:      newAyah,
-          last_session_date: today,
-          streak:            newStreak,
-          total_memorized:   newTotalMemorized,
-          session_dates:     newSessionDates,
+          current_ayah:             newAyah,
+          last_session_date:        today,
+          streak:                   newStreak,
+          total_memorized:          newTotalMemorized,
+          session_dates:            newSessionDates,
+          last_session_difficulty:  avgDifficulty,
         })
         .eq('user_id', user.id);
       if (progErr) {

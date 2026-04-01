@@ -57,6 +57,7 @@ export default function DonePage() {
   const router = useRouter();
 
   const [progress, setProgress]           = useState(null);
+  const [plan, setPlan]                   = useState(null);
   const [todayMemorized, setTodayMemorized] = useState(0);
   const [todayRevised, setTodayRevised]   = useState(0);
   const [loading, setLoading]             = useState(true);
@@ -76,13 +77,16 @@ export default function DonePage() {
       const startTomorrow = startOfTomorrowUTC();
       const today         = todayStr();
 
-      // Fetch progress + memorized today + revised today in parallel
+      // Fetch progress + plan + memorized today + revised today in parallel
       const [
         { data: progRows },
+        { data: planRows },
         { data: memorizedItems },
         { data: revisedItems },
       ] = await Promise.all([
         supabase.from('progress').select('*').eq('user_id', authUser.id)
+          .order('created_at', { ascending: false }).limit(1),
+        supabase.from('plans').select('ayah_per_day').eq('user_id', authUser.id)
           .order('created_at', { ascending: false }).limit(1),
         // Items created today = memorized this session
         supabase.from('review_items').select('id')
@@ -98,7 +102,9 @@ export default function DonePage() {
       ]);
 
       const prog = Array.isArray(progRows) ? progRows[0] : progRows;
+      const planData = Array.isArray(planRows) ? planRows[0] : planRows;
       setProgress(prog ?? null);
+      setPlan(planData ?? null);
       setTodayMemorized(memorizedItems?.length ?? 0);
       setTodayRevised(revisedItems?.length ?? 0);
 
@@ -111,8 +117,9 @@ export default function DonePage() {
     });
   }, [router]);
 
-  const streak         = progress?.streak ?? 0;
-  const totalMemorized = progress?.total_memorized ?? 0;
+  const streak           = progress?.streak ?? 0;
+  const totalMemorized   = progress?.total_memorized ?? 0;
+  const sessionIncomplete = plan !== null && todayMemorized < (plan.ayah_per_day ?? 2);
 
   if (loading) {
     return (
@@ -224,28 +231,50 @@ export default function DonePage() {
           {getMotivation(streak)}
         </p>
 
-        {/* ── BUTTON ── */}
-        <button
-          type="button"
-          className="font-playfair"
-          onClick={() => router.push('/dashboard')}
-          style={{
-            marginTop: '32px',
-            width: '100%',
-            padding: '16px',
-            fontSize: '17px', fontWeight: 600,
-            color: '#fff',
-            background: 'linear-gradient(135deg, #163026, #2d5a42)',
-            border: 'none', borderRadius: '12px', cursor: 'pointer',
-            boxShadow: '0 8px 24px rgba(15,35,24,0.3)',
-            animation: 'fadeUp 0.5s ease 1s both',
-            transition: 'transform 0.15s, box-shadow 0.15s',
-          }}
-          onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 12px 32px rgba(15,35,24,0.38)'; }}
-          onMouseLeave={(e) => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 8px 24px rgba(15,35,24,0.3)'; }}
-        >
-          À demain إن شاء الله
-        </button>
+        {/* ── BUTTONS ── */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginTop: '32px', animation: 'fadeUp 0.5s ease 1s both' }}>
+          <button
+            type="button"
+            className="font-playfair"
+            onClick={() => router.push('/dashboard')}
+            style={{
+              width: '100%',
+              padding: '16px',
+              fontSize: '17px', fontWeight: 600,
+              color: '#fff',
+              background: 'linear-gradient(135deg, #163026, #2d5a42)',
+              border: 'none', borderRadius: '12px', cursor: 'pointer',
+              boxShadow: '0 8px 24px rgba(15,35,24,0.3)',
+              transition: 'transform 0.15s, box-shadow 0.15s',
+            }}
+            onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 12px 32px rgba(15,35,24,0.38)'; }}
+            onMouseLeave={(e) => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 8px 24px rgba(15,35,24,0.3)'; }}
+          >
+            À demain إن شاء الله
+          </button>
+
+          {sessionIncomplete && (
+            <button
+              type="button"
+              className="font-playfair"
+              onClick={() => router.push('/session')}
+              style={{
+                width: '100%',
+                padding: '12px 32px',
+                fontSize: '16px', fontWeight: 600,
+                color: '#163026',
+                background: 'transparent',
+                border: '1.5px solid #163026',
+                borderRadius: '12px', cursor: 'pointer',
+                transition: 'background-color 0.15s, color 0.15s',
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = '#163026'; e.currentTarget.style.color = '#fff'; }}
+              onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.color = '#163026'; }}
+            >
+              Faire une autre session →
+            </button>
+          )}
+        </div>
 
       </div>
     </div>

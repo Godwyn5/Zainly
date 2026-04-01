@@ -704,11 +704,11 @@ export default function DashboardPage() {
             <textarea
               value={feedbackText}
               onChange={e => setFeedbackText(e.target.value)}
-              placeholder="Dis nous ce qu’on peut améliorer..."
+              placeholder="Dis nous ce qu'on peut améliorer..."
               rows={4}
               style={{
                 width: '100%', boxSizing: 'border-box',
-                fontFamily: 'DM Sans, sans-serif', fontSize: '14px',
+                fontFamily: 'DM Sans, sans-serif', fontSize: '16px',
                 border: '1.5px solid #E2D9CC', borderRadius: '10px',
                 padding: '12px', backgroundColor: '#FFFFFF',
                 color: '#163026', resize: 'vertical', outline: 'none',

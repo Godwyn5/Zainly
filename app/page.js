@@ -124,6 +124,24 @@ export default function Home() {
         >
           Zainly
         </span>
+        <div style={{ marginLeft: 'auto' }}>
+          <Link
+            href="/login"
+            style={{
+              fontFamily: 'DM Sans, sans-serif',
+              fontWeight: 500,
+              fontSize: '14px',
+              color: '#163026',
+              padding: '8px 16px',
+              border: '1.5px solid #163026',
+              borderRadius: '8px',
+              textDecoration: 'none',
+              display: 'inline-block',
+            }}
+          >
+            Connexion
+          </Link>
+        </div>
       </nav>
 
       {/* HERO */}
@@ -341,7 +359,7 @@ export default function Home() {
                     width: '100%',
                     maxWidth: '360px',
                     padding: '14px 16px',
-                    fontSize: '15px',
+                    fontSize: '16px',
                     border: '1.5px solid #E2D9CC',
                     borderRadius: '8px',
                     backgroundColor: '#FFFFFF',

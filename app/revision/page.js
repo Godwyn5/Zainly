@@ -100,8 +100,9 @@ export default function RevisionPage() {
   const [saving, setSaving]             = useState(false);
   const [userId, setUserId]             = useState(null);
   const [error, setError]               = useState('');
-  const [correctCount, setCorrectCount] = useState(0);
-  const [totalCount, setTotalCount]     = useState(0);
+  const [correctCount, setCorrectCount]   = useState(0);
+  const [totalCount, setTotalCount]       = useState(0);
+  const [showTranslit, setShowTranslit]   = useState(false);
   const answerHandledRef                = useRef(false);
 
   useEffect(() => {
@@ -208,6 +209,7 @@ export default function RevisionPage() {
       setTimeout(() => {
         setCurrentIndex(i => i + 1);
         setRevealed(false);
+        setShowTranslit(false);
         setVisible(true);
       }, 300);
     } else {
@@ -333,14 +335,30 @@ export default function RevisionPage() {
           </p>
 
           {/* Instruction */}
-          <p className="font-playfair" style={{ fontSize: '16px', fontStyle: 'italic', color: '#6B6357', textAlign: 'center', margin: '0 0 24px 0', lineHeight: 1.6 }}>
+          <p className="font-playfair" style={{ fontSize: '16px', fontStyle: 'italic', color: '#6B6357', textAlign: 'center', margin: '0 0 16px 0', lineHeight: 1.6 }}>
             Essaie de réciter cet ayat de mémoire
           </p>
 
-          {/* Transliteration */}
-          <p style={{ fontFamily: 'DM Sans, sans-serif', fontStyle: 'italic', fontSize: '18px', color: '#163026', textAlign: 'center', lineHeight: 1.6, margin: 0 }}>
-            {item?.transliteration}
-          </p>
+          {/* Transliteration — hidden until revealed or toggled */}
+          {(revealed || showTranslit) ? (
+            <p style={{ fontFamily: 'DM Sans, sans-serif', fontStyle: 'italic', fontSize: '18px', color: '#163026', textAlign: 'center', lineHeight: 1.6, margin: '0 0 8px 0', animation: 'fadeIn 0.3s ease both' }}>
+              {item?.transliteration}
+            </p>
+          ) : (
+            <button
+              type="button"
+              onClick={() => setShowTranslit(true)}
+              style={{
+                display: 'block', margin: '0 auto 16px',
+                background: 'none', border: 'none',
+                fontFamily: 'DM Sans, sans-serif', fontSize: '13px',
+                color: '#B8962E', cursor: 'pointer', padding: '4px 8px',
+                textDecoration: 'underline',
+              }}
+            >
+              Voir la translittération
+            </button>
+          )}
 
           {/* French translation */}
           {item?.translation ? (

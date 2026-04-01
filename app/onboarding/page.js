@@ -503,6 +503,24 @@ export default function OnboardingPage() {
           zIndex: 1,
         }}
       >
+        {/* Bouton retour */}
+        <div style={{ width: '100%', maxWidth: '560px', marginBottom: '8px' }}>
+          <button
+            type="button"
+            onClick={() => currentStep > 1 && goToStep(currentStep - 1)}
+            style={{
+              background: 'none', border: 'none', cursor: 'pointer',
+              fontFamily: 'DM Sans, sans-serif', fontSize: '14px',
+              color: '#6B6357', padding: '8px 16px',
+              opacity: currentStep === 1 ? 0 : 1,
+              pointerEvents: currentStep === 1 ? 'none' : 'auto',
+              transition: 'opacity 0.2s',
+            }}
+          >
+            ← Retour
+          </button>
+        </div>
+
         {/* Étape */}
         <p style={{ fontSize: '13px', color: '#6B6357', fontFamily: 'inherit', marginBottom: '40px', letterSpacing: '0.04em' }}>
           Étape {currentStep} sur 5

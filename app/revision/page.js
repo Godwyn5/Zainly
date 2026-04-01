@@ -215,11 +215,11 @@ export default function RevisionPage() {
     if (remembered) setCorrectCount(c => c + 1);
     setTotalCount(t => t + 1);
 
-    answerHandledRef.current = false;
     setSaving(false);
 
     // Advance or finish
     if (currentIndex < items.length - 1) {
+      answerHandledRef.current = false;
       setVisible(false);
       setTimeout(() => {
         setCurrentIndex(i => i + 1);

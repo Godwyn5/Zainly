@@ -35,8 +35,8 @@ export async function POST(request) {
       return NextResponse.json({ error: 'Non autorisé.' }, { status: 401 })
     }
 
-    // ── Deduplication: return existing plan if created within last 24h ──
-    const since24h = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()
+    // ── Deduplication: return existing plan if created within last 5 minutes (double-submit guard only) ──
+    const since24h = new Date(Date.now() - 5 * 60 * 1000).toISOString()
     const { data: existingPlans } = await supabase
       .from('plans')
       .select('*')
@@ -137,8 +137,9 @@ export async function POST(request) {
       }, 0)
       totalAyats = Math.max(0, totalAyats - knownAyats)
     }
-    const estimatedDays   = Math.ceil(totalAyats / ayahPerDay)
-    const estimatedWeeks  = Math.ceil(estimatedDays / daysPerWeek)
+    const safeAyahPerDay  = ayahPerDay > 0 ? ayahPerDay : 1
+    const estimatedDays   = Math.ceil(totalAyats / safeAyahPerDay)
+    const estimatedWeeks  = daysPerWeek > 0 ? Math.ceil(estimatedDays / daysPerWeek) : estimatedDays
     const estimatedMonths = Math.round(estimatedWeeks / 4.33)
 
     // ── Motivation ──

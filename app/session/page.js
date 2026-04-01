@@ -402,7 +402,7 @@ export default function SessionPage() {
         animation: 'slideDown 0.5s ease both',
       }}>
         <button onClick={() => router.push('/dashboard')}
-          style={{ background: 'none', border: 'none', color: '#fff', fontSize: '22px', cursor: 'pointer', padding: '4px 8px', justifySelf: 'start', lineHeight: 1 }}>
+          style={{ background: 'none', border: 'none', color: '#fff', fontSize: '22px', cursor: 'pointer', padding: '11px', justifySelf: 'start', lineHeight: 1, minWidth: '44px', minHeight: '44px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           ←
         </button>
         <div style={{ textAlign: 'center' }}>
@@ -463,10 +463,11 @@ export default function SessionPage() {
           {sessionPhase !== 'validated' && (
             <>
               <p className="font-amiri" style={{
-                fontSize: '42px', fontWeight: 700, color: '#163026', textAlign: 'center',
+                fontSize: 'clamp(26px, 6vw, 42px)', fontWeight: 700, color: '#163026', textAlign: 'center',
                 direction: 'rtl', lineHeight: 1.8, margin: 0,
                 opacity: sessionPhase === 'test' ? 0 : 1,
                 transition: 'opacity 0.4s ease',
+                overflowWrap: 'break-word', wordBreak: 'break-word',
               }}>
                 {ayat?.text}
               </p>
@@ -575,15 +576,15 @@ export default function SessionPage() {
 
         {/* REVEAL phase — two buttons */}
         {sessionPhase === 'reveal' && (
-          <div style={{ display: 'flex', gap: '12px' }}>
+          <div style={{ display: 'flex', gap: '10px' }}>
             <button type="button" className="font-playfair" onClick={() => handleRevealChoice(true)} style={{
-              width: '48%', padding: '14px', fontSize: '15px', fontWeight: 600, color: '#fff',
+              flex: 1, minWidth: 0, padding: '14px 8px', fontSize: 'clamp(13px, 3.5vw, 15px)', fontWeight: 600, color: '#fff',
               background: 'linear-gradient(135deg, #163026, #2d5a42)', border: 'none', borderRadius: '12px', cursor: 'pointer',
             }}>
               Je m&apos;en souvenais ✓
             </button>
             <button type="button" className="font-playfair" onClick={() => handleRevealChoice(false)} style={{
-              width: '48%', padding: '14px', fontSize: '15px', fontWeight: 600, color: '#999',
+              flex: 1, minWidth: 0, padding: '14px 8px', fontSize: 'clamp(13px, 3.5vw, 15px)', fontWeight: 600, color: '#999',
               background: 'transparent', border: '1.5px solid #E2D9CC', borderRadius: '12px', cursor: 'pointer',
             }}>
               Je dois revoir ✗

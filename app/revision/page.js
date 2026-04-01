@@ -73,10 +73,11 @@ function AudioButton({ globalNum }) {
 
   return (
     <button type="button" onClick={handleAudio} style={{
-      display: 'flex', alignItems: 'center', gap: '6px',
-      margin: '16px auto 0', background: 'none', border: 'none',
-      cursor: 'pointer',
-      fontFamily: 'DM Sans, sans-serif', fontSize: '13px',
+      display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px',
+      margin: '8px auto 0', background: 'none', border: 'none',
+      cursor: 'pointer', padding: '12px 20px',
+      minWidth: '44px', minHeight: '44px',
+      fontFamily: 'DM Sans, sans-serif', fontSize: '14px',
       color: '#B8962E', transition: 'opacity 0.2s',
     }}>
       <span>{playing ? '⏸' : '🔊'}</span>
@@ -291,7 +292,7 @@ export default function RevisionPage() {
         animation: 'slideDown 0.5s ease both',
       }}>
         <button onClick={() => router.push('/dashboard')}
-          style={{ background: 'none', border: 'none', color: '#fff', fontSize: '22px', cursor: 'pointer', padding: '4px 8px', justifySelf: 'start', lineHeight: 1 }}>
+          style={{ background: 'none', border: 'none', color: '#fff', fontSize: '22px', cursor: 'pointer', padding: '11px', justifySelf: 'start', lineHeight: 1, minWidth: '44px', minHeight: '44px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           ←
         </button>
         <div style={{ textAlign: 'center' }}>
@@ -314,7 +315,7 @@ export default function RevisionPage() {
           backgroundColor: '#fff',
           borderRadius: '24px',
           boxShadow: '0 20px 60px rgba(15,35,24,0.15)',
-          padding: '40px 32px',
+          padding: 'clamp(20px, 5vw, 40px) clamp(16px, 5vw, 32px)',
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
@@ -355,7 +356,7 @@ export default function RevisionPage() {
 
           {/* Arabic — hidden until revealed */}
           <div style={{ overflow: 'hidden', transition: 'opacity 0.4s ease', opacity: revealed ? 1 : 0, pointerEvents: revealed ? 'auto' : 'none' }}>
-            <p className="font-amiri" style={{ fontSize: '42px', fontWeight: 700, color: '#163026', textAlign: 'center', direction: 'rtl', lineHeight: 1.8, margin: 0 }}>
+            <p className="font-amiri" style={{ fontSize: 'clamp(26px, 6vw, 42px)', fontWeight: 700, color: '#163026', textAlign: 'center', direction: 'rtl', lineHeight: 1.8, margin: 0, overflowWrap: 'break-word', wordBreak: 'break-word' }}>
               {item?.arabicText}
             </p>
           </div>

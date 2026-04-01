@@ -275,7 +275,7 @@ export default function DashboardPage() {
   const TOTAL_QURAN = 6236;
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: '#F5F0E6', paddingBottom: '80px' }}>
+    <div style={{ minHeight: '100vh', backgroundColor: '#F5F0E6', paddingBottom: 'calc(80px + env(safe-area-inset-bottom, 0px))' }}>
       <style>{CSS}</style>
 
       {/* ══════════════════════ AUJOURD'HUI TAB ══════════════════════ */}
@@ -297,7 +297,7 @@ export default function DashboardPage() {
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
             <div>
               <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '13px', color: '#B8962E', display: 'block' }}>Assalamu Alaykoum,</span>
-              <span className="font-playfair" style={{ fontSize: '34px', fontWeight: 600, color: '#fff', display: 'block', marginTop: '2px' }}>{prenom || 'Frère'}</span>
+              <span className="font-playfair" style={{ fontSize: 'clamp(24px, 7vw, 34px)', fontWeight: 600, color: '#fff', display: 'block', marginTop: '2px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '55vw' }}>{prenom || 'Frère'}</span>
               <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '13px', color: 'rgba(255,255,255,0.5)', display: 'block', marginTop: '4px' }}>{formatDate()}</span>
             </div>
             <div style={{ textAlign: 'right' }}>
@@ -520,7 +520,7 @@ export default function DashboardPage() {
 
               return (
                 <div key={day} style={{
-                  width: '28px', height: '28px',
+                  width: 'clamp(24px, 6vw, 28px)', height: 'clamp(24px, 6vw, 28px)',
                   borderRadius: '50%',
                   backgroundColor: bg,
                   border,

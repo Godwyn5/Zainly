@@ -20,7 +20,7 @@ export default function RegisterPage() {
     async function checkAuth() {
       const { data: { user } } = await supabase.auth.getUser();
       if (user) { router.push('/dashboard'); return; }
-      setTimeout(() => setPageVisible(true), 50);
+      setTimeout(() => setPageVisible(true), 100);
     }
     checkAuth();
   }, [router]);
@@ -73,10 +73,12 @@ export default function RegisterPage() {
         minHeight: '100vh',
         backgroundColor: '#F5F0E6',
         display: 'flex',
+        flexDirection: 'column',
         alignItems: 'center',
-        justifyContent: 'center',
-        padding: '24px',
+        justifyContent: 'flex-start',
+        padding: '60px 24px 48px',
         position: 'relative',
+        overflowY: 'auto',
         opacity: pageVisible ? 1 : 0,
         transition: 'opacity 0.5s ease',
       }}
@@ -195,16 +197,19 @@ export default function RegisterPage() {
               onClick={() => setShowPassword((v) => !v)}
               style={{
                 position: 'absolute',
-                right: '14px',
+                right: '8px',
                 top: '50%',
                 transform: 'translateY(-50%)',
                 background: 'none',
                 border: 'none',
                 cursor: 'pointer',
-                padding: 0,
+                padding: '12px',
                 color: '#6B6357',
                 display: 'flex',
                 alignItems: 'center',
+                minWidth: '44px',
+                minHeight: '44px',
+                justifyContent: 'center',
               }}
               aria-label={showPassword ? 'Masquer le mot de passe' : 'Afficher le mot de passe'}
             >
@@ -270,7 +275,7 @@ export default function RegisterPage() {
 const inputStyle = {
   width: '100%',
   padding: '14px 16px',
-  fontSize: '15px',
+  fontSize: '16px',
   border: '1.5px solid #E2D9CC',
   borderRadius: '10px',
   backgroundColor: '#FFFFFF',

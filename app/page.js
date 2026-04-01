@@ -88,7 +88,7 @@ export default function Home() {
   }
 
   useEffect(() => {
-    const t = setTimeout(() => setPageVisible(true), 50);
+    const t = setTimeout(() => setPageVisible(true), 100);
     return () => clearTimeout(t);
   }, []);
 
@@ -109,7 +109,7 @@ export default function Home() {
           left: 0,
           right: 0,
           zIndex: 50,
-          padding: '24px 48px',
+          padding: '20px 24px',
           display: 'flex',
           alignItems: 'center',
           backgroundColor: 'transparent',
@@ -126,7 +126,7 @@ export default function Home() {
       {/* HERO */}
       <section
         style={{
-          paddingTop: '180px',
+          paddingTop: 'clamp(100px, 20vw, 180px)',
           paddingBottom: '120px',
           textAlign: 'center',
           position: 'relative',
@@ -307,7 +307,7 @@ export default function Home() {
             style={{
               backgroundColor: '#EDE5D0',
               borderRadius: '20px',
-              padding: '48px',
+              padding: 'clamp(24px, 6vw, 48px)',
               maxWidth: '600px',
               margin: '0 auto',
               textAlign: 'center',

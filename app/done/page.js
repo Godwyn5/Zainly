@@ -222,7 +222,8 @@ export default function DonePage() {
           onClick={() => router.push('/dashboard')}
           style={{
             marginTop: '32px',
-            padding: '16px 48px',
+            width: '100%',
+            padding: '16px',
             fontSize: '17px', fontWeight: 600,
             color: '#fff',
             background: 'linear-gradient(135deg, #163026, #2d5a42)',
@@ -245,7 +246,7 @@ export default function DonePage() {
 function StatCol({ value, label }) {
   return (
     <div style={{ textAlign: 'center' }}>
-      <p className="font-playfair" style={{ fontSize: '36px', fontWeight: 700, color: '#163026', margin: 0, lineHeight: 1 }}>
+      <p className="font-playfair" style={{ fontSize: 'clamp(24px, 6vw, 36px)', fontWeight: 700, color: '#163026', margin: 0, lineHeight: 1 }}>
         {value}
       </p>
       <p style={{

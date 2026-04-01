@@ -254,6 +254,8 @@ export default function OnboardingPage() {
         ayah_per_day: planData.ayahPerDay ?? 2,
         days_per_week: planData.daysPerWeek ?? 5,
         minutes_per_session: planData.minutesPerSession ?? tempsMin,
+        memorization_minutes: planData.memorizationMinutes ?? Math.round(tempsMin * 0.4),
+        revision_minutes: planData.revisionMinutes ?? Math.round(tempsMin * 0.6),
         motivation_phrase: planData.motivationPhrase ?? intention,
         first_surah_name: planData.firstSurahName ?? 'An-Naba',
       };

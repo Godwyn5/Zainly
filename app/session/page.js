@@ -350,6 +350,7 @@ export default function SessionPage() {
       setError('Une erreur inattendue est survenue. Réessaie.');
       setSaving(false);
       saveHandledRef.current = false;
+      revealHandledRef.current = false;
     }
   }
 

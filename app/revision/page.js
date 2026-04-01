@@ -235,7 +235,7 @@ export default function RevisionPage() {
           .from('progress')
           .select('last_revision_scores')
           .eq('user_id', userId)
-          .single();
+          .maybeSingle();
         const existingScores = prog?.last_revision_scores || [];
         const newScores = [...existingScores, score].slice(-5);
         await supabase

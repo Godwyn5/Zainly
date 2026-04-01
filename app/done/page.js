@@ -7,8 +7,8 @@ import { adaptPlan } from '@/lib/adaptive-algorithm';
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
-function todayStr() {
-  return new Date().toISOString().slice(0, 10);
+function localDateStr(d = new Date()) {
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 }
 
 // UTC midnight of today — safe for comparing with Supabase timestamptz
@@ -70,6 +70,7 @@ export default function DonePage() {
       // Lance adaptPlan en arrière-plan sans bloquer l'affichage
       adaptPlan(supabase, authUser.id).catch(e => console.error('adaptPlan:', e));
 
+      const todayLocal   = localDateStr();
       const startToday    = startOfTodayUTC();
       const startTomorrow = startOfTomorrowUTC();
 
@@ -84,11 +85,11 @@ export default function DonePage() {
           .order('created_at', { ascending: false }).limit(1),
         supabase.from('plans').select('ayah_per_day').eq('user_id', authUser.id)
           .order('created_at', { ascending: false }).limit(1),
-        // Items created today = memorized this session
+        // Items created today in local time = memorized this session
         supabase.from('review_items').select('id')
           .eq('user_id', authUser.id)
-          .gte('created_at', startToday)
-          .lt('created_at', startTomorrow),
+          .gte('created_at', todayLocal + 'T00:00:00')
+          .lt('created_at', todayLocal + 'T23:59:59'),
         // Items revised today = next_review was updated today (review_cycle advanced)
         supabase.from('review_items').select('id')
           .eq('user_id', authUser.id)

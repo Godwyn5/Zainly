@@ -157,7 +157,7 @@ export default function DashboardPage() {
       ] = await Promise.all([
         supabase.from('plans').select('*').eq('user_id', authUser.id).order('created_at', { ascending: false }).limit(1),
         supabase.from('progress').select('*').eq('user_id', authUser.id).order('created_at', { ascending: false }).limit(1),
-        supabase.from('review_items').select('*').eq('user_id', authUser.id).lte('next_review', today),
+        supabase.from('review_items').select('*').eq('user_id', authUser.id).eq('mastered', false).lte('next_review', today),
       ]);
 
       const planData     = planRows?.[0] ?? null;
@@ -172,9 +172,10 @@ export default function DashboardPage() {
 
       const lastSession = progressData?.last_session_date;
       if (lastSession) {
-        const daysSince = Math.floor(
-          (new Date(today) - new Date(lastSession)) / (1000 * 60 * 60 * 24)
-        );
+        const todayDate = new Date();
+        todayDate.setHours(0, 0, 0, 0);
+        const lastDate = new Date(lastSession + 'T00:00:00');
+        const daysSince = Math.floor((todayDate - lastDate) / (1000 * 60 * 60 * 24));
         if (daysSince >= 5) setRecoveryMode(true);
       }
 

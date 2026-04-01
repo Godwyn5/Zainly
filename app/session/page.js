@@ -10,13 +10,14 @@ let cachedQuranFr = null;
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
 function todayStr() {
-  return new Date().toISOString().slice(0, 10);
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 }
 
 function tomorrowStr() {
   const d = new Date();
-  d.setUTCDate(d.getUTCDate() + 1);
-  return d.toISOString().slice(0, 10);
+  d.setDate(d.getDate() + 1);
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 }
 
 // Calculate global ayat number (1-based) across all surahs
@@ -120,6 +121,7 @@ export default function SessionPage() {
   const [ayats, setAyats]               = useState([]);
   const [surahName, setSurahName]       = useState('');
   const [surahNumber, setSurahNumber]   = useState(1);
+  const [savedAyah, setSavedAyah]       = useState(0); // current_ayah at load time (after surah advance)
   const [quranData, setQuranData]       = useState(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [visible, setVisible]           = useState(true);
@@ -214,6 +216,7 @@ export default function SessionPage() {
 
         setSurahName(surah.transliteration ?? surah.name ?? `Sourate ${currentSurah}`);
         setSurahNumber(currentSurah);
+        setSavedAyah(currentAyah); // snapshot the correct current_ayah after surah advances
         // Keep progress in sync with potentially-advanced surah
         setProgress({ ...progRow, current_surah: currentSurah, current_ayah: currentAyah });
         setAyats(slice);
@@ -290,7 +293,7 @@ export default function SessionPage() {
 
       const reviewRows = ayats.map(ayat => ({
         user_id:      user.id,
-        surah_number: progress.current_surah,
+        surah_number: surahNumber,   // use state, not progress closure
         ayah:         ayat.id,
         next_review:  tomorrow,
         review_cycle: 1,
@@ -303,7 +306,7 @@ export default function SessionPage() {
         return;
       }
 
-      const newAyah           = (progress.current_ayah ?? 0) + ayats.length;
+      const newAyah           = savedAyah + ayats.length; // use snapshotted ayah after surah advance
       const alreadyDoneToday  = progress.last_session_date === today;
       const newStreak         = alreadyDoneToday ? (progress.streak ?? 0) : (progress.streak ?? 0) + 1;
       const newTotalMemorized = (progress.total_memorized ?? 0) + ayats.length;
@@ -332,7 +335,15 @@ export default function SessionPage() {
         return;
       }
 
-      router.push('/revision');
+      // Only go to revision if there are items due today
+      const { data: dueItems } = await supabase
+        .from('review_items')
+        .select('id', { count: 'exact', head: true })
+        .eq('user_id', user.id)
+        .eq('mastered', false)
+        .lte('next_review', today);
+      const hasDue = Array.isArray(dueItems) ? dueItems.length > 0 : (dueItems?.count ?? 0) > 0;
+      router.push(hasDue ? '/revision' : '/done');
     } catch (err) {
       console.error('[session] saveAndContinue error:', err);
       setError('Une erreur inattendue est survenue. Réessaie.');

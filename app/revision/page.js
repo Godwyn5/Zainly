@@ -18,7 +18,8 @@ function addDays(days) {
 }
 
 function todayStr() {
-  return new Date().toISOString().slice(0, 10);
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 }
 
 // Global ayat number for audio URL
@@ -107,6 +108,8 @@ export default function RevisionPage() {
   const [totalCount, setTotalCount]       = useState(0);
   const [showTranslit, setShowTranslit]   = useState(false);
   const answerHandledRef                = useRef(false);
+  const correctRef                      = useRef(0); // sync ref for score calculation
+  const totalRef                        = useRef(0);
 
   useEffect(() => {
     async function loadRevision() {
@@ -198,8 +201,9 @@ export default function RevisionPage() {
       return;
     }
 
-    const newCorrect = remembered ? correctCount + 1 : correctCount;
-    const newTotal   = totalCount + 1;
+    // Update sync refs immediately (state updates are async)
+    if (remembered) correctRef.current += 1;
+    totalRef.current += 1;
     if (remembered) setCorrectCount(c => c + 1);
     setTotalCount(t => t + 1);
 
@@ -218,7 +222,7 @@ export default function RevisionPage() {
     } else {
       // Save revision score before navigating
       try {
-        const score = Math.round((newCorrect / newTotal) * 100);
+        const score = totalRef.current > 0 ? Math.round((correctRef.current / totalRef.current) * 100) : 0;
         const { data: prog } = await supabase
           .from('progress')
           .select('last_revision_scores')

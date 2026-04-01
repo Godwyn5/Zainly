@@ -831,18 +831,23 @@ function AudioButton({ globalNum }) {
 
   function handleAudio() {
     if (playing) {
-      if (audioRef.current) { audioRef.current.pause(); audioRef.current = null; }
+      if (audioRef.current) { audioRef.current.pause(); }
       setPlaying(false);
       return;
     }
-    if (audioRef.current) { audioRef.current.pause(); audioRef.current = null; }
+    // Resume existing audio if paused, otherwise create new
+    if (audioRef.current) {
+      audioRef.current.play().catch(() => setPlaying(false));
+      setPlaying(true);
+      return;
+    }
     const url = `https://cdn.islamic.network/quran/audio/128/ar.alafasy/${globalNum}.mp3`;
     const a = new Audio(url);
     audioRef.current = a;
     setPlaying(true);
     a.play().catch(() => setPlaying(false));
-    a.onended = () => setPlaying(false);
-    a.onerror = () => setPlaying(false);
+    a.onended = () => { setPlaying(false); audioRef.current = null; };
+    a.onerror = () => { setPlaying(false); audioRef.current = null; };
   }
 
   useEffect(() => {

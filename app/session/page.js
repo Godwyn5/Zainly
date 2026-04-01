@@ -4,6 +4,9 @@ import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 
+let cachedQuran = null;
+let cachedQuranFr = null;
+
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
 function todayStr() {
@@ -154,13 +157,17 @@ export default function SessionPage() {
       setProgress(progRow);
       setPlan(plRow);
 
-      // Load both quran files in parallel
-      const [quranRes, frRes] = await Promise.all([
-        fetch('/data/quran.json'),
-        fetch('/data/quran_fr.json'),
-      ]);
-      const quran   = await quranRes.json();
-      const quranFr = await frRes.json();
+      // Load quran files (use module-level cache to avoid re-fetching)
+      if (!cachedQuran || !cachedQuranFr) {
+        const [q, qfr] = await Promise.all([
+          fetch('/data/quran.json').then(r => r.json()),
+          fetch('/data/quran_fr.json').then(r => r.json()),
+        ]);
+        cachedQuran = q;
+        cachedQuranFr = qfr;
+      }
+      const quran   = cachedQuran;
+      const quranFr = cachedQuranFr;
       setQuranData(quran);
 
       let currentSurah = progRow.current_surah ?? 1;

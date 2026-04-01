@@ -139,6 +139,8 @@ export default function DashboardPage() {
   const [hifzLoading, setHifzLoading]   = useState(false);
   const [hifzLoaded, setHifzLoaded]     = useState(false);
   const [expandedSurah, setExpandedSurah] = useState(null);
+  const [quranData, setQuranData]       = useState(null);
+  const [quranFrData, setQuranFrData]   = useState(null);
 
   useEffect(() => {
     async function loadData() {
@@ -185,14 +187,21 @@ export default function DashboardPage() {
     if (hifzLoaded) return;
     setHifzLoading(true);
     try {
-      const [{ data: allItems, error: hifzErr }, quranRes, frRes] = await Promise.all([
-        supabase.from('review_items').select('*').eq('user_id', userId).order('surah_number', { ascending: true }),
-        fetch('/data/quran.json'),
-        fetch('/data/quran_fr.json'),
-      ]);
+      const itemsPromise = supabase.from('review_items').select('*').eq('user_id', userId).order('surah_number', { ascending: true });
+      let quran   = quranData;
+      let quranFr = quranFrData;
+      if (!quran || !quranFr) {
+        const [q, qfr] = await Promise.all([
+          fetch('/data/quran.json').then(r => r.json()),
+          fetch('/data/quran_fr.json').then(r => r.json()),
+        ]);
+        quran   = q;
+        quranFr = qfr;
+        setQuranData(q);
+        setQuranFrData(qfr);
+      }
+      const { data: allItems, error: hifzErr } = await itemsPromise;
       if (hifzErr) throw hifzErr;
-      const quran   = quranRes.ok  ? await quranRes.json()  : null;
-      const quranFr = frRes.ok     ? await frRes.json()     : null;
       setHifzItems(allItems ?? []);
       setHifzQuran(quran);
       setHifzQuranFr(quranFr);

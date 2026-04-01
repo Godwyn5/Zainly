@@ -67,15 +67,11 @@ export default function DonePage() {
       const { data: { user: authUser }, error: userErr } = await supabase.auth.getUser();
       if (userErr || !authUser) { router.push('/login'); return; }
 
-      try {
-        await adaptPlan(supabase, authUser.id);
-      } catch (e) {
-        console.error('adaptPlan error:', e);
-      }
+      // Lance adaptPlan en arrière-plan sans bloquer l'affichage
+      adaptPlan(supabase, authUser.id).catch(e => console.error('adaptPlan:', e));
 
       const startToday    = startOfTodayUTC();
       const startTomorrow = startOfTomorrowUTC();
-      const today         = todayStr();
 
       // Fetch progress + plan + memorized today + revised today in parallel
       const [

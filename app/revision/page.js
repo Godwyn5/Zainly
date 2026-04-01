@@ -4,6 +4,9 @@ import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 
+let cachedQuran = null;
+let cachedQuranFr = null;
+
 // ─── SRS ─────────────────────────────────────────────────────────────────────
 
 const CYCLE_DAYS = [1, 3, 7, 14, 30, 60];
@@ -113,26 +116,26 @@ export default function RevisionPage() {
 
       const today = todayStr();
 
-      // Fetch review items + quran files in parallel
-      const [{ data: reviewData, error: reviewErr }, quranRes, frRes] = await Promise.all([
-        supabase.from('review_items').select('*').eq('user_id', authUser.id).eq('mastered', false).lte('next_review', today),
-        fetch('/data/quran.json'),
-        fetch('/data/quran_fr.json'),
-      ]);
+      // Fetch review items (quran files use module-level cache)
+      const { data: reviewData, error: reviewErr } = await supabase
+        .from('review_items').select('*').eq('user_id', authUser.id).eq('mastered', false).lte('next_review', today);
 
       if (reviewErr) {
         setError('Erreur lors du chargement des révisions. Réessaie.');
         setLoading(false);
         return;
       }
-      if (!quranRes.ok || !frRes.ok) {
-        setError('Erreur lors du chargement des données Coran. Vérifie ta connexion.');
-        setLoading(false);
-        return;
-      }
 
-      const quran   = await quranRes.json();
-      const quranFr = await frRes.json();
+      if (!cachedQuran || !cachedQuranFr) {
+        const [q, qfr] = await Promise.all([
+          fetch('/data/quran.json').then(r => r.json()),
+          fetch('/data/quran_fr.json').then(r => r.json()),
+        ]);
+        cachedQuran = q;
+        cachedQuranFr = qfr;
+      }
+      const quran   = cachedQuran;
+      const quranFr = cachedQuranFr;
 
       if (!reviewData || reviewData.length === 0) {
         setItems([]);

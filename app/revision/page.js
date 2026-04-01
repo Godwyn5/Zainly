@@ -99,6 +99,8 @@ export default function RevisionPage() {
   const [saving, setSaving]             = useState(false);
   const [userId, setUserId]             = useState(null);
   const [error, setError]               = useState('');
+  const [correctCount, setCorrectCount] = useState(0);
+  const [totalCount, setTotalCount]     = useState(0);
   const answerHandledRef                = useRef(false);
 
   useEffect(() => {
@@ -190,6 +192,11 @@ export default function RevisionPage() {
       return;
     }
 
+    const newCorrect = remembered ? correctCount + 1 : correctCount;
+    const newTotal   = totalCount + 1;
+    if (remembered) setCorrectCount(newCorrect);
+    setTotalCount(newTotal);
+
     answerHandledRef.current = false;
     setSaving(false);
 
@@ -202,6 +209,23 @@ export default function RevisionPage() {
         setVisible(true);
       }, 300);
     } else {
+      // Save revision score before navigating
+      try {
+        const score = Math.round((newCorrect / newTotal) * 100);
+        const { data: prog } = await supabase
+          .from('progress')
+          .select('last_revision_scores')
+          .eq('user_id', userId)
+          .single();
+        const existingScores = prog?.last_revision_scores || [];
+        const newScores = [...existingScores, score].slice(-5);
+        await supabase
+          .from('progress')
+          .update({ last_revision_scores: newScores })
+          .eq('user_id', userId);
+      } catch (e) {
+        console.error('[revision] score save error:', e);
+      }
       router.push('/done');
     }
   }

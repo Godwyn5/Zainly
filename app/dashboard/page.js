@@ -258,9 +258,11 @@ export default function DashboardPage() {
   const minutesSession  = plan.minutes_per_session ?? 20;
 
   // Estimated months remaining
-  const ayatLeft   = Math.max(0, 6236 - totalMemorized);
-  const estDays    = ayahPerDay > 0 ? Math.ceil(ayatLeft / ayahPerDay) : 0;
-  const estMonths  = ayatLeft === 0 ? 0 : Math.max(1, Math.round(estDays / 30));
+  const daysPerWeek = plan.days_per_week ?? 5;
+  const ayatLeft    = Math.max(0, 6236 - totalMemorized);
+  const estMonths   = (ayahPerDay > 0 && daysPerWeek > 0)
+    ? (ayatLeft === 0 ? 0 : Math.max(1, Math.ceil(Math.ceil(ayatLeft / ayahPerDay) / daysPerWeek / 4.33)))
+    : null;
 
   // session_dates calendar
   const sessionDates = new Set(Array.isArray(progress?.session_dates) ? progress.session_dates : []);
@@ -425,7 +427,7 @@ export default function DashboardPage() {
           </div>
           <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '13px', color: '#6B6357', margin: '10px 0 0 0' }}>{totalMemorized} / 6236 ayat</p>
           <p className="font-playfair" style={{ fontSize: '14px', fontStyle: 'italic', color: '#6B6357', margin: '8px 0 0 0', lineHeight: 1.6 }}>
-            {estMonths === 0 ? 'Tu as mémorisé tout le Coran. MashaAllah !' : `Il te reste environ ${estMonths} mois pour atteindre ton objectif.`}
+            {estMonths === null ? 'Calcul en cours...' : estMonths === 0 ? 'Tu as mémorisé tout le Coran. MashaAllah !' : `Il te reste environ ${estMonths} mois pour atteindre ton objectif.`}
           </p>
         </div>
 

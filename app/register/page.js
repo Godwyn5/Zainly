@@ -15,6 +15,7 @@ export default function RegisterPage() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [pageVisible, setPageVisible] = useState(false);
+  const [confirmMsg, setConfirmMsg] = useState('');
 
   useEffect(() => {
     async function checkAuth() {
@@ -63,8 +64,13 @@ export default function RegisterPage() {
       setLoading(false);
       return;
     }
+    const { data: { session } } = await supabase.auth.getSession();
     setLoading(false);
-    router.push('/onboarding');
+    if (session) {
+      router.push('/onboarding');
+    } else {
+      setConfirmMsg('Vérifie ta boîte mail pour confirmer ton compte.');
+    }
   }
 
   return (
@@ -217,6 +223,13 @@ export default function RegisterPage() {
             </button>
           </div>
           <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '12px', color: '#6B6357', margin: '4px 0 0 2px' }}>8 caractères minimum</p>
+
+          {/* Confirmation email */}
+          {confirmMsg && (
+            <p style={{ fontSize: '13px', color: '#163026', backgroundColor: 'rgba(22,48,38,0.06)', borderRadius: '8px', padding: '10px 14px', margin: 0, textAlign: 'center' }}>
+              {confirmMsg}
+            </p>
+          )}
 
           {/* Erreur */}
           {error && (

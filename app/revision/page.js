@@ -196,8 +196,8 @@ export default function RevisionPage() {
 
     const newCorrect = remembered ? correctCount + 1 : correctCount;
     const newTotal   = totalCount + 1;
-    if (remembered) setCorrectCount(newCorrect);
-    setTotalCount(newTotal);
+    if (remembered) setCorrectCount(c => c + 1);
+    setTotalCount(t => t + 1);
 
     answerHandledRef.current = false;
     setSaving(false);

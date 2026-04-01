@@ -74,8 +74,8 @@ function SessionAudioButton({ globalNum, listenCount, onListen, onError }) {
     const a = new Audio(`https://cdn.islamic.network/quran/audio/128/ar.alafasy/${globalNum}.mp3`);
     audioRef.current = a;
     setPlaying(true);
-    a.play().then(() => onListen()).catch(() => { setPlaying(false); onError && onError(); });
-    a.onended = () => setPlaying(false);
+    a.play().catch(() => { setPlaying(false); onError && onError(); });
+    a.onended = () => { setPlaying(false); onListen(); };
     a.onerror = () => { setPlaying(false); onError && onError(); };
   }
 
@@ -401,8 +401,8 @@ export default function SessionPage() {
         alignItems: 'center',
         animation: 'slideDown 0.5s ease both',
       }}>
-        <button onClick={() => router.push('/dashboard')}
-          style={{ background: 'none', border: 'none', color: '#fff', fontSize: '22px', cursor: 'pointer', padding: '11px', justifySelf: 'start', lineHeight: 1, minWidth: '44px', minHeight: '44px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <button onClick={() => { if (!saving) router.push('/dashboard'); }}
+          style={{ background: 'none', border: 'none', color: '#fff', fontSize: '22px', cursor: saving ? 'default' : 'pointer', padding: '11px', justifySelf: 'start', lineHeight: 1, minWidth: '44px', minHeight: '44px', display: 'flex', alignItems: 'center', justifyContent: 'center', pointerEvents: saving ? 'none' : 'auto', opacity: saving ? 0.5 : 1 }}>
           ←
         </button>
         <div style={{ textAlign: 'center' }}>

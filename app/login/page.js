@@ -13,6 +13,10 @@ export default function LoginPage() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [pageVisible, setPageVisible] = useState(false);
+  const [forgotMode, setForgotMode] = useState(false);
+  const [forgotEmail, setForgotEmail] = useState('');
+  const [forgotSent, setForgotSent] = useState(false);
+  const [forgotLoading, setForgotLoading] = useState(false);
 
   useEffect(() => {
     async function checkAuth() {
@@ -22,6 +26,17 @@ export default function LoginPage() {
     }
     checkAuth();
   }, [router]);
+
+  async function handleForgot(e) {
+    e.preventDefault();
+    if (!forgotEmail.trim()) return;
+    setForgotLoading(true);
+    await supabase.auth.resetPasswordForEmail(forgotEmail.trim(), {
+      redirectTo: 'https://zainly-alpha.vercel.app/reset-password',
+    });
+    setForgotLoading(false);
+    setForgotSent(true);
+  }
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -126,88 +141,127 @@ export default function LoginPage() {
           Continue là où tu t&apos;es arrêté.
         </p>
 
-        {/* Formulaire */}
-        <form onSubmit={handleSubmit} noValidate style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-          {/* Email */}
-          <input
-            type="email"
-            required
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="ton@email.com"
-            style={inputStyle}
-            onFocus={(e) => (e.target.style.borderColor = '#163026')}
-            onBlur={(e) => (e.target.style.borderColor = '#E2D9CC')}
-          />
-
-          {/* Mot de passe */}
-          <div style={{ position: 'relative' }}>
+        {forgotMode ? (
+          /* ── Forgot password mode ── */
+          <div>
+            {forgotSent ? (
+              <p style={{ fontSize: '14px', color: '#163026', backgroundColor: 'rgba(22,48,38,0.06)', borderRadius: '8px', padding: '12px 16px', textAlign: 'center', margin: 0 }}>
+                Un lien de réinitialisation a été envoyé à ton email.
+              </p>
+            ) : (
+              <form onSubmit={handleForgot} noValidate style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                <input
+                  type="email"
+                  required
+                  value={forgotEmail}
+                  onChange={(e) => setForgotEmail(e.target.value)}
+                  placeholder="ton@email.com"
+                  style={inputStyle}
+                  onFocus={(e) => (e.target.style.borderColor = '#163026')}
+                  onBlur={(e) => (e.target.style.borderColor = '#E2D9CC')}
+                />
+                <button type="submit" disabled={forgotLoading} className="font-playfair" style={{ width: '100%', padding: '16px', fontSize: '17px', fontWeight: 600, backgroundColor: '#163026', color: '#FFFFFF', border: 'none', borderRadius: '12px', cursor: forgotLoading ? 'not-allowed' : 'pointer', opacity: forgotLoading ? 0.7 : 1 }}>
+                  {forgotLoading ? 'Envoi...' : 'Envoyer le lien'}
+                </button>
+              </form>
+            )}
+            <p style={{ textAlign: 'center', marginTop: '16px', fontSize: '14px', color: '#6B6357' }}>
+              <button type="button" onClick={() => { setForgotMode(false); setForgotSent(false); setForgotEmail(''); }} style={{ background: 'none', border: 'none', color: '#163026', fontWeight: 500, textDecoration: 'underline', cursor: 'pointer', fontSize: '14px', padding: 0 }}>
+                Retour à la connexion
+              </button>
+            </p>
+          </div>
+        ) : (
+          /* ── Normal login mode ── */
+          <form onSubmit={handleSubmit} noValidate style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+            {/* Email */}
             <input
-              type={showPassword ? 'text' : 'password'}
+              type="email"
               required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Ton mot de passe"
-              style={{ ...inputStyle, paddingRight: '48px' }}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="ton@email.com"
+              style={inputStyle}
               onFocus={(e) => (e.target.style.borderColor = '#163026')}
               onBlur={(e) => (e.target.style.borderColor = '#E2D9CC')}
             />
-            <button
-              type="button"
-              onClick={() => setShowPassword((v) => !v)}
-              style={{
-                position: 'absolute',
-                right: '8px',
-                top: '50%',
-                transform: 'translateY(-50%)',
-                background: 'none',
-                border: 'none',
-                cursor: 'pointer',
-                padding: '12px',
-                color: '#6B6357',
-                display: 'flex',
-                alignItems: 'center',
-                minWidth: '44px',
-                minHeight: '44px',
-                justifyContent: 'center',
-              }}
-              aria-label={showPassword ? 'Masquer le mot de passe' : 'Afficher le mot de passe'}
-            >
-              {showPassword ? <EyeOff /> : <EyeOn />}
-            </button>
-          </div>
 
-          {/* Erreur */}
-          {error && (
-            <p style={{ fontSize: '13px', color: '#c0392b', margin: 0 }}>
-              {error}
+            {/* Mot de passe */}
+            <div style={{ position: 'relative' }}>
+              <input
+                type={showPassword ? 'text' : 'password'}
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Ton mot de passe"
+                style={{ ...inputStyle, paddingRight: '48px' }}
+                onFocus={(e) => (e.target.style.borderColor = '#163026')}
+                onBlur={(e) => (e.target.style.borderColor = '#E2D9CC')}
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword((v) => !v)}
+                style={{
+                  position: 'absolute',
+                  right: '8px',
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                  padding: '12px',
+                  color: '#6B6357',
+                  display: 'flex',
+                  alignItems: 'center',
+                  minWidth: '44px',
+                  minHeight: '44px',
+                  justifyContent: 'center',
+                }}
+                aria-label={showPassword ? 'Masquer le mot de passe' : 'Afficher le mot de passe'}
+              >
+                {showPassword ? <EyeOff /> : <EyeOn />}
+              </button>
+            </div>
+
+            {/* Mot de passe oublié */}
+            <p style={{ margin: '-8px 0 0', textAlign: 'right', fontSize: '13px' }}>
+              <button type="button" onClick={() => setForgotMode(true)} style={{ background: 'none', border: 'none', color: '#6B6357', cursor: 'pointer', fontSize: '13px', padding: 0, textDecoration: 'underline' }}>
+                Mot de passe oublié ?
+              </button>
             </p>
-          )}
 
-          {/* Submit */}
-          <button
-            type="submit"
-            disabled={loading}
-            className="font-playfair"
-            style={{
-              width: '100%',
-              padding: '16px',
-              fontSize: '17px',
-              fontWeight: 600,
-              backgroundColor: '#163026',
-              color: '#FFFFFF',
-              border: 'none',
-              borderRadius: '12px',
-              cursor: loading ? 'not-allowed' : 'pointer',
-              opacity: loading ? 0.7 : 1,
-              transition: 'opacity 0.2s',
-            }}
-            onMouseEnter={(e) => { if (!loading) e.currentTarget.style.opacity = '0.88'; }}
-            onMouseLeave={(e) => { if (!loading) e.currentTarget.style.opacity = '1'; }}
-          >
-            {loading ? 'Chargement...' : 'Se connecter →'}
-          </button>
-        </form>
+            {/* Erreur */}
+            {error && (
+              <p style={{ fontSize: '13px', color: '#c0392b', margin: 0 }}>
+                {error}
+              </p>
+            )}
+
+            {/* Submit */}
+            <button
+              type="submit"
+              disabled={loading}
+              className="font-playfair"
+              style={{
+                width: '100%',
+                padding: '16px',
+                fontSize: '17px',
+                fontWeight: 600,
+                backgroundColor: '#163026',
+                color: '#FFFFFF',
+                border: 'none',
+                borderRadius: '12px',
+                cursor: loading ? 'not-allowed' : 'pointer',
+                opacity: loading ? 0.7 : 1,
+                transition: 'opacity 0.2s',
+              }}
+              onMouseEnter={(e) => { if (!loading) e.currentTarget.style.opacity = '0.88'; }}
+              onMouseLeave={(e) => { if (!loading) e.currentTarget.style.opacity = '1'; }}
+            >
+              {loading ? 'Chargement...' : 'Se connecter →'}
+            </button>
+          </form>
+        )}
 
         {/* Register link */}
         <p style={{ textAlign: 'center', marginTop: '24px', fontSize: '14px', color: '#6B6357' }}>

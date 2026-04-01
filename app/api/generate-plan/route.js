@@ -63,8 +63,8 @@ export async function POST(request) {
         minutesPerSession:    p.minutes_per_session,
         memorizationMinutes:  p.memorization_minutes,
         revisionMinutes:      p.revision_minutes,
-        estimatedDays:        p.estimated_days,
-        estimatedMonths:      p.estimated_months,
+        estimatedDays:        null,
+        estimatedMonths:      null,
         motivationPhrase:     p.motivation_phrase,
       })
     }

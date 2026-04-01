@@ -268,8 +268,6 @@ export default function OnboardingPage() {
         motivation_phrase: planData.motivationPhrase ?? intention,
         first_surah_name: planData.firstSurahName ?? 'An-Naba',
         surah_start: planData.surahStart ?? 78,
-        estimated_days: planData.estimatedDays ?? null,
-        estimated_months: planData.estimatedMonths ?? null,
       };
       // Save plan — try insert first, fall back to update if row already exists
       const { error: planInsertErr } = await supabase.from('plans').insert(planPayload);

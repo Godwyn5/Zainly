@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
+import { adaptPlan } from '@/lib/adaptive-algorithm';
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -64,6 +65,8 @@ export default function DonePage() {
     async function loadData() {
       const { data: { user: authUser }, error: userErr } = await supabase.auth.getUser();
       if (userErr || !authUser) { router.push('/login'); return; }
+
+      await adaptPlan(supabase, authUser.id);
 
       const startToday    = startOfTodayUTC();
       const startTomorrow = startOfTomorrowUTC();

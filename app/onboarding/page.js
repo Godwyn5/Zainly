@@ -271,28 +271,40 @@ export default function OnboardingPage() {
         estimated_days: planData.estimatedDays ?? null,
         estimated_months: planData.estimatedMonths ?? null,
       };
-      const { error: planErr } = await supabase
-        .from('plans')
-        .upsert(planPayload, { onConflict: 'user_id' });
-      if (planErr) {
-        allTimers.forEach(clearTimeout);
-        throw new Error('Erreur de sauvegarde. V\u00e9rifie ta connexion et r\u00e9essaie.');
+      // Save plan — try insert first, fall back to update if row already exists
+      const { error: planInsertErr } = await supabase.from('plans').insert(planPayload);
+      if (planInsertErr) {
+        if (planInsertErr.code === '23505' || planInsertErr.message?.includes('duplicate')) {
+          // Row exists — update it instead
+          const { error: planUpdateErr } = await supabase
+            .from('plans')
+            .update(planPayload)
+            .eq('user_id', user.id);
+          if (planUpdateErr) {
+            allTimers.forEach(clearTimeout);
+            console.error('[onboarding] plan update error:', planUpdateErr);
+            throw new Error(`Sauvegarde plan échouée: ${planUpdateErr.message}`);
+          }
+        } else {
+          allTimers.forEach(clearTimeout);
+          console.error('[onboarding] plan insert error:', planInsertErr);
+          throw new Error(`Sauvegarde plan échouée: ${planInsertErr.message}`);
+        }
       }
 
-      const progressPayload = {
+      // Save progress — only insert if no row yet (never reset existing progress)
+      const { error: progErr } = await supabase.from('progress').insert({
         user_id: user.id,
         current_surah: planData.surahStart ?? 78,
         current_ayah: 0,
         streak: 0,
         total_memorized: 0,
         session_dates: [],
-      };
-      const { error: progErr } = await supabase
-        .from('progress')
-        .upsert(progressPayload, { onConflict: 'user_id', ignoreDuplicates: true });
-      if (progErr) {
+      });
+      if (progErr && progErr.code !== '23505' && !progErr.message?.includes('duplicate')) {
         allTimers.forEach(clearTimeout);
-        throw new Error('Erreur de sauvegarde. Vérifie ta connexion et réessaie.');
+        console.error('[onboarding] progress insert error:', progErr);
+        throw new Error(`Sauvegarde progression échouée: ${progErr.message}`);
       }
 
       allTimers.forEach(clearTimeout);

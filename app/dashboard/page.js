@@ -110,6 +110,8 @@ export default function DashboardPage() {
   const [loading, setLoading]       = useState(true);
   const [fetchError, setFetchError] = useState(null);
   const [activeTab, setActiveTab]   = useState('today');
+  const [recoveryMode, setRecoveryMode] = useState(false);
+  const [recoveryDismissed, setRecoveryDismissed] = useState(false);
 
   // ── Feedback state ──
   const [feedbackOpen, setFeedbackOpen]       = useState(false);
@@ -165,6 +167,15 @@ export default function DashboardPage() {
       setProgress(progressData);
       setReviews(reviewData ?? []);
       setFetchError(realError);
+
+      const lastSession = progressData?.last_session_date;
+      if (lastSession) {
+        const daysSince = Math.floor(
+          (new Date(today) - new Date(lastSession)) / (1000 * 60 * 60 * 24)
+        );
+        if (daysSince >= 5) setRecoveryMode(true);
+      }
+
       setLoading(false);
     }
     loadData();
@@ -308,8 +319,58 @@ export default function DashboardPage() {
           </div>
         </div>
 
+        {/* ── RECOVERY CARD ── */}
+        {recoveryMode && !recoveryDismissed && (() => {
+          const lastSession = progress?.last_session_date;
+          const daysSince = lastSession
+            ? Math.floor((new Date(today) - new Date(lastSession)) / (1000 * 60 * 60 * 24))
+            : 0;
+          return (
+            <div style={{
+              margin: '-24px 16px 16px 16px',
+              background: 'linear-gradient(135deg, rgba(184,150,46,0.08), rgba(184,150,46,0.02))',
+              border: '1.5px solid #B8962E',
+              borderRadius: '20px',
+              padding: '24px',
+              animation: 'fadeUp 0.6s ease 0.15s both',
+            }}>
+              <p style={{ textAlign: 'center', fontSize: '32px', margin: '0 0 12px 0' }}>⚠️</p>
+              <p className="font-playfair" style={{ fontSize: '20px', fontWeight: 600, color: '#163026', textAlign: 'center', margin: '0 0 10px 0' }}>
+                Bienvenue de retour.
+              </p>
+              <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '14px', color: '#6B6357', textAlign: 'center', margin: '0 0 20px 0', lineHeight: 1.6 }}>
+                Tu étais absent(e) depuis {daysSince} jour{daysSince > 1 ? 's' : ''}. Avant de mémoriser de nouveaux ayats — révise d&apos;abord ce que tu as appris.
+              </p>
+              <button
+                type="button"
+                className="font-playfair"
+                onClick={() => router.push('/revision')}
+                style={{
+                  width: '100%', padding: '14px', fontSize: '16px', fontWeight: 600,
+                  color: '#fff', backgroundColor: '#B8962E',
+                  border: 'none', borderRadius: '12px', cursor: 'pointer',
+                  marginBottom: '12px',
+                }}
+              >
+                Réviser mes ayats →
+              </button>
+              <button
+                type="button"
+                onClick={() => setRecoveryDismissed(true)}
+                style={{
+                  width: '100%', padding: '10px',
+                  fontFamily: 'DM Sans, sans-serif', fontSize: '14px', color: '#6B6357',
+                  background: 'transparent', border: 'none', cursor: 'pointer', textAlign: 'center',
+                }}
+              >
+                Continuer quand même
+              </button>
+            </div>
+          );
+        })()}
+
         {/* ── SESSION CARD ── */}
-        <div style={{ margin: '-24px 16px 0 16px', ...card, borderRadius: '24px', boxShadow: '0 20px 60px rgba(15,35,24,0.15)', padding: '28px', animation: 'fadeUp 0.6s ease 0.2s both' }}>
+        <div style={{ margin: recoveryMode && !recoveryDismissed ? '0 16px 0 16px' : '-24px 16px 0 16px', ...card, borderRadius: '24px', boxShadow: '0 20px 60px rgba(15,35,24,0.15)', padding: '28px', animation: 'fadeUp 0.6s ease 0.2s both' }}>
           <span style={{ fontFamily: 'DM Sans, sans-serif', fontWeight: 500, fontSize: '10px', letterSpacing: '2px', color: '#B8962E', textTransform: 'uppercase' }}>AUJOURD&apos;HUI</span>
 
           <div style={{ marginTop: '16px' }}>

@@ -137,7 +137,7 @@ export default function DonePage() {
   }
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: '#F5F0E6', position: 'relative', overflow: 'hidden' }}>
+    <div style={{ minHeight: '100vh', backgroundColor: '#F5F0E6', position: 'relative', overflow: 'visible' }}>
       <style>{CSS}</style>
 
       {/* Background calligraphy */}
@@ -178,7 +178,7 @@ export default function DonePage() {
 
         {/* ── TITLE ── */}
         <h1 className="font-playfair" style={{
-          fontSize: '42px', fontWeight: 600, color: '#163026',
+          fontSize: 'clamp(28px, 8vw, 42px)', fontWeight: 600, color: '#163026',
           margin: '24px 0 0 0', lineHeight: 1.2,
           animation: 'fadeUp 0.5s ease 0.5s both',
         }}>

@@ -35,6 +35,31 @@ export async function POST(request) {
       return NextResponse.json({ error: 'Non autorisé.' }, { status: 401 })
     }
 
+    // ── Deduplication: return existing plan if created within last 24h ──
+    const since24h = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()
+    const { data: existingPlans } = await supabase
+      .from('plans')
+      .select('*')
+      .eq('user_id', user.id)
+      .gte('created_at', since24h)
+      .order('created_at', { ascending: false })
+      .limit(1)
+    if (existingPlans && existingPlans.length > 0) {
+      const p = existingPlans[0]
+      return NextResponse.json({
+        surahStart:           p.surah_start,
+        firstSurahName:       p.first_surah_name,
+        ayahPerDay:           p.ayah_per_day,
+        daysPerWeek:          p.days_per_week,
+        minutesPerSession:    p.minutes_per_session,
+        memorizationMinutes:  p.memorization_minutes,
+        revisionMinutes:      p.revision_minutes,
+        estimatedDays:        p.estimated_days,
+        estimatedMonths:      p.estimated_months,
+        motivationPhrase:     p.motivation_phrase,
+      })
+    }
+
     // ── Input validation ──
     const body = await request.json()
     const { intention, niveau, temps, objectif, sourates } = body

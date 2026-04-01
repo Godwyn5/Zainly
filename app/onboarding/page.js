@@ -675,6 +675,7 @@ export default function OnboardingPage() {
               style={{
                 padding: '16px 48px',
                 minWidth: '280px',
+                maxWidth: 'calc(100vw - 48px)',
                 fontSize: '17px',
                 fontWeight: 600,
                 backgroundColor: '#163026',
@@ -766,7 +767,7 @@ const calligStyle = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  fontSize: '40vw',
+  fontSize: 'min(40vw, 300px)',
   color: '#163026',
   opacity: 0.04,
   pointerEvents: 'none',

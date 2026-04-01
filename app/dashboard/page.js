@@ -754,7 +754,7 @@ export default function DashboardPage() {
         backdropFilter: 'blur(20px)',
         WebkitBackdropFilter: 'blur(20px)',
         borderTop: '1px solid rgba(22,48,38,0.08)',
-        padding: '12px 0 20px 0',
+        padding: '12px 0 calc(20px + env(safe-area-inset-bottom)) 0',
         display: 'flex', justifyContent: 'center', gap: '32px',
         zIndex: 100,
       }}>

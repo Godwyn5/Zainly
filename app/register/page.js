@@ -16,6 +16,7 @@ export default function RegisterPage() {
   const [loading, setLoading] = useState(false);
   const [pageVisible, setPageVisible] = useState(false);
   const [confirmMsg, setConfirmMsg] = useState('');
+  const [pwdFocused, setPwdFocused] = useState(false);
 
   useEffect(() => {
     async function checkAuth() {
@@ -162,6 +163,8 @@ export default function RegisterPage() {
             <input
               type="text"
               required
+              autoComplete="given-name"
+              maxLength={50}
               value={prenom}
               onChange={(e) => { setPrenom(e.target.value); if (prenomError) setPrenomError(''); }}
               placeholder="Ton prénom"
@@ -178,6 +181,7 @@ export default function RegisterPage() {
           <input
             type="email"
             required
+            autoComplete="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="ton@email.com"
@@ -191,12 +195,13 @@ export default function RegisterPage() {
             <input
               type={showPassword ? 'text' : 'password'}
               required
+              autoComplete="new-password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Crée un mot de passe"
               style={{ ...inputStyle, paddingRight: '48px' }}
-              onFocus={(e) => (e.target.style.borderColor = '#163026')}
-              onBlur={(e) => (e.target.style.borderColor = '#E2D9CC')}
+              onFocus={(e) => { e.target.style.borderColor = '#163026'; setPwdFocused(true); }}
+              onBlur={(e) => { e.target.style.borderColor = '#E2D9CC'; setPwdFocused(false); }}
             />
             <button
               type="button"
@@ -222,7 +227,9 @@ export default function RegisterPage() {
               {showPassword ? <EyeOff /> : <EyeOn />}
             </button>
           </div>
-          <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '12px', color: '#6B6357', margin: '4px 0 0 2px' }}>8 caractères minimum</p>
+          {(pwdFocused || password.length > 0) && (
+            <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '12px', color: '#6B6357', margin: '4px 0 0 2px' }}>8 caractères minimum</p>
+          )}
 
           {/* Confirmation email */}
           {confirmMsg && (

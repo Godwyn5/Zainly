@@ -68,7 +68,7 @@ function AudioButton({ globalNum }) {
     a.onerror = () => setPlaying(false);
   }
 
-  useEffect(() => () => { if (audioRef.current) audioRef.current.pause(); }, []);
+  useEffect(() => () => { if (audioRef.current) { audioRef.current.pause(); audioRef.current = null; } }, []);
   useEffect(() => {
     if (audioRef.current) { audioRef.current.pause(); audioRef.current = null; }
     setPlaying(false);
@@ -377,7 +377,10 @@ export default function RevisionPage() {
           <div style={{ borderTop: '1px solid #E2D9CC', margin: '24px 0' }} />
 
           {/* Arabic — hidden until revealed */}
-          <div style={{ overflow: 'hidden', transition: 'opacity 0.4s ease', opacity: revealed ? 1 : 0, pointerEvents: revealed ? 'auto' : 'none' }}>
+          <div
+            aria-hidden={!revealed}
+            style={{ overflow: 'hidden', transition: 'opacity 0.4s ease', opacity: revealed ? 1 : 0, pointerEvents: revealed ? 'auto' : 'none', userSelect: revealed ? 'auto' : 'none' }}
+          >
             <p className="font-amiri" style={{ fontSize: 'clamp(26px, 6vw, 42px)', fontWeight: 700, color: '#163026', textAlign: 'center', direction: 'rtl', lineHeight: 1.8, margin: 0, overflowWrap: 'break-word', wordBreak: 'break-word' }}>
               {item?.arabicText}
             </p>

@@ -352,6 +352,7 @@ export default function Home() {
                 <input
                   type="email"
                   required
+                  autoComplete="email"
                   placeholder="ton@email.com"
                   value={newsletterEmail}
                   onChange={(e) => setNewsletterEmail(e.target.value)}
@@ -408,7 +409,7 @@ export default function Home() {
         }}
       >
         <p style={{ fontSize: '13px', color: '#6B6357', margin: 0 }}>
-          © 2026 Zainly. Tous droits réservés.
+          © {new Date().getFullYear()} Zainly. Tous droits réservés.
         </p>
       </footer>
     </div>

@@ -101,13 +101,15 @@ export async function POST(request) {
     else if (objectif === 'Mémoriser le Coran complet') { surahStart = 1;   firstSurahName = 'Al-Fatiha' }
 
     if (objectif !== 'Finir une sourate courte' && Array.isArray(sourates) && sourates.length > 0) {
-      const knownIndices = sourates.map(s => SURAH_LIST.indexOf(s)).filter(i => i >= 0)
-      if (knownIndices.length > 0) {
-        const maxKnown  = Math.max(...knownIndices)
-        const nextIndex = maxKnown + 1
-        if (nextIndex < SURAH_LIST.length) {
-          surahStart     = nextIndex + 1
-          firstSurahName = SURAH_LIST[nextIndex]
+      const knownSet = new Set(sourates.map(s => SURAH_LIST.indexOf(s)).filter(i => i >= 0))
+      if (knownSet.size > 0) {
+        // Find the first consecutive index from 0 that is NOT known
+        let consecutiveEnd = 0
+        while (knownSet.has(consecutiveEnd)) consecutiveEnd++
+        // consecutiveEnd is now the first unknown index in the consecutive chain from 0
+        if (consecutiveEnd > 0 && consecutiveEnd < SURAH_LIST.length) {
+          surahStart     = consecutiveEnd + 1
+          firstSurahName = SURAH_LIST[consecutiveEnd]
         }
       }
     }

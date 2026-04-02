@@ -224,7 +224,10 @@ export default function OnboardingPage() {
   }
 
   function setPartialRange(s, field, val) {
-    setPartialSurahs(p => ({ ...p, [s]: { ...(p[s] || {}), [field]: val === '' ? '' : Number(val) } }));
+    const num = parseInt(val);
+    if (!isNaN(num) && num >= 1) {
+      setPartialSurahs(p => ({ ...p, [s]: { ...(p[s] || {}), [field]: num } }));
+    }
   }
 
   async function startGeneration() {
@@ -653,7 +656,7 @@ export default function OnboardingPage() {
               <div style={{ textAlign: 'center', marginBottom: '16px' }}>
                 <button
                   type="button"
-                  onClick={() => setSourates([])}
+                  onClick={() => { setSourates([]); setPartialSurahs({}); setExpandedPartial(null); }}
                   style={{
                     padding: '10px 28px',
                     fontSize: '14px',

@@ -104,31 +104,54 @@ export async function POST(request) {
     // startAyah: within surahStart, which ayah to begin from (1-based, default 1)
     let startAyah = 1
 
+    // Bug 5 — sanitize partialSurahs: parse to int, reject invalid ranges
+    const sanitizedPartials = {}
+    if (partialSurahs && typeof partialSurahs === 'object') {
+      for (const [name, range] of Object.entries(partialSurahs)) {
+        const from = parseInt(range?.from) || 1
+        const to   = parseInt(range?.to)   || 1
+        if (from >= 1 && to >= from) {
+          sanitizedPartials[name] = { from, to }
+        }
+      }
+    }
+
     if (objectif !== 'Finir une sourate courte' && Array.isArray(sourates) && sourates.length > 0) {
-      const knownSet = new Set(sourates.map(s => SURAH_LIST.indexOf(s)).filter(i => i >= 0))
-      if (knownSet.size > 0) {
-        // Find the first consecutive index from 0 that is NOT fully known
-        // A partial surah is NOT in the full knownSet — it's only partially known
-        const partial = (partialSurahs && typeof partialSurahs === 'object') ? partialSurahs : {}
-        // Build a set of fully-known indices (not partial)
-        const fullyKnownSet = new Set(
-          sourates
-            .filter(s => !partial[s])  // exclude partial ones
-            .map(s => SURAH_LIST.indexOf(s))
-            .filter(i => i >= 0)
-        )
+      // Build a set of fully-known indices (exclude partials — Bug 3: removed dead knownSet)
+      const fullyKnownSet = new Set(
+        sourates
+          .filter(s => !sanitizedPartials[s])
+          .map(s => SURAH_LIST.indexOf(s))
+          .filter(i => i >= 0)
+      )
+      if (fullyKnownSet.size > 0 || Object.keys(sanitizedPartials).length > 0) {
         let consecutiveEnd = 0
         while (fullyKnownSet.has(consecutiveEnd)) consecutiveEnd++
         if (consecutiveEnd > 0 && consecutiveEnd < SURAH_LIST.length) {
           surahStart     = consecutiveEnd + 1
           firstSurahName = SURAH_LIST[consecutiveEnd]
         }
-        // If surahStart itself is a partial surah, begin right after last known ayah
-        const startName = SURAH_LIST[surahStart - 1]
-        if (startName && partial[startName]) {
-          const { to } = partial[startName]
+        // Bug 1+2 — if no fully-known surahs but partials exist, use first partial as surahStart
+        if (consecutiveEnd === 0 && Object.keys(sanitizedPartials).length > 0) {
+          const firstPartialName = SURAH_LIST.find(s => sanitizedPartials[s])
+          if (firstPartialName) {
+            surahStart     = SURAH_LIST.indexOf(firstPartialName) + 1
+            firstSurahName = firstPartialName
+          }
+        }
+        // Determine startAyah if surahStart is a partial surah
+        const startName  = SURAH_LIST[surahStart - 1]
+        const partialRow = sanitizedPartials[startName]
+        if (partialRow) {
           const surahTotal = SURAH_AYAT[surahStart - 1] ?? 1
-          startAyah = Math.min((to ?? 0) + 1, surahTotal)
+          // Bug 4 — if user knows up to or past last ayah, advance to next surah
+          if (partialRow.to >= surahTotal) {
+            surahStart     = Math.min(surahStart + 1, 114)
+            firstSurahName = SURAH_LIST[surahStart - 1]
+            startAyah      = 1
+          } else {
+            startAyah = partialRow.to + 1
+          }
         }
       }
     }
@@ -152,13 +175,11 @@ export async function POST(request) {
       totalAyats = SURAH_AYAT.reduce((a, b) => a + b, 0)
     }
     if (Array.isArray(sourates) && sourates.length > 0) {
-      const partial = (partialSurahs && typeof partialSurahs === 'object') ? partialSurahs : {}
       const knownAyats = sourates.reduce((total, s) => {
         const idx = SURAH_LIST.indexOf(s)
         if (idx < 0) return total
-        if (partial[s]) {
-          // Only count the known range, not the whole surah
-          const { from = 1, to = 1 } = partial[s]
+        if (sanitizedPartials[s]) {
+          const { from, to } = sanitizedPartials[s]
           return total + Math.max(0, to - from + 1)
         }
         return total + SURAH_AYAT[idx]

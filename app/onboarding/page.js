@@ -152,6 +152,8 @@ export default function OnboardingPage() {
   const [temps, setTemps] = useState('');
   const [objectif, setObjectif] = useState('');
   const [sourates, setSourates] = useState([]);
+  const [partialSurahs, setPartialSurahs] = useState({}); // { [surahName]: { from, to } }
+  const [expandedPartial, setExpandedPartial] = useState(null); // surah name being edited
   const [visible, setVisible] = useState(true);
   const [pageVisible, setPageVisible] = useState(false);
 
@@ -210,9 +212,19 @@ export default function OnboardingPage() {
   }
 
   function toggleSourate(s) {
-    setSourates((prev) =>
-      prev.includes(s) ? prev.filter((x) => x !== s) : [...prev, s]
-    );
+    setSourates((prev) => {
+      const next = prev.includes(s) ? prev.filter((x) => x !== s) : [...prev, s];
+      // If unchecked, remove any partial data
+      if (prev.includes(s)) {
+        setPartialSurahs(p => { const n = { ...p }; delete n[s]; return n; });
+        if (expandedPartial === s) setExpandedPartial(null);
+      }
+      return next;
+    });
+  }
+
+  function setPartialRange(s, field, val) {
+    setPartialSurahs(p => ({ ...p, [s]: { ...(p[s] || {}), [field]: val === '' ? '' : Number(val) } }));
   }
 
   async function startGeneration() {
@@ -260,7 +272,7 @@ export default function OnboardingPage() {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${accessToken}`,
         },
-        body: JSON.stringify({ intention, niveau, temps: tempsKey, objectif, sourates }),
+        body: JSON.stringify({ intention, niveau, temps: tempsKey, objectif, sourates, partialSurahs }),
       });
       const planData = await res.json();
 
@@ -309,7 +321,7 @@ export default function OnboardingPage() {
         const { error: progErr } = await supabase.from('progress').insert({
           user_id: user.id,
           current_surah: planData.surahStart ?? 78,
-          current_ayah: 0,
+          current_ayah: planData.startAyah != null ? planData.startAyah - 1 : 0,
           streak: 0,
           total_memorized: 0,
           session_dates: [],
@@ -669,31 +681,105 @@ export default function OnboardingPage() {
                   padding: '8px 0',
                 }}
               >
-                {SOURATES.map((s, i) => (
-                  <label
-                    key={s}
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '14px',
-                      padding: '12px 20px',
-                      cursor: 'pointer',
-                      backgroundColor: sourates.includes(s) ? 'rgba(22,48,38,0.04)' : 'transparent',
-                      transition: 'background-color 0.15s',
-                    }}
-                  >
-                    <input
-                      type="checkbox"
-                      checked={sourates.includes(s)}
-                      onChange={() => toggleSourate(s)}
-                      style={{ accentColor: '#163026', width: '16px', height: '16px', cursor: 'pointer' }}
-                    />
-                    <span style={{ fontSize: '15px', color: '#163026' }}>
-                      <span style={{ color: '#6B6357', marginRight: '8px', fontSize: '13px' }}>{i + 1}.</span>
-                      {s}
-                    </span>
-                  </label>
-                ))}
+                {SOURATES.map((s, i) => {
+                  const checked = sourates.includes(s);
+                  const isExpanded = expandedPartial === s;
+                  const partial = partialSurahs[s];
+                  return (
+                    <div key={s}>
+                      <label
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '14px',
+                          padding: '12px 20px',
+                          cursor: 'pointer',
+                          backgroundColor: checked ? 'rgba(22,48,38,0.04)' : 'transparent',
+                          transition: 'background-color 0.15s',
+                        }}
+                      >
+                        <input
+                          type="checkbox"
+                          checked={checked}
+                          onChange={() => toggleSourate(s)}
+                          style={{ accentColor: '#163026', width: '16px', height: '16px', cursor: 'pointer', flexShrink: 0 }}
+                        />
+                        <span style={{ fontSize: '15px', color: '#163026', flex: 1 }}>
+                          <span style={{ color: '#6B6357', marginRight: '8px', fontSize: '13px' }}>{i + 1}.</span>
+                          {s}
+                          {partial && (
+                            <span style={{ marginLeft: '8px', fontSize: '12px', color: '#B8962E' }}>
+                              (ayat {partial.from}–{partial.to})
+                            </span>
+                          )}
+                        </span>
+                        {checked && (
+                          <button
+                            type="button"
+                            onClick={e => { e.preventDefault(); setExpandedPartial(isExpanded ? null : s); }}
+                            style={{
+                              background: 'transparent', border: 'none',
+                              fontFamily: 'DM Sans, sans-serif', fontSize: '12px',
+                              color: '#B8962E', cursor: 'pointer', padding: '4px',
+                              flexShrink: 0,
+                            }}
+                          >
+                            Préciser les ayats
+                          </button>
+                        )}
+                      </label>
+                      {checked && isExpanded && (
+                        <div
+                          style={{
+                            display: 'flex', alignItems: 'center', gap: '8px',
+                            padding: '8px 20px 12px 50px',
+                            backgroundColor: 'rgba(184,150,46,0.05)',
+                          }}
+                          onClick={e => e.preventDefault()}
+                        >
+                          <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '13px', color: '#6B6357' }}>De l&apos;ayat</span>
+                          <input
+                            type="number"
+                            min={1}
+                            value={partial?.from ?? ''}
+                            onChange={e => setPartialRange(s, 'from', e.target.value)}
+                            style={{
+                              width: '56px', padding: '6px 8px', borderRadius: '8px',
+                              border: '1.5px solid #E2D9CC', fontFamily: 'DM Sans, sans-serif',
+                              fontSize: '14px', color: '#163026', textAlign: 'center',
+                              outline: 'none',
+                            }}
+                          />
+                          <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '13px', color: '#6B6357' }}>à l&apos;ayat</span>
+                          <input
+                            type="number"
+                            min={1}
+                            value={partial?.to ?? ''}
+                            onChange={e => setPartialRange(s, 'to', e.target.value)}
+                            style={{
+                              width: '56px', padding: '6px 8px', borderRadius: '8px',
+                              border: '1.5px solid #E2D9CC', fontFamily: 'DM Sans, sans-serif',
+                              fontSize: '14px', color: '#163026', textAlign: 'center',
+                              outline: 'none',
+                            }}
+                          />
+                          <button
+                            type="button"
+                            onClick={() => setExpandedPartial(null)}
+                            style={{
+                              padding: '6px 14px', borderRadius: '8px',
+                              backgroundColor: '#163026', color: '#fff',
+                              border: 'none', fontFamily: 'DM Sans, sans-serif',
+                              fontSize: '13px', cursor: 'pointer',
+                            }}
+                          >
+                            OK
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
             </div>
           )}

@@ -75,7 +75,8 @@ export async function POST(request) {
 
     // ── Input validation ──
     const body = await request.json()
-    const { intention, niveau, temps, objectif, sourates } = body
+    const { intention, niveau, temps, objectif, sourates, partialSurahs } = body
+    // partialSurahs: { [surahName]: { from: number, to: number } } — optional
     if (
       typeof intention !== 'string' || !intention.trim() ||
       typeof niveau    !== 'string' || !niveau.trim()    ||
@@ -100,16 +101,34 @@ export async function POST(request) {
     if (objectif === 'Finir une sourate courte')    { surahStart = 112; firstSurahName = 'Al-Ikhlas' }
     else if (objectif === 'Mémoriser le Coran complet') { surahStart = 1;   firstSurahName = 'Al-Fatiha' }
 
+    // startAyah: within surahStart, which ayah to begin from (1-based, default 1)
+    let startAyah = 1
+
     if (objectif !== 'Finir une sourate courte' && Array.isArray(sourates) && sourates.length > 0) {
       const knownSet = new Set(sourates.map(s => SURAH_LIST.indexOf(s)).filter(i => i >= 0))
       if (knownSet.size > 0) {
-        // Find the first consecutive index from 0 that is NOT known
+        // Find the first consecutive index from 0 that is NOT fully known
+        // A partial surah is NOT in the full knownSet — it's only partially known
+        const partial = (partialSurahs && typeof partialSurahs === 'object') ? partialSurahs : {}
+        // Build a set of fully-known indices (not partial)
+        const fullyKnownSet = new Set(
+          sourates
+            .filter(s => !partial[s])  // exclude partial ones
+            .map(s => SURAH_LIST.indexOf(s))
+            .filter(i => i >= 0)
+        )
         let consecutiveEnd = 0
-        while (knownSet.has(consecutiveEnd)) consecutiveEnd++
-        // consecutiveEnd is now the first unknown index in the consecutive chain from 0
+        while (fullyKnownSet.has(consecutiveEnd)) consecutiveEnd++
         if (consecutiveEnd > 0 && consecutiveEnd < SURAH_LIST.length) {
           surahStart     = consecutiveEnd + 1
           firstSurahName = SURAH_LIST[consecutiveEnd]
+        }
+        // If surahStart itself is a partial surah, begin right after last known ayah
+        const startName = SURAH_LIST[surahStart - 1]
+        if (startName && partial[startName]) {
+          const { to } = partial[startName]
+          const surahTotal = SURAH_AYAT[surahStart - 1] ?? 1
+          startAyah = Math.min((to ?? 0) + 1, surahTotal)
         }
       }
     }
@@ -133,9 +152,16 @@ export async function POST(request) {
       totalAyats = SURAH_AYAT.reduce((a, b) => a + b, 0)
     }
     if (Array.isArray(sourates) && sourates.length > 0) {
+      const partial = (partialSurahs && typeof partialSurahs === 'object') ? partialSurahs : {}
       const knownAyats = sourates.reduce((total, s) => {
         const idx = SURAH_LIST.indexOf(s)
-        return idx >= 0 ? total + SURAH_AYAT[idx] : total
+        if (idx < 0) return total
+        if (partial[s]) {
+          // Only count the known range, not the whole surah
+          const { from = 1, to = 1 } = partial[s]
+          return total + Math.max(0, to - from + 1)
+        }
+        return total + SURAH_AYAT[idx]
       }, 0)
       totalAyats = Math.max(0, totalAyats - knownAyats)
     }
@@ -152,6 +178,7 @@ export async function POST(request) {
     return NextResponse.json({
       surahStart,
       firstSurahName,
+      startAyah,
       ayahPerDay,
       daysPerWeek,
       minutesPerSession,

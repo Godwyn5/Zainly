@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 
@@ -143,9 +143,17 @@ function CountUp({ target, duration = 1200, suffix = '' }) {
 // ─── Main component ───────────────────────────────────────────────────────────
 
 export default function OnboardingPage() {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const isReset = searchParams.get('reset') === 'true';
+  return (
+    <Suspense>
+      <OnboardingInner />
+    </Suspense>
+  );
+}
+
+function OnboardingInner() {
+  const router        = useRouter();
+  const searchParams  = useSearchParams();
+  const isReset       = searchParams.get('reset') === 'true';
   const [currentStep, setCurrentStep] = useState(1);
   const [intention, setIntention] = useState('');
   const [niveau, setNiveau] = useState('');

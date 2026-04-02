@@ -116,7 +116,8 @@ export async function POST(request) {
       }
     }
 
-    if (objectif !== 'Finir une sourate courte' && Array.isArray(sourates) && sourates.length > 0) {
+    const objectifFixedStart = objectif === 'Finir une sourate courte' || objectif === 'Mémoriser le Juz Amma' || objectif === 'Mémoriser le Coran complet'
+    if (!objectifFixedStart && Array.isArray(sourates) && sourates.length > 0) {
       // Build a set of fully-known indices (exclude partials — Bug 3: removed dead knownSet)
       const fullyKnownSet = new Set(
         sourates

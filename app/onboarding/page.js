@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 
 // ─── Data ────────────────────────────────────────────────────────────────────
@@ -144,6 +144,8 @@ function CountUp({ target, duration = 1200, suffix = '' }) {
 
 export default function OnboardingPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const isReset = searchParams.get('reset') === 'true';
   const [currentStep, setCurrentStep] = useState(1);
   const [intention, setIntention] = useState('');
   const [niveau, setNiveau] = useState('');
@@ -166,19 +168,21 @@ export default function OnboardingPage() {
     async function checkExistingPlan() {
       const { data: { user }, error: userErr } = await supabase.auth.getUser();
       if (userErr || !user) { router.push('/login'); return; }
-      const { data: existingPlan } = await supabase
-        .from('plans')
-        .select('id')
-        .eq('user_id', user.id)
-        .limit(1);
-      if (existingPlan && existingPlan.length > 0) {
-        router.push('/dashboard');
-        return;
+      if (!isReset) {
+        const { data: existingPlan } = await supabase
+          .from('plans')
+          .select('id')
+          .eq('user_id', user.id)
+          .limit(1);
+        if (existingPlan && existingPlan.length > 0) {
+          router.push('/dashboard');
+          return;
+        }
       }
       setTimeout(() => setPageVisible(true), 100);
     }
     checkExistingPlan();
-  }, [router]);
+  }, [router, isReset]);
 
   // Animate question transitions
   function goToStep(next) {
@@ -234,6 +238,14 @@ export default function OnboardingPage() {
       const { data: { user }, error: userError } = await supabase.auth.getUser();
       if (userError || !user) throw new Error('Utilisateur non connecté.');
       setPrenom(user.user_metadata?.prenom || '');
+
+      // In reset mode: wipe existing plan + progress so the new insert never hits a duplicate
+      if (isReset) {
+        await Promise.all([
+          supabase.from('plans').delete().eq('user_id', user.id),
+          supabase.from('progress').delete().eq('user_id', user.id),
+        ]);
+      }
 
       const { data: { session }, error: sessionErr } = await supabase.auth.getSession();
       if (sessionErr || !session?.access_token) throw new Error('Session expirée. Reconnecte-toi.');

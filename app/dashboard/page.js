@@ -115,6 +115,27 @@ export default function DashboardPage() {
   const [recoveryMode, setRecoveryMode] = useState(false);
   const [recoveryDismissed, setRecoveryDismissed] = useState(false);
 
+  // ── Modifier programme state ──
+  const [editOpen, setEditOpen]           = useState(false);
+  const [editView, setEditView]           = useState('menu'); // 'menu' | 'rythme'
+  const [editSaving, setEditSaving]       = useState(false);
+  const [editSuccess, setEditSuccess]     = useState(false);
+
+  async function saveRythme(newVal) {
+    if (editSaving) return;
+    setEditSaving(true);
+    const [{ error: e1 }, { error: e2 }] = await Promise.all([
+      supabase.from('plans').update({ ayah_per_day: newVal }).eq('user_id', user.id),
+      supabase.from('progress').update({ ayah_per_day: newVal }).eq('user_id', user.id),
+    ]);
+    setEditSaving(false);
+    if (e1) { console.error('[dashboard] plans ayah_per_day update error:', e1); return; }
+    if (e2) console.warn('[dashboard] progress ayah_per_day update (non-fatal):', e2);
+    setPlan(p => ({ ...p, ayah_per_day: newVal }));
+    setEditSuccess(true);
+    setTimeout(() => { setEditSuccess(false); setEditOpen(false); setEditView('menu'); }, 1200);
+  }
+
   // ── Feedback state ──
   const [feedbackOpen, setFeedbackOpen]       = useState(false);
   const [feedbackText, setFeedbackText]       = useState('');
@@ -434,6 +455,162 @@ export default function DashboardPage() {
             >Commencer la session →</button>
           )}
         </div>
+
+        {/* ── MODIFIER PROGRAMME BUTTON ── */}
+        <div style={{ margin: '12px 16px 0 16px', textAlign: 'center' }}>
+          <button
+            type="button"
+            onClick={() => { setEditView('menu'); setEditOpen(true); }}
+            onMouseEnter={e => { e.currentTarget.style.borderColor = '#163026'; e.currentTarget.style.color = '#163026'; }}
+            onMouseLeave={e => { e.currentTarget.style.borderColor = '#E2D9CC'; e.currentTarget.style.color = '#6B6357'; }}
+            style={{
+              background: 'transparent',
+              border: '1.5px solid #E2D9CC',
+              borderRadius: '12px',
+              padding: '12px 20px',
+              fontFamily: 'DM Sans, sans-serif',
+              fontSize: '14px',
+              color: '#6B6357',
+              cursor: 'pointer',
+              transition: 'border-color 0.2s, color 0.2s',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '8px',
+            }}
+          >
+            <span>✏️</span>
+            <span>Modifier mon programme</span>
+          </button>
+        </div>
+
+        {/* ── MODAL MODIFIER PROGRAMME ── */}
+        {editOpen && (
+          <div
+            onClick={() => { if (!editSaving) { setEditOpen(false); setEditView('menu'); } }}
+            style={{
+              position: 'fixed', inset: 0,
+              backgroundColor: 'rgba(0,0,0,0.4)',
+              zIndex: 200,
+              display: 'flex', alignItems: 'flex-end', justifyContent: 'center',
+            }}
+          >
+            <div
+              onClick={e => e.stopPropagation()}
+              style={{
+                width: '100%', maxWidth: '520px',
+                backgroundColor: '#F5F0E6',
+                borderRadius: '24px 24px 0 0',
+                padding: '28px 24px calc(28px + env(safe-area-inset-bottom, 0px))',
+                animation: 'fadeUp 0.25s ease both',
+              }}
+            >
+              {editView === 'menu' && (
+                <>
+                  <p className="font-playfair" style={{ fontSize: '20px', fontWeight: 600, color: '#163026', margin: '0 0 20px 0', textAlign: 'center' }}>
+                    Modifier mon programme
+                  </p>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                    <button
+                      type="button"
+                      onClick={() => router.push('/onboarding?reset=true')}
+                      style={{
+                        width: '100%', padding: '16px', textAlign: 'left',
+                        backgroundColor: '#fff', border: '1.5px solid #E2D9CC',
+                        borderRadius: '14px', cursor: 'pointer',
+                        fontFamily: 'DM Sans, sans-serif', fontSize: '15px', color: '#163026',
+                        display: 'flex', alignItems: 'center', gap: '12px',
+                        transition: 'border-color 0.2s',
+                      }}
+                      onMouseEnter={e => e.currentTarget.style.borderColor = '#163026'}
+                      onMouseLeave={e => e.currentTarget.style.borderColor = '#E2D9CC'}
+                    >
+                      <span style={{ fontSize: '22px' }}>🕌</span>
+                      <div>
+                        <p style={{ margin: 0, fontWeight: 600 }}>Changer ma sourate de départ</p>
+                        <p style={{ margin: '2px 0 0', fontSize: '12px', color: '#6B6357' }}>Refaire l&apos;onboarding complet</p>
+                      </div>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setEditView('rythme')}
+                      style={{
+                        width: '100%', padding: '16px', textAlign: 'left',
+                        backgroundColor: '#fff', border: '1.5px solid #E2D9CC',
+                        borderRadius: '14px', cursor: 'pointer',
+                        fontFamily: 'DM Sans, sans-serif', fontSize: '15px', color: '#163026',
+                        display: 'flex', alignItems: 'center', gap: '12px',
+                        transition: 'border-color 0.2s',
+                      }}
+                      onMouseEnter={e => e.currentTarget.style.borderColor = '#163026'}
+                      onMouseLeave={e => e.currentTarget.style.borderColor = '#E2D9CC'}
+                    >
+                      <span style={{ fontSize: '22px' }}>⚡</span>
+                      <div>
+                        <p style={{ margin: 0, fontWeight: 600 }}>Changer mon rythme</p>
+                        <p style={{ margin: '2px 0 0', fontSize: '12px', color: '#6B6357' }}>Actuellement {plan.ayah_per_day ?? 2} ayat / jour</p>
+                      </div>
+                    </button>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setEditOpen(false)}
+                    style={{ marginTop: '16px', width: '100%', padding: '12px', background: 'none', border: 'none', fontFamily: 'DM Sans, sans-serif', fontSize: '14px', color: '#6B6357', cursor: 'pointer' }}
+                  >
+                    Annuler
+                  </button>
+                </>
+              )}
+
+              {editView === 'rythme' && (
+                <>
+                  <button
+                    type="button"
+                    onClick={() => setEditView('menu')}
+                    style={{ background: 'none', border: 'none', fontFamily: 'DM Sans, sans-serif', fontSize: '14px', color: '#6B6357', cursor: 'pointer', padding: 0, marginBottom: '16px' }}
+                  >
+                    ← Retour
+                  </button>
+                  <p className="font-playfair" style={{ fontSize: '20px', fontWeight: 600, color: '#163026', margin: '0 0 8px 0', textAlign: 'center' }}>
+                    Changer mon rythme
+                  </p>
+                  <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '13px', color: '#6B6357', textAlign: 'center', margin: '0 0 20px 0' }}>
+                    Combien d&apos;ayats veux-tu mémoriser par jour ?
+                  </p>
+                  {editSuccess ? (
+                    <p style={{ textAlign: 'center', fontFamily: 'DM Sans, sans-serif', fontSize: '15px', color: '#163026', padding: '16px 0' }}>✓ Rythme mis à jour</p>
+                  ) : (
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+                      {[1, 2, 3, 4].map(val => (
+                        <button
+                          key={val}
+                          type="button"
+                          disabled={editSaving}
+                          onClick={() => saveRythme(val)}
+                          style={{
+                            padding: '18px 12px',
+                            backgroundColor: (plan.ayah_per_day ?? 2) === val ? '#163026' : '#fff',
+                            color: (plan.ayah_per_day ?? 2) === val ? '#fff' : '#163026',
+                            border: '1.5px solid',
+                            borderColor: (plan.ayah_per_day ?? 2) === val ? '#163026' : '#E2D9CC',
+                            borderRadius: '14px',
+                            cursor: editSaving ? 'wait' : 'pointer',
+                            fontFamily: 'DM Sans, sans-serif',
+                            fontSize: '15px',
+                            fontWeight: 600,
+                            opacity: editSaving ? 0.6 : 1,
+                            transition: 'all 0.15s',
+                          }}
+                        >
+                          {val} ayat / jour
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </>
+              )}
+            </div>
+          </div>
+        )}
 
         {/* ── PROGRESSION CARD ── */}
         <div style={{ margin: '24px 16px 0 16px', ...card, padding: '24px 28px', animation: 'fadeUp 0.6s ease 0.4s both' }}>

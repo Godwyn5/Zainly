@@ -256,10 +256,15 @@ export default function OnboardingPage() {
 
       // In reset mode: wipe existing plan + progress so the new insert never hits a duplicate
       if (isReset) {
-        await Promise.all([
+        const [{ error: delPlanErr }, { error: delProgErr }] = await Promise.all([
           supabase.from('plans').delete().eq('user_id', user.id),
           supabase.from('progress').delete().eq('user_id', user.id),
         ]);
+        if (delPlanErr || delProgErr) {
+          allTimers.forEach(clearTimeout);
+          console.error('[onboarding] reset delete error:', delPlanErr || delProgErr);
+          throw new Error('Erreur lors de la réinitialisation. Réessaie.');
+        }
       }
 
       const { data: { session }, error: sessionErr } = await supabase.auth.getSession();

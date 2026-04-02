@@ -555,6 +555,21 @@ export default function SessionPage() {
                     {listenCount === 2 && 'Encore une fois — écoute 3 sur 3'}
                     {listenCount >= 3 && 'Parfait — tu peux passer au test ✓'}
                   </p>
+                  <button
+                    type="button"
+                    onClick={() => { setListenCount(3); setSessionPhase('test'); }}
+                    onMouseEnter={e => { e.currentTarget.style.color = '#6B6357'; }}
+                    onMouseLeave={e => { e.currentTarget.style.color = '#999999'; }}
+                    style={{
+                      display: 'block', margin: '12px auto 0',
+                      background: 'transparent', border: 'none',
+                      fontFamily: 'DM Sans, sans-serif', fontSize: '13px',
+                      color: '#999999', cursor: 'pointer', padding: '8px',
+                      transition: 'color 0.15s',
+                    }}
+                  >
+                    Je connais déjà cet ayat →
+                  </button>
                 </div>
               )}
 

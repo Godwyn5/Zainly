@@ -53,6 +53,26 @@ export default function RootLayout({ children }) {
       >
         {children}
         <Script
+          id="sw-register"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('/sw.js').then(reg => {
+                  reg.addEventListener('updatefound', () => {
+                    const newWorker = reg.installing;
+                    newWorker.addEventListener('statechange', () => {
+                      if (newWorker.state === 'activated') {
+                        window.location.reload();
+                      }
+                    });
+                  });
+                });
+              }
+            `
+          }}
+        />
+        <Script
           id="microsoft-clarity"
           strategy="afterInteractive"
           dangerouslySetInnerHTML={{

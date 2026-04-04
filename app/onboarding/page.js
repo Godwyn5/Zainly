@@ -330,14 +330,18 @@ function OnboardingInner() {
         }
       }
 
-      // Save progress — only insert if no row exists yet (never reset existing progress)
+      // Save progress — insert if missing, always update current_surah/current_ayah
+      const correctSurah = planData.surahStart ?? 78;
+      const correctAyah  = planData.startAyah != null ? planData.startAyah - 1 : 0;
+
       const { data: existingProg } = await supabase
         .from('progress').select('user_id').eq('user_id', user.id).limit(1);
+
       if (!existingProg || existingProg.length === 0) {
         const { error: progErr } = await supabase.from('progress').insert({
           user_id: user.id,
-          current_surah: planData.surahStart ?? 78,
-          current_ayah: planData.startAyah != null ? planData.startAyah - 1 : 0,
+          current_surah: correctSurah,
+          current_ayah: correctAyah,
           streak: 0,
           total_memorized: 0,
           session_dates: [],
@@ -346,6 +350,17 @@ function OnboardingInner() {
           allTimers.forEach(clearTimeout);
           console.error('[onboarding] progress insert error:', progErr);
           throw new Error(`Sauvegarde progression échouée: ${progErr.message}`);
+        }
+      } else {
+        // Progress exists — always sync the starting position to the new plan
+        const { error: progUpdateErr } = await supabase
+          .from('progress')
+          .update({ current_surah: correctSurah, current_ayah: correctAyah })
+          .eq('user_id', user.id);
+        if (progUpdateErr) {
+          allTimers.forEach(clearTimeout);
+          console.error('[onboarding] progress update error:', progUpdateErr);
+          throw new Error(`Sauvegarde progression échouée: ${progUpdateErr.message}`);
         }
       }
 

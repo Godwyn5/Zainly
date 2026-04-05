@@ -134,7 +134,7 @@ function OnboardingInner() {
 
   const [step, setStep]                   = useState(1); // 1=rythme, 2=sourates
   const [ayahPerDay, setAyahPerDay]       = useState(null);
-  const [sourates, setSourates]           = useState(['Al-Fatiha']);
+  const [sourates, setSourates]           = useState([]);
   const [partialSurahs, setPartialSurahs] = useState({});
   const [expandedPartial, setExpandedPartial] = useState(null);
   const [visible, setVisible]             = useState(true);
@@ -169,7 +169,6 @@ function OnboardingInner() {
   }
 
   function toggleSourate(s) {
-    if (s === 'Al-Fatiha') return; // always required
     setSourates(prev => {
       const next = prev.includes(s) ? prev.filter(x => x !== s) : [...prev, s];
       if (prev.includes(s)) {
@@ -461,7 +460,7 @@ function OnboardingInner() {
                 Quelles sourates maitrise-tu deja ?
               </h1>
               <p className="font-playfair" style={{ fontSize: '16px', fontStyle: 'italic', color: '#6B6357', textAlign: 'center', margin: '0 0 24px 0', lineHeight: 1.6 }}>
-                Coche celles que tu connais — Zainly commencera apres.
+                Coche celles que tu maitrise deja — si aucune, Zainly commence par Al-Fatiha.
               </p>
 
               {/* Estimated years badge */}
@@ -477,7 +476,7 @@ function OnboardingInner() {
               <div style={{ textAlign: 'center', marginBottom: '12px' }}>
                 <button
                   type="button"
-                  onClick={() => { setSourates(['Al-Fatiha']); setPartialSurahs({}); setExpandedPartial(null); }}
+                  onClick={() => { setSourates([]); setPartialSurahs({}); setExpandedPartial(null); }}
                   style={{
                     padding: '10px 28px', fontSize: '14px', fontWeight: 500, cursor: 'pointer',
                     border: `1.5px solid ${sourates.length === 0 ? '#163026' : '#E2D9CC'}`,
@@ -497,16 +496,14 @@ function OnboardingInner() {
                   const isExpanded = expandedPartial === s;
                   const partial = partialSurahs[s];
                   const qNum = QURAN_ORDER.indexOf(s) + 1;
-                  const isMandatory = s === 'Al-Fatiha';
                   return (
                     <div key={s}>
-                      <label style={{ display: 'flex', alignItems: 'center', gap: '14px', padding: '12px 20px', cursor: isMandatory ? 'default' : 'pointer', backgroundColor: checked ? 'rgba(22,48,38,0.04)' : 'transparent', transition: 'background-color 0.15s' }}>
+                      <label style={{ display: 'flex', alignItems: 'center', gap: '14px', padding: '12px 20px', cursor: 'pointer', backgroundColor: checked ? 'rgba(22,48,38,0.04)' : 'transparent', transition: 'background-color 0.15s' }}>
                         <input
                           type="checkbox"
                           checked={checked}
                           onChange={() => toggleSourate(s)}
-                          disabled={isMandatory}
-                          style={{ accentColor: '#163026', width: '16px', height: '16px', cursor: isMandatory ? 'default' : 'pointer', flexShrink: 0, opacity: isMandatory ? 0.5 : 1 }}
+                          style={{ accentColor: '#163026', width: '16px', height: '16px', cursor: 'pointer', flexShrink: 0 }}
                         />
                         <span style={{ fontSize: '15px', color: '#163026', flex: 1 }}>
                           <span style={{ color: '#6B6357', marginRight: '6px', fontSize: '12px' }}>{qNum}.</span>

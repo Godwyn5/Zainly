@@ -7,8 +7,9 @@ import { nextZainlySurah, ZAINLY_INDEX_BY_SURAH } from '@/lib/zainlyOrder';
 import { useTajweed } from '@/lib/useTajweed';
 import TajweedText from '@/components/TajweedText';
 
-let cachedQuran = null;
+let cachedQuran   = null;
 let cachedQuranFr = null;
+let cachedTajweed = null;
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -171,16 +172,19 @@ export default function SessionPage() {
       setPlan(plRow);
 
       // Load quran files (use module-level cache to avoid re-fetching)
-      if (!cachedQuran || !cachedQuranFr) {
-        const [q, qfr] = await Promise.all([
+      if (!cachedQuran || !cachedQuranFr || !cachedTajweed) {
+        const [q, qfr, qtj] = await Promise.all([
           fetch('/data/quran.json').then(r => r.json()),
           fetch('/data/quran_fr.json').then(r => r.json()),
+          fetch('/data/quran_tajweed.json').then(r => r.json()).catch(() => ({})),
         ]);
-        cachedQuran = q;
+        cachedQuran   = q;
         cachedQuranFr = qfr;
+        cachedTajweed = qtj;
       }
       const quran   = cachedQuran;
       const quranFr = cachedQuranFr;
+      const tajweed = cachedTajweed;
       quranDataRef.current = quran;
 
       let currentSurah = progRow.current_surah ?? 1;
@@ -238,7 +242,8 @@ export default function SessionPage() {
           .filter(v => v.id >= startAyah && v.id <= endAyah)
           .map(v => ({
             ...v,
-            translation: surahFr?.verses?.find(fv => fv.id === v.id)?.translation ?? '',
+            translation:      surahFr?.verses?.find(fv => fv.id === v.id)?.translation ?? '',
+            tajweedSegments:  tajweed[`${currentSurah}_${v.id}`] ?? null,
           }));
 
         setSurahName(surah.transliteration ?? surah.name ?? `Sourate ${currentSurah}`);

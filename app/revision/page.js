@@ -6,8 +6,9 @@ import { supabase } from '@/lib/supabase';
 import { useTajweed } from '@/lib/useTajweed';
 import TajweedText from '@/components/TajweedText';
 
-let cachedQuran = null;
+let cachedQuran   = null;
 let cachedQuranFr = null;
+let cachedTajweed = null;
 
 // ─── SRS ─────────────────────────────────────────────────────────────────────
 
@@ -145,16 +146,19 @@ export default function RevisionPage() {
         return;
       }
 
-      if (!cachedQuran || !cachedQuranFr) {
-        const [q, qfr] = await Promise.all([
+      if (!cachedQuran || !cachedQuranFr || !cachedTajweed) {
+        const [q, qfr, qtj] = await Promise.all([
           fetch('/data/quran.json').then(r => r.json()),
           fetch('/data/quran_fr.json').then(r => r.json()),
+          fetch('/data/quran_tajweed.json').then(r => r.json()).catch(() => ({})),
         ]);
-        cachedQuran = q;
+        cachedQuran   = q;
         cachedQuranFr = qfr;
+        cachedTajweed = qtj;
       }
       const quran   = cachedQuran;
       const quranFr = cachedQuranFr;
+      const tajweed = cachedTajweed;
 
       if (!reviewData || reviewData.length === 0) {
         setItems([]);
@@ -178,6 +182,7 @@ export default function RevisionPage() {
           translation:     verseFr?.translation ?? '',
           surahLabel:      surah?.transliteration ?? surah?.name ?? `Sourate ${item.surah_number}`,
           globalNum,
+          tajweedSegments: tajweed[`${item.surah_number ?? 1}_${ayatId}`] ?? null,
         };
       });
 

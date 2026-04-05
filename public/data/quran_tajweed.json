@@ -1,0 +1,11384 @@
+{
+  "1_1": [
+    {
+      "text": "بِسۡمِ ٱللَّهِ ٱلرَّحۡمَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "نِ ٱلرَّحِ",
+      "rule": null
+    },
+    {
+      "text": "ي",
+      "rule": "madd"
+    },
+    {
+      "text": "مِ",
+      "rule": null
+    }
+  ],
+  "1_2": [
+    {
+      "text": "ٱلۡحَمۡدُ لِلَّهِ رَبِّ ٱلۡعَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "لَمِ",
+      "rule": null
+    },
+    {
+      "text": "ي",
+      "rule": "madd"
+    },
+    {
+      "text": "نَ",
+      "rule": null
+    }
+  ],
+  "1_3": [
+    {
+      "text": "ٱلرَّحۡمَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "نِ ٱلرَّحِ",
+      "rule": null
+    },
+    {
+      "text": "ي",
+      "rule": "madd"
+    },
+    {
+      "text": "مِ",
+      "rule": null
+    }
+  ],
+  "1_4": [
+    {
+      "text": "مَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "لِكِ يَوۡمِ ٱلدِّ",
+      "rule": null
+    },
+    {
+      "text": "ي",
+      "rule": "madd"
+    },
+    {
+      "text": "نِ",
+      "rule": null
+    }
+  ],
+  "1_5": [
+    {
+      "text": "إِيَّاكَ نَعۡبُدُ وَإِيَّاكَ نَسۡتَعِ",
+      "rule": null
+    },
+    {
+      "text": "ي",
+      "rule": "madd"
+    },
+    {
+      "text": "نُ",
+      "rule": null
+    }
+  ],
+  "1_6": [
+    {
+      "text": "ٱهۡدِنَا ٱلصِّرَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "طَ ٱلۡمُسۡتَقِ",
+      "rule": null
+    },
+    {
+      "text": "ي",
+      "rule": "madd"
+    },
+    {
+      "text": "مَ",
+      "rule": null
+    }
+  ],
+  "1_7": [
+    {
+      "text": "صِرَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "طَ ٱلَّذِينَ أَنۡعَمۡتَ عَلَيۡهِمۡ غَيۡرِ ٱلۡمَغۡضُوبِ عَلَيۡهِمۡ وَلَا ٱلضَّ",
+      "rule": null
+    },
+    {
+      "text": "آ",
+      "rule": "madd"
+    },
+    {
+      "text": "لِّ",
+      "rule": null
+    },
+    {
+      "text": "ي",
+      "rule": "madd"
+    },
+    {
+      "text": "نَ",
+      "rule": null
+    }
+  ],
+  "78_2": [
+    {
+      "text": "عَنِ ٱل",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "بَإِ ٱلۡعَظِ",
+      "rule": null
+    },
+    {
+      "text": "ي",
+      "rule": "madd"
+    },
+    {
+      "text": "مِ",
+      "rule": null
+    }
+  ],
+  "78_3": [
+    {
+      "text": "ٱلَّذِي هُمۡ فِيهِ مُخۡتَلِفُ",
+      "rule": null
+    },
+    {
+      "text": "و",
+      "rule": "madd"
+    },
+    {
+      "text": "نَ",
+      "rule": null
+    }
+  ],
+  "78_4": [
+    {
+      "text": "كَلَّا سَيَعۡلَمُ",
+      "rule": null
+    },
+    {
+      "text": "و",
+      "rule": "madd"
+    },
+    {
+      "text": "نَ",
+      "rule": null
+    }
+  ],
+  "78_5": [
+    {
+      "text": "ثُ",
+      "rule": null
+    },
+    {
+      "text": "مَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": " كَلَّا سَيَعۡلَمُ",
+      "rule": null
+    },
+    {
+      "text": "و",
+      "rule": "madd"
+    },
+    {
+      "text": "نَ",
+      "rule": null
+    }
+  ],
+  "78_6": [
+    {
+      "text": "أَلَمۡ نَ",
+      "rule": null
+    },
+    {
+      "text": "جۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "عَلِ ٱلۡأَرۡضَ مِهَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "دٗا",
+      "rule": null
+    }
+  ],
+  "78_8": [
+    {
+      "text": "وَخَلَ",
+      "rule": null
+    },
+    {
+      "text": "قۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "نَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "كُمۡ أَزۡوَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "جٗا",
+      "rule": null
+    }
+  ],
+  "78_11": [
+    {
+      "text": "وَجَعَلۡنَا ٱل",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "هَارَ مَعَاشٗا",
+      "rule": null
+    }
+  ],
+  "78_12": [
+    {
+      "text": "وَبَنَيۡنَا فَوۡقَكُمۡ سَ",
+      "rule": null
+    },
+    {
+      "text": "بۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "ع",
+      "rule": null
+    },
+    {
+      "text": "ٗا شِ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "دَادٗا",
+      "rule": null
+    }
+  ],
+  "78_13": [
+    {
+      "text": "وَجَعَلۡنَا سِرَاج",
+      "rule": null
+    },
+    {
+      "text": "ٗا وَ",
+      "rule": "idgham"
+    },
+    {
+      "text": "هَّاجٗا",
+      "rule": null
+    }
+  ],
+  "78_14": [
+    {
+      "text": "وَأَ",
+      "rule": null
+    },
+    {
+      "text": "نزَ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "لۡنَا مِنَ ٱلۡمُعۡصِرَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "تِ مَ",
+      "rule": null
+    },
+    {
+      "text": "آ",
+      "rule": "madd"
+    },
+    {
+      "text": "ء",
+      "rule": null
+    },
+    {
+      "text": "ٗ ثَ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "جَّاجٗا",
+      "rule": null
+    }
+  ],
+  "78_15": [
+    {
+      "text": "لِّنُخۡرِجَ بِهِ",
+      "rule": null
+    },
+    {
+      "text": "ۦ",
+      "rule": "madd"
+    },
+    {
+      "text": " حَبّ",
+      "rule": null
+    },
+    {
+      "text": "ٗا وَ",
+      "rule": "idgham"
+    },
+    {
+      "text": "نَبَاتٗا",
+      "rule": null
+    }
+  ],
+  "78_16": [
+    {
+      "text": "وَجَ",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "ـ",
+      "rule": "madd"
+    },
+    {
+      "text": "ٰتٍ أَلۡفَافًا",
+      "rule": null
+    }
+  ],
+  "78_17": [
+    {
+      "text": "إِ",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": " يَوۡمَ ٱلۡفَصۡلِ كَانَ مِيقَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "تٗا",
+      "rule": null
+    }
+  ],
+  "78_18": [
+    {
+      "text": "يَوۡمَ يُ",
+      "rule": null
+    },
+    {
+      "text": "نفَ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "خُ فِي ٱلصُّورِ فَتَأۡتُونَ أَفۡوَاجٗا",
+      "rule": null
+    }
+  ],
+  "78_19": [
+    {
+      "text": "وَفُتِحَتِ ٱلسَّمَ",
+      "rule": null
+    },
+    {
+      "text": "آ",
+      "rule": "madd"
+    },
+    {
+      "text": "ءُ فَكَانَتۡ أَ",
+      "rule": null
+    },
+    {
+      "text": "بۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "وَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "بٗا",
+      "rule": null
+    }
+  ],
+  "78_21": [
+    {
+      "text": "إِ",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": " جَهَ",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "مَ كَانَتۡ مِرۡصَادٗا",
+      "rule": null
+    }
+  ],
+  "78_22": [
+    {
+      "text": "لِّلطَّ",
+      "rule": null
+    },
+    {
+      "text": "ـ",
+      "rule": "madd"
+    },
+    {
+      "text": "ٰغِينَ مَـَٔابٗا",
+      "rule": null
+    }
+  ],
+  "78_23": [
+    {
+      "text": "لَّ",
+      "rule": null
+    },
+    {
+      "text": "ـ",
+      "rule": "madd"
+    },
+    {
+      "text": "ٰبِثِينَ فِيه",
+      "rule": null
+    },
+    {
+      "text": "َا",
+      "rule": "madd"
+    },
+    {
+      "text": "ٓ أَحۡقَابٗا",
+      "rule": null
+    }
+  ],
+  "78_24": [
+    {
+      "text": "لَّا يَذُوقُونَ فِيهَا بَرۡد",
+      "rule": null
+    },
+    {
+      "text": "ٗا وَ",
+      "rule": "idgham"
+    },
+    {
+      "text": "لَا شَرَابًا",
+      "rule": null
+    }
+  ],
+  "78_25": [
+    {
+      "text": "إِلَّا حَمِيم",
+      "rule": null
+    },
+    {
+      "text": "ٗا وَ",
+      "rule": "idgham"
+    },
+    {
+      "text": "غَسَّاقٗا",
+      "rule": null
+    }
+  ],
+  "78_26": [
+    {
+      "text": "جَزَ",
+      "rule": null
+    },
+    {
+      "text": "آ",
+      "rule": "madd"
+    },
+    {
+      "text": "ء",
+      "rule": null
+    },
+    {
+      "text": "ٗ وِ",
+      "rule": "idgham"
+    },
+    {
+      "text": "فَاقًا",
+      "rule": null
+    }
+  ],
+  "78_27": [
+    {
+      "text": "إِ",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "هُمۡ كَانُواْ لَا يَرۡجُونَ حِسَابٗا",
+      "rule": null
+    }
+  ],
+  "78_28": [
+    {
+      "text": "وَكَذَّبُواْ بِـَٔايَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "تِنَا كِذَّابٗا",
+      "rule": null
+    }
+  ],
+  "78_29": [
+    {
+      "text": "وَكُلَّ شَيۡءٍ أَحۡصَيۡنَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "هُ كِتَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "بٗا",
+      "rule": null
+    }
+  ],
+  "78_30": [
+    {
+      "text": "فَذُوقُواْ فَلَ",
+      "rule": null
+    },
+    {
+      "text": "ن نَّ",
+      "rule": "idgham"
+    },
+    {
+      "text": "زِيدَكُمۡ إِلَّا عَذَابًا",
+      "rule": null
+    }
+  ],
+  "78_31": [
+    {
+      "text": "إِ",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": " لِلۡمُتَّقِينَ مَفَازًا",
+      "rule": null
+    }
+  ],
+  "78_32": [
+    {
+      "text": "حَدَ",
+      "rule": null
+    },
+    {
+      "text": "آ",
+      "rule": "madd"
+    },
+    {
+      "text": "ئِقَ وَأَعۡنَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "بٗا",
+      "rule": null
+    }
+  ],
+  "78_34": [
+    {
+      "text": "وَكَأۡس",
+      "rule": null
+    },
+    {
+      "text": "ٗا دِ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "هَاقٗا",
+      "rule": null
+    }
+  ],
+  "78_35": [
+    {
+      "text": "لَّا يَسۡمَعُونَ فِيهَا لَغۡو",
+      "rule": null
+    },
+    {
+      "text": "ٗا وَ",
+      "rule": "idgham"
+    },
+    {
+      "text": "لَا كِذَّ",
+      "rule": null
+    },
+    {
+      "text": "ـ",
+      "rule": "madd"
+    },
+    {
+      "text": "ٰبٗا",
+      "rule": null
+    }
+  ],
+  "78_36": [
+    {
+      "text": "جَزَ",
+      "rule": null
+    },
+    {
+      "text": "آ",
+      "rule": "madd"
+    },
+    {
+      "text": "ء",
+      "rule": null
+    },
+    {
+      "text": "ٗ مِّن رَّ",
+      "rule": "idgham"
+    },
+    {
+      "text": "بِّكَ عَطَ",
+      "rule": null
+    },
+    {
+      "text": "آ",
+      "rule": "madd"
+    },
+    {
+      "text": "ءً حِسَابٗا",
+      "rule": null
+    }
+  ],
+  "78_37": [
+    {
+      "text": "رَّبِّ ٱلسَّمَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "وَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "تِ وَٱلۡأَرۡضِ وَمَا بَيۡنَهُمَا ٱلرَّحۡمَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "نِۖ لَا يَمۡلِكُونَ مِنۡهُ خِطَابٗا",
+      "rule": null
+    }
+  ],
+  "78_38": [
+    {
+      "text": "يَوۡمَ يَقُومُ ٱلرُّوحُ وَٱلۡمَلَ",
+      "rule": null
+    },
+    {
+      "text": "ـٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "ٓئِكَةُ صَف",
+      "rule": null
+    },
+    {
+      "text": "ّٗاۖ ل",
+      "rule": "idgham"
+    },
+    {
+      "text": "َّا يَتَكَلَّمُونَ إِلَّا مَنۡ أَذِنَ لَهُ ٱلرَّحۡ",
+      "rule": null
+    },
+    {
+      "text": "م",
+      "rule": "madd"
+    },
+    {
+      "text": "َٰنُ وَقَالَ صَوَابٗا",
+      "rule": null
+    }
+  ],
+  "78_39": [
+    {
+      "text": "ذَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "لِكَ ٱلۡيَوۡمُ ٱلۡحَقُّۖ فَم",
+      "rule": null
+    },
+    {
+      "text": "َن ش",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "َا",
+      "rule": "madd"
+    },
+    {
+      "text": "ٓءَ ٱتَّخَذَ إِلَىٰ رَبِّه",
+      "rule": null
+    },
+    {
+      "text": "ِ",
+      "rule": "madd"
+    },
+    {
+      "text": "ۦ مَـَٔابًا",
+      "rule": null
+    }
+  ],
+  "78_40": [
+    {
+      "text": "إِ",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "آ",
+      "rule": "madd"
+    },
+    {
+      "text": " أَ",
+      "rule": null
+    },
+    {
+      "text": "نذَ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "رۡنَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "كُمۡ عَذَاب",
+      "rule": null
+    },
+    {
+      "text": "ٗا قَ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "رِيب",
+      "rule": null
+    },
+    {
+      "text": "ٗا يَ",
+      "rule": "idgham"
+    },
+    {
+      "text": "وۡمَ يَ",
+      "rule": null
+    },
+    {
+      "text": "نظُ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "رُ ٱلۡمَرۡءُ مَا قَدَّمَتۡ يَدَاهُ وَيَقُولُ ٱلۡكَافِرُ يَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "لَيۡتَنِي كُ",
+      "rule": null
+    },
+    {
+      "text": "نتُ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": " تُرَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "بَۢا",
+      "rule": null
+    }
+  ],
+  "79_2": [
+    {
+      "text": "وَٱل",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "ـ",
+      "rule": "madd"
+    },
+    {
+      "text": "ٰشِط",
+      "rule": null
+    },
+    {
+      "text": "َ",
+      "rule": "madd"
+    },
+    {
+      "text": "ٰتِ نَشۡطٗا",
+      "rule": null
+    }
+  ],
+  "79_3": [
+    {
+      "text": "وَٱلسَّ",
+      "rule": null
+    },
+    {
+      "text": "ـ",
+      "rule": "madd"
+    },
+    {
+      "text": "ٰبِح",
+      "rule": null
+    },
+    {
+      "text": "َ",
+      "rule": "madd"
+    },
+    {
+      "text": "ٰتِ س",
+      "rule": null
+    },
+    {
+      "text": "َب",
+      "rule": "qalqala"
+    },
+    {
+      "text": "ۡحٗا",
+      "rule": null
+    }
+  ],
+  "79_4": [
+    {
+      "text": "فَٱلسَّ",
+      "rule": null
+    },
+    {
+      "text": "ـ",
+      "rule": "madd"
+    },
+    {
+      "text": "ٰبِق",
+      "rule": null
+    },
+    {
+      "text": "َ",
+      "rule": "madd"
+    },
+    {
+      "text": "ٰتِ س",
+      "rule": null
+    },
+    {
+      "text": "َب",
+      "rule": "qalqala"
+    },
+    {
+      "text": "ۡقٗا",
+      "rule": null
+    }
+  ],
+  "79_5": [
+    {
+      "text": "فَٱلۡمُدَبِّرَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "تِ أَمۡرٗا",
+      "rule": null
+    }
+  ],
+  "79_8": [
+    {
+      "text": "قُلُوب",
+      "rule": null
+    },
+    {
+      "text": "ٞ يَ",
+      "rule": "idgham"
+    },
+    {
+      "text": "وۡمَئِذ",
+      "rule": null
+    },
+    {
+      "text": "ٖ وَ",
+      "rule": "idgham"
+    },
+    {
+      "text": "اجِفَةٌ",
+      "rule": null
+    }
+  ],
+  "79_9": [
+    {
+      "text": "أَ",
+      "rule": null
+    },
+    {
+      "text": "بۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "صَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "رُهَا خَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "شِعَةٞ",
+      "rule": null
+    }
+  ],
+  "79_10": [
+    {
+      "text": "يَقُولُونَ أَءِ",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "ا لَمَرۡدُودُونَ فِي ٱلۡحَافِرَةِ",
+      "rule": null
+    }
+  ],
+  "79_11": [
+    {
+      "text": "أَءِذَا كُ",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "ا عِظَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "م",
+      "rule": null
+    },
+    {
+      "text": "ٗا نَّ",
+      "rule": "idgham"
+    },
+    {
+      "text": "خِرَةٗ",
+      "rule": null
+    }
+  ],
+  "79_12": [
+    {
+      "text": "قَالُواْ تِلۡكَ إِذ",
+      "rule": null
+    },
+    {
+      "text": "ٗا كَ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "رَّةٌ خَاسِرَةٞ",
+      "rule": null
+    }
+  ],
+  "79_13": [
+    {
+      "text": "فَإِ",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "مَا هِيَ زَ",
+      "rule": null
+    },
+    {
+      "text": "جۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "رَة",
+      "rule": null
+    },
+    {
+      "text": "ٞ وَ",
+      "rule": "idgham"
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "حِدَةٞ",
+      "rule": null
+    }
+  ],
+  "79_14": [
+    {
+      "text": "فَإِذَا هُ",
+      "rule": null
+    },
+    {
+      "text": "م بِ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "ٱلسَّاهِرَةِ",
+      "rule": null
+    }
+  ],
+  "79_15": [
+    {
+      "text": "هَلۡ أَتَى",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "كَ حَدِيثُ مُوسَىٰٓ",
+      "rule": null
+    }
+  ],
+  "79_16": [
+    {
+      "text": "إِذۡ نَادَى",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "هُ رَبُّهُ",
+      "rule": null
+    },
+    {
+      "text": "ۥ",
+      "rule": "madd"
+    },
+    {
+      "text": " بِٱلۡوَادِ ٱلۡمُقَدَّسِ طُوًى",
+      "rule": null
+    }
+  ],
+  "79_17": [
+    {
+      "text": "ٱذۡهَ",
+      "rule": null
+    },
+    {
+      "text": "بۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": " إِلَىٰ فِرۡعَوۡنَ إِ",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "هُ",
+      "rule": null
+    },
+    {
+      "text": "ۥ",
+      "rule": "madd"
+    },
+    {
+      "text": " طَغَىٰ",
+      "rule": null
+    }
+  ],
+  "79_18": [
+    {
+      "text": "فَقُلۡ هَل لَّكَ إِلَ",
+      "rule": null
+    },
+    {
+      "text": "ىٰٓ",
+      "rule": "madd"
+    },
+    {
+      "text": " أَ",
+      "rule": null
+    },
+    {
+      "text": "ن تَ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "زَكَّىٰ",
+      "rule": null
+    }
+  ],
+  "79_20": [
+    {
+      "text": "فَأَرَى",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "هُ ٱلۡأٓيَةَ ٱلۡكُب",
+      "rule": null
+    },
+    {
+      "text": "ۡر",
+      "rule": "qalqala"
+    },
+    {
+      "text": "َىٰ",
+      "rule": null
+    }
+  ],
+  "79_22": [
+    {
+      "text": "ثُ",
+      "rule": null
+    },
+    {
+      "text": "مَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": " أَ",
+      "rule": null
+    },
+    {
+      "text": "دۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "بَرَ يَسۡعَىٰ",
+      "rule": null
+    }
+  ],
+  "79_26": [
+    {
+      "text": "إِ",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": " فِي ذَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "لِكَ لَعِ",
+      "rule": null
+    },
+    {
+      "text": "بۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "رَة",
+      "rule": null
+    },
+    {
+      "text": "ٗ لِّ",
+      "rule": "idgham"
+    },
+    {
+      "text": "مَ",
+      "rule": null
+    },
+    {
+      "text": "ن يَ",
+      "rule": "idgham"
+    },
+    {
+      "text": "خۡشَىٰٓ",
+      "rule": null
+    }
+  ],
+  "79_27": [
+    {
+      "text": "ءَأَ",
+      "rule": null
+    },
+    {
+      "text": "نتُ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "مۡ أَشَدُّ خَلۡقًا أَمِ ٱلسَّمَ",
+      "rule": null
+    },
+    {
+      "text": "آ",
+      "rule": "madd"
+    },
+    {
+      "text": "ءُۚ بَنَ",
+      "rule": null
+    },
+    {
+      "text": "ى",
+      "rule": "madd"
+    },
+    {
+      "text": "ٰهَا",
+      "rule": null
+    }
+  ],
+  "79_28": [
+    {
+      "text": "رَفَعَ سَمۡكَهَا فَسَوَّى",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "هَا",
+      "rule": null
+    }
+  ],
+  "79_29": [
+    {
+      "text": "وَأَغۡطَشَ لَيۡلَهَا وَأَخۡرَجَ ضُحَى",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "هَا",
+      "rule": null
+    }
+  ],
+  "79_30": [
+    {
+      "text": "وَٱلۡأَرۡضَ بَعۡدَ ذَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "لِكَ دَحَى",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "هَآ",
+      "rule": null
+    }
+  ],
+  "79_31": [
+    {
+      "text": "أَخۡرَجَ مِنۡهَا مَ",
+      "rule": null
+    },
+    {
+      "text": "آ",
+      "rule": "madd"
+    },
+    {
+      "text": "ءَهَا وَمَرۡعَى",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "هَا",
+      "rule": null
+    }
+  ],
+  "79_32": [
+    {
+      "text": "وَٱلۡجِبَالَ أَرۡسَى",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "هَا",
+      "rule": null
+    }
+  ],
+  "79_33": [
+    {
+      "text": "مَتَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "ع",
+      "rule": null
+    },
+    {
+      "text": "ٗا لَّ",
+      "rule": "idgham"
+    },
+    {
+      "text": "كُمۡ وَلِأَنۡعَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "مِكُمۡ",
+      "rule": null
+    }
+  ],
+  "79_34": [
+    {
+      "text": "فَإِذَا جَ",
+      "rule": null
+    },
+    {
+      "text": "آ",
+      "rule": "madd"
+    },
+    {
+      "text": "ءَتِ ٱلطَّ",
+      "rule": null
+    },
+    {
+      "text": "آ",
+      "rule": "madd"
+    },
+    {
+      "text": "مَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "ةُ ٱلۡكُ",
+      "rule": null
+    },
+    {
+      "text": "بۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "رَىٰ",
+      "rule": null
+    }
+  ],
+  "79_35": [
+    {
+      "text": "يَوۡمَ يَتَذَكَّرُ ٱلۡإِ",
+      "rule": null
+    },
+    {
+      "text": "نسَ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "نُ مَا سَعَىٰ",
+      "rule": null
+    }
+  ],
+  "79_36": [
+    {
+      "text": "وَبُرِّزَتِ ٱلۡجَحِيمُ لِمَ",
+      "rule": null
+    },
+    {
+      "text": "ن يَ",
+      "rule": "idgham"
+    },
+    {
+      "text": "رَىٰ",
+      "rule": null
+    }
+  ],
+  "79_37": [
+    {
+      "text": "فَأَ",
+      "rule": null
+    },
+    {
+      "text": "مَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "ا مَ",
+      "rule": null
+    },
+    {
+      "text": "ن طَ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "غَىٰ",
+      "rule": null
+    }
+  ],
+  "79_38": [
+    {
+      "text": "وَءَاثَرَ ٱلۡحَيَو",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "ةَ ٱلدُّنۡيَا",
+      "rule": null
+    }
+  ],
+  "79_39": [
+    {
+      "text": "فَإِ",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": " ٱلۡجَحِيمَ هِيَ ٱلۡمَأۡوَىٰ",
+      "rule": null
+    }
+  ],
+  "79_40": [
+    {
+      "text": "وَأَ",
+      "rule": null
+    },
+    {
+      "text": "مَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "ا مَنۡ خَافَ مَقَامَ رَبِّهِ",
+      "rule": null
+    },
+    {
+      "text": "ۦ",
+      "rule": "madd"
+    },
+    {
+      "text": " وَنَهَى ٱل",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "فۡسَ عَنِ ٱلۡهَوَىٰ",
+      "rule": null
+    }
+  ],
+  "79_41": [
+    {
+      "text": "فَإِ",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": " ٱلۡجَ",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "ةَ هِيَ ٱلۡمَأۡوَىٰ",
+      "rule": null
+    }
+  ],
+  "79_42": [
+    {
+      "text": "يَسۡـَٔلُونَكَ عَنِ ٱلسَّاعَةِ أَيَّانَ مُرۡسَى",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "هَا",
+      "rule": null
+    }
+  ],
+  "79_43": [
+    {
+      "text": "فِيمَ أَ",
+      "rule": null
+    },
+    {
+      "text": "نتَ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": " مِ",
+      "rule": null
+    },
+    {
+      "text": "ن ذِ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "كۡرَى",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "هَآ",
+      "rule": null
+    }
+  ],
+  "79_44": [
+    {
+      "text": "إِلَىٰ رَبِّكَ مُ",
+      "rule": null
+    },
+    {
+      "text": "نتَ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "هَى",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "هَآ",
+      "rule": null
+    }
+  ],
+  "79_45": [
+    {
+      "text": "إِ",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "مَ",
+      "rule": null
+    },
+    {
+      "text": "آ",
+      "rule": "madd"
+    },
+    {
+      "text": " أَ",
+      "rule": null
+    },
+    {
+      "text": "نتَ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": " مُ",
+      "rule": null
+    },
+    {
+      "text": "نذِ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "رُ مَ",
+      "rule": null
+    },
+    {
+      "text": "ن يَ",
+      "rule": "idgham"
+    },
+    {
+      "text": "خۡشَى",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "هَا",
+      "rule": null
+    }
+  ],
+  "79_46": [
+    {
+      "text": "كَأَ",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "هُمۡ يَوۡمَ يَرَوۡنَهَا لَمۡ يَلۡبَثُ",
+      "rule": null
+    },
+    {
+      "text": "وٓ",
+      "rule": "madd"
+    },
+    {
+      "text": "اْ إِلَّا عَشِيَّةً أَوۡ ضُحَى",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "هَا",
+      "rule": null
+    }
+  ],
+  "80_2": [
+    {
+      "text": "أَ",
+      "rule": null
+    },
+    {
+      "text": "ن جَ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "آ",
+      "rule": "madd"
+    },
+    {
+      "text": "ءَهُ ٱلۡأَعۡمَىٰ",
+      "rule": null
+    }
+  ],
+  "80_3": [
+    {
+      "text": "وَمَا يُ",
+      "rule": null
+    },
+    {
+      "text": "دۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "رِيكَ لَعَلَّهُ",
+      "rule": null
+    },
+    {
+      "text": "ۥ",
+      "rule": "madd"
+    },
+    {
+      "text": " يَزَّكَّىٰٓ",
+      "rule": null
+    }
+  ],
+  "80_4": [
+    {
+      "text": "أَوۡ يَذَّكَّرُ فَتَ",
+      "rule": null
+    },
+    {
+      "text": "نفَ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "عَهُ ٱلذِّكۡرَىٰٓ",
+      "rule": null
+    }
+  ],
+  "80_5": [
+    {
+      "text": "أَ",
+      "rule": null
+    },
+    {
+      "text": "مَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "ا مَنِ ٱسۡتَغۡنَىٰ",
+      "rule": null
+    }
+  ],
+  "80_6": [
+    {
+      "text": "فَأَ",
+      "rule": null
+    },
+    {
+      "text": "نتَ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": " لَهُ",
+      "rule": null
+    },
+    {
+      "text": "ۥ",
+      "rule": "madd"
+    },
+    {
+      "text": " تَصَدَّىٰ",
+      "rule": null
+    }
+  ],
+  "80_8": [
+    {
+      "text": "وَأَ",
+      "rule": null
+    },
+    {
+      "text": "مَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "ا مَ",
+      "rule": null
+    },
+    {
+      "text": "ن جَ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "آ",
+      "rule": "madd"
+    },
+    {
+      "text": "ءَكَ يَسۡعَىٰ",
+      "rule": null
+    }
+  ],
+  "80_10": [
+    {
+      "text": "فَأَ",
+      "rule": null
+    },
+    {
+      "text": "نتَ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": " عَنۡهُ تَلَهَّىٰ",
+      "rule": null
+    }
+  ],
+  "80_11": [
+    {
+      "text": "كَلَّ",
+      "rule": null
+    },
+    {
+      "text": "آ",
+      "rule": "madd"
+    },
+    {
+      "text": " إِ",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "هَا تَذۡكِرَةٞ",
+      "rule": null
+    }
+  ],
+  "80_12": [
+    {
+      "text": "فَمَ",
+      "rule": null
+    },
+    {
+      "text": "ن شَ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "آ",
+      "rule": "madd"
+    },
+    {
+      "text": "ءَ ذَكَرَهُۥ",
+      "rule": null
+    }
+  ],
+  "80_13": [
+    {
+      "text": "فِي صُحُف",
+      "rule": null
+    },
+    {
+      "text": "ٖ مُّ",
+      "rule": "idgham"
+    },
+    {
+      "text": "كَرَّمَةٖ",
+      "rule": null
+    }
+  ],
+  "80_14": [
+    {
+      "text": "مَّرۡفُوعَة",
+      "rule": null
+    },
+    {
+      "text": "ٖ مُّ",
+      "rule": "idgham"
+    },
+    {
+      "text": "طَهَّرَةِۭ",
+      "rule": null
+    }
+  ],
+  "80_17": [
+    {
+      "text": "قُتِلَ ٱلۡإِ",
+      "rule": null
+    },
+    {
+      "text": "نسَ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "نُ مَ",
+      "rule": null
+    },
+    {
+      "text": "آ",
+      "rule": "madd"
+    },
+    {
+      "text": " أَكۡفَرَهُۥ",
+      "rule": null
+    }
+  ],
+  "80_19": [
+    {
+      "text": "مِ",
+      "rule": null
+    },
+    {
+      "text": "ن نُّ",
+      "rule": "idgham"
+    },
+    {
+      "text": "طۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "فَةٍ خَلَقَهُ",
+      "rule": null
+    },
+    {
+      "text": "ۥ",
+      "rule": "madd"
+    },
+    {
+      "text": " فَقَدَّرَهُۥ",
+      "rule": null
+    }
+  ],
+  "80_20": [
+    {
+      "text": "ثُ",
+      "rule": null
+    },
+    {
+      "text": "مَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": " ٱلسَّبِيلَ يَسَّرَهُۥ",
+      "rule": null
+    }
+  ],
+  "80_21": [
+    {
+      "text": "ثُ",
+      "rule": null
+    },
+    {
+      "text": "مَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": " أَمَاتَهُ",
+      "rule": null
+    },
+    {
+      "text": "ۥ",
+      "rule": "madd"
+    },
+    {
+      "text": " فَأَ",
+      "rule": null
+    },
+    {
+      "text": "قۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "بَرَهُۥ",
+      "rule": null
+    }
+  ],
+  "80_22": [
+    {
+      "text": "ثُ",
+      "rule": null
+    },
+    {
+      "text": "مَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": " إِذَا شَ",
+      "rule": null
+    },
+    {
+      "text": "آ",
+      "rule": "madd"
+    },
+    {
+      "text": "ءَ أَ",
+      "rule": null
+    },
+    {
+      "text": "نشَ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "رَهُۥ",
+      "rule": null
+    }
+  ],
+  "80_23": [
+    {
+      "text": "كَلَّا لَ",
+      "rule": null
+    },
+    {
+      "text": "مَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "ا يَ",
+      "rule": null
+    },
+    {
+      "text": "قۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "ضِ مَ",
+      "rule": null
+    },
+    {
+      "text": "آ",
+      "rule": "madd"
+    },
+    {
+      "text": " أَمَرَهُۥ",
+      "rule": null
+    }
+  ],
+  "80_24": [
+    {
+      "text": "فَلۡيَ",
+      "rule": null
+    },
+    {
+      "text": "نظُ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "رِ ٱلۡإِ",
+      "rule": null
+    },
+    {
+      "text": "نسَ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "نُ إِلَىٰ طَعَامِهِۦٓ",
+      "rule": null
+    }
+  ],
+  "80_25": [
+    {
+      "text": "أَ",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "ا صَبَ",
+      "rule": null
+    },
+    {
+      "text": "بۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "نَا ٱلۡمَ",
+      "rule": null
+    },
+    {
+      "text": "آ",
+      "rule": "madd"
+    },
+    {
+      "text": "ءَ صَبّٗا",
+      "rule": null
+    }
+  ],
+  "80_26": [
+    {
+      "text": "ثُ",
+      "rule": null
+    },
+    {
+      "text": "مَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": " شَقَ",
+      "rule": null
+    },
+    {
+      "text": "قۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "نَا ٱلۡأَرۡضَ شَقّٗا",
+      "rule": null
+    }
+  ],
+  "80_28": [
+    {
+      "text": "وَعِنَب",
+      "rule": null
+    },
+    {
+      "text": "ٗا وَ",
+      "rule": "idgham"
+    },
+    {
+      "text": "قَضۡبٗا",
+      "rule": null
+    }
+  ],
+  "80_29": [
+    {
+      "text": "وَزَيۡتُون",
+      "rule": null
+    },
+    {
+      "text": "ٗا وَ",
+      "rule": "idgham"
+    },
+    {
+      "text": "نَخۡلٗا",
+      "rule": null
+    }
+  ],
+  "80_30": [
+    {
+      "text": "وَحَدَ",
+      "rule": null
+    },
+    {
+      "text": "آ",
+      "rule": "madd"
+    },
+    {
+      "text": "ئِقَ غُلۡبٗا",
+      "rule": null
+    }
+  ],
+  "80_31": [
+    {
+      "text": "وَفَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "كِهَة",
+      "rule": null
+    },
+    {
+      "text": "ٗ وَ",
+      "rule": "idgham"
+    },
+    {
+      "text": "أَبّٗا",
+      "rule": null
+    }
+  ],
+  "80_32": [
+    {
+      "text": "مَّتَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "ع",
+      "rule": null
+    },
+    {
+      "text": "ٗا لَّ",
+      "rule": "idgham"
+    },
+    {
+      "text": "كُمۡ وَلِأَنۡعَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "مِكُمۡ",
+      "rule": null
+    }
+  ],
+  "80_33": [
+    {
+      "text": "فَإِذَا جَ",
+      "rule": null
+    },
+    {
+      "text": "آ",
+      "rule": "madd"
+    },
+    {
+      "text": "ءَتِ ٱلصَّ",
+      "rule": null
+    },
+    {
+      "text": "آ",
+      "rule": "madd"
+    },
+    {
+      "text": "خَّةُ",
+      "rule": null
+    }
+  ],
+  "80_34": [
+    {
+      "text": "يَوۡمَ يَفِرُّ ٱلۡمَرۡءُ مِنۡ أَخِ",
+      "rule": null
+    },
+    {
+      "text": "ي",
+      "rule": "madd"
+    },
+    {
+      "text": "هِ",
+      "rule": null
+    }
+  ],
+  "80_35": [
+    {
+      "text": "وَأُ",
+      "rule": null
+    },
+    {
+      "text": "مِّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "هِ",
+      "rule": null
+    },
+    {
+      "text": "ۦ",
+      "rule": "madd"
+    },
+    {
+      "text": " وَأَبِ",
+      "rule": null
+    },
+    {
+      "text": "ي",
+      "rule": "madd"
+    },
+    {
+      "text": "هِ",
+      "rule": null
+    }
+  ],
+  "80_36": [
+    {
+      "text": "وَصَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "حِبَتِهِ",
+      "rule": null
+    },
+    {
+      "text": "ۦ",
+      "rule": "madd"
+    },
+    {
+      "text": " وَبَنِ",
+      "rule": null
+    },
+    {
+      "text": "ي",
+      "rule": "madd"
+    },
+    {
+      "text": "هِ",
+      "rule": null
+    }
+  ],
+  "80_37": [
+    {
+      "text": "لِكُلِّ ٱمۡرِي",
+      "rule": null
+    },
+    {
+      "text": "ٕٖ مّ",
+      "rule": "idgham"
+    },
+    {
+      "text": "ِنۡهُمۡ يَوۡمَئِ",
+      "rule": null
+    },
+    {
+      "text": "ذٖ ش",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "َأۡ",
+      "rule": null
+    },
+    {
+      "text": "نٞ ي",
+      "rule": "idgham"
+    },
+    {
+      "text": "ُغۡن",
+      "rule": null
+    },
+    {
+      "text": "ِ",
+      "rule": "madd"
+    },
+    {
+      "text": "يهِ",
+      "rule": null
+    }
+  ],
+  "80_38": [
+    {
+      "text": "وُجُوه",
+      "rule": null
+    },
+    {
+      "text": "ٞ يَ",
+      "rule": "idgham"
+    },
+    {
+      "text": "وۡمَئِذ",
+      "rule": null
+    },
+    {
+      "text": "ٖ مُّ",
+      "rule": "idgham"
+    },
+    {
+      "text": "سۡفِرَةٞ",
+      "rule": null
+    }
+  ],
+  "80_39": [
+    {
+      "text": "ضَاحِكَة",
+      "rule": null
+    },
+    {
+      "text": "ٞ مُّ",
+      "rule": "idgham"
+    },
+    {
+      "text": "سۡتَ",
+      "rule": null
+    },
+    {
+      "text": "بۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "شِرَةٞ",
+      "rule": null
+    }
+  ],
+  "80_40": [
+    {
+      "text": "وَوُجُوه",
+      "rule": null
+    },
+    {
+      "text": "ٞ يَ",
+      "rule": "idgham"
+    },
+    {
+      "text": "وۡمَئِذٍ عَلَيۡهَا غَبَرَةٞ",
+      "rule": null
+    }
+  ],
+  "80_42": [
+    {
+      "text": "أُوْلَ",
+      "rule": null
+    },
+    {
+      "text": "ـٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "ٓئِكَ هُمُ ٱلۡكَفَرَةُ ٱلۡفَجَرَةُ",
+      "rule": null
+    }
+  ],
+  "81_2": [
+    {
+      "text": "وَإِذَا ٱل",
+      "rule": null
+    },
+    {
+      "text": "نُّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "جُومُ ٱ",
+      "rule": null
+    },
+    {
+      "text": "نكَ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "دَرَتۡ",
+      "rule": null
+    }
+  ],
+  "81_7": [
+    {
+      "text": "وَإِذَا ٱل",
+      "rule": null
+    },
+    {
+      "text": "نُّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "فُوسُ زُوِّجَتۡ",
+      "rule": null
+    }
+  ],
+  "81_8": [
+    {
+      "text": "وَإِذَا ٱلۡمَوۡءُ",
+      "rule": null
+    },
+    {
+      "text": "ۥ",
+      "rule": "madd"
+    },
+    {
+      "text": "دَةُ سُئِلَتۡ",
+      "rule": null
+    }
+  ],
+  "81_9": [
+    {
+      "text": "بِأَيِّ ذَنۢب",
+      "rule": null
+    },
+    {
+      "text": "ٖ قُ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "تِلَتۡ",
+      "rule": null
+    }
+  ],
+  "81_11": [
+    {
+      "text": "وَإِذَا ٱلسَّمَ",
+      "rule": null
+    },
+    {
+      "text": "آ",
+      "rule": "madd"
+    },
+    {
+      "text": "ءُ كُشِطَتۡ",
+      "rule": null
+    }
+  ],
+  "81_13": [
+    {
+      "text": "وَإِذَا ٱلۡجَ",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "ةُ أُزۡلِفَتۡ",
+      "rule": null
+    }
+  ],
+  "81_14": [
+    {
+      "text": "عَلِمَتۡ نَفۡس",
+      "rule": null
+    },
+    {
+      "text": "ٞ مَّ",
+      "rule": "idgham"
+    },
+    {
+      "text": "آ",
+      "rule": "madd"
+    },
+    {
+      "text": " أَحۡضَرَتۡ",
+      "rule": null
+    }
+  ],
+  "81_15": [
+    {
+      "text": "فَلَ",
+      "rule": null
+    },
+    {
+      "text": "آ",
+      "rule": "madd"
+    },
+    {
+      "text": " أُ",
+      "rule": null
+    },
+    {
+      "text": "قۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "سِمُ بِٱلۡخُ",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "سِ",
+      "rule": null
+    }
+  ],
+  "81_16": [
+    {
+      "text": "ٱلۡجَوَارِ ٱلۡكُ",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "سِ",
+      "rule": null
+    }
+  ],
+  "81_18": [
+    {
+      "text": "وَٱلصُّ",
+      "rule": null
+    },
+    {
+      "text": "بۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "حِ إِذَا تَنَفَّسَ",
+      "rule": null
+    }
+  ],
+  "81_19": [
+    {
+      "text": "إِ",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "هُ",
+      "rule": null
+    },
+    {
+      "text": "ۥ",
+      "rule": "madd"
+    },
+    {
+      "text": " لَقَوۡلُ رَسُول",
+      "rule": null
+    },
+    {
+      "text": "ٖ كَ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "رِ",
+      "rule": null
+    },
+    {
+      "text": "ي",
+      "rule": "madd"
+    },
+    {
+      "text": "مٖ",
+      "rule": null
+    }
+  ],
+  "81_20": [
+    {
+      "text": "ذِي قُوَّةٍ عِ",
+      "rule": null
+    },
+    {
+      "text": "ندَ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": " ذِي ٱلۡعَرۡشِ مَكِ",
+      "rule": null
+    },
+    {
+      "text": "ي",
+      "rule": "madd"
+    },
+    {
+      "text": "نٖ",
+      "rule": null
+    }
+  ],
+  "81_21": [
+    {
+      "text": "مُّطَاع",
+      "rule": null
+    },
+    {
+      "text": "ٖ ثَ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "مَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": " أَمِ",
+      "rule": null
+    },
+    {
+      "text": "ي",
+      "rule": "madd"
+    },
+    {
+      "text": "نٖ",
+      "rule": null
+    }
+  ],
+  "81_22": [
+    {
+      "text": "وَمَا صَاحِبُكُ",
+      "rule": null
+    },
+    {
+      "text": "م بِ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "مَ",
+      "rule": null
+    },
+    {
+      "text": "جۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "نُ",
+      "rule": null
+    },
+    {
+      "text": "و",
+      "rule": "madd"
+    },
+    {
+      "text": "نٖ",
+      "rule": null
+    }
+  ],
+  "81_23": [
+    {
+      "text": "وَلَقَ",
+      "rule": null
+    },
+    {
+      "text": "دۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": " رَءَاهُ بِٱلۡأُفُقِ ٱلۡمُبِ",
+      "rule": null
+    },
+    {
+      "text": "ي",
+      "rule": "madd"
+    },
+    {
+      "text": "نِ",
+      "rule": null
+    }
+  ],
+  "81_24": [
+    {
+      "text": "وَمَا هُوَ عَلَى ٱلۡغَيۡبِ بِضَنِ",
+      "rule": null
+    },
+    {
+      "text": "ي",
+      "rule": "madd"
+    },
+    {
+      "text": "نٖ",
+      "rule": null
+    }
+  ],
+  "81_25": [
+    {
+      "text": "وَمَا هُوَ بِقَوۡلِ شَيۡطَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "ن",
+      "rule": null
+    },
+    {
+      "text": "ٖ رَّ",
+      "rule": "idgham"
+    },
+    {
+      "text": "جِ",
+      "rule": null
+    },
+    {
+      "text": "ي",
+      "rule": "madd"
+    },
+    {
+      "text": "مٖ",
+      "rule": null
+    }
+  ],
+  "81_26": [
+    {
+      "text": "فَأَيۡنَ تَذۡهَبُ",
+      "rule": null
+    },
+    {
+      "text": "و",
+      "rule": "madd"
+    },
+    {
+      "text": "نَ",
+      "rule": null
+    }
+  ],
+  "81_27": [
+    {
+      "text": "إِنۡ هُوَ إِلَّا ذِكۡر",
+      "rule": null
+    },
+    {
+      "text": "ٞ لِّ",
+      "rule": "idgham"
+    },
+    {
+      "text": "لۡعَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "لَمِ",
+      "rule": null
+    },
+    {
+      "text": "ي",
+      "rule": "madd"
+    },
+    {
+      "text": "نَ",
+      "rule": null
+    }
+  ],
+  "81_28": [
+    {
+      "text": "لِمَ",
+      "rule": null
+    },
+    {
+      "text": "ن شَ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "آ",
+      "rule": "madd"
+    },
+    {
+      "text": "ءَ مِ",
+      "rule": null
+    },
+    {
+      "text": "نكُ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "مۡ أَ",
+      "rule": null
+    },
+    {
+      "text": "ن يَ",
+      "rule": "idgham"
+    },
+    {
+      "text": "سۡتَقِ",
+      "rule": null
+    },
+    {
+      "text": "ي",
+      "rule": "madd"
+    },
+    {
+      "text": "مَ",
+      "rule": null
+    }
+  ],
+  "81_29": [
+    {
+      "text": "وَمَا تَشَ",
+      "rule": null
+    },
+    {
+      "text": "آ",
+      "rule": "madd"
+    },
+    {
+      "text": "ءُونَ إِلَّ",
+      "rule": null
+    },
+    {
+      "text": "آ",
+      "rule": "madd"
+    },
+    {
+      "text": " أَ",
+      "rule": null
+    },
+    {
+      "text": "ن يَ",
+      "rule": "idgham"
+    },
+    {
+      "text": "شَ",
+      "rule": null
+    },
+    {
+      "text": "آ",
+      "rule": "madd"
+    },
+    {
+      "text": "ءَ ٱللَّهُ رَبُّ ٱلۡعَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "لَمِ",
+      "rule": null
+    },
+    {
+      "text": "ي",
+      "rule": "madd"
+    },
+    {
+      "text": "نَ",
+      "rule": null
+    }
+  ],
+  "82_2": [
+    {
+      "text": "وَإِذَا ٱلۡكَوَاكِبُ ٱ",
+      "rule": null
+    },
+    {
+      "text": "نتَ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "ثَرَتۡ",
+      "rule": null
+    }
+  ],
+  "82_5": [
+    {
+      "text": "عَلِمَتۡ نَفۡس",
+      "rule": null
+    },
+    {
+      "text": "ٞ مَّ",
+      "rule": "idgham"
+    },
+    {
+      "text": "ا قَدَّمَتۡ وَأَخَّرَتۡ",
+      "rule": null
+    }
+  ],
+  "82_6": [
+    {
+      "text": "يَ",
+      "rule": null
+    },
+    {
+      "text": "ـٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "ٓأَيُّهَا ٱلۡإ",
+      "rule": null
+    },
+    {
+      "text": "ِنس",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "َ",
+      "rule": "madd"
+    },
+    {
+      "text": "ٰنُ مَا غَرَّكَ بِرَبِّكَ ٱلۡكَر",
+      "rule": null
+    },
+    {
+      "text": "ِ",
+      "rule": "madd"
+    },
+    {
+      "text": "يمِ",
+      "rule": null
+    }
+  ],
+  "82_7": [
+    {
+      "text": "ٱلَّذِي خَلَقَكَ فَسَوَّى",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "كَ فَعَدَلَكَ",
+      "rule": null
+    }
+  ],
+  "82_8": [
+    {
+      "text": "فِ",
+      "rule": null
+    },
+    {
+      "text": "يٓ",
+      "rule": "madd"
+    },
+    {
+      "text": " أَيِّ صُورَة",
+      "rule": null
+    },
+    {
+      "text": "ٖ مَّ",
+      "rule": "idgham"
+    },
+    {
+      "text": "ا شَ",
+      "rule": null
+    },
+    {
+      "text": "آ",
+      "rule": "madd"
+    },
+    {
+      "text": "ءَ رَكَّبَكَ",
+      "rule": null
+    }
+  ],
+  "82_9": [
+    {
+      "text": "كَلَّا بَلۡ تُكَذِّبُونَ بِٱلدِّ",
+      "rule": null
+    },
+    {
+      "text": "ي",
+      "rule": "madd"
+    },
+    {
+      "text": "نِ",
+      "rule": null
+    }
+  ],
+  "82_10": [
+    {
+      "text": "وَإِ",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": " عَلَيۡكُمۡ لَحَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "فِظِ",
+      "rule": null
+    },
+    {
+      "text": "ي",
+      "rule": "madd"
+    },
+    {
+      "text": "نَ",
+      "rule": null
+    }
+  ],
+  "82_11": [
+    {
+      "text": "كِرَام",
+      "rule": null
+    },
+    {
+      "text": "ٗا كَ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "تِبِ",
+      "rule": null
+    },
+    {
+      "text": "ي",
+      "rule": "madd"
+    },
+    {
+      "text": "نَ",
+      "rule": null
+    }
+  ],
+  "82_12": [
+    {
+      "text": "يَعۡلَمُونَ مَا تَفۡعَلُ",
+      "rule": null
+    },
+    {
+      "text": "و",
+      "rule": "madd"
+    },
+    {
+      "text": "نَ",
+      "rule": null
+    }
+  ],
+  "82_13": [
+    {
+      "text": "إِ",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": " ٱلۡأَ",
+      "rule": null
+    },
+    {
+      "text": "بۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "رَارَ لَفِي نَعِ",
+      "rule": null
+    },
+    {
+      "text": "ي",
+      "rule": "madd"
+    },
+    {
+      "text": "مٖ",
+      "rule": null
+    }
+  ],
+  "82_14": [
+    {
+      "text": "وَإِ",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": " ٱلۡفُجَّارَ لَفِي جَحِ",
+      "rule": null
+    },
+    {
+      "text": "ي",
+      "rule": "madd"
+    },
+    {
+      "text": "مٖ",
+      "rule": null
+    }
+  ],
+  "82_15": [
+    {
+      "text": "يَصۡلَوۡنَهَا يَوۡمَ ٱلدِّ",
+      "rule": null
+    },
+    {
+      "text": "ي",
+      "rule": "madd"
+    },
+    {
+      "text": "نِ",
+      "rule": null
+    }
+  ],
+  "82_16": [
+    {
+      "text": "وَمَا هُمۡ عَنۡهَا بِغَ",
+      "rule": null
+    },
+    {
+      "text": "آ",
+      "rule": "madd"
+    },
+    {
+      "text": "ئِبِ",
+      "rule": null
+    },
+    {
+      "text": "ي",
+      "rule": "madd"
+    },
+    {
+      "text": "نَ",
+      "rule": null
+    }
+  ],
+  "82_17": [
+    {
+      "text": "وَمَ",
+      "rule": null
+    },
+    {
+      "text": "آ",
+      "rule": "madd"
+    },
+    {
+      "text": " أَ",
+      "rule": null
+    },
+    {
+      "text": "دۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "رَى",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "كَ مَا يَوۡمُ ٱلدِّ",
+      "rule": null
+    },
+    {
+      "text": "ي",
+      "rule": "madd"
+    },
+    {
+      "text": "نِ",
+      "rule": null
+    }
+  ],
+  "82_18": [
+    {
+      "text": "ثُ",
+      "rule": null
+    },
+    {
+      "text": "مَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": " مَ",
+      "rule": null
+    },
+    {
+      "text": "آ",
+      "rule": "madd"
+    },
+    {
+      "text": " أَ",
+      "rule": null
+    },
+    {
+      "text": "دۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "رَى",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "كَ مَا يَوۡمُ ٱلدِّ",
+      "rule": null
+    },
+    {
+      "text": "ي",
+      "rule": "madd"
+    },
+    {
+      "text": "نِ",
+      "rule": null
+    }
+  ],
+  "82_19": [
+    {
+      "text": "يَوۡمَ لَا تَمۡلِكُ نَفۡس",
+      "rule": null
+    },
+    {
+      "text": "ٞ لِّ",
+      "rule": "idgham"
+    },
+    {
+      "text": "نَفۡس",
+      "rule": null
+    },
+    {
+      "text": "ٖ شَ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "يۡـٔ",
+      "rule": null
+    },
+    {
+      "text": "ٗاۖ و",
+      "rule": "idgham"
+    },
+    {
+      "text": "َٱلۡأَمۡرُ يَوۡمَئِ",
+      "rule": null
+    },
+    {
+      "text": "ذٖ لّ",
+      "rule": "idgham"
+    },
+    {
+      "text": "ِلَّهِ",
+      "rule": null
+    }
+  ],
+  "83_2": [
+    {
+      "text": "ٱلَّذِينَ إِذَا ٱكۡتَالُواْ عَلَى ٱل",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "اسِ يَسۡتَوۡفُ",
+      "rule": null
+    },
+    {
+      "text": "و",
+      "rule": "madd"
+    },
+    {
+      "text": "نَ",
+      "rule": null
+    }
+  ],
+  "83_3": [
+    {
+      "text": "وَإِذَا كَالُوهُمۡ أَو وَّزَنُوهُمۡ يُخۡسِرُ",
+      "rule": null
+    },
+    {
+      "text": "و",
+      "rule": "madd"
+    },
+    {
+      "text": "نَ",
+      "rule": null
+    }
+  ],
+  "83_4": [
+    {
+      "text": "أَلَا يَظُ",
+      "rule": null
+    },
+    {
+      "text": "نُّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": " أُوْلَ",
+      "rule": null
+    },
+    {
+      "text": "ـٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "ٓئِكَ أ",
+      "rule": null
+    },
+    {
+      "text": "َنّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "َه",
+      "rule": null
+    },
+    {
+      "text": "ُم مّ",
+      "rule": "idgham"
+    },
+    {
+      "text": "َب",
+      "rule": "qalqala"
+    },
+    {
+      "text": "ۡعُوث",
+      "rule": null
+    },
+    {
+      "text": "ُ",
+      "rule": "madd"
+    },
+    {
+      "text": "ونَ",
+      "rule": null
+    }
+  ],
+  "83_5": [
+    {
+      "text": "لِيَوۡمٍ عَظِ",
+      "rule": null
+    },
+    {
+      "text": "ي",
+      "rule": "madd"
+    },
+    {
+      "text": "مٖ",
+      "rule": null
+    }
+  ],
+  "83_6": [
+    {
+      "text": "يَوۡمَ يَقُومُ ٱل",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "اسُ لِرَبِّ ٱلۡعَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "لَمِ",
+      "rule": null
+    },
+    {
+      "text": "ي",
+      "rule": "madd"
+    },
+    {
+      "text": "نَ",
+      "rule": null
+    }
+  ],
+  "83_7": [
+    {
+      "text": "كَلَّ",
+      "rule": null
+    },
+    {
+      "text": "آ",
+      "rule": "madd"
+    },
+    {
+      "text": " إِ",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": " كِتَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "بَ ٱلۡفُجَّارِ لَفِي سِجِّ",
+      "rule": null
+    },
+    {
+      "text": "ي",
+      "rule": "madd"
+    },
+    {
+      "text": "نٖ",
+      "rule": null
+    }
+  ],
+  "83_8": [
+    {
+      "text": "وَمَ",
+      "rule": null
+    },
+    {
+      "text": "آ",
+      "rule": "madd"
+    },
+    {
+      "text": " أَ",
+      "rule": null
+    },
+    {
+      "text": "دۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "رَى",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "كَ مَا سِجِّ",
+      "rule": null
+    },
+    {
+      "text": "ي",
+      "rule": "madd"
+    },
+    {
+      "text": "نٞ",
+      "rule": null
+    }
+  ],
+  "83_9": [
+    {
+      "text": "كِتَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "ب",
+      "rule": null
+    },
+    {
+      "text": "ٞ مَّ",
+      "rule": "idgham"
+    },
+    {
+      "text": "رۡقُ",
+      "rule": null
+    },
+    {
+      "text": "و",
+      "rule": "madd"
+    },
+    {
+      "text": "مٞ",
+      "rule": null
+    }
+  ],
+  "83_10": [
+    {
+      "text": "وَيۡل",
+      "rule": null
+    },
+    {
+      "text": "ٞ يَ",
+      "rule": "idgham"
+    },
+    {
+      "text": "وۡمَئِذ",
+      "rule": null
+    },
+    {
+      "text": "ٖ لِّ",
+      "rule": "idgham"
+    },
+    {
+      "text": "لۡمُكَذِّبِ",
+      "rule": null
+    },
+    {
+      "text": "ي",
+      "rule": "madd"
+    },
+    {
+      "text": "نَ",
+      "rule": null
+    }
+  ],
+  "83_11": [
+    {
+      "text": "ٱلَّذِينَ يُكَذِّبُونَ بِيَوۡمِ ٱلدِّ",
+      "rule": null
+    },
+    {
+      "text": "ي",
+      "rule": "madd"
+    },
+    {
+      "text": "نِ",
+      "rule": null
+    }
+  ],
+  "83_12": [
+    {
+      "text": "وَمَا يُكَذِّبُ بِهِ",
+      "rule": null
+    },
+    {
+      "text": "ۦٓ",
+      "rule": "madd"
+    },
+    {
+      "text": " إِلَّا كُلُّ مُعۡتَدٍ أَثِ",
+      "rule": null
+    },
+    {
+      "text": "ي",
+      "rule": "madd"
+    },
+    {
+      "text": "مٍ",
+      "rule": null
+    }
+  ],
+  "83_13": [
+    {
+      "text": "إِذَا تُتۡلَىٰ عَلَيۡهِ ءَايَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "تُنَا قَالَ أَسَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "طِيرُ ٱلۡأَوَّلِ",
+      "rule": null
+    },
+    {
+      "text": "ي",
+      "rule": "madd"
+    },
+    {
+      "text": "نَ",
+      "rule": null
+    }
+  ],
+  "83_14": [
+    {
+      "text": "كَلَّاۖ بَلۡۜ رَانَ عَلَىٰ قُلُوبِ",
+      "rule": null
+    },
+    {
+      "text": "هِم م",
+      "rule": "idgham"
+    },
+    {
+      "text": "َّا كَانُواْ يَكۡسِ",
+      "rule": null
+    },
+    {
+      "text": "ب",
+      "rule": "madd"
+    },
+    {
+      "text": "ُونَ",
+      "rule": null
+    }
+  ],
+  "83_15": [
+    {
+      "text": "كَلَّ",
+      "rule": null
+    },
+    {
+      "text": "آ",
+      "rule": "madd"
+    },
+    {
+      "text": " إِ",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "هُمۡ عَ",
+      "rule": null
+    },
+    {
+      "text": "ن رَّ",
+      "rule": "idgham"
+    },
+    {
+      "text": "بِّهِمۡ يَوۡمَئِذ",
+      "rule": null
+    },
+    {
+      "text": "ٖ لَّ",
+      "rule": "idgham"
+    },
+    {
+      "text": "مَحۡجُوبُ",
+      "rule": null
+    },
+    {
+      "text": "و",
+      "rule": "madd"
+    },
+    {
+      "text": "نَ",
+      "rule": null
+    }
+  ],
+  "83_16": [
+    {
+      "text": "ثُ",
+      "rule": null
+    },
+    {
+      "text": "مَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": " إِ",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "هُمۡ لَصَالُواْ ٱلۡجَحِ",
+      "rule": null
+    },
+    {
+      "text": "ي",
+      "rule": "madd"
+    },
+    {
+      "text": "مِ",
+      "rule": null
+    }
+  ],
+  "83_17": [
+    {
+      "text": "ثُ",
+      "rule": null
+    },
+    {
+      "text": "مَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": " يُقَالُ هَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "ذَا ٱلَّذِي كُ",
+      "rule": null
+    },
+    {
+      "text": "نتُم بِ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "هِ",
+      "rule": null
+    },
+    {
+      "text": "ۦ",
+      "rule": "madd"
+    },
+    {
+      "text": " تُكَذِّبُ",
+      "rule": null
+    },
+    {
+      "text": "و",
+      "rule": "madd"
+    },
+    {
+      "text": "نَ",
+      "rule": null
+    }
+  ],
+  "83_18": [
+    {
+      "text": "كَلَّ",
+      "rule": null
+    },
+    {
+      "text": "آ",
+      "rule": "madd"
+    },
+    {
+      "text": " إِ",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": " كِتَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "بَ ٱلۡأَ",
+      "rule": null
+    },
+    {
+      "text": "بۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "رَارِ لَفِي عِلِّيِّ",
+      "rule": null
+    },
+    {
+      "text": "ي",
+      "rule": "madd"
+    },
+    {
+      "text": "نَ",
+      "rule": null
+    }
+  ],
+  "83_19": [
+    {
+      "text": "وَمَ",
+      "rule": null
+    },
+    {
+      "text": "آ",
+      "rule": "madd"
+    },
+    {
+      "text": " أَ",
+      "rule": null
+    },
+    {
+      "text": "دۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "رَى",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "كَ مَا عِلِّيُّ",
+      "rule": null
+    },
+    {
+      "text": "و",
+      "rule": "madd"
+    },
+    {
+      "text": "نَ",
+      "rule": null
+    }
+  ],
+  "83_20": [
+    {
+      "text": "كِتَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "ب",
+      "rule": null
+    },
+    {
+      "text": "ٞ مَّ",
+      "rule": "idgham"
+    },
+    {
+      "text": "رۡقُ",
+      "rule": null
+    },
+    {
+      "text": "و",
+      "rule": "madd"
+    },
+    {
+      "text": "مٞ",
+      "rule": null
+    }
+  ],
+  "83_21": [
+    {
+      "text": "يَشۡهَدُهُ ٱلۡمُقَرَّبُ",
+      "rule": null
+    },
+    {
+      "text": "و",
+      "rule": "madd"
+    },
+    {
+      "text": "نَ",
+      "rule": null
+    }
+  ],
+  "83_22": [
+    {
+      "text": "إِ",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": " ٱلۡأَ",
+      "rule": null
+    },
+    {
+      "text": "بۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "رَارَ لَفِي نَعِ",
+      "rule": null
+    },
+    {
+      "text": "ي",
+      "rule": "madd"
+    },
+    {
+      "text": "مٍ",
+      "rule": null
+    }
+  ],
+  "83_23": [
+    {
+      "text": "عَلَى ٱلۡأَرَ",
+      "rule": null
+    },
+    {
+      "text": "آ",
+      "rule": "madd"
+    },
+    {
+      "text": "ئِكِ يَ",
+      "rule": null
+    },
+    {
+      "text": "نظُ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "رُ",
+      "rule": null
+    },
+    {
+      "text": "و",
+      "rule": "madd"
+    },
+    {
+      "text": "نَ",
+      "rule": null
+    }
+  ],
+  "83_24": [
+    {
+      "text": "تَعۡرِفُ فِي وُجُوهِهِمۡ نَضۡرَةَ ٱل",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "عِ",
+      "rule": null
+    },
+    {
+      "text": "ي",
+      "rule": "madd"
+    },
+    {
+      "text": "مِ",
+      "rule": null
+    }
+  ],
+  "83_25": [
+    {
+      "text": "يُسۡقَوۡنَ مِ",
+      "rule": null
+    },
+    {
+      "text": "ن رَّ",
+      "rule": "idgham"
+    },
+    {
+      "text": "حِيق",
+      "rule": null
+    },
+    {
+      "text": "ٖ مَّ",
+      "rule": "idgham"
+    },
+    {
+      "text": "خۡتُ",
+      "rule": null
+    },
+    {
+      "text": "و",
+      "rule": "madd"
+    },
+    {
+      "text": "مٍ",
+      "rule": null
+    }
+  ],
+  "83_26": [
+    {
+      "text": "خِتَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "مُهُ",
+      "rule": null
+    },
+    {
+      "text": "ۥ",
+      "rule": "madd"
+    },
+    {
+      "text": " مِسۡك",
+      "rule": null
+    },
+    {
+      "text": "ٞۚ و",
+      "rule": "idgham"
+    },
+    {
+      "text": "َفِي ذ",
+      "rule": null
+    },
+    {
+      "text": "َ",
+      "rule": "madd"
+    },
+    {
+      "text": "ٰلِكَ فَلۡيَتَنَافَسِ ٱلۡمُتَن",
+      "rule": null
+    },
+    {
+      "text": "َ",
+      "rule": "madd"
+    },
+    {
+      "text": "ٰفِس",
+      "rule": null
+    },
+    {
+      "text": "ُ",
+      "rule": "madd"
+    },
+    {
+      "text": "ونَ",
+      "rule": null
+    }
+  ],
+  "83_27": [
+    {
+      "text": "وَمِزَاجُهُ",
+      "rule": null
+    },
+    {
+      "text": "ۥ",
+      "rule": "madd"
+    },
+    {
+      "text": " مِ",
+      "rule": null
+    },
+    {
+      "text": "ن تَ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "سۡنِ",
+      "rule": null
+    },
+    {
+      "text": "ي",
+      "rule": "madd"
+    },
+    {
+      "text": "مٍ",
+      "rule": null
+    }
+  ],
+  "83_28": [
+    {
+      "text": "عَيۡن",
+      "rule": null
+    },
+    {
+      "text": "ٗا يَ",
+      "rule": "idgham"
+    },
+    {
+      "text": "شۡرَبُ بِهَا ٱلۡمُقَرَّبُ",
+      "rule": null
+    },
+    {
+      "text": "و",
+      "rule": "madd"
+    },
+    {
+      "text": "نَ",
+      "rule": null
+    }
+  ],
+  "83_29": [
+    {
+      "text": "إِ",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": " ٱلَّذِينَ أَ",
+      "rule": null
+    },
+    {
+      "text": "جۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "رَمُواْ كَانُواْ مِنَ ٱلَّذِينَ ءَامَنُواْ يَضۡحَكُ",
+      "rule": null
+    },
+    {
+      "text": "و",
+      "rule": "madd"
+    },
+    {
+      "text": "نَ",
+      "rule": null
+    }
+  ],
+  "83_30": [
+    {
+      "text": "وَإِذَا مَرُّواْ بِهِمۡ يَتَغَامَزُ",
+      "rule": null
+    },
+    {
+      "text": "و",
+      "rule": "madd"
+    },
+    {
+      "text": "نَ",
+      "rule": null
+    }
+  ],
+  "83_31": [
+    {
+      "text": "وَإِذَا ٱ",
+      "rule": null
+    },
+    {
+      "text": "نقَ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "لَبُ",
+      "rule": null
+    },
+    {
+      "text": "وٓ",
+      "rule": "madd"
+    },
+    {
+      "text": "اْ إِلَ",
+      "rule": null
+    },
+    {
+      "text": "ىٰٓ",
+      "rule": "madd"
+    },
+    {
+      "text": " أَهۡلِهِمُ ٱ",
+      "rule": null
+    },
+    {
+      "text": "نقَ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "لَبُواْ فَكِهِ",
+      "rule": null
+    },
+    {
+      "text": "ي",
+      "rule": "madd"
+    },
+    {
+      "text": "نَ",
+      "rule": null
+    }
+  ],
+  "83_32": [
+    {
+      "text": "وَإِذَا رَأَوۡهُمۡ قَالُ",
+      "rule": null
+    },
+    {
+      "text": "وٓ",
+      "rule": "madd"
+    },
+    {
+      "text": "اْ إِ",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": " هَ",
+      "rule": null
+    },
+    {
+      "text": "ـٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "ٓؤُل",
+      "rule": null
+    },
+    {
+      "text": "َا",
+      "rule": "madd"
+    },
+    {
+      "text": "ٓءِ لَض",
+      "rule": null
+    },
+    {
+      "text": "َا",
+      "rule": "madd"
+    },
+    {
+      "text": "ٓلّ",
+      "rule": null
+    },
+    {
+      "text": "ُ",
+      "rule": "madd"
+    },
+    {
+      "text": "ونَ",
+      "rule": null
+    }
+  ],
+  "83_33": [
+    {
+      "text": "وَمَ",
+      "rule": null
+    },
+    {
+      "text": "آ",
+      "rule": "madd"
+    },
+    {
+      "text": " أُرۡسِلُواْ عَلَيۡهِمۡ حَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "فِظِ",
+      "rule": null
+    },
+    {
+      "text": "ي",
+      "rule": "madd"
+    },
+    {
+      "text": "نَ",
+      "rule": null
+    }
+  ],
+  "83_34": [
+    {
+      "text": "فَٱلۡيَوۡمَ ٱلَّذِينَ ءَامَنُواْ مِنَ ٱلۡكُفَّارِ يَضۡحَكُ",
+      "rule": null
+    },
+    {
+      "text": "و",
+      "rule": "madd"
+    },
+    {
+      "text": "نَ",
+      "rule": null
+    }
+  ],
+  "83_35": [
+    {
+      "text": "عَلَى ٱلۡأَرَ",
+      "rule": null
+    },
+    {
+      "text": "آ",
+      "rule": "madd"
+    },
+    {
+      "text": "ئِكِ يَ",
+      "rule": null
+    },
+    {
+      "text": "نظُ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "رُ",
+      "rule": null
+    },
+    {
+      "text": "و",
+      "rule": "madd"
+    },
+    {
+      "text": "نَ",
+      "rule": null
+    }
+  ],
+  "83_36": [
+    {
+      "text": "هَلۡ ثُوِّبَ ٱلۡكُفَّارُ مَا كَانُواْ يَفۡعَلُ",
+      "rule": null
+    },
+    {
+      "text": "و",
+      "rule": "madd"
+    },
+    {
+      "text": "نَ",
+      "rule": null
+    }
+  ],
+  "84_6": [
+    {
+      "text": "يَ",
+      "rule": null
+    },
+    {
+      "text": "ـٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "ٓأَيُّهَا ٱلۡإ",
+      "rule": null
+    },
+    {
+      "text": "ِنس",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "َ",
+      "rule": "madd"
+    },
+    {
+      "text": "ٰنُ إ",
+      "rule": null
+    },
+    {
+      "text": "ِنّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "َكَ كَادِحٌ إِلَىٰ رَبِّكَ ك",
+      "rule": null
+    },
+    {
+      "text": "َد",
+      "rule": "qalqala"
+    },
+    {
+      "text": "ۡ",
+      "rule": null
+    },
+    {
+      "text": "حٗا ف",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "َمُل",
+      "rule": null
+    },
+    {
+      "text": "َ",
+      "rule": "madd"
+    },
+    {
+      "text": "ٰق",
+      "rule": null
+    },
+    {
+      "text": "ِ",
+      "rule": "madd"
+    },
+    {
+      "text": "يهِ",
+      "rule": null
+    }
+  ],
+  "84_7": [
+    {
+      "text": "فَأَ",
+      "rule": null
+    },
+    {
+      "text": "مَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "ا مَنۡ أُوتِيَ كِتَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "بَهُ",
+      "rule": null
+    },
+    {
+      "text": "ۥ",
+      "rule": "madd"
+    },
+    {
+      "text": " بِيَمِينِهِۦ",
+      "rule": null
+    }
+  ],
+  "84_8": [
+    {
+      "text": "فَسَوۡفَ يُحَاسَبُ حِسَاب",
+      "rule": null
+    },
+    {
+      "text": "ٗا يَ",
+      "rule": "idgham"
+    },
+    {
+      "text": "سِيرٗا",
+      "rule": null
+    }
+  ],
+  "84_9": [
+    {
+      "text": "وَيَ",
+      "rule": null
+    },
+    {
+      "text": "نقَ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "لِبُ إِلَ",
+      "rule": null
+    },
+    {
+      "text": "ىٰٓ",
+      "rule": "madd"
+    },
+    {
+      "text": " أَهۡلِهِ",
+      "rule": null
+    },
+    {
+      "text": "ۦ",
+      "rule": "madd"
+    },
+    {
+      "text": " مَسۡرُورٗا",
+      "rule": null
+    }
+  ],
+  "84_10": [
+    {
+      "text": "وَأَ",
+      "rule": null
+    },
+    {
+      "text": "مَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "ا مَنۡ أُوتِيَ كِتَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "بَهُ",
+      "rule": null
+    },
+    {
+      "text": "ۥ",
+      "rule": "madd"
+    },
+    {
+      "text": " وَرَ",
+      "rule": null
+    },
+    {
+      "text": "آ",
+      "rule": "madd"
+    },
+    {
+      "text": "ءَ ظَهۡرِهِۦ",
+      "rule": null
+    }
+  ],
+  "84_11": [
+    {
+      "text": "فَسَوۡفَ يَ",
+      "rule": null
+    },
+    {
+      "text": "دۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "عُواْ ثُبُورٗا",
+      "rule": null
+    }
+  ],
+  "84_13": [
+    {
+      "text": "إِ",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "هُ",
+      "rule": null
+    },
+    {
+      "text": "ۥ",
+      "rule": "madd"
+    },
+    {
+      "text": " كَانَ فِ",
+      "rule": null
+    },
+    {
+      "text": "يٓ",
+      "rule": "madd"
+    },
+    {
+      "text": " أَهۡلِهِ",
+      "rule": null
+    },
+    {
+      "text": "ۦ",
+      "rule": "madd"
+    },
+    {
+      "text": " مَسۡرُورًا",
+      "rule": null
+    }
+  ],
+  "84_14": [
+    {
+      "text": "إِ",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "هُ",
+      "rule": null
+    },
+    {
+      "text": "ۥ",
+      "rule": "madd"
+    },
+    {
+      "text": " ظَ",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": " أَ",
+      "rule": null
+    },
+    {
+      "text": "ن لَّن يَ",
+      "rule": "idgham"
+    },
+    {
+      "text": "حُ",
+      "rule": null
+    },
+    {
+      "text": "و",
+      "rule": "madd"
+    },
+    {
+      "text": "رَ",
+      "rule": null
+    }
+  ],
+  "84_15": [
+    {
+      "text": "بَلَ",
+      "rule": null
+    },
+    {
+      "text": "ىٰٓ",
+      "rule": "madd"
+    },
+    {
+      "text": "ۚ إ",
+      "rule": null
+    },
+    {
+      "text": "ِنّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "َ رَبَّه",
+      "rule": null
+    },
+    {
+      "text": "ُ",
+      "rule": "madd"
+    },
+    {
+      "text": "ۥ كَانَ بِه",
+      "rule": null
+    },
+    {
+      "text": "ِ",
+      "rule": "madd"
+    },
+    {
+      "text": "ۦ بَصِيرٗا",
+      "rule": null
+    }
+  ],
+  "84_16": [
+    {
+      "text": "فَلَ",
+      "rule": null
+    },
+    {
+      "text": "آ",
+      "rule": "madd"
+    },
+    {
+      "text": " أُ",
+      "rule": null
+    },
+    {
+      "text": "قۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "سِمُ بِٱلشَّفَ",
+      "rule": null
+    },
+    {
+      "text": "ق",
+      "rule": "qalqala"
+    },
+    {
+      "text": "ِ",
+      "rule": null
+    }
+  ],
+  "84_17": [
+    {
+      "text": "وَٱلَّيۡلِ وَمَا وَسَ",
+      "rule": null
+    },
+    {
+      "text": "ق",
+      "rule": "qalqala"
+    },
+    {
+      "text": "َ",
+      "rule": null
+    }
+  ],
+  "84_18": [
+    {
+      "text": "وَٱلۡقَمَرِ إِذَا ٱتَّسَ",
+      "rule": null
+    },
+    {
+      "text": "ق",
+      "rule": "qalqala"
+    },
+    {
+      "text": "َ",
+      "rule": null
+    }
+  ],
+  "84_19": [
+    {
+      "text": "لَتَرۡكَبُ",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": " طَبَقًا عَ",
+      "rule": null
+    },
+    {
+      "text": "ن طَ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "بَ",
+      "rule": null
+    },
+    {
+      "text": "ق",
+      "rule": "qalqala"
+    },
+    {
+      "text": "ٖ",
+      "rule": null
+    }
+  ],
+  "84_20": [
+    {
+      "text": "فَمَا لَهُمۡ لَا يُؤۡمِنُ",
+      "rule": null
+    },
+    {
+      "text": "و",
+      "rule": "madd"
+    },
+    {
+      "text": "نَ",
+      "rule": null
+    }
+  ],
+  "84_21": [
+    {
+      "text": "وَإِذَا قُرِئَ عَلَيۡهِمُ ٱلۡقُرۡءَانُ لَا يَسۡجُدُ",
+      "rule": null
+    },
+    {
+      "text": "و",
+      "rule": "madd"
+    },
+    {
+      "text": "نَۤ۩",
+      "rule": null
+    }
+  ],
+  "84_22": [
+    {
+      "text": "بَلِ ٱلَّذِينَ كَفَرُواْ يُكَذِّبُ",
+      "rule": null
+    },
+    {
+      "text": "و",
+      "rule": "madd"
+    },
+    {
+      "text": "نَ",
+      "rule": null
+    }
+  ],
+  "84_23": [
+    {
+      "text": "وَٱللَّهُ أَعۡلَمُ بِمَا يُوعُ",
+      "rule": null
+    },
+    {
+      "text": "و",
+      "rule": "madd"
+    },
+    {
+      "text": "نَ",
+      "rule": null
+    }
+  ],
+  "84_24": [
+    {
+      "text": "فَبَشِّرۡهُ",
+      "rule": null
+    },
+    {
+      "text": "م بِ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "عَذَابٍ أَلِ",
+      "rule": null
+    },
+    {
+      "text": "ي",
+      "rule": "madd"
+    },
+    {
+      "text": "مٍ",
+      "rule": null
+    }
+  ],
+  "84_25": [
+    {
+      "text": "إِلَّا ٱلَّذِينَ ءَامَنُواْ وَعَمِلُواْ ٱلصَّ",
+      "rule": null
+    },
+    {
+      "text": "ـ",
+      "rule": "madd"
+    },
+    {
+      "text": "ٰلِح",
+      "rule": null
+    },
+    {
+      "text": "َ",
+      "rule": "madd"
+    },
+    {
+      "text": "ٰتِ لَهُمۡ أ",
+      "rule": null
+    },
+    {
+      "text": "َج",
+      "rule": "qalqala"
+    },
+    {
+      "text": "ۡرٌ غَيۡرُ مَمۡن",
+      "rule": null
+    },
+    {
+      "text": "ُ",
+      "rule": "madd"
+    },
+    {
+      "text": "ونِۭ",
+      "rule": null
+    }
+  ],
+  "85_2": [
+    {
+      "text": "وَٱلۡيَوۡمِ ٱلۡمَوۡعُ",
+      "rule": null
+    },
+    {
+      "text": "و",
+      "rule": "madd"
+    },
+    {
+      "text": "د",
+      "rule": "qalqala"
+    },
+    {
+      "text": "ِ",
+      "rule": null
+    }
+  ],
+  "85_3": [
+    {
+      "text": "وَشَاهِد",
+      "rule": null
+    },
+    {
+      "text": "ٖ وَ",
+      "rule": "idgham"
+    },
+    {
+      "text": "مَشۡهُ",
+      "rule": null
+    },
+    {
+      "text": "و",
+      "rule": "madd"
+    },
+    {
+      "text": "د",
+      "rule": "qalqala"
+    },
+    {
+      "text": "ٖ",
+      "rule": null
+    }
+  ],
+  "85_4": [
+    {
+      "text": "قُتِلَ أَصۡحَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "بُ ٱلۡأُخۡدُ",
+      "rule": null
+    },
+    {
+      "text": "و",
+      "rule": "madd"
+    },
+    {
+      "text": "د",
+      "rule": "qalqala"
+    },
+    {
+      "text": "ِ",
+      "rule": null
+    }
+  ],
+  "85_5": [
+    {
+      "text": "ٱل",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "ارِ ذَاتِ ٱلۡوَقُ",
+      "rule": null
+    },
+    {
+      "text": "و",
+      "rule": "madd"
+    },
+    {
+      "text": "د",
+      "rule": "qalqala"
+    },
+    {
+      "text": "ِ",
+      "rule": null
+    }
+  ],
+  "85_6": [
+    {
+      "text": "إِذۡ هُمۡ عَلَيۡهَا قُعُ",
+      "rule": null
+    },
+    {
+      "text": "و",
+      "rule": "madd"
+    },
+    {
+      "text": "د",
+      "rule": "qalqala"
+    },
+    {
+      "text": "ٞ",
+      "rule": null
+    }
+  ],
+  "85_7": [
+    {
+      "text": "وَهُمۡ عَلَىٰ مَا يَفۡعَلُونَ بِٱلۡمُؤۡمِنِينَ شُهُ",
+      "rule": null
+    },
+    {
+      "text": "و",
+      "rule": "madd"
+    },
+    {
+      "text": "د",
+      "rule": "qalqala"
+    },
+    {
+      "text": "ٞ",
+      "rule": null
+    }
+  ],
+  "85_8": [
+    {
+      "text": "وَمَا نَقَمُواْ مِنۡهُمۡ إِلَّ",
+      "rule": null
+    },
+    {
+      "text": "آ",
+      "rule": "madd"
+    },
+    {
+      "text": " أَ",
+      "rule": null
+    },
+    {
+      "text": "ن يُ",
+      "rule": "idgham"
+    },
+    {
+      "text": "ؤۡمِنُواْ بِٱللَّهِ ٱلۡعَزِيزِ ٱلۡحَمِ",
+      "rule": null
+    },
+    {
+      "text": "ي",
+      "rule": "madd"
+    },
+    {
+      "text": "د",
+      "rule": "qalqala"
+    },
+    {
+      "text": "ِ",
+      "rule": null
+    }
+  ],
+  "85_9": [
+    {
+      "text": "ٱلَّذِي لَهُ",
+      "rule": null
+    },
+    {
+      "text": "ۥ",
+      "rule": "madd"
+    },
+    {
+      "text": " مُلۡكُ ٱلسَّمَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "وَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "تِ وَٱلۡأَرۡضِۚ وَٱللَّهُ عَلَىٰ كُلِّ شَيۡ",
+      "rule": null
+    },
+    {
+      "text": "ءٖ ش",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "َه",
+      "rule": null
+    },
+    {
+      "text": "ِ",
+      "rule": "madd"
+    },
+    {
+      "text": "ي",
+      "rule": "qalqala"
+    },
+    {
+      "text": "دٌ",
+      "rule": null
+    }
+  ],
+  "85_10": [
+    {
+      "text": "إِ",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": " ٱلَّذِينَ فَتَنُواْ ٱلۡمُؤۡمِنِينَ وَٱلۡمُؤۡمِنَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "تِ ثُ",
+      "rule": null
+    },
+    {
+      "text": "مَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": " لَمۡ يَتُوبُواْ فَلَهُمۡ عَذَابُ جَهَ",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "مَ وَلَهُمۡ عَذَابُ ٱلۡحَرِ",
+      "rule": null
+    },
+    {
+      "text": "ي",
+      "rule": "madd"
+    },
+    {
+      "text": "ق",
+      "rule": "qalqala"
+    },
+    {
+      "text": "ِ",
+      "rule": null
+    }
+  ],
+  "85_11": [
+    {
+      "text": "إِ",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": " ٱلَّذِينَ ءَامَنُواْ وَعَمِلُواْ ٱلصَّ",
+      "rule": null
+    },
+    {
+      "text": "ـ",
+      "rule": "madd"
+    },
+    {
+      "text": "ٰلِح",
+      "rule": null
+    },
+    {
+      "text": "َ",
+      "rule": "madd"
+    },
+    {
+      "text": "ٰتِ لَهُمۡ ج",
+      "rule": null
+    },
+    {
+      "text": "َنّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "َ",
+      "rule": "madd"
+    },
+    {
+      "text": "ـ",
+      "rule": null
+    },
+    {
+      "text": "ٰتٞ ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "تَ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "جۡرِي ",
+      "rule": null
+    },
+    {
+      "text": "مِن ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "تَحۡتِهَا ٱلۡأَنۡ",
+      "rule": null
+    },
+    {
+      "text": "ه",
+      "rule": "madd"
+    },
+    {
+      "text": "َٰرُۚ",
+      "rule": null
+    },
+    {
+      "text": " ",
+      "rule": "madd"
+    },
+    {
+      "text": "ذَٰلِكَ ٱلۡفَوۡزُ ٱلۡك",
+      "rule": null
+    },
+    {
+      "text": "َ",
+      "rule": "madd"
+    },
+    {
+      "text": "بِيرُ",
+      "rule": null
+    }
+  ],
+  "85_12": [
+    {
+      "text": "إِ",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": " بَ",
+      "rule": null
+    },
+    {
+      "text": "طۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "شَ رَبِّكَ لَشَدِ",
+      "rule": null
+    },
+    {
+      "text": "ي",
+      "rule": "madd"
+    },
+    {
+      "text": "د",
+      "rule": "qalqala"
+    },
+    {
+      "text": "ٌ",
+      "rule": null
+    }
+  ],
+  "85_13": [
+    {
+      "text": "إِ",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "هُ",
+      "rule": null
+    },
+    {
+      "text": "ۥ",
+      "rule": "madd"
+    },
+    {
+      "text": " هُوَ يُ",
+      "rule": null
+    },
+    {
+      "text": "بۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "دِئُ وَيُعِ",
+      "rule": null
+    },
+    {
+      "text": "ي",
+      "rule": "madd"
+    },
+    {
+      "text": "د",
+      "rule": "qalqala"
+    },
+    {
+      "text": "ُ",
+      "rule": null
+    }
+  ],
+  "85_14": [
+    {
+      "text": "وَهُوَ ٱلۡغَفُورُ ٱلۡوَدُ",
+      "rule": null
+    },
+    {
+      "text": "و",
+      "rule": "madd"
+    },
+    {
+      "text": "د",
+      "rule": "qalqala"
+    },
+    {
+      "text": "ُ",
+      "rule": null
+    }
+  ],
+  "85_15": [
+    {
+      "text": "ذُو ٱلۡعَرۡشِ ٱلۡمَجِ",
+      "rule": null
+    },
+    {
+      "text": "ي",
+      "rule": "madd"
+    },
+    {
+      "text": "د",
+      "rule": "qalqala"
+    },
+    {
+      "text": "ُ",
+      "rule": null
+    }
+  ],
+  "85_16": [
+    {
+      "text": "فَعَّال",
+      "rule": null
+    },
+    {
+      "text": "ٞ لِّ",
+      "rule": "idgham"
+    },
+    {
+      "text": "مَا يُرِ",
+      "rule": null
+    },
+    {
+      "text": "ي",
+      "rule": "madd"
+    },
+    {
+      "text": "د",
+      "rule": "qalqala"
+    },
+    {
+      "text": "ُ",
+      "rule": null
+    }
+  ],
+  "85_17": [
+    {
+      "text": "هَلۡ أَتَى",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "كَ حَدِيثُ ٱلۡجُنُ",
+      "rule": null
+    },
+    {
+      "text": "و",
+      "rule": "madd"
+    },
+    {
+      "text": "د",
+      "rule": "qalqala"
+    },
+    {
+      "text": "ِ",
+      "rule": null
+    }
+  ],
+  "85_18": [
+    {
+      "text": "فِرۡعَوۡنَ وَثَمُ",
+      "rule": null
+    },
+    {
+      "text": "و",
+      "rule": "madd"
+    },
+    {
+      "text": "د",
+      "rule": "qalqala"
+    },
+    {
+      "text": "َ",
+      "rule": null
+    }
+  ],
+  "85_19": [
+    {
+      "text": "بَلِ ٱلَّذِينَ كَفَرُواْ فِي تَكۡذِ",
+      "rule": null
+    },
+    {
+      "text": "ي",
+      "rule": "madd"
+    },
+    {
+      "text": "ب",
+      "rule": "qalqala"
+    },
+    {
+      "text": "ٖ",
+      "rule": null
+    }
+  ],
+  "85_20": [
+    {
+      "text": "وَٱللَّهُ مِ",
+      "rule": null
+    },
+    {
+      "text": "ن وَ",
+      "rule": "idgham"
+    },
+    {
+      "text": "رَ",
+      "rule": null
+    },
+    {
+      "text": "آ",
+      "rule": "madd"
+    },
+    {
+      "text": "ئِهِ",
+      "rule": null
+    },
+    {
+      "text": "م مُّ",
+      "rule": "idgham"
+    },
+    {
+      "text": "حِ",
+      "rule": null
+    },
+    {
+      "text": "ي",
+      "rule": "madd"
+    },
+    {
+      "text": "ط",
+      "rule": "qalqala"
+    },
+    {
+      "text": "ُۢ",
+      "rule": null
+    }
+  ],
+  "85_21": [
+    {
+      "text": "بَلۡ هُوَ قُرۡءَان",
+      "rule": null
+    },
+    {
+      "text": "ٞ مَّ",
+      "rule": "idgham"
+    },
+    {
+      "text": "جِ",
+      "rule": null
+    },
+    {
+      "text": "ي",
+      "rule": "madd"
+    },
+    {
+      "text": "د",
+      "rule": "qalqala"
+    },
+    {
+      "text": "ٞ",
+      "rule": null
+    }
+  ],
+  "85_22": [
+    {
+      "text": "فِي لَوۡح",
+      "rule": null
+    },
+    {
+      "text": "ٖ مَّ",
+      "rule": "idgham"
+    },
+    {
+      "text": "حۡفُ",
+      "rule": null
+    },
+    {
+      "text": "و",
+      "rule": "madd"
+    },
+    {
+      "text": "ظِۭ",
+      "rule": null
+    }
+  ],
+  "86_2": [
+    {
+      "text": "وَمَ",
+      "rule": null
+    },
+    {
+      "text": "آ",
+      "rule": "madd"
+    },
+    {
+      "text": " أَ",
+      "rule": null
+    },
+    {
+      "text": "دۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "رَى",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "كَ مَا ٱلطَّارِ",
+      "rule": null
+    },
+    {
+      "text": "ق",
+      "rule": "qalqala"
+    },
+    {
+      "text": "ُ",
+      "rule": null
+    }
+  ],
+  "86_3": [
+    {
+      "text": "ٱل",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "جۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "مُ ٱلثَّاقِ",
+      "rule": null
+    },
+    {
+      "text": "ب",
+      "rule": "qalqala"
+    },
+    {
+      "text": "ُ",
+      "rule": null
+    }
+  ],
+  "86_4": [
+    {
+      "text": "إِ",
+      "rule": null
+    },
+    {
+      "text": "ن كُ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "لُّ نَفۡس",
+      "rule": null
+    },
+    {
+      "text": "ٖ لَّ",
+      "rule": "idgham"
+    },
+    {
+      "text": "مَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "ا عَلَيۡهَا حَافِظٞ",
+      "rule": null
+    }
+  ],
+  "86_5": [
+    {
+      "text": "فَلۡيَ",
+      "rule": null
+    },
+    {
+      "text": "نظُ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "رِ ٱلۡإِ",
+      "rule": null
+    },
+    {
+      "text": "نسَ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "نُ مِ",
+      "rule": null
+    },
+    {
+      "text": "مَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": " خُلِ",
+      "rule": null
+    },
+    {
+      "text": "ق",
+      "rule": "qalqala"
+    },
+    {
+      "text": "َ",
+      "rule": null
+    }
+  ],
+  "86_6": [
+    {
+      "text": "خُلِقَ مِ",
+      "rule": null
+    },
+    {
+      "text": "ن مَّ",
+      "rule": "idgham"
+    },
+    {
+      "text": "آ",
+      "rule": "madd"
+    },
+    {
+      "text": "ء",
+      "rule": null
+    },
+    {
+      "text": "ٖ دَ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "افِ",
+      "rule": null
+    },
+    {
+      "text": "ق",
+      "rule": "qalqala"
+    },
+    {
+      "text": "ٖ",
+      "rule": null
+    }
+  ],
+  "86_7": [
+    {
+      "text": "يَخۡرُجُ مِنۢ بَيۡنِ ٱلصُّلۡبِ وَٱلتَّرَ",
+      "rule": null
+    },
+    {
+      "text": "آ",
+      "rule": "madd"
+    },
+    {
+      "text": "ئِ",
+      "rule": null
+    },
+    {
+      "text": "ب",
+      "rule": "qalqala"
+    },
+    {
+      "text": "ِ",
+      "rule": null
+    }
+  ],
+  "86_8": [
+    {
+      "text": "إِ",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "هُ",
+      "rule": null
+    },
+    {
+      "text": "ۥ",
+      "rule": "madd"
+    },
+    {
+      "text": " عَلَىٰ رَ",
+      "rule": null
+    },
+    {
+      "text": "جۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "عِهِ",
+      "rule": null
+    },
+    {
+      "text": "ۦ",
+      "rule": "madd"
+    },
+    {
+      "text": " لَقَادِرٞ",
+      "rule": null
+    }
+  ],
+  "86_9": [
+    {
+      "text": "يَوۡمَ تُ",
+      "rule": null
+    },
+    {
+      "text": "بۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "لَى ٱلسَّرَ",
+      "rule": null
+    },
+    {
+      "text": "آ",
+      "rule": "madd"
+    },
+    {
+      "text": "ئِرُ",
+      "rule": null
+    }
+  ],
+  "86_10": [
+    {
+      "text": "فَمَا لَهُ",
+      "rule": null
+    },
+    {
+      "text": "ۥ",
+      "rule": "madd"
+    },
+    {
+      "text": " مِ",
+      "rule": null
+    },
+    {
+      "text": "ن قُ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "وَّة",
+      "rule": null
+    },
+    {
+      "text": "ٖ وَ",
+      "rule": "idgham"
+    },
+    {
+      "text": "لَا نَاصِرٖ",
+      "rule": null
+    }
+  ],
+  "86_11": [
+    {
+      "text": "وَٱلسَّمَ",
+      "rule": null
+    },
+    {
+      "text": "آ",
+      "rule": "madd"
+    },
+    {
+      "text": "ءِ ذَاتِ ٱلرَّ",
+      "rule": null
+    },
+    {
+      "text": "جۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "عِ",
+      "rule": null
+    }
+  ],
+  "86_12": [
+    {
+      "text": "وَٱلۡأَرۡضِ ذَاتِ ٱلصَّ",
+      "rule": null
+    },
+    {
+      "text": "دۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "عِ",
+      "rule": null
+    }
+  ],
+  "86_13": [
+    {
+      "text": "إِ",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "هُ",
+      "rule": null
+    },
+    {
+      "text": "ۥ",
+      "rule": "madd"
+    },
+    {
+      "text": " لَقَوۡل",
+      "rule": null
+    },
+    {
+      "text": "ٞ فَ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "صۡلٞ",
+      "rule": null
+    }
+  ],
+  "86_15": [
+    {
+      "text": "إِ",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "هُمۡ يَكِيدُونَ كَيۡدٗا",
+      "rule": null
+    }
+  ],
+  "86_17": [
+    {
+      "text": "فَمَهِّلِ ٱلۡكَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "فِرِينَ أَمۡهِلۡهُمۡ رُوَيۡدَۢا",
+      "rule": null
+    }
+  ],
+  "87_4": [
+    {
+      "text": "وَٱلَّذِ",
+      "rule": null
+    },
+    {
+      "text": "يٓ",
+      "rule": "madd"
+    },
+    {
+      "text": " أَخۡرَجَ ٱلۡمَرۡعَىٰ",
+      "rule": null
+    }
+  ],
+  "87_5": [
+    {
+      "text": "فَجَعَلَهُ",
+      "rule": null
+    },
+    {
+      "text": "ۥ",
+      "rule": "madd"
+    },
+    {
+      "text": " غُثَ",
+      "rule": null
+    },
+    {
+      "text": "آ",
+      "rule": "madd"
+    },
+    {
+      "text": "ءً أَحۡوَىٰ",
+      "rule": null
+    }
+  ],
+  "87_6": [
+    {
+      "text": "سَنُ",
+      "rule": null
+    },
+    {
+      "text": "قۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "رِئُكَ فَلَا تَ",
+      "rule": null
+    },
+    {
+      "text": "نسَ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "ىٰٓ",
+      "rule": null
+    }
+  ],
+  "87_7": [
+    {
+      "text": "إِلَّا مَا شَ",
+      "rule": null
+    },
+    {
+      "text": "آ",
+      "rule": "madd"
+    },
+    {
+      "text": "ءَ ٱللَّهُۚ إ",
+      "rule": null
+    },
+    {
+      "text": "ِنّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "َه",
+      "rule": null
+    },
+    {
+      "text": "ُ",
+      "rule": "madd"
+    },
+    {
+      "text": "ۥ يَعۡلَمُ ٱلۡجَهۡرَ وَمَا يَخۡفَىٰ",
+      "rule": null
+    }
+  ],
+  "87_9": [
+    {
+      "text": "فَذَكِّرۡ إِ",
+      "rule": null
+    },
+    {
+      "text": "ن نَّ",
+      "rule": "idgham"
+    },
+    {
+      "text": "فَعَتِ ٱلذِّكۡرَىٰ",
+      "rule": null
+    }
+  ],
+  "87_10": [
+    {
+      "text": "سَيَذَّكَّرُ مَ",
+      "rule": null
+    },
+    {
+      "text": "ن يَ",
+      "rule": "idgham"
+    },
+    {
+      "text": "خۡشَىٰ",
+      "rule": null
+    }
+  ],
+  "87_11": [
+    {
+      "text": "وَيَتَجَ",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "بُهَا ٱلۡأَشۡقَى",
+      "rule": null
+    }
+  ],
+  "87_12": [
+    {
+      "text": "ٱلَّذِي يَصۡلَى ٱل",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "ارَ ٱلۡكُ",
+      "rule": null
+    },
+    {
+      "text": "بۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "رَىٰ",
+      "rule": null
+    }
+  ],
+  "87_13": [
+    {
+      "text": "ثُ",
+      "rule": null
+    },
+    {
+      "text": "مَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": " لَا يَمُوتُ فِيهَا وَلَا يَحۡيَىٰ",
+      "rule": null
+    }
+  ],
+  "87_14": [
+    {
+      "text": "قَ",
+      "rule": null
+    },
+    {
+      "text": "دۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": " أَفۡلَحَ مَ",
+      "rule": null
+    },
+    {
+      "text": "ن تَ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "زَكَّىٰ",
+      "rule": null
+    }
+  ],
+  "87_15": [
+    {
+      "text": "وَذَكَرَ ٱسۡمَ رَبِّهِ",
+      "rule": null
+    },
+    {
+      "text": "ۦ",
+      "rule": "madd"
+    },
+    {
+      "text": " فَصَلَّىٰ",
+      "rule": null
+    }
+  ],
+  "87_16": [
+    {
+      "text": "بَلۡ تُؤۡثِرُونَ ٱلۡحَيَو",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "ةَ ٱلدُّنۡيَا",
+      "rule": null
+    }
+  ],
+  "87_17": [
+    {
+      "text": "وَٱلۡأٓخِرَةُ خَيۡرٞ",
+      "rule": null
+    },
+    {
+      "text": " وَأ",
+      "rule": "idgham"
+    },
+    {
+      "text": "َب",
+      "rule": null
+    },
+    {
+      "text": "ۡق",
+      "rule": "qalqala"
+    },
+    {
+      "text": "َىٰٓ",
+      "rule": null
+    }
+  ],
+  "87_18": [
+    {
+      "text": "إِ",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": " هَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "ذَا لَفِي ٱلصُّحُفِ ٱلۡأُولَىٰ",
+      "rule": null
+    }
+  ],
+  "87_19": [
+    {
+      "text": "صُحُفِ إِ",
+      "rule": null
+    },
+    {
+      "text": "بۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "رَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "هِيمَ وَمُوسَىٰ",
+      "rule": null
+    }
+  ],
+  "88_2": [
+    {
+      "text": "وُجُوه",
+      "rule": null
+    },
+    {
+      "text": "ٞ يَ",
+      "rule": "idgham"
+    },
+    {
+      "text": "وۡمَئِذٍ خَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "شِعَةٌ",
+      "rule": null
+    }
+  ],
+  "88_3": [
+    {
+      "text": "عَامِلَة",
+      "rule": null
+    },
+    {
+      "text": "ٞ نَّ",
+      "rule": "idgham"
+    },
+    {
+      "text": "اصِبَةٞ",
+      "rule": null
+    }
+  ],
+  "88_6": [
+    {
+      "text": "لَّيۡسَ لَهُمۡ طَعَامٌ إِلَّا مِ",
+      "rule": null
+    },
+    {
+      "text": "ن ضَ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "رِ",
+      "rule": null
+    },
+    {
+      "text": "ي",
+      "rule": "madd"
+    },
+    {
+      "text": "عٖ",
+      "rule": null
+    }
+  ],
+  "88_7": [
+    {
+      "text": "لَّا يُسۡمِنُ وَلَا يُغۡنِي مِ",
+      "rule": null
+    },
+    {
+      "text": "ن جُ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "و",
+      "rule": "madd"
+    },
+    {
+      "text": "عٖ",
+      "rule": null
+    }
+  ],
+  "88_8": [
+    {
+      "text": "وُجُوه",
+      "rule": null
+    },
+    {
+      "text": "ٞ يَ",
+      "rule": "idgham"
+    },
+    {
+      "text": "وۡمَئِذ",
+      "rule": null
+    },
+    {
+      "text": "ٖ نَّ",
+      "rule": "idgham"
+    },
+    {
+      "text": "اعِمَةٞ",
+      "rule": null
+    }
+  ],
+  "88_10": [
+    {
+      "text": "فِي جَ",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "ةٍ عَالِيَةٖ",
+      "rule": null
+    }
+  ],
+  "88_11": [
+    {
+      "text": "لَّا تَسۡمَعُ فِيهَا لَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "غِيَةٗ",
+      "rule": null
+    }
+  ],
+  "88_12": [
+    {
+      "text": "فِيهَا عَيۡن",
+      "rule": null
+    },
+    {
+      "text": "ٞ جَ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "ارِيَةٞ",
+      "rule": null
+    }
+  ],
+  "88_13": [
+    {
+      "text": "فِيهَا سُرُر",
+      "rule": null
+    },
+    {
+      "text": "ٞ مَّ",
+      "rule": "idgham"
+    },
+    {
+      "text": "رۡفُوعَةٞ",
+      "rule": null
+    }
+  ],
+  "88_14": [
+    {
+      "text": "وَأَكۡوَاب",
+      "rule": null
+    },
+    {
+      "text": "ٞ مَّ",
+      "rule": "idgham"
+    },
+    {
+      "text": "وۡضُوعَةٞ",
+      "rule": null
+    }
+  ],
+  "88_16": [
+    {
+      "text": "وَزَرَابِيُّ مَ",
+      "rule": null
+    },
+    {
+      "text": "بۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "ثُوثَةٌ",
+      "rule": null
+    }
+  ],
+  "88_17": [
+    {
+      "text": "أَفَلَا يَ",
+      "rule": null
+    },
+    {
+      "text": "نظُ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "رُونَ إِلَى ٱلۡإِبِلِ كَيۡفَ خُلِقَتۡ",
+      "rule": null
+    }
+  ],
+  "88_18": [
+    {
+      "text": "وَإِلَى ٱلسَّمَ",
+      "rule": null
+    },
+    {
+      "text": "آ",
+      "rule": "madd"
+    },
+    {
+      "text": "ءِ كَيۡفَ رُفِعَتۡ",
+      "rule": null
+    }
+  ],
+  "88_21": [
+    {
+      "text": "فَذَكِّرۡ إِ",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "مَ",
+      "rule": null
+    },
+    {
+      "text": "آ",
+      "rule": "madd"
+    },
+    {
+      "text": " أَ",
+      "rule": null
+    },
+    {
+      "text": "نتَ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": " مُذَكِّرٞ",
+      "rule": null
+    }
+  ],
+  "88_22": [
+    {
+      "text": "لَّسۡتَ عَلَيۡهِ",
+      "rule": null
+    },
+    {
+      "text": "م بِ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "مُصَيۡطِرٍ",
+      "rule": null
+    }
+  ],
+  "88_23": [
+    {
+      "text": "إِلَّا مَ",
+      "rule": null
+    },
+    {
+      "text": "ن تَ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "وَلَّىٰ وَكَفَرَ",
+      "rule": null
+    }
+  ],
+  "88_25": [
+    {
+      "text": "إِ",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": " إِلَيۡنَ",
+      "rule": null
+    },
+    {
+      "text": "آ",
+      "rule": "madd"
+    },
+    {
+      "text": " إِيَابَهُمۡ",
+      "rule": null
+    }
+  ],
+  "88_26": [
+    {
+      "text": "ثُ",
+      "rule": null
+    },
+    {
+      "text": "مَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": " إِ",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": " عَلَيۡنَا حِسَابَهُم",
+      "rule": null
+    }
+  ],
+  "89_5": [
+    {
+      "text": "هَلۡ فِي ذَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "لِكَ قَسَم",
+      "rule": null
+    },
+    {
+      "text": "ٞ لِّ",
+      "rule": "idgham"
+    },
+    {
+      "text": "ذِي حِ",
+      "rule": null
+    },
+    {
+      "text": "جۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "رٍ",
+      "rule": null
+    }
+  ],
+  "89_6": [
+    {
+      "text": "أَلَمۡ تَرَ كَيۡفَ فَعَلَ رَبُّكَ بِعَ",
+      "rule": null
+    },
+    {
+      "text": "ا",
+      "rule": "madd"
+    },
+    {
+      "text": "د",
+      "rule": "qalqala"
+    },
+    {
+      "text": "ٍ",
+      "rule": null
+    }
+  ],
+  "89_7": [
+    {
+      "text": "إِرَمَ ذَاتِ ٱلۡعِمَ",
+      "rule": null
+    },
+    {
+      "text": "ا",
+      "rule": "madd"
+    },
+    {
+      "text": "د",
+      "rule": "qalqala"
+    },
+    {
+      "text": "ِ",
+      "rule": null
+    }
+  ],
+  "89_8": [
+    {
+      "text": "ٱلَّتِي لَمۡ يُخۡلَ",
+      "rule": null
+    },
+    {
+      "text": "قۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": " مِثۡلُهَا فِي ٱلۡبِلَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "د",
+      "rule": "qalqala"
+    },
+    {
+      "text": "ِ",
+      "rule": null
+    }
+  ],
+  "89_9": [
+    {
+      "text": "وَثَمُودَ ٱلَّذِينَ جَابُواْ ٱلصَّخۡرَ بِٱلۡوَ",
+      "rule": null
+    },
+    {
+      "text": "ا",
+      "rule": "madd"
+    },
+    {
+      "text": "د",
+      "rule": "qalqala"
+    },
+    {
+      "text": "ِ",
+      "rule": null
+    }
+  ],
+  "89_10": [
+    {
+      "text": "وَفِرۡعَوۡنَ ذِي ٱلۡأَوۡتَ",
+      "rule": null
+    },
+    {
+      "text": "ا",
+      "rule": "madd"
+    },
+    {
+      "text": "د",
+      "rule": "qalqala"
+    },
+    {
+      "text": "ِ",
+      "rule": null
+    }
+  ],
+  "89_11": [
+    {
+      "text": "ٱلَّذِينَ طَغَوۡاْ فِي ٱلۡبِلَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "د",
+      "rule": "qalqala"
+    },
+    {
+      "text": "ِ",
+      "rule": null
+    }
+  ],
+  "89_12": [
+    {
+      "text": "فَأَكۡثَرُواْ فِيهَا ٱلۡفَسَ",
+      "rule": null
+    },
+    {
+      "text": "ا",
+      "rule": "madd"
+    },
+    {
+      "text": "د",
+      "rule": "qalqala"
+    },
+    {
+      "text": "َ",
+      "rule": null
+    }
+  ],
+  "89_13": [
+    {
+      "text": "فَصَبَّ عَلَيۡهِمۡ رَبُّكَ سَوۡطَ عَذَ",
+      "rule": null
+    },
+    {
+      "text": "ا",
+      "rule": "madd"
+    },
+    {
+      "text": "ب",
+      "rule": "qalqala"
+    },
+    {
+      "text": "ٍ",
+      "rule": null
+    }
+  ],
+  "89_14": [
+    {
+      "text": "إِ",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": " رَبَّكَ لَبِٱلۡمِرۡصَ",
+      "rule": null
+    },
+    {
+      "text": "ا",
+      "rule": "madd"
+    },
+    {
+      "text": "د",
+      "rule": "qalqala"
+    },
+    {
+      "text": "ِ",
+      "rule": null
+    }
+  ],
+  "89_15": [
+    {
+      "text": "فَأَ",
+      "rule": null
+    },
+    {
+      "text": "مَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "ا ٱلۡإِ",
+      "rule": null
+    },
+    {
+      "text": "نسَ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "نُ إِذَا مَا ٱ",
+      "rule": null
+    },
+    {
+      "text": "بۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "تَلَى",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "هُ رَبُّهُ",
+      "rule": null
+    },
+    {
+      "text": "ۥ",
+      "rule": "madd"
+    },
+    {
+      "text": " فَأَكۡرَمَهُ",
+      "rule": null
+    },
+    {
+      "text": "ۥ",
+      "rule": "madd"
+    },
+    {
+      "text": " وَنَعَّمَهُ",
+      "rule": null
+    },
+    {
+      "text": "ۥ",
+      "rule": "madd"
+    },
+    {
+      "text": " فَيَقُولُ رَبِّ",
+      "rule": null
+    },
+    {
+      "text": "يٓ",
+      "rule": "madd"
+    },
+    {
+      "text": " أَكۡرَمَنِ",
+      "rule": null
+    }
+  ],
+  "89_16": [
+    {
+      "text": "وَأَ",
+      "rule": null
+    },
+    {
+      "text": "مَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "آ",
+      "rule": "madd"
+    },
+    {
+      "text": " إِذَا مَا ٱ",
+      "rule": null
+    },
+    {
+      "text": "بۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "تَلَى",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "هُ فَقَدَرَ عَلَيۡهِ رِزۡقَهُ",
+      "rule": null
+    },
+    {
+      "text": "ۥ",
+      "rule": "madd"
+    },
+    {
+      "text": " فَيَقُولُ رَبِّ",
+      "rule": null
+    },
+    {
+      "text": "يٓ",
+      "rule": "madd"
+    },
+    {
+      "text": " أَهَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "نَنِ",
+      "rule": null
+    }
+  ],
+  "89_17": [
+    {
+      "text": "كَلَّاۖ بَل لَّا تُكۡرِمُونَ ٱلۡيَت",
+      "rule": null
+    },
+    {
+      "text": "ِ",
+      "rule": "madd"
+    },
+    {
+      "text": "يمَ",
+      "rule": null
+    }
+  ],
+  "89_18": [
+    {
+      "text": "وَلَا تَحَ",
+      "rule": null
+    },
+    {
+      "text": "ـٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "ٓضُّونَ عَلَىٰ طَعَامِ ٱلۡمِسۡك",
+      "rule": null
+    },
+    {
+      "text": "ِ",
+      "rule": "madd"
+    },
+    {
+      "text": "ينِ",
+      "rule": null
+    }
+  ],
+  "89_19": [
+    {
+      "text": "وَتَأۡكُلُونَ ٱلتُّرَاثَ أَكۡل",
+      "rule": null
+    },
+    {
+      "text": "ٗا لَّ",
+      "rule": "idgham"
+    },
+    {
+      "text": "مّٗ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "ا",
+      "rule": null
+    }
+  ],
+  "89_20": [
+    {
+      "text": "وَتُحِبُّونَ ٱلۡمَالَ حُبّ",
+      "rule": null
+    },
+    {
+      "text": "ٗا جَ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "مّٗ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "ا",
+      "rule": null
+    }
+  ],
+  "89_21": [
+    {
+      "text": "كَلَّ",
+      "rule": null
+    },
+    {
+      "text": "آ",
+      "rule": "madd"
+    },
+    {
+      "text": "ۖ إِذَا دُكَّتِ ٱلۡأَرۡضُ دَك",
+      "rule": null
+    },
+    {
+      "text": "ّٗا د",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "َكّٗا",
+      "rule": null
+    }
+  ],
+  "89_22": [
+    {
+      "text": "وَجَ",
+      "rule": null
+    },
+    {
+      "text": "آ",
+      "rule": "madd"
+    },
+    {
+      "text": "ءَ رَبُّكَ وَٱلۡمَلَكُ صَفّ",
+      "rule": null
+    },
+    {
+      "text": "ٗا صَ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "فّٗا",
+      "rule": null
+    }
+  ],
+  "89_23": [
+    {
+      "text": "وَجِاْ",
+      "rule": null
+    },
+    {
+      "text": "يٓ",
+      "rule": "madd"
+    },
+    {
+      "text": "ءَ يَوۡمَئِذِۭ بِجَهَ",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "مَۚ يَوۡمَئِ",
+      "rule": null
+    },
+    {
+      "text": "ذٖ ي",
+      "rule": "idgham"
+    },
+    {
+      "text": "َتَذَكَّرُ ٱلۡإ",
+      "rule": null
+    },
+    {
+      "text": "ِنس",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "َ",
+      "rule": "madd"
+    },
+    {
+      "text": "ٰنُ وَأ",
+      "rule": null
+    },
+    {
+      "text": "َنّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "َىٰ لَهُ ٱلذِّكۡرَىٰ",
+      "rule": null
+    }
+  ],
+  "89_24": [
+    {
+      "text": "يَقُولُ يَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "لَيۡتَنِي قَدَّمۡتُ لِحَيَاتِي",
+      "rule": null
+    }
+  ],
+  "89_25": [
+    {
+      "text": "فَيَوۡمَئِذ",
+      "rule": null
+    },
+    {
+      "text": "ٖ لَّ",
+      "rule": "idgham"
+    },
+    {
+      "text": "ا يُعَذِّبُ عَذَابَهُ",
+      "rule": null
+    },
+    {
+      "text": "ۥٓ",
+      "rule": "madd"
+    },
+    {
+      "text": " أَحَ",
+      "rule": null
+    },
+    {
+      "text": "د",
+      "rule": "qalqala"
+    },
+    {
+      "text": "ٞ",
+      "rule": null
+    }
+  ],
+  "89_26": [
+    {
+      "text": "وَلَا يُوثِقُ وَثَاقَهُ",
+      "rule": null
+    },
+    {
+      "text": "ۥٓ",
+      "rule": "madd"
+    },
+    {
+      "text": " أَحَ",
+      "rule": null
+    },
+    {
+      "text": "د",
+      "rule": "qalqala"
+    },
+    {
+      "text": "ٞ",
+      "rule": null
+    }
+  ],
+  "89_27": [
+    {
+      "text": "يَ",
+      "rule": null
+    },
+    {
+      "text": "ـٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "ٓأَيَّتُهَا ٱ",
+      "rule": null
+    },
+    {
+      "text": "لنّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "َفۡسُ ٱلۡم",
+      "rule": null
+    },
+    {
+      "text": "ُط",
+      "rule": "qalqala"
+    },
+    {
+      "text": "ۡمَئ",
+      "rule": null
+    },
+    {
+      "text": "ِنّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "َةُ",
+      "rule": null
+    }
+  ],
+  "89_28": [
+    {
+      "text": "ٱرۡجِعِ",
+      "rule": null
+    },
+    {
+      "text": "يٓ",
+      "rule": "madd"
+    },
+    {
+      "text": " إِلَىٰ رَبِّكِ رَاضِيَة",
+      "rule": null
+    },
+    {
+      "text": "ٗ مَّ",
+      "rule": "idgham"
+    },
+    {
+      "text": "رۡضِيَّةٗ",
+      "rule": null
+    }
+  ],
+  "89_29": [
+    {
+      "text": "فَٱ",
+      "rule": null
+    },
+    {
+      "text": "دۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "خُلِي فِي عِبَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "دِي",
+      "rule": null
+    }
+  ],
+  "89_30": [
+    {
+      "text": "وَٱ",
+      "rule": null
+    },
+    {
+      "text": "دۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "خُلِي جَ",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "تِي",
+      "rule": null
+    }
+  ],
+  "90_2": [
+    {
+      "text": "وَأَ",
+      "rule": null
+    },
+    {
+      "text": "نتَ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": " حِلُّۢ بِهَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "ذَا ٱلۡبَلَ",
+      "rule": null
+    },
+    {
+      "text": "د",
+      "rule": "qalqala"
+    },
+    {
+      "text": "ِ",
+      "rule": null
+    }
+  ],
+  "90_3": [
+    {
+      "text": "وَوَالِد",
+      "rule": null
+    },
+    {
+      "text": "ٖ وَ",
+      "rule": "idgham"
+    },
+    {
+      "text": "مَا وَلَ",
+      "rule": null
+    },
+    {
+      "text": "د",
+      "rule": "qalqala"
+    },
+    {
+      "text": "َ",
+      "rule": null
+    }
+  ],
+  "90_4": [
+    {
+      "text": "لَقَ",
+      "rule": null
+    },
+    {
+      "text": "دۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": " خَلَ",
+      "rule": null
+    },
+    {
+      "text": "قۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "نَا ٱلۡإِ",
+      "rule": null
+    },
+    {
+      "text": "نسَ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "نَ فِي كَبَ",
+      "rule": null
+    },
+    {
+      "text": "د",
+      "rule": "qalqala"
+    },
+    {
+      "text": "ٍ",
+      "rule": null
+    }
+  ],
+  "90_5": [
+    {
+      "text": "أَيَحۡسَبُ أَ",
+      "rule": null
+    },
+    {
+      "text": "ن لَّن يَ",
+      "rule": "idgham"
+    },
+    {
+      "text": "قۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "دِرَ عَلَيۡهِ أَحَ",
+      "rule": null
+    },
+    {
+      "text": "د",
+      "rule": "qalqala"
+    },
+    {
+      "text": "ٞ",
+      "rule": null
+    }
+  ],
+  "90_6": [
+    {
+      "text": "يَقُولُ أَهۡلَكۡتُ مَال",
+      "rule": null
+    },
+    {
+      "text": "ٗا لُّ",
+      "rule": "idgham"
+    },
+    {
+      "text": "بَدًا",
+      "rule": null
+    }
+  ],
+  "90_7": [
+    {
+      "text": "أَيَحۡسَبُ أَ",
+      "rule": null
+    },
+    {
+      "text": "ن لَّ",
+      "rule": "idgham"
+    },
+    {
+      "text": "مۡ يَرَهُ",
+      "rule": null
+    },
+    {
+      "text": "ۥٓ",
+      "rule": "madd"
+    },
+    {
+      "text": " أَحَ",
+      "rule": null
+    },
+    {
+      "text": "د",
+      "rule": "qalqala"
+    },
+    {
+      "text": "ٌ",
+      "rule": null
+    }
+  ],
+  "90_8": [
+    {
+      "text": "أَلَمۡ نَ",
+      "rule": null
+    },
+    {
+      "text": "جۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "عَل لَّهُ",
+      "rule": null
+    },
+    {
+      "text": "ۥ",
+      "rule": "madd"
+    },
+    {
+      "text": " عَيۡنَ",
+      "rule": null
+    },
+    {
+      "text": "ي",
+      "rule": "madd"
+    },
+    {
+      "text": "ۡنِ",
+      "rule": null
+    }
+  ],
+  "90_9": [
+    {
+      "text": "وَلِسَان",
+      "rule": null
+    },
+    {
+      "text": "ٗا وَ",
+      "rule": "idgham"
+    },
+    {
+      "text": "شَفَتَ",
+      "rule": null
+    },
+    {
+      "text": "ي",
+      "rule": "madd"
+    },
+    {
+      "text": "ۡنِ",
+      "rule": null
+    }
+  ],
+  "90_10": [
+    {
+      "text": "وَهَدَيۡنَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "هُ ٱل",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "جۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "دَ",
+      "rule": null
+    },
+    {
+      "text": "ي",
+      "rule": "madd"
+    },
+    {
+      "text": "ۡنِ",
+      "rule": null
+    }
+  ],
+  "90_11": [
+    {
+      "text": "فَلَا ٱ",
+      "rule": null
+    },
+    {
+      "text": "قۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "تَحَمَ ٱلۡعَقَبَةَ",
+      "rule": null
+    }
+  ],
+  "90_12": [
+    {
+      "text": "وَمَ",
+      "rule": null
+    },
+    {
+      "text": "آ",
+      "rule": "madd"
+    },
+    {
+      "text": " أَ",
+      "rule": null
+    },
+    {
+      "text": "دۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "رَى",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "كَ مَا ٱلۡعَقَبَةُ",
+      "rule": null
+    }
+  ],
+  "90_14": [
+    {
+      "text": "أَوۡ إِ",
+      "rule": null
+    },
+    {
+      "text": "طۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "عَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "م",
+      "rule": null
+    },
+    {
+      "text": "ٞ فِ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "ي يَوۡم",
+      "rule": null
+    },
+    {
+      "text": "ٖ ذِ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "ي مَسۡغَبَةٖ",
+      "rule": null
+    }
+  ],
+  "90_15": [
+    {
+      "text": "يَتِيم",
+      "rule": null
+    },
+    {
+      "text": "ٗا ذَ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "ا مَ",
+      "rule": null
+    },
+    {
+      "text": "قۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "رَبَةٍ",
+      "rule": null
+    }
+  ],
+  "90_16": [
+    {
+      "text": "أَوۡ مِسۡكِين",
+      "rule": null
+    },
+    {
+      "text": "ٗا ذَ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "ا مَتۡرَبَةٖ",
+      "rule": null
+    }
+  ],
+  "90_17": [
+    {
+      "text": "ثُ",
+      "rule": null
+    },
+    {
+      "text": "مَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": " كَانَ مِنَ ٱلَّذِينَ ءَامَنُواْ وَتَوَاصَوۡاْ بِٱلصَّ",
+      "rule": null
+    },
+    {
+      "text": "بۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "رِ وَتَوَاصَوۡاْ بِٱلۡمَرۡحَمَةِ",
+      "rule": null
+    }
+  ],
+  "90_18": [
+    {
+      "text": "أُوْلَ",
+      "rule": null
+    },
+    {
+      "text": "ـٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "ٓئِكَ أَصۡح",
+      "rule": null
+    },
+    {
+      "text": "َ",
+      "rule": "madd"
+    },
+    {
+      "text": "ٰبُ ٱلۡمَيۡمَنَةِ",
+      "rule": null
+    }
+  ],
+  "90_19": [
+    {
+      "text": "وَٱلَّذِينَ كَفَرُواْ بِـَٔايَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "تِنَا هُمۡ أَصۡحَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "بُ ٱلۡمَشۡـَٔمَةِ",
+      "rule": null
+    }
+  ],
+  "90_20": [
+    {
+      "text": "عَلَيۡهِمۡ نَار",
+      "rule": null
+    },
+    {
+      "text": "ٞ مُّ",
+      "rule": "idgham"
+    },
+    {
+      "text": "ؤۡصَدَةُۢ",
+      "rule": null
+    }
+  ],
+  "91_2": [
+    {
+      "text": "وَٱلۡقَمَرِ إِذَا تَلَى",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "هَا",
+      "rule": null
+    }
+  ],
+  "91_3": [
+    {
+      "text": "وَٱل",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "هَارِ إِذَا جَلَّى",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "هَا",
+      "rule": null
+    }
+  ],
+  "91_4": [
+    {
+      "text": "وَٱلَّيۡلِ إِذَا يَغۡشَى",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "هَا",
+      "rule": null
+    }
+  ],
+  "91_5": [
+    {
+      "text": "وَٱلسَّمَ",
+      "rule": null
+    },
+    {
+      "text": "آ",
+      "rule": "madd"
+    },
+    {
+      "text": "ءِ وَمَا بَنَى",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "هَا",
+      "rule": null
+    }
+  ],
+  "91_6": [
+    {
+      "text": "وَٱلۡأَرۡضِ وَمَا طَحَى",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "هَا",
+      "rule": null
+    }
+  ],
+  "91_7": [
+    {
+      "text": "وَنَفۡس",
+      "rule": null
+    },
+    {
+      "text": "ٖ وَ",
+      "rule": "idgham"
+    },
+    {
+      "text": "مَا سَوَّى",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "هَا",
+      "rule": null
+    }
+  ],
+  "91_8": [
+    {
+      "text": "فَأَلۡهَمَهَا فُجُورَهَا وَتَ",
+      "rule": null
+    },
+    {
+      "text": "قۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "وَى",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "هَا",
+      "rule": null
+    }
+  ],
+  "91_9": [
+    {
+      "text": "قَ",
+      "rule": null
+    },
+    {
+      "text": "دۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": " أَفۡلَحَ مَ",
+      "rule": null
+    },
+    {
+      "text": "ن زَ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "كَّى",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "هَا",
+      "rule": null
+    }
+  ],
+  "91_10": [
+    {
+      "text": "وَقَ",
+      "rule": null
+    },
+    {
+      "text": "دۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": " خَابَ مَ",
+      "rule": null
+    },
+    {
+      "text": "ن دَ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "سَّى",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "هَا",
+      "rule": null
+    }
+  ],
+  "91_11": [
+    {
+      "text": "كَذَّبَتۡ ثَمُودُ بِطَغۡوَى",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "هَآ",
+      "rule": null
+    }
+  ],
+  "91_12": [
+    {
+      "text": "إِذِ ٱنۢبَعَثَ أَشۡقَى",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "هَا",
+      "rule": null
+    }
+  ],
+  "91_13": [
+    {
+      "text": "فَقَالَ لَهُمۡ رَسُولُ ٱللَّهِ نَاقَةَ ٱللَّهِ وَسُ",
+      "rule": null
+    },
+    {
+      "text": "قۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "يَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "هَا",
+      "rule": null
+    }
+  ],
+  "91_14": [
+    {
+      "text": "فَكَذَّبُوهُ فَعَقَرُوهَا فَدَمۡدَمَ عَلَيۡهِمۡ رَبُّهُ",
+      "rule": null
+    },
+    {
+      "text": "م بِ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "ذَنۢبِهِمۡ فَسَوَّى",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "هَا",
+      "rule": null
+    }
+  ],
+  "91_15": [
+    {
+      "text": "وَلَا يَخَافُ عُ",
+      "rule": null
+    },
+    {
+      "text": "قۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "بَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "هَا",
+      "rule": null
+    }
+  ],
+  "92_2": [
+    {
+      "text": "وَٱل",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "هَارِ إِذَا تَجَلَّىٰ",
+      "rule": null
+    }
+  ],
+  "92_3": [
+    {
+      "text": "وَمَا خَلَقَ ٱلذَّكَرَ وَٱلۡأُ",
+      "rule": null
+    },
+    {
+      "text": "نثَ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "ىٰٓ",
+      "rule": null
+    }
+  ],
+  "92_4": [
+    {
+      "text": "إِ",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": " سَعۡيَكُمۡ لَشَتَّىٰ",
+      "rule": null
+    }
+  ],
+  "92_5": [
+    {
+      "text": "فَأَ",
+      "rule": null
+    },
+    {
+      "text": "مَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "ا مَنۡ أَعۡطَىٰ وَٱتَّقَىٰ",
+      "rule": null
+    }
+  ],
+  "92_7": [
+    {
+      "text": "فَسَنُيَسِّرُهُ",
+      "rule": null
+    },
+    {
+      "text": "ۥ",
+      "rule": "madd"
+    },
+    {
+      "text": " لِلۡيُسۡرَىٰ",
+      "rule": null
+    }
+  ],
+  "92_8": [
+    {
+      "text": "وَأَ",
+      "rule": null
+    },
+    {
+      "text": "مَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "ا مَنۢ بَخِلَ وَٱسۡتَغۡنَىٰ",
+      "rule": null
+    }
+  ],
+  "92_10": [
+    {
+      "text": "فَسَنُيَسِّرُهُ",
+      "rule": null
+    },
+    {
+      "text": "ۥ",
+      "rule": "madd"
+    },
+    {
+      "text": " لِلۡعُسۡرَىٰ",
+      "rule": null
+    }
+  ],
+  "92_11": [
+    {
+      "text": "وَمَا يُغۡنِي عَنۡهُ مَالُهُ",
+      "rule": null
+    },
+    {
+      "text": "ۥٓ",
+      "rule": "madd"
+    },
+    {
+      "text": " إِذَا تَرَدَّىٰٓ",
+      "rule": null
+    }
+  ],
+  "92_12": [
+    {
+      "text": "إِ",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": " عَلَيۡنَا لَلۡهُدَىٰ",
+      "rule": null
+    }
+  ],
+  "92_13": [
+    {
+      "text": "وَإِ",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": " لَنَا لَلۡأٓخِرَةَ وَٱلۡأُولَىٰ",
+      "rule": null
+    }
+  ],
+  "92_14": [
+    {
+      "text": "فَأَ",
+      "rule": null
+    },
+    {
+      "text": "نذَ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "رۡتُكُمۡ نَار",
+      "rule": null
+    },
+    {
+      "text": "ٗا تَ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "لَظَّىٰ",
+      "rule": null
+    }
+  ],
+  "92_15": [
+    {
+      "text": "لَا يَصۡلَى",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "هَ",
+      "rule": null
+    },
+    {
+      "text": "آ",
+      "rule": "madd"
+    },
+    {
+      "text": " إِلَّا ٱلۡأَشۡقَى",
+      "rule": null
+    }
+  ],
+  "92_17": [
+    {
+      "text": "وَسَيُجَ",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "بُهَا ٱلۡأَتۡقَى",
+      "rule": null
+    }
+  ],
+  "92_18": [
+    {
+      "text": "ٱلَّذِي يُؤۡتِي مَالَهُ",
+      "rule": null
+    },
+    {
+      "text": "ۥ",
+      "rule": "madd"
+    },
+    {
+      "text": " يَتَزَكَّىٰ",
+      "rule": null
+    }
+  ],
+  "92_19": [
+    {
+      "text": "وَمَا لِأَحَدٍ عِ",
+      "rule": null
+    },
+    {
+      "text": "ندَ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "هُ",
+      "rule": null
+    },
+    {
+      "text": "ۥ",
+      "rule": "madd"
+    },
+    {
+      "text": " مِ",
+      "rule": null
+    },
+    {
+      "text": "ن نِّ",
+      "rule": "idgham"
+    },
+    {
+      "text": "عۡمَة",
+      "rule": null
+    },
+    {
+      "text": "ٖ تُ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "جۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "زَىٰٓ",
+      "rule": null
+    }
+  ],
+  "92_20": [
+    {
+      "text": "إِلَّا ٱ",
+      "rule": null
+    },
+    {
+      "text": "بۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "تِغَ",
+      "rule": null
+    },
+    {
+      "text": "آ",
+      "rule": "madd"
+    },
+    {
+      "text": "ءَ وَ",
+      "rule": null
+    },
+    {
+      "text": "جۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "هِ رَبِّهِ ٱلۡأَعۡلَىٰ",
+      "rule": null
+    }
+  ],
+  "93_4": [
+    {
+      "text": "وَلَلۡأٓخِرَةُ خَيۡرٞ",
+      "rule": null
+    },
+    {
+      "text": " لَّك",
+      "rule": "idgham"
+    },
+    {
+      "text": "َ مِنَ ٱلۡأُولَىٰ",
+      "rule": null
+    }
+  ],
+  "93_6": [
+    {
+      "text": "أَلَمۡ يَجِ",
+      "rule": null
+    },
+    {
+      "text": "دۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "كَ يَتِيم",
+      "rule": null
+    },
+    {
+      "text": "ٗا فَ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "ـَٔاوَىٰ",
+      "rule": null
+    }
+  ],
+  "93_7": [
+    {
+      "text": "وَوَجَدَكَ ضَ",
+      "rule": null
+    },
+    {
+      "text": "آ",
+      "rule": "madd"
+    },
+    {
+      "text": "لّ",
+      "rule": null
+    },
+    {
+      "text": "ٗا فَ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "هَدَىٰ",
+      "rule": null
+    }
+  ],
+  "93_8": [
+    {
+      "text": "وَوَجَدَكَ عَ",
+      "rule": null
+    },
+    {
+      "text": "آ",
+      "rule": "madd"
+    },
+    {
+      "text": "ئِل",
+      "rule": null
+    },
+    {
+      "text": "ٗا فَ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "أَغۡنَىٰ",
+      "rule": null
+    }
+  ],
+  "93_9": [
+    {
+      "text": "فَأَ",
+      "rule": null
+    },
+    {
+      "text": "مَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "ا ٱلۡيَتِيمَ فَلَا تَ",
+      "rule": null
+    },
+    {
+      "text": "قۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "هَرۡ",
+      "rule": null
+    }
+  ],
+  "93_10": [
+    {
+      "text": "وَأَ",
+      "rule": null
+    },
+    {
+      "text": "مَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "ا ٱلسَّ",
+      "rule": null
+    },
+    {
+      "text": "آ",
+      "rule": "madd"
+    },
+    {
+      "text": "ئِلَ فَلَا تَنۡهَرۡ",
+      "rule": null
+    }
+  ],
+  "93_11": [
+    {
+      "text": "وَأَ",
+      "rule": null
+    },
+    {
+      "text": "مَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "ا بِنِعۡمَةِ رَبِّكَ فَحَدِّثۡ",
+      "rule": null
+    }
+  ],
+  "94_2": [
+    {
+      "text": "وَوَضَعۡنَا عَ",
+      "rule": null
+    },
+    {
+      "text": "نكَ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": " وِزۡرَكَ",
+      "rule": null
+    }
+  ],
+  "94_3": [
+    {
+      "text": "ٱلَّذِ",
+      "rule": null
+    },
+    {
+      "text": "يٓ",
+      "rule": "madd"
+    },
+    {
+      "text": " أَ",
+      "rule": null
+    },
+    {
+      "text": "نقَ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "ضَ ظَهۡرَكَ",
+      "rule": null
+    }
+  ],
+  "94_5": [
+    {
+      "text": "فَإِ",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": " مَعَ ٱلۡعُسۡرِ يُسۡرًا",
+      "rule": null
+    }
+  ],
+  "94_6": [
+    {
+      "text": "إِ",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": " مَعَ ٱلۡعُسۡرِ يُسۡرٗا",
+      "rule": null
+    }
+  ],
+  "94_7": [
+    {
+      "text": "فَإِذَا فَرَغۡتَ فَٱ",
+      "rule": null
+    },
+    {
+      "text": "نصَ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "بۡ",
+      "rule": "qalqala"
+    }
+  ],
+  "94_8": [
+    {
+      "text": "وَإِلَىٰ رَبِّكَ فَٱرۡغَ",
+      "rule": null
+    },
+    {
+      "text": "ب",
+      "rule": "qalqala"
+    }
+  ],
+  "95_2": [
+    {
+      "text": "وَطُورِ سِينِ",
+      "rule": null
+    },
+    {
+      "text": "ي",
+      "rule": "madd"
+    },
+    {
+      "text": "نَ",
+      "rule": null
+    }
+  ],
+  "95_3": [
+    {
+      "text": "وَهَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "ذَا ٱلۡبَلَدِ ٱلۡأَمِ",
+      "rule": null
+    },
+    {
+      "text": "ي",
+      "rule": "madd"
+    },
+    {
+      "text": "نِ",
+      "rule": null
+    }
+  ],
+  "95_4": [
+    {
+      "text": "لَقَ",
+      "rule": null
+    },
+    {
+      "text": "دۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": " خَلَ",
+      "rule": null
+    },
+    {
+      "text": "قۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "نَا ٱلۡإِ",
+      "rule": null
+    },
+    {
+      "text": "نسَ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "نَ فِ",
+      "rule": null
+    },
+    {
+      "text": "يٓ",
+      "rule": "madd"
+    },
+    {
+      "text": " أَحۡسَنِ تَ",
+      "rule": null
+    },
+    {
+      "text": "قۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "وِ",
+      "rule": null
+    },
+    {
+      "text": "ي",
+      "rule": "madd"
+    },
+    {
+      "text": "مٖ",
+      "rule": null
+    }
+  ],
+  "95_5": [
+    {
+      "text": "ثُ",
+      "rule": null
+    },
+    {
+      "text": "مَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": " رَدَ",
+      "rule": null
+    },
+    {
+      "text": "دۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "نَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "هُ أَسۡفَلَ سَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "فِلِ",
+      "rule": null
+    },
+    {
+      "text": "ي",
+      "rule": "madd"
+    },
+    {
+      "text": "نَ",
+      "rule": null
+    }
+  ],
+  "95_6": [
+    {
+      "text": "إِلَّا ٱلَّذِينَ ءَامَنُواْ وَعَمِلُواْ ٱلصَّ",
+      "rule": null
+    },
+    {
+      "text": "ـ",
+      "rule": "madd"
+    },
+    {
+      "text": "ٰلِح",
+      "rule": null
+    },
+    {
+      "text": "َ",
+      "rule": "madd"
+    },
+    {
+      "text": "ٰتِ فَلَهُمۡ أ",
+      "rule": null
+    },
+    {
+      "text": "َج",
+      "rule": "qalqala"
+    },
+    {
+      "text": "ۡرٌ غَيۡرُ مَمۡن",
+      "rule": null
+    },
+    {
+      "text": "ُ",
+      "rule": "madd"
+    },
+    {
+      "text": "ونٖ",
+      "rule": null
+    }
+  ],
+  "95_7": [
+    {
+      "text": "فَمَا يُكَذِّبُكَ بَعۡدُ بِٱلدِّ",
+      "rule": null
+    },
+    {
+      "text": "ي",
+      "rule": "madd"
+    },
+    {
+      "text": "نِ",
+      "rule": null
+    }
+  ],
+  "95_8": [
+    {
+      "text": "أَلَيۡسَ ٱللَّهُ بِأَحۡكَمِ ٱلۡحَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "كِمِ",
+      "rule": null
+    },
+    {
+      "text": "ي",
+      "rule": "madd"
+    },
+    {
+      "text": "نَ",
+      "rule": null
+    }
+  ],
+  "96_2": [
+    {
+      "text": "خَلَقَ ٱلۡإِ",
+      "rule": null
+    },
+    {
+      "text": "نسَ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "نَ مِنۡ عَلَ",
+      "rule": null
+    },
+    {
+      "text": "ق",
+      "rule": "qalqala"
+    },
+    {
+      "text": "ٍ",
+      "rule": null
+    }
+  ],
+  "96_3": [
+    {
+      "text": "ٱ",
+      "rule": null
+    },
+    {
+      "text": "قۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "رَأۡ وَرَبُّكَ ٱلۡأَكۡرَمُ",
+      "rule": null
+    }
+  ],
+  "96_5": [
+    {
+      "text": "عَلَّمَ ٱلۡإِ",
+      "rule": null
+    },
+    {
+      "text": "نسَ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "نَ مَا لَمۡ يَعۡلَمۡ",
+      "rule": null
+    }
+  ],
+  "96_6": [
+    {
+      "text": "كَلَّ",
+      "rule": null
+    },
+    {
+      "text": "آ",
+      "rule": "madd"
+    },
+    {
+      "text": " إِ",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": " ٱلۡإِ",
+      "rule": null
+    },
+    {
+      "text": "نسَ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "نَ لَيَ",
+      "rule": null
+    },
+    {
+      "text": "طۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "غَىٰٓ",
+      "rule": null
+    }
+  ],
+  "96_7": [
+    {
+      "text": "أَ",
+      "rule": null
+    },
+    {
+      "text": "ن رَّ",
+      "rule": "idgham"
+    },
+    {
+      "text": "ءَاهُ ٱسۡتَغۡنَىٰٓ",
+      "rule": null
+    }
+  ],
+  "96_8": [
+    {
+      "text": "إِ",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": " إِلَىٰ رَبِّكَ ٱلرُّ",
+      "rule": null
+    },
+    {
+      "text": "جۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "عَىٰٓ",
+      "rule": null
+    }
+  ],
+  "96_10": [
+    {
+      "text": "عَ",
+      "rule": null
+    },
+    {
+      "text": "بۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "دًا إِذَا صَلَّىٰٓ",
+      "rule": null
+    }
+  ],
+  "96_11": [
+    {
+      "text": "أَرَءَيۡتَ إِ",
+      "rule": null
+    },
+    {
+      "text": "ن كَ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "انَ عَلَى ٱلۡهُدَىٰٓ",
+      "rule": null
+    }
+  ],
+  "96_12": [
+    {
+      "text": "أَوۡ أَمَرَ بِٱلتَّ",
+      "rule": null
+    },
+    {
+      "text": "قۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "وَىٰٓ",
+      "rule": null
+    }
+  ],
+  "96_13": [
+    {
+      "text": "أَرَءَيۡتَ إِ",
+      "rule": null
+    },
+    {
+      "text": "ن كَ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "ذَّبَ وَتَوَلَّىٰٓ",
+      "rule": null
+    }
+  ],
+  "96_14": [
+    {
+      "text": "أَلَمۡ يَعۡلَ",
+      "rule": null
+    },
+    {
+      "text": "م بِ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "أَ",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": " ٱللَّهَ يَرَىٰ",
+      "rule": null
+    }
+  ],
+  "96_15": [
+    {
+      "text": "كَلَّا لَئِ",
+      "rule": null
+    },
+    {
+      "text": "ن لَّ",
+      "rule": "idgham"
+    },
+    {
+      "text": "مۡ يَ",
+      "rule": null
+    },
+    {
+      "text": "نتَ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "هِ لَنَسۡفَعَۢا بِٱل",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "اصِيَةِ",
+      "rule": null
+    }
+  ],
+  "96_16": [
+    {
+      "text": "نَاصِيَة",
+      "rule": null
+    },
+    {
+      "text": "ٖ كَ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "ذِبَةٍ خَاطِئَةٖ",
+      "rule": null
+    }
+  ],
+  "96_17": [
+    {
+      "text": "فَلۡيَ",
+      "rule": null
+    },
+    {
+      "text": "دۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "عُ نَادِيَهُۥ",
+      "rule": null
+    }
+  ],
+  "96_18": [
+    {
+      "text": "سَنَ",
+      "rule": null
+    },
+    {
+      "text": "دۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "عُ ٱلزَّبَانِيَةَ",
+      "rule": null
+    }
+  ],
+  "96_19": [
+    {
+      "text": "كَلَّا لَا تُطِعۡهُ وَٱسۡجُ",
+      "rule": null
+    },
+    {
+      "text": "دۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "ۤ وَ",
+      "rule": null
+    },
+    {
+      "text": "ٱق",
+      "rule": "qalqala"
+    },
+    {
+      "text": "ۡتَر",
+      "rule": null
+    },
+    {
+      "text": "ِ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "ب۩",
+      "rule": null
+    }
+  ],
+  "97_2": [
+    {
+      "text": "وَمَ",
+      "rule": null
+    },
+    {
+      "text": "آ",
+      "rule": "madd"
+    },
+    {
+      "text": " أَ",
+      "rule": null
+    },
+    {
+      "text": "دۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "رَى",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "كَ مَا لَيۡلَةُ ٱلۡقَ",
+      "rule": null
+    },
+    {
+      "text": "دۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "رِ",
+      "rule": null
+    }
+  ],
+  "97_3": [
+    {
+      "text": "لَيۡلَةُ ٱلۡقَ",
+      "rule": null
+    },
+    {
+      "text": "دۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "رِ خَيۡر",
+      "rule": null
+    },
+    {
+      "text": "ٞ مِّ",
+      "rule": "idgham"
+    },
+    {
+      "text": "نۡ أَلۡفِ شَهۡرٖ",
+      "rule": null
+    }
+  ],
+  "97_4": [
+    {
+      "text": "تَنَزَّلُ ٱلۡمَلَ",
+      "rule": null
+    },
+    {
+      "text": "ـٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "ٓئِكَةُ وَٱلرُّوحُ فِيهَا بِإِذۡنِ رَبِّه",
+      "rule": null
+    },
+    {
+      "text": "ِم مّ",
+      "rule": "idgham"
+    },
+    {
+      "text": "ِن ك",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "ُلِّ أَمۡرٖ",
+      "rule": null
+    }
+  ],
+  "97_5": [
+    {
+      "text": "سَلَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "مٌ هِيَ حَتَّىٰ مَ",
+      "rule": null
+    },
+    {
+      "text": "طۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "لَعِ ٱلۡفَ",
+      "rule": null
+    },
+    {
+      "text": "جۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "رِ",
+      "rule": null
+    }
+  ],
+  "98_1": [
+    {
+      "text": "لَمۡ يَكُنِ ٱلَّذِينَ كَفَرُواْ مِنۡ أَهۡلِ ٱلۡكِتَٰبِ وَٱلۡمُشۡرِكِينَ مُنفَكِّينَ حَتَّى",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": " تَأۡتِيَهُمُ ٱلۡبَيِّ",
+      "rule": null
+    },
+    {
+      "text": "نَة",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "ُ",
+      "rule": null
+    }
+  ],
+  "98_2": [
+    {
+      "text": "رَسُول",
+      "rule": null
+    },
+    {
+      "text": "ٞ مِّ",
+      "rule": "idgham"
+    },
+    {
+      "text": "نَ ٱللَّهِ يَتۡلُواْ صُحُف",
+      "rule": null
+    },
+    {
+      "text": "ٗا مُّ",
+      "rule": "idgham"
+    },
+    {
+      "text": "طَهَّرَةٗ",
+      "rule": null
+    }
+  ],
+  "98_3": [
+    {
+      "text": "فِيهَا كُتُب",
+      "rule": null
+    },
+    {
+      "text": "ٞ قَ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "يِّمَةٞ",
+      "rule": null
+    }
+  ],
+  "98_4": [
+    {
+      "text": "وَمَا تَفَرَّقَ ٱلَّذِينَ أُوتُواْ ٱلۡكِتَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "بَ إِلَّا مِنۢ بَعۡدِ مَا جَ",
+      "rule": null
+    },
+    {
+      "text": "آ",
+      "rule": "madd"
+    },
+    {
+      "text": "ءَتۡهُمُ ٱلۡبَيِّنَةُ",
+      "rule": null
+    }
+  ],
+  "98_5": [
+    {
+      "text": "وَمَ",
+      "rule": null
+    },
+    {
+      "text": "آ",
+      "rule": "madd"
+    },
+    {
+      "text": " أُمِرُ",
+      "rule": null
+    },
+    {
+      "text": "وٓ",
+      "rule": "madd"
+    },
+    {
+      "text": "اْ إِلَّا لِيَعۡبُدُواْ ٱللَّهَ مُخۡلِصِينَ لَهُ ٱلدِّينَ حُنَفَ",
+      "rule": null
+    },
+    {
+      "text": "آ",
+      "rule": "madd"
+    },
+    {
+      "text": "ءَ وَيُقِيمُواْ ٱلصَّلَو",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "ةَ وَيُؤۡتُواْ ٱلزَّكَو",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "ةَۚ وَذ",
+      "rule": null
+    },
+    {
+      "text": "َ",
+      "rule": "madd"
+    },
+    {
+      "text": "ٰلِكَ دِينُ ٱلۡقَيِّمَةِ",
+      "rule": null
+    }
+  ],
+  "98_6": [
+    {
+      "text": "إِ",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": " ٱلَّذِينَ كَفَرُواْ مِنۡ أَهۡلِ ٱلۡكِتَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "بِ وَٱلۡمُشۡرِكِينَ فِي نَارِ جَهَ",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "مَ خَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "لِدِينَ فِيهَ",
+      "rule": null
+    },
+    {
+      "text": "آ",
+      "rule": "madd"
+    },
+    {
+      "text": "ۚ أُوْل",
+      "rule": null
+    },
+    {
+      "text": "َـ",
+      "rule": "madd"
+    },
+    {
+      "text": "ٰٓئِكَ هُمۡ شَرُّ ٱلۡبَرِيَّةِ",
+      "rule": null
+    }
+  ],
+  "98_7": [
+    {
+      "text": "إِ",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": " ٱلَّذِينَ ءَامَنُواْ وَعَمِلُواْ ٱلصَّ",
+      "rule": null
+    },
+    {
+      "text": "ـ",
+      "rule": "madd"
+    },
+    {
+      "text": "ٰلِح",
+      "rule": null
+    },
+    {
+      "text": "َ",
+      "rule": "madd"
+    },
+    {
+      "text": "ٰتِ أُوْل",
+      "rule": null
+    },
+    {
+      "text": "َـ",
+      "rule": "madd"
+    },
+    {
+      "text": "ٰٓئِكَ هُمۡ خَيۡرُ ٱلۡبَرِيَّةِ",
+      "rule": null
+    }
+  ],
+  "98_8": [
+    {
+      "text": "جَزَ",
+      "rule": null
+    },
+    {
+      "text": "آ",
+      "rule": "madd"
+    },
+    {
+      "text": "ؤُهُمۡ عِ",
+      "rule": null
+    },
+    {
+      "text": "ندَ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": " رَبِّهِمۡ جَ",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "ـ",
+      "rule": "madd"
+    },
+    {
+      "text": "ٰتُ ع",
+      "rule": null
+    },
+    {
+      "text": "َد",
+      "rule": "qalqala"
+    },
+    {
+      "text": "ۡ",
+      "rule": null
+    },
+    {
+      "text": "نٖ ت",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "َج",
+      "rule": "qalqala"
+    },
+    {
+      "text": "ۡرِي م",
+      "rule": null
+    },
+    {
+      "text": "ِن ت",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "َحۡتِهَا ٱلۡأَنۡه",
+      "rule": null
+    },
+    {
+      "text": "َ",
+      "rule": "madd"
+    },
+    {
+      "text": "ٰرُ خ",
+      "rule": null
+    },
+    {
+      "text": "َ",
+      "rule": "madd"
+    },
+    {
+      "text": "ٰلِدِينَ فِيه",
+      "rule": null
+    },
+    {
+      "text": "َا",
+      "rule": "madd"
+    },
+    {
+      "text": "ٓ أَبَ",
+      "rule": null
+    },
+    {
+      "text": "دٗاۖ ر",
+      "rule": "idgham"
+    },
+    {
+      "text": "َّضِيَ ٱللَّهُ عَنۡهُمۡ وَرَضُواْ عَنۡهُۚ",
+      "rule": null
+    },
+    {
+      "text": " ",
+      "rule": "madd"
+    },
+    {
+      "text": "ذَٰلِكَ لِمَنۡ خَشِيَ رَبَّهُۥ",
+      "rule": null
+    }
+  ],
+  "99_3": [
+    {
+      "text": "وَقَالَ ٱلۡإِ",
+      "rule": null
+    },
+    {
+      "text": "نسَ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "نُ مَا لَهَا",
+      "rule": null
+    }
+  ],
+  "99_4": [
+    {
+      "text": "يَوۡمَئِذ",
+      "rule": null
+    },
+    {
+      "text": "ٖ تُ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "حَدِّثُ أَخۡبَارَهَا",
+      "rule": null
+    }
+  ],
+  "99_5": [
+    {
+      "text": "بِأَ",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": " رَبَّكَ أَوۡحَىٰ لَهَا",
+      "rule": null
+    }
+  ],
+  "99_6": [
+    {
+      "text": "يَوۡمَئِذ",
+      "rule": null
+    },
+    {
+      "text": "ٖ يَ",
+      "rule": "idgham"
+    },
+    {
+      "text": "صۡدُرُ ٱل",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "اسُ أَشۡتَات",
+      "rule": null
+    },
+    {
+      "text": "ٗا لِّ",
+      "rule": "idgham"
+    },
+    {
+      "text": "يُرَوۡاْ أَعۡمَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "لَهُمۡ",
+      "rule": null
+    }
+  ],
+  "99_7": [
+    {
+      "text": "فَمَ",
+      "rule": null
+    },
+    {
+      "text": "ن يَ",
+      "rule": "idgham"
+    },
+    {
+      "text": "عۡمَلۡ مِثۡقَالَ ذَرَّةٍ خَيۡر",
+      "rule": null
+    },
+    {
+      "text": "ٗا يَ",
+      "rule": "idgham"
+    },
+    {
+      "text": "رَهُۥ",
+      "rule": null
+    }
+  ],
+  "99_8": [
+    {
+      "text": "وَمَ",
+      "rule": null
+    },
+    {
+      "text": "ن يَ",
+      "rule": "idgham"
+    },
+    {
+      "text": "عۡمَلۡ مِثۡقَالَ ذَرَّة",
+      "rule": null
+    },
+    {
+      "text": "ٖ شَ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "رّ",
+      "rule": null
+    },
+    {
+      "text": "ٗا يَ",
+      "rule": "idgham"
+    },
+    {
+      "text": "رَهُۥ",
+      "rule": null
+    }
+  ],
+  "100_2": [
+    {
+      "text": "فَٱلۡمُورِيَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "تِ قَ",
+      "rule": null
+    },
+    {
+      "text": "دۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "حٗا",
+      "rule": null
+    }
+  ],
+  "100_3": [
+    {
+      "text": "فَٱلۡمُغِيرَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "تِ صُ",
+      "rule": null
+    },
+    {
+      "text": "بۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "حٗا",
+      "rule": null
+    }
+  ],
+  "100_4": [
+    {
+      "text": "فَأَثَرۡنَ بِهِ",
+      "rule": null
+    },
+    {
+      "text": "ۦ",
+      "rule": "madd"
+    },
+    {
+      "text": " نَ",
+      "rule": null
+    },
+    {
+      "text": "قۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "عٗا",
+      "rule": null
+    }
+  ],
+  "100_5": [
+    {
+      "text": "فَوَسَ",
+      "rule": null
+    },
+    {
+      "text": "طۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "نَ بِهِ",
+      "rule": null
+    },
+    {
+      "text": "ۦ",
+      "rule": "madd"
+    },
+    {
+      "text": " جَمۡعًا",
+      "rule": null
+    }
+  ],
+  "100_6": [
+    {
+      "text": "إِ",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": " ٱلۡإِ",
+      "rule": null
+    },
+    {
+      "text": "نسَ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "نَ لِرَبِّهِ",
+      "rule": null
+    },
+    {
+      "text": "ۦ",
+      "rule": "madd"
+    },
+    {
+      "text": " لَكَنُ",
+      "rule": null
+    },
+    {
+      "text": "و",
+      "rule": "madd"
+    },
+    {
+      "text": "د",
+      "rule": "qalqala"
+    },
+    {
+      "text": "ٞ",
+      "rule": null
+    }
+  ],
+  "100_7": [
+    {
+      "text": "وَإِ",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "هُ",
+      "rule": null
+    },
+    {
+      "text": "ۥ",
+      "rule": "madd"
+    },
+    {
+      "text": " عَلَىٰ ذَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "لِكَ لَشَهِ",
+      "rule": null
+    },
+    {
+      "text": "ي",
+      "rule": "madd"
+    },
+    {
+      "text": "د",
+      "rule": "qalqala"
+    },
+    {
+      "text": "ٞ",
+      "rule": null
+    }
+  ],
+  "100_8": [
+    {
+      "text": "وَإِ",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "هُ",
+      "rule": null
+    },
+    {
+      "text": "ۥ",
+      "rule": "madd"
+    },
+    {
+      "text": " لِحُبِّ ٱلۡخَيۡرِ لَشَدِ",
+      "rule": null
+    },
+    {
+      "text": "ي",
+      "rule": "madd"
+    },
+    {
+      "text": "د",
+      "rule": "qalqala"
+    },
+    {
+      "text": "ٌ",
+      "rule": null
+    }
+  ],
+  "100_9": [
+    {
+      "text": "۞أَفَلَا يَعۡلَمُ إِذَا بُعۡثِرَ مَا فِي ٱلۡقُب",
+      "rule": null
+    },
+    {
+      "text": "ُ",
+      "rule": "madd"
+    },
+    {
+      "text": "ورِ",
+      "rule": null
+    }
+  ],
+  "100_10": [
+    {
+      "text": "وَحُصِّلَ مَا فِي ٱلصُّدُ",
+      "rule": null
+    },
+    {
+      "text": "و",
+      "rule": "madd"
+    },
+    {
+      "text": "رِ",
+      "rule": null
+    }
+  ],
+  "100_11": [
+    {
+      "text": "إِ",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": " رَبَّهُ",
+      "rule": null
+    },
+    {
+      "text": "م بِ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "هِمۡ يَوۡمَئِذ",
+      "rule": null
+    },
+    {
+      "text": "ٖ لَّ",
+      "rule": "idgham"
+    },
+    {
+      "text": "خَبِ",
+      "rule": null
+    },
+    {
+      "text": "ي",
+      "rule": "madd"
+    },
+    {
+      "text": "رُۢ",
+      "rule": null
+    }
+  ],
+  "101_3": [
+    {
+      "text": "وَمَ",
+      "rule": null
+    },
+    {
+      "text": "آ",
+      "rule": "madd"
+    },
+    {
+      "text": " أَ",
+      "rule": null
+    },
+    {
+      "text": "دۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "رَى",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "كَ مَا ٱلۡقَارِعَةُ",
+      "rule": null
+    }
+  ],
+  "101_4": [
+    {
+      "text": "يَوۡمَ يَكُونُ ٱل",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "اسُ كَٱلۡفَرَاشِ ٱلۡمَ",
+      "rule": null
+    },
+    {
+      "text": "بۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "ثُ",
+      "rule": null
+    },
+    {
+      "text": "و",
+      "rule": "madd"
+    },
+    {
+      "text": "ثِ",
+      "rule": null
+    }
+  ],
+  "101_5": [
+    {
+      "text": "وَتَكُونُ ٱلۡجِبَالُ كَٱلۡعِهۡنِ ٱلۡمَ",
+      "rule": null
+    },
+    {
+      "text": "نفُ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "و",
+      "rule": "madd"
+    },
+    {
+      "text": "شِ",
+      "rule": null
+    }
+  ],
+  "101_6": [
+    {
+      "text": "فَأَ",
+      "rule": null
+    },
+    {
+      "text": "مَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "ا مَ",
+      "rule": null
+    },
+    {
+      "text": "ن ثَ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "قُلَتۡ مَوَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "زِينُهُۥ",
+      "rule": null
+    }
+  ],
+  "101_7": [
+    {
+      "text": "فَهُوَ فِي عِيشَة",
+      "rule": null
+    },
+    {
+      "text": "ٖ رَّ",
+      "rule": "idgham"
+    },
+    {
+      "text": "اضِيَةٖ",
+      "rule": null
+    }
+  ],
+  "101_8": [
+    {
+      "text": "وَأَ",
+      "rule": null
+    },
+    {
+      "text": "مَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "ا مَنۡ خَفَّتۡ مَوَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "زِينُهُۥ",
+      "rule": null
+    }
+  ],
+  "101_9": [
+    {
+      "text": "فَأُ",
+      "rule": null
+    },
+    {
+      "text": "مُّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "هُ",
+      "rule": null
+    },
+    {
+      "text": "ۥ",
+      "rule": "madd"
+    },
+    {
+      "text": " هَاوِيَةٞ",
+      "rule": null
+    }
+  ],
+  "101_10": [
+    {
+      "text": "وَمَ",
+      "rule": null
+    },
+    {
+      "text": "آ",
+      "rule": "madd"
+    },
+    {
+      "text": " أَ",
+      "rule": null
+    },
+    {
+      "text": "دۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "رَى",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "كَ مَا هِيَهۡ",
+      "rule": null
+    }
+  ],
+  "102_3": [
+    {
+      "text": "كَلَّا سَوۡفَ تَعۡلَمُ",
+      "rule": null
+    },
+    {
+      "text": "و",
+      "rule": "madd"
+    },
+    {
+      "text": "نَ",
+      "rule": null
+    }
+  ],
+  "102_4": [
+    {
+      "text": "ثُ",
+      "rule": null
+    },
+    {
+      "text": "مَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": " كَلَّا سَوۡفَ تَعۡلَمُ",
+      "rule": null
+    },
+    {
+      "text": "و",
+      "rule": "madd"
+    },
+    {
+      "text": "نَ",
+      "rule": null
+    }
+  ],
+  "102_5": [
+    {
+      "text": "كَلَّا لَوۡ تَعۡلَمُونَ عِلۡمَ ٱلۡيَقِ",
+      "rule": null
+    },
+    {
+      "text": "ي",
+      "rule": "madd"
+    },
+    {
+      "text": "نِ",
+      "rule": null
+    }
+  ],
+  "102_6": [
+    {
+      "text": "لَتَرَوُ",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": " ٱلۡجَحِ",
+      "rule": null
+    },
+    {
+      "text": "ي",
+      "rule": "madd"
+    },
+    {
+      "text": "مَ",
+      "rule": null
+    }
+  ],
+  "102_7": [
+    {
+      "text": "ثُ",
+      "rule": null
+    },
+    {
+      "text": "مَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": " لَتَرَوُ",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "هَا عَيۡنَ ٱلۡيَقِ",
+      "rule": null
+    },
+    {
+      "text": "ي",
+      "rule": "madd"
+    },
+    {
+      "text": "نِ",
+      "rule": null
+    }
+  ],
+  "102_8": [
+    {
+      "text": "ثُ",
+      "rule": null
+    },
+    {
+      "text": "مَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": " لَتُسۡـَٔلُ",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": " يَوۡمَئِذٍ عَنِ ٱل",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "عِ",
+      "rule": null
+    },
+    {
+      "text": "ي",
+      "rule": "madd"
+    },
+    {
+      "text": "مِ",
+      "rule": null
+    }
+  ],
+  "103_2": [
+    {
+      "text": "إِ",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": " ٱلۡإِ",
+      "rule": null
+    },
+    {
+      "text": "نسَ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "نَ لَفِي خُسۡرٍ",
+      "rule": null
+    }
+  ],
+  "103_3": [
+    {
+      "text": "إِلَّا ٱلَّذِينَ ءَامَنُواْ وَعَمِلُواْ ٱلصَّ",
+      "rule": null
+    },
+    {
+      "text": "ـ",
+      "rule": "madd"
+    },
+    {
+      "text": "ٰلِح",
+      "rule": null
+    },
+    {
+      "text": "َ",
+      "rule": "madd"
+    },
+    {
+      "text": "ٰتِ وَتَوَاصَوۡاْ بِٱلۡحَقِّ وَتَوَاصَوۡاْ بِٱلصّ",
+      "rule": null
+    },
+    {
+      "text": "َب",
+      "rule": "qalqala"
+    },
+    {
+      "text": "ۡرِ",
+      "rule": null
+    }
+  ],
+  "104_2": [
+    {
+      "text": "ٱلَّذِي جَمَعَ مَال",
+      "rule": null
+    },
+    {
+      "text": "ٗا وَ",
+      "rule": "idgham"
+    },
+    {
+      "text": "عَدَّدَهُۥ",
+      "rule": null
+    }
+  ],
+  "104_3": [
+    {
+      "text": "يَحۡسَبُ أَ",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": " مَالَهُ",
+      "rule": null
+    },
+    {
+      "text": "ۥٓ",
+      "rule": "madd"
+    },
+    {
+      "text": " أَخۡلَدَهُۥ",
+      "rule": null
+    }
+  ],
+  "104_4": [
+    {
+      "text": "كَلَّاۖ لَيُنۢبَذ",
+      "rule": null
+    },
+    {
+      "text": "َنّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "َ فِي ٱلۡحُطَمَةِ",
+      "rule": null
+    }
+  ],
+  "104_5": [
+    {
+      "text": "وَمَ",
+      "rule": null
+    },
+    {
+      "text": "آ",
+      "rule": "madd"
+    },
+    {
+      "text": " أَ",
+      "rule": null
+    },
+    {
+      "text": "دۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "رَى",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "كَ مَا ٱلۡحُطَمَةُ",
+      "rule": null
+    }
+  ],
+  "104_8": [
+    {
+      "text": "إِ",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "هَا عَلَيۡهِ",
+      "rule": null
+    },
+    {
+      "text": "م مُّ",
+      "rule": "idgham"
+    },
+    {
+      "text": "ؤۡصَدَةٞ",
+      "rule": null
+    }
+  ],
+  "104_9": [
+    {
+      "text": "فِي عَمَد",
+      "rule": null
+    },
+    {
+      "text": "ٖ مُّ",
+      "rule": "idgham"
+    },
+    {
+      "text": "مَدَّدَةِۭ",
+      "rule": null
+    }
+  ],
+  "105_2": [
+    {
+      "text": "أَلَمۡ يَ",
+      "rule": null
+    },
+    {
+      "text": "جۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "عَلۡ كَيۡدَهُمۡ فِي تَضۡلِ",
+      "rule": null
+    },
+    {
+      "text": "ي",
+      "rule": "madd"
+    },
+    {
+      "text": "لٖ",
+      "rule": null
+    }
+  ],
+  "105_3": [
+    {
+      "text": "وَأَرۡسَلَ عَلَيۡهِمۡ طَيۡرًا أَبَابِ",
+      "rule": null
+    },
+    {
+      "text": "ي",
+      "rule": "madd"
+    },
+    {
+      "text": "لَ",
+      "rule": null
+    }
+  ],
+  "105_4": [
+    {
+      "text": "تَرۡمِيهِ",
+      "rule": null
+    },
+    {
+      "text": "م بِ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "حِجَارَة",
+      "rule": null
+    },
+    {
+      "text": "ٖ مِّ",
+      "rule": "idgham"
+    },
+    {
+      "text": "ن سِ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "جِّ",
+      "rule": null
+    },
+    {
+      "text": "ي",
+      "rule": "madd"
+    },
+    {
+      "text": "لٖ",
+      "rule": null
+    }
+  ],
+  "105_5": [
+    {
+      "text": "فَجَعَلَهُمۡ كَعَصۡف",
+      "rule": null
+    },
+    {
+      "text": "ٖ مَّ",
+      "rule": "idgham"
+    },
+    {
+      "text": "أۡكُ",
+      "rule": null
+    },
+    {
+      "text": "و",
+      "rule": "madd"
+    },
+    {
+      "text": "لِۭ",
+      "rule": null
+    }
+  ],
+  "106_2": [
+    {
+      "text": "إِ",
+      "rule": null
+    },
+    {
+      "text": "ۦ",
+      "rule": "madd"
+    },
+    {
+      "text": "لَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "فِهِمۡ رِحۡلَةَ ٱلشِّتَ",
+      "rule": null
+    },
+    {
+      "text": "آ",
+      "rule": "madd"
+    },
+    {
+      "text": "ءِ وَٱلصَّ",
+      "rule": null
+    },
+    {
+      "text": "ي",
+      "rule": "madd"
+    },
+    {
+      "text": "ۡفِ",
+      "rule": null
+    }
+  ],
+  "106_3": [
+    {
+      "text": "فَلۡيَعۡبُدُواْ رَبَّ هَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "ذَا ٱلۡبَ",
+      "rule": null
+    },
+    {
+      "text": "ي",
+      "rule": "madd"
+    },
+    {
+      "text": "ۡتِ",
+      "rule": null
+    }
+  ],
+  "106_4": [
+    {
+      "text": "ٱلَّذِ",
+      "rule": null
+    },
+    {
+      "text": "يٓ",
+      "rule": "madd"
+    },
+    {
+      "text": " أَ",
+      "rule": null
+    },
+    {
+      "text": "طۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "عَمَهُ",
+      "rule": null
+    },
+    {
+      "text": "م مِّ",
+      "rule": "idgham"
+    },
+    {
+      "text": "ن جُ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "وع",
+      "rule": null
+    },
+    {
+      "text": "ٖ وَ",
+      "rule": "idgham"
+    },
+    {
+      "text": "ءَامَنَهُ",
+      "rule": null
+    },
+    {
+      "text": "م مِّ",
+      "rule": "idgham"
+    },
+    {
+      "text": "نۡ خَ",
+      "rule": null
+    },
+    {
+      "text": "و",
+      "rule": "madd"
+    },
+    {
+      "text": "ۡفِۭ",
+      "rule": null
+    }
+  ],
+  "107_2": [
+    {
+      "text": "فَذَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "لِكَ ٱلَّذِي يَدُعُّ ٱلۡيَتِ",
+      "rule": null
+    },
+    {
+      "text": "ي",
+      "rule": "madd"
+    },
+    {
+      "text": "مَ",
+      "rule": null
+    }
+  ],
+  "107_3": [
+    {
+      "text": "وَلَا يَحُضُّ عَلَىٰ طَعَامِ ٱلۡمِسۡكِ",
+      "rule": null
+    },
+    {
+      "text": "ي",
+      "rule": "madd"
+    },
+    {
+      "text": "نِ",
+      "rule": null
+    }
+  ],
+  "107_4": [
+    {
+      "text": "فَوَيۡل",
+      "rule": null
+    },
+    {
+      "text": "ٞ لِّ",
+      "rule": "idgham"
+    },
+    {
+      "text": "لۡمُصَلِّ",
+      "rule": null
+    },
+    {
+      "text": "ي",
+      "rule": "madd"
+    },
+    {
+      "text": "نَ",
+      "rule": null
+    }
+  ],
+  "107_5": [
+    {
+      "text": "ٱلَّذِينَ هُمۡ عَ",
+      "rule": null
+    },
+    {
+      "text": "ن صَ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "لَاتِهِمۡ سَاهُ",
+      "rule": null
+    },
+    {
+      "text": "و",
+      "rule": "madd"
+    },
+    {
+      "text": "نَ",
+      "rule": null
+    }
+  ],
+  "107_6": [
+    {
+      "text": "ٱلَّذِينَ هُمۡ يُرَ",
+      "rule": null
+    },
+    {
+      "text": "آ",
+      "rule": "madd"
+    },
+    {
+      "text": "ءُ",
+      "rule": null
+    },
+    {
+      "text": "و",
+      "rule": "madd"
+    },
+    {
+      "text": "نَ",
+      "rule": null
+    }
+  ],
+  "107_7": [
+    {
+      "text": "وَيَمۡنَعُونَ ٱلۡمَاعُ",
+      "rule": null
+    },
+    {
+      "text": "و",
+      "rule": "madd"
+    },
+    {
+      "text": "نَ",
+      "rule": null
+    }
+  ],
+  "108_3": [
+    {
+      "text": "إِ",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": " شَانِئَكَ هُوَ ٱلۡأَ",
+      "rule": null
+    },
+    {
+      "text": "بۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "تَرُ",
+      "rule": null
+    }
+  ],
+  "109_2": [
+    {
+      "text": "لَ",
+      "rule": null
+    },
+    {
+      "text": "آ",
+      "rule": "madd"
+    },
+    {
+      "text": " أَعۡبُدُ مَا تَعۡبُدُ",
+      "rule": null
+    },
+    {
+      "text": "و",
+      "rule": "madd"
+    },
+    {
+      "text": "نَ",
+      "rule": null
+    }
+  ],
+  "109_3": [
+    {
+      "text": "وَلَ",
+      "rule": null
+    },
+    {
+      "text": "آ",
+      "rule": "madd"
+    },
+    {
+      "text": " أَ",
+      "rule": null
+    },
+    {
+      "text": "نتُ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "مۡ عَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "بِدُونَ مَ",
+      "rule": null
+    },
+    {
+      "text": "آ",
+      "rule": "madd"
+    },
+    {
+      "text": " أَعۡبُ",
+      "rule": null
+    },
+    {
+      "text": "د",
+      "rule": "qalqala"
+    },
+    {
+      "text": "ُ",
+      "rule": null
+    }
+  ],
+  "109_4": [
+    {
+      "text": "وَلَ",
+      "rule": null
+    },
+    {
+      "text": "آ",
+      "rule": "madd"
+    },
+    {
+      "text": " أَنَا۠ عَابِد",
+      "rule": null
+    },
+    {
+      "text": "ٞ مَّ",
+      "rule": "idgham"
+    },
+    {
+      "text": "ا عَبَدتُّمۡ",
+      "rule": null
+    }
+  ],
+  "109_5": [
+    {
+      "text": "وَلَ",
+      "rule": null
+    },
+    {
+      "text": "آ",
+      "rule": "madd"
+    },
+    {
+      "text": " أَ",
+      "rule": null
+    },
+    {
+      "text": "نتُ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "مۡ عَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "بِدُونَ مَ",
+      "rule": null
+    },
+    {
+      "text": "آ",
+      "rule": "madd"
+    },
+    {
+      "text": " أَعۡبُ",
+      "rule": null
+    },
+    {
+      "text": "د",
+      "rule": "qalqala"
+    },
+    {
+      "text": "ُ",
+      "rule": null
+    }
+  ],
+  "109_6": [
+    {
+      "text": "لَكُمۡ دِينُكُمۡ وَلِيَ دِ",
+      "rule": null
+    },
+    {
+      "text": "ي",
+      "rule": "madd"
+    },
+    {
+      "text": "نِ",
+      "rule": null
+    }
+  ],
+  "110_2": [
+    {
+      "text": "وَرَأَيۡتَ ٱل",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "اسَ يَ",
+      "rule": null
+    },
+    {
+      "text": "دۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "خُلُونَ فِي دِينِ ٱللَّهِ أَفۡوَاجٗا",
+      "rule": null
+    }
+  ],
+  "110_3": [
+    {
+      "text": "فَسَبِّحۡ بِحَمۡدِ رَبِّكَ وَٱسۡتَغۡفِرۡهُۚ إ",
+      "rule": null
+    },
+    {
+      "text": "ِنّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "َه",
+      "rule": null
+    },
+    {
+      "text": "ُ",
+      "rule": "madd"
+    },
+    {
+      "text": "ۥ كَانَ تَوَّابَۢا",
+      "rule": null
+    }
+  ],
+  "111_2": [
+    {
+      "text": "مَ",
+      "rule": null
+    },
+    {
+      "text": "آ",
+      "rule": "madd"
+    },
+    {
+      "text": " أَغۡنَىٰ عَنۡهُ مَالُهُ",
+      "rule": null
+    },
+    {
+      "text": "ۥ",
+      "rule": "madd"
+    },
+    {
+      "text": " وَمَا كَسَ",
+      "rule": null
+    },
+    {
+      "text": "ب",
+      "rule": "qalqala"
+    },
+    {
+      "text": "َ",
+      "rule": null
+    }
+  ],
+  "111_3": [
+    {
+      "text": "سَيَصۡلَىٰ نَار",
+      "rule": null
+    },
+    {
+      "text": "ٗا ذَ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "اتَ لَهَ",
+      "rule": null
+    },
+    {
+      "text": "ب",
+      "rule": "qalqala"
+    },
+    {
+      "text": "ٖ",
+      "rule": null
+    }
+  ],
+  "111_4": [
+    {
+      "text": "وَٱمۡرَأَتُهُ",
+      "rule": null
+    },
+    {
+      "text": "ۥ",
+      "rule": "madd"
+    },
+    {
+      "text": " حَ",
+      "rule": null
+    },
+    {
+      "text": "مَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "الَةَ ٱلۡحَطَ",
+      "rule": null
+    },
+    {
+      "text": "ب",
+      "rule": "qalqala"
+    },
+    {
+      "text": "ِ",
+      "rule": null
+    }
+  ],
+  "111_5": [
+    {
+      "text": "فِي جِيدِهَا حَ",
+      "rule": null
+    },
+    {
+      "text": "بۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "ل",
+      "rule": null
+    },
+    {
+      "text": "ٞ مِّن مَّ",
+      "rule": "idgham"
+    },
+    {
+      "text": "سَ",
+      "rule": null
+    },
+    {
+      "text": "د",
+      "rule": "qalqala"
+    },
+    {
+      "text": "ِۭ",
+      "rule": null
+    }
+  ],
+  "112_2": [
+    {
+      "text": "ٱللَّهُ ٱلصَّمَ",
+      "rule": null
+    },
+    {
+      "text": "د",
+      "rule": "qalqala"
+    },
+    {
+      "text": "ُ",
+      "rule": null
+    }
+  ],
+  "112_3": [
+    {
+      "text": "لَمۡ يَلِ",
+      "rule": null
+    },
+    {
+      "text": "دۡ",
+      "rule": "qalqala"
+    },
+    {
+      "text": " وَلَمۡ يُولَ",
+      "rule": null
+    },
+    {
+      "text": "دۡ",
+      "rule": "qalqala"
+    }
+  ],
+  "112_4": [
+    {
+      "text": "وَلَمۡ يَكُ",
+      "rule": null
+    },
+    {
+      "text": "ن لَّ",
+      "rule": "idgham"
+    },
+    {
+      "text": "هُ",
+      "rule": null
+    },
+    {
+      "text": "ۥ",
+      "rule": "madd"
+    },
+    {
+      "text": " كُفُوًا أَحَ",
+      "rule": null
+    },
+    {
+      "text": "د",
+      "rule": "qalqala"
+    },
+    {
+      "text": "ُۢ",
+      "rule": null
+    }
+  ],
+  "113_2": [
+    {
+      "text": "مِ",
+      "rule": null
+    },
+    {
+      "text": "ن شَ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "رِّ مَا خَلَ",
+      "rule": null
+    },
+    {
+      "text": "ق",
+      "rule": "qalqala"
+    },
+    {
+      "text": "َ",
+      "rule": null
+    }
+  ],
+  "113_3": [
+    {
+      "text": "وَمِ",
+      "rule": null
+    },
+    {
+      "text": "ن شَ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "رِّ غَاسِقٍ إِذَا وَقَ",
+      "rule": null
+    },
+    {
+      "text": "ب",
+      "rule": "qalqala"
+    },
+    {
+      "text": "َ",
+      "rule": null
+    }
+  ],
+  "113_4": [
+    {
+      "text": "وَمِ",
+      "rule": null
+    },
+    {
+      "text": "ن شَ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "رِّ ٱل",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "فَّ",
+      "rule": null
+    },
+    {
+      "text": "ـ",
+      "rule": "madd"
+    },
+    {
+      "text": "ٰث",
+      "rule": null
+    },
+    {
+      "text": "َ",
+      "rule": "madd"
+    },
+    {
+      "text": "ٰتِ فِي ٱلۡعُق",
+      "rule": null
+    },
+    {
+      "text": "َ",
+      "rule": "qalqala"
+    },
+    {
+      "text": "دِ",
+      "rule": null
+    }
+  ],
+  "113_5": [
+    {
+      "text": "وَمِ",
+      "rule": null
+    },
+    {
+      "text": "ن شَ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "رِّ حَاسِدٍ إِذَا حَسَ",
+      "rule": null
+    },
+    {
+      "text": "د",
+      "rule": "qalqala"
+    },
+    {
+      "text": "َ",
+      "rule": null
+    }
+  ],
+  "114_2": [
+    {
+      "text": "مَلِكِ ٱل",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "ا",
+      "rule": "madd"
+    },
+    {
+      "text": "سِ",
+      "rule": null
+    }
+  ],
+  "114_3": [
+    {
+      "text": "إِلَ",
+      "rule": null
+    },
+    {
+      "text": "ٰ",
+      "rule": "madd"
+    },
+    {
+      "text": "هِ ٱل",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "ا",
+      "rule": "madd"
+    },
+    {
+      "text": "سِ",
+      "rule": null
+    }
+  ],
+  "114_4": [
+    {
+      "text": "مِ",
+      "rule": null
+    },
+    {
+      "text": "ن شَ",
+      "rule": "ikhfa"
+    },
+    {
+      "text": "رِّ ٱلۡوَسۡوَاسِ ٱلۡخَ",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "ا",
+      "rule": "madd"
+    },
+    {
+      "text": "سِ",
+      "rule": null
+    }
+  ],
+  "114_5": [
+    {
+      "text": "ٱلَّذِي يُوَسۡوِسُ فِي صُدُورِ ٱل",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "ا",
+      "rule": "madd"
+    },
+    {
+      "text": "سِ",
+      "rule": null
+    }
+  ],
+  "114_6": [
+    {
+      "text": "مِنَ ٱلۡجِ",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "ةِ وَٱل",
+      "rule": null
+    },
+    {
+      "text": "نَّ",
+      "rule": "ghunna"
+    },
+    {
+      "text": "ا",
+      "rule": "madd"
+    },
+    {
+      "text": "سِ",
+      "rule": null
+    }
+  ]
+}

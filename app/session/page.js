@@ -276,31 +276,30 @@ export default function SessionPage() {
       if (!AudioCtx) return;
       const ctx = new AudioCtx();
       ctx.resume().then(() => {
-        const sampleRate  = ctx.sampleRate;
-        const duration    = 0.06; // 60ms — very short tap
-        const frameCount  = Math.floor(sampleRate * duration);
-        const buffer      = ctx.createBuffer(1, frameCount, sampleRate);
-        const data        = buffer.getChannelData(0);
-        for (let i = 0; i < frameCount; i++) data[i] = Math.random() * 2 - 1;
+        const t = ctx.currentTime;
+        const decay = 0.38;
 
-        // Low-pass filter: rounds off the noise into a soft thud
-        const filter         = ctx.createBiquadFilter();
-        filter.type          = 'lowpass';
-        filter.frequency.value = 800;
-        filter.Q.value         = 0.5;
+        function chimePartial(freq, volume, startOffset) {
+          const osc  = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.value = freq;
+          // Fast attack, smooth exponential decay — crystal resonance shape
+          gain.gain.setValueAtTime(0, t + startOffset);
+          gain.gain.linearRampToValueAtTime(volume, t + startOffset + 0.008);
+          gain.gain.exponentialRampToValueAtTime(0.0001, t + startOffset + decay);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(t + startOffset);
+          osc.stop(t + startOffset + decay);
+        }
 
-        const gain           = ctx.createGain();
-        gain.gain.setValueAtTime(0.28, ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + duration);
+        // Two-note chime: C6 (1047 Hz) + G6 (1568 Hz) — perfect fifth, iOS-like interval
+        // G6 starts 30ms after C6 for a gentle "shimmer" effect
+        chimePartial(1047, 0.38, 0);
+        chimePartial(1568, 0.22, 0.03);
 
-        const source = ctx.createBufferSource();
-        source.buffer = buffer;
-        source.connect(filter);
-        filter.connect(gain);
-        gain.connect(ctx.destination);
-        source.start();
-        source.stop(ctx.currentTime + duration);
-        source.onended = () => ctx.close().catch(() => {});
+        setTimeout(() => ctx.close().catch(() => {}), (decay + 0.1) * 1000);
       });
     } catch (e) {}
   }

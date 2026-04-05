@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { supabase } from '@/lib/supabase';
 import { ZAINLY_ORDER as ZAINLY_ORDER_DATA, calcSequentialKnown } from '@/lib/zainlyOrder';
+import { JUZ_SURAHS } from '@/lib/juzData';
 
 const fadeUp = (delay = 0) => ({
   initial: { opacity: 0, y: 20 },
@@ -147,6 +148,7 @@ function OnboardingInner() {
   const [sourates, setSourates]           = useState([]);
   const [partialSurahs, setPartialSurahs] = useState({});
   const [expandedPartial, setExpandedPartial] = useState(null);
+  const [juzFilter, setJuzFilter]         = useState(0); // 0 = Tout
   const [visible, setVisible]             = useState(true);
   const [pageVisible, setPageVisible]     = useState(false);
 
@@ -485,111 +487,169 @@ function OnboardingInner() {
           )}
 
           {/* ── STEP 2: Sourates connues ── */}
-          {step === 2 && (
-            <div>
-              <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '13px', color: '#B8962E', letterSpacing: '0.1em', fontWeight: 600, textAlign: 'center', margin: '0 0 12px 0' }}>ETAPE 2 / 2</p>
-              <h1 className="font-playfair" style={{ fontSize: '32px', fontWeight: 600, color: '#163026', textAlign: 'center', lineHeight: 1.3, margin: '0 0 8px 0' }}>
-                Quelles sourates maitrise-tu deja ?
-              </h1>
-              <p className="font-playfair" style={{ fontSize: '16px', fontStyle: 'italic', color: '#6B6357', textAlign: 'center', margin: '0 0 24px 0', lineHeight: 1.6 }}>
-                Coche celles que tu maitrise deja — si aucune, Zainly commence par Al-Fatiha.
-              </p>
+          {step === 2 && (() => {
+            const juzSurateSet = juzFilter === 0 ? null : new Set(JUZ_SURAHS[juzFilter] ?? []);
+            const visibleSourates = juzFilter === 0
+              ? ZAINLY_ORDER
+              : ZAINLY_ORDER.filter(s => juzSurateSet.has(s));
+            const juz30Set = new Set(JUZ_SURAHS[30]);
+            const allJuz30Known = JUZ_SURAHS[30].every(s => sourates.includes(s));
 
-              {/* Estimated years badge */}
-              {ayahPerDay && (
-                <div style={{ textAlign: 'center', marginBottom: '20px' }}>
-                  <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '14px', color: '#163026', backgroundColor: '#FFFFFF', border: '1.5px solid #E2D9CC', borderRadius: '12px', padding: '8px 20px', display: 'inline-block' }}>
-                    ~{calcEstimatedYears(ayahPerDay, sourates, partialSurahs)} an{calcEstimatedYears(ayahPerDay, sourates, partialSurahs) > 1 ? 's' : ''} pour le Coran complet
-                  </span>
+            return (
+              <div>
+                <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '13px', color: '#B8962E', letterSpacing: '0.1em', fontWeight: 600, textAlign: 'center', margin: '0 0 12px 0' }}>ETAPE 2 / 2</p>
+                <h1 className="font-playfair" style={{ fontSize: '32px', fontWeight: 600, color: '#163026', textAlign: 'center', lineHeight: 1.3, margin: '0 0 8px 0' }}>
+                  Quelles sourates maitrise-tu deja ?
+                </h1>
+                <p className="font-playfair" style={{ fontSize: '16px', fontStyle: 'italic', color: '#6B6357', textAlign: 'center', margin: '0 0 24px 0', lineHeight: 1.6 }}>
+                  Coche celles que tu maitrises — si aucune, Zainly commence par Al-Fatiha.
+                </p>
+
+                {/* Estimated years badge */}
+                {ayahPerDay && (
+                  <div style={{ textAlign: 'center', marginBottom: '16px' }}>
+                    <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '14px', color: '#163026', backgroundColor: '#FFFFFF', border: '1.5px solid #E2D9CC', borderRadius: '12px', padding: '8px 20px', display: 'inline-block' }}>
+                      ~{calcEstimatedYears(ayahPerDay, sourates, partialSurahs)} an{calcEstimatedYears(ayahPerDay, sourates, partialSurahs) > 1 ? 's' : ''} pour le Coran complet
+                    </span>
+                  </div>
+                )}
+
+                {/* Quick actions row */}
+                <div style={{ display: 'flex', gap: '8px', justifyContent: 'center', flexWrap: 'wrap', marginBottom: '12px' }}>
+                  <button
+                    type="button"
+                    onClick={() => { setSourates([]); setPartialSurahs({}); setExpandedPartial(null); }}
+                    style={{
+                      padding: '8px 20px', fontSize: '13px', fontWeight: 500, cursor: 'pointer',
+                      border: `1.5px solid ${sourates.length === 0 ? '#163026' : '#E2D9CC'}`,
+                      backgroundColor: sourates.length === 0 ? '#163026' : '#FFFFFF',
+                      color: sourates.length === 0 ? '#FFFFFF' : '#6B6357',
+                      borderRadius: '10px', transition: 'all 0.2s',
+                    }}
+                  >
+                    Aucune
+                  </button>
+                  <button
+                    type="button"
+                    disabled={allJuz30Known}
+                    onClick={() => {
+                      setSourates(prev => {
+                        const next = [...prev];
+                        JUZ_SURAHS[30].forEach(s => { if (!next.includes(s)) next.push(s); });
+                        return next;
+                      });
+                    }}
+                    style={{
+                      padding: '8px 20px', fontSize: '13px', fontWeight: 500, cursor: allJuz30Known ? 'default' : 'pointer',
+                      border: `1.5px solid ${allJuz30Known ? '#E2D9CC' : '#B8962E'}`,
+                      backgroundColor: allJuz30Known ? '#F5F0E6' : '#FFFFFF',
+                      color: allJuz30Known ? '#A09890' : '#B8962E',
+                      borderRadius: '10px', transition: 'all 0.2s',
+                    }}
+                  >
+                    Je connais Juz Amma
+                  </button>
                 </div>
-              )}
 
-              {/* Aucune button */}
-              <div style={{ textAlign: 'center', marginBottom: '12px' }}>
+                {/* Juz filter pills */}
+                <div style={{
+                  display: 'flex', gap: '6px', overflowX: 'auto', paddingBottom: '8px',
+                  marginBottom: '12px', WebkitOverflowScrolling: 'touch',
+                  scrollbarWidth: 'none',
+                }}>
+                  {[0, ...Array.from({ length: 30 }, (_, i) => 30 - i)].map(j => (
+                    <button
+                      key={j}
+                      type="button"
+                      onClick={() => setJuzFilter(j)}
+                      style={{
+                        flexShrink: 0,
+                        padding: '6px 14px', fontSize: '12px', fontWeight: 600, cursor: 'pointer',
+                        border: `1px solid ${juzFilter === j ? '#163026' : '#E2D9CC'}`,
+                        backgroundColor: juzFilter === j ? '#163026' : '#FFFFFF',
+                        color: juzFilter === j ? '#FFFFFF' : '#6B6357',
+                        borderRadius: '20px', transition: 'all 0.18s',
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
+                      {j === 0 ? 'Tout' : `Juz ${j}`}
+                    </button>
+                  ))}
+                </div>
+
+                {/* Sourate list */}
+                <div style={{ backgroundColor: '#FFFFFF', border: '1.5px solid #E2D9CC', borderRadius: '16px', maxHeight: '360px', overflowY: 'auto', WebkitOverflowScrolling: 'touch', padding: '8px 0' }}>
+                  {visibleSourates.length === 0 && (
+                    <p style={{ textAlign: 'center', fontFamily: 'DM Sans, sans-serif', fontSize: '14px', color: '#A09890', padding: '24px' }}>Aucune sourate dans ce Juz.</p>
+                  )}
+                  {visibleSourates.map(s => {
+                    const checked = sourates.includes(s);
+                    const isExpanded = expandedPartial === s;
+                    const partial = partialSurahs[s];
+                    const qNum = QURAN_ORDER.indexOf(s) + 1;
+                    return (
+                      <div key={s}>
+                        <label style={{ display: 'flex', alignItems: 'center', gap: '14px', padding: '12px 20px', cursor: 'pointer', backgroundColor: checked ? 'rgba(22,48,38,0.04)' : 'transparent', transition: 'background-color 0.15s' }}>
+                          <input
+                            type="checkbox"
+                            checked={checked}
+                            onChange={() => toggleSourate(s)}
+                            style={{ accentColor: '#163026', width: '16px', height: '16px', cursor: 'pointer', flexShrink: 0 }}
+                          />
+                          <span style={{ fontSize: '15px', color: '#163026', flex: 1 }}>
+                            <span style={{ color: '#6B6357', marginRight: '6px', fontSize: '12px' }}>{qNum}.</span>
+                            {s}
+                            {partial && (
+                              <span style={{ marginLeft: '8px', fontSize: '12px', color: '#B8962E' }}>(ayat {partial.from}–{partial.to})</span>
+                            )}
+                          </span>
+                          {checked && (
+                            <button
+                              type="button"
+                              onClick={e => { e.preventDefault(); setExpandedPartial(isExpanded ? null : s); }}
+                              style={{ background: 'transparent', border: 'none', fontFamily: 'DM Sans, sans-serif', fontSize: '12px', color: '#B8962E', cursor: 'pointer', padding: '4px', flexShrink: 0 }}
+                            >
+                              Preciser les ayats
+                            </button>
+                          )}
+                        </label>
+                        {checked && isExpanded && (
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '8px 20px 12px 50px', backgroundColor: 'rgba(184,150,46,0.05)' }} onClick={e => e.preventDefault()}>
+                            <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '13px', color: '#6B6357' }}>De l&apos;ayat</span>
+                            <input type="number" min={1} value={partial?.from ?? ''} onChange={e => setPartialRange(s, 'from', e.target.value)}
+                              style={{ width: '56px', padding: '6px 8px', borderRadius: '8px', border: '1.5px solid #E2D9CC', fontFamily: 'DM Sans, sans-serif', fontSize: '14px', color: '#163026', textAlign: 'center', outline: 'none' }}
+                            />
+                            <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '13px', color: '#6B6357' }}>a l&apos;ayat</span>
+                            <input type="number" min={1} value={partial?.to ?? ''} onChange={e => setPartialRange(s, 'to', e.target.value)}
+                              style={{ width: '56px', padding: '6px 8px', borderRadius: '8px', border: '1.5px solid #E2D9CC', fontFamily: 'DM Sans, sans-serif', fontSize: '14px', color: '#163026', textAlign: 'center', outline: 'none' }}
+                            />
+                            <button type="button" onClick={() => setExpandedPartial(null)}
+                              style={{ padding: '6px 14px', borderRadius: '8px', backgroundColor: '#163026', color: '#fff', border: 'none', fontFamily: 'DM Sans, sans-serif', fontSize: '13px', cursor: 'pointer' }}>
+                              OK
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+
                 <button
                   type="button"
-                  onClick={() => { setSourates([]); setPartialSurahs({}); setExpandedPartial(null); }}
+                  onClick={generate}
+                  className="font-playfair"
                   style={{
-                    padding: '10px 28px', fontSize: '14px', fontWeight: 500, cursor: 'pointer',
-                    border: `1.5px solid ${sourates.length === 0 ? '#163026' : '#E2D9CC'}`,
-                    backgroundColor: sourates.length === 0 ? '#163026' : '#FFFFFF',
-                    color: sourates.length === 0 ? '#FFFFFF' : '#6B6357',
-                    borderRadius: '10px', transition: 'all 0.2s',
+                    marginTop: '28px', width: '100%', padding: '16px', fontSize: '17px', fontWeight: 600,
+                    backgroundColor: '#163026', color: '#FFFFFF', border: 'none', borderRadius: '12px',
+                    cursor: 'pointer', boxShadow: '0 8px 32px rgba(22,48,38,0.2)', transition: 'all 0.2s ease',
                   }}
                 >
-                  Aucune
+                  Generer mon plan →
                 </button>
+                {error && <p style={{ marginTop: '12px', fontFamily: 'DM Sans, sans-serif', fontSize: '14px', color: '#c0392b', textAlign: 'center' }}>{error}</p>}
               </div>
-
-              {/* Sourate list */}
-              <div style={{ backgroundColor: '#FFFFFF', border: '1.5px solid #E2D9CC', borderRadius: '16px', maxHeight: '380px', overflowY: 'scroll', WebkitOverflowScrolling: 'touch', padding: '8px 0' }}>
-                {ZAINLY_ORDER.map((s, i) => {
-                  const checked = sourates.includes(s);
-                  const isExpanded = expandedPartial === s;
-                  const partial = partialSurahs[s];
-                  const qNum = QURAN_ORDER.indexOf(s) + 1;
-                  return (
-                    <div key={s}>
-                      <label style={{ display: 'flex', alignItems: 'center', gap: '14px', padding: '12px 20px', cursor: 'pointer', backgroundColor: checked ? 'rgba(22,48,38,0.04)' : 'transparent', transition: 'background-color 0.15s' }}>
-                        <input
-                          type="checkbox"
-                          checked={checked}
-                          onChange={() => toggleSourate(s)}
-                          style={{ accentColor: '#163026', width: '16px', height: '16px', cursor: 'pointer', flexShrink: 0 }}
-                        />
-                        <span style={{ fontSize: '15px', color: '#163026', flex: 1 }}>
-                          <span style={{ color: '#6B6357', marginRight: '6px', fontSize: '12px' }}>{qNum}.</span>
-                          {s}
-                          {partial && (
-                            <span style={{ marginLeft: '8px', fontSize: '12px', color: '#B8962E' }}>(ayat {partial.from}–{partial.to})</span>
-                          )}
-                        </span>
-                        {checked && (
-                          <button
-                            type="button"
-                            onClick={e => { e.preventDefault(); setExpandedPartial(isExpanded ? null : s); }}
-                            style={{ background: 'transparent', border: 'none', fontFamily: 'DM Sans, sans-serif', fontSize: '12px', color: '#B8962E', cursor: 'pointer', padding: '4px', flexShrink: 0 }}
-                          >
-                            Preciser les ayats
-                          </button>
-                        )}
-                      </label>
-                      {checked && isExpanded && (
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '8px 20px 12px 50px', backgroundColor: 'rgba(184,150,46,0.05)' }} onClick={e => e.preventDefault()}>
-                          <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '13px', color: '#6B6357' }}>De l&apos;ayat</span>
-                          <input type="number" min={1} value={partial?.from ?? ''} onChange={e => setPartialRange(s, 'from', e.target.value)}
-                            style={{ width: '56px', padding: '6px 8px', borderRadius: '8px', border: '1.5px solid #E2D9CC', fontFamily: 'DM Sans, sans-serif', fontSize: '14px', color: '#163026', textAlign: 'center', outline: 'none' }}
-                          />
-                          <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '13px', color: '#6B6357' }}>a l&apos;ayat</span>
-                          <input type="number" min={1} value={partial?.to ?? ''} onChange={e => setPartialRange(s, 'to', e.target.value)}
-                            style={{ width: '56px', padding: '6px 8px', borderRadius: '8px', border: '1.5px solid #E2D9CC', fontFamily: 'DM Sans, sans-serif', fontSize: '14px', color: '#163026', textAlign: 'center', outline: 'none' }}
-                          />
-                          <button type="button" onClick={() => setExpandedPartial(null)}
-                            style={{ padding: '6px 14px', borderRadius: '8px', backgroundColor: '#163026', color: '#fff', border: 'none', fontFamily: 'DM Sans, sans-serif', fontSize: '13px', cursor: 'pointer' }}>
-                            OK
-                          </button>
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-
-              <button
-                type="button"
-                onClick={generate}
-                className="font-playfair"
-                style={{
-                  marginTop: '28px', width: '100%', padding: '16px', fontSize: '17px', fontWeight: 600,
-                  backgroundColor: '#163026', color: '#FFFFFF', border: 'none', borderRadius: '12px',
-                  cursor: 'pointer', boxShadow: '0 8px 32px rgba(22,48,38,0.2)', transition: 'all 0.2s ease',
-                }}
-              >
-                Generer mon plan →
-              </button>
-              {error && <p style={{ marginTop: '12px', fontFamily: 'DM Sans, sans-serif', fontSize: '14px', color: '#c0392b', textAlign: 'center' }}>{error}</p>}
-            </div>
-          )}
+            );
+          })()}
 
         </div>
       </div>

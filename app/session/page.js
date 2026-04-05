@@ -6,6 +6,7 @@ import { supabase } from '@/lib/supabase';
 import { nextZainlySurah, ZAINLY_INDEX_BY_SURAH } from '@/lib/zainlyOrder';
 import { useTajweed } from '@/lib/useTajweed';
 import TajweedText from '@/components/TajweedText';
+import { TAJWEED_OVERRIDES } from '@/lib/tajweedOverrides';
 
 let cachedQuran   = null;
 let cachedQuranFr = null;
@@ -238,7 +239,7 @@ export default function SessionPage() {
           .map(v => ({
             ...v,
             translation:      surahFr?.verses?.find(fv => fv.id === v.id)?.translation ?? '',
-            tajweedSegments:  tajweed[`${currentSurah}_${v.id}`] ?? null,
+            tajweedSegments:  TAJWEED_OVERRIDES[`${currentSurah}_${v.id}`] ?? tajweed[`${currentSurah}_${v.id}`] ?? null,
           }));
 
         setSurahName(surah.transliteration ?? surah.name ?? `Sourate ${currentSurah}`);

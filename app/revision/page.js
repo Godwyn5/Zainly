@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 import { useTajweed } from '@/lib/useTajweed';
 import TajweedText from '@/components/TajweedText';
+import { TAJWEED_OVERRIDES } from '@/lib/tajweedOverrides';
 
 let cachedQuran   = null;
 let cachedQuranFr = null;
@@ -178,7 +179,7 @@ export default function RevisionPage() {
           translation:     verseFr?.translation ?? '',
           surahLabel:      surah?.transliteration ?? surah?.name ?? `Sourate ${item.surah_number}`,
           globalNum,
-          tajweedSegments: tajweed[`${item.surah_number ?? 1}_${ayatId}`] ?? null,
+          tajweedSegments: TAJWEED_OVERRIDES[`${item.surah_number ?? 1}_${ayatId}`] ?? tajweed[`${item.surah_number ?? 1}_${ayatId}`] ?? null,
         };
       });
 

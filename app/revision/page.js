@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 import { useTajweed } from '@/lib/useTajweed';
 import TajweedText from '@/components/TajweedText';
-import { TAJWEED_OVERRIDES } from '@/lib/tajweedOverrides';
+import { resolveTajweed, TAJWEED_STATE } from '@/lib/tajweedResolver';
 
 let cachedQuran   = null;
 let cachedQuranFr = null;
@@ -179,7 +179,7 @@ export default function RevisionPage() {
           translation:     verseFr?.translation ?? '',
           surahLabel:      surah?.transliteration ?? surah?.name ?? `Sourate ${item.surah_number}`,
           globalNum,
-          tajweedSegments: TAJWEED_OVERRIDES[`${item.surah_number ?? 1}_${ayatId}`] ?? tajweed[`${item.surah_number ?? 1}_${ayatId}`] ?? null,
+          ...resolveTajweed(item.surah_number ?? 1, ayatId, tajweed),
         };
       });
 
@@ -421,7 +421,12 @@ export default function RevisionPage() {
               >
                 {showTajweed ? 'Tajweed actif' : 'Afficher le tajweed'}
               </button>
-              {showTajweed && !item?.tajweedSegments && (
+              {showTajweed && item?.tajweedState === TAJWEED_STATE.NO_RULE && (
+                <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '10px', color: '#A09890', fontStyle: 'italic' }}>
+                  Lecture naturelle
+                </span>
+              )}
+              {showTajweed && item?.tajweedState === TAJWEED_STATE.UNAVAILABLE && (
                 <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '10px', color: '#A09890', fontStyle: 'italic' }}>
                   Pas encore disponible pour cet ayat
                 </span>

@@ -6,7 +6,7 @@ import { supabase } from '@/lib/supabase';
 import { nextZainlySurah, ZAINLY_INDEX_BY_SURAH } from '@/lib/zainlyOrder';
 import { useTajweed } from '@/lib/useTajweed';
 import TajweedText from '@/components/TajweedText';
-import { TAJWEED_OVERRIDES } from '@/lib/tajweedOverrides';
+import { resolveTajweed, TAJWEED_STATE } from '@/lib/tajweedResolver';
 
 let cachedQuran   = null;
 let cachedQuranFr = null;
@@ -239,7 +239,7 @@ export default function SessionPage() {
           .map(v => ({
             ...v,
             translation:      surahFr?.verses?.find(fv => fv.id === v.id)?.translation ?? '',
-            tajweedSegments:  TAJWEED_OVERRIDES[`${currentSurah}_${v.id}`] ?? tajweed[`${currentSurah}_${v.id}`] ?? null,
+            ...resolveTajweed(currentSurah, v.id, tajweed),
           }));
 
         setSurahName(surah.transliteration ?? surah.name ?? `Sourate ${currentSurah}`);
@@ -603,7 +603,12 @@ export default function SessionPage() {
                 >
                   {showTajweed ? 'Tajweed actif' : 'Afficher le tajweed'}
                 </button>
-                {showTajweed && !ayat?.tajweedSegments && (
+                {showTajweed && ayat?.tajweedState === TAJWEED_STATE.NO_RULE && (
+                  <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '10px', color: '#A09890', fontStyle: 'italic' }}>
+                    Lecture naturelle
+                  </span>
+                )}
+                {showTajweed && ayat?.tajweedState === TAJWEED_STATE.UNAVAILABLE && (
                   <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '10px', color: '#A09890', fontStyle: 'italic' }}>
                     Pas encore disponible pour cet ayat
                   </span>

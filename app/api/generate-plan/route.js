@@ -162,28 +162,43 @@ export async function POST(request) {
       }
     }
 
-    // ── Find start position in Zainly order ──
+    // ── Single sequential scan: startPosition + startAyah + knownAyats ──
+    // knownAyats counts only the consecutive known block from the start (including the
+    // partial ayats of the first gap surah when from===1). Stops at first gap.
     const knownComplete = new Set(sourates)
     let startPosition = 0
     let startAyah     = 1
+    let knownAyats    = 0
 
     for (let i = 0; i < ZAINLY_ORDER.length; i++) {
       const s = ZAINLY_ORDER[i]
+
       if (knownComplete.has(s.name)) {
+        // Fully known — advance
+        knownAyats   += s.ayahs
         startPosition = i + 1
         startAyah     = 1
       } else if (sanitizedPartials[s.name]) {
         const { from, to } = sanitizedPartials[s.name]
-        // Complete only if starts from ayah 1 AND covers all ayahs
         if (from === 1 && to >= s.ayahs) {
+          // Covered completely via partial — advance
+          knownAyats   += s.ayahs
           startPosition = i + 1
           startAyah     = 1
+        } else if (from > 1) {
+          // Ayah 1 is missing — must restart from ayah 1, don't count partial ayats
+          startPosition = i
+          startAyah     = 1
+          break
         } else {
+          // from===1 and to < s.ayahs — partial progress, continue from to+1
+          knownAyats   += (to - from + 1)
           startPosition = i
           startAyah     = to + 1
           break
         }
       } else {
+        // Completely unknown — first gap
         startPosition = i
         startAyah     = 1
         break
@@ -196,17 +211,6 @@ export async function POST(request) {
     }
 
     const startSurah = ZAINLY_ORDER[startPosition]
-
-    // ── Estimated duration ──
-    let knownAyats = 0
-    for (const s of ZAINLY_ORDER) {
-      if (knownComplete.has(s.name)) {
-        knownAyats += s.ayahs
-      } else if (sanitizedPartials[s.name]) {
-        const { from, to } = sanitizedPartials[s.name]
-        knownAyats += Math.max(0, to - from + 1)
-      }
-    }
     const totalAyats      = 6236
     const remainingAyats  = Math.max(0, totalAyats - knownAyats)
     const daysPerWeek     = 6

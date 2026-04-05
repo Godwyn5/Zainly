@@ -4,6 +4,8 @@ import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 import { nextZainlySurah, ZAINLY_INDEX_BY_SURAH } from '@/lib/zainlyOrder';
+import { useTajweed } from '@/lib/useTajweed';
+import TajweedText from '@/components/TajweedText';
 
 let cachedQuran = null;
 let cachedQuranFr = null;
@@ -140,6 +142,8 @@ export default function SessionPage() {
   const [sessionPhase, setSessionPhase] = useState('listen'); // 'listen'|'test'|'reveal'|'validated'
   const [retryMsg, setRetryMsg]         = useState(false);
   const [audioError, setAudioError]     = useState(false);
+
+  const { showTajweed, setShowTajweed } = useTajweed();
 
   useEffect(() => {
     async function loadSession() {
@@ -583,14 +587,36 @@ export default function SessionPage() {
           {/* ── Arabic + audio (hidden during test) ── */}
           {sessionPhase !== 'validated' && (
             <>
+              {/* Tajweed toggle */}
+              <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '8px' }}>
+                <button
+                  type="button"
+                  onClick={() => setShowTajweed(!showTajweed)}
+                  style={{
+                    background: 'transparent', border: `1px solid ${showTajweed ? '#163026' : '#D4CCC2'}`,
+                    borderRadius: '20px', padding: '4px 12px',
+                    fontFamily: 'DM Sans, sans-serif', fontSize: '11px', fontWeight: 500,
+                    color: showTajweed ? '#163026' : '#A09890', cursor: 'pointer',
+                    transition: 'all 0.2s',
+                  }}
+                >
+                  {showTajweed ? 'Tajweed actif' : 'Afficher le tajweed'}
+                </button>
+              </div>
+
               <p className="font-amiri" style={{
-                fontSize: 'clamp(26px, 6vw, 42px)', fontWeight: 700, color: '#163026', textAlign: 'center',
+                fontSize: 'clamp(26px, 6vw, 42px)', fontWeight: 700, textAlign: 'center',
                 direction: 'rtl', lineHeight: 1.8, margin: 0,
                 opacity: sessionPhase === 'test' ? 0 : 1,
                 transition: 'opacity 0.4s ease',
                 overflowWrap: 'break-word', wordBreak: 'break-word',
               }}>
-                {ayat?.text}
+                <TajweedText
+                  plainText={ayat?.text ?? ''}
+                  tajweedSegments={ayat?.tajweedSegments}
+                  enabled={showTajweed}
+                  style={{ color: '#163026' }}
+                />
               </p>
 
               {/* Audio button — only in listen phase */}

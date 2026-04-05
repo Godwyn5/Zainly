@@ -3,6 +3,8 @@
 import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
+import { useTajweed } from '@/lib/useTajweed';
+import TajweedText from '@/components/TajweedText';
 
 let cachedQuran = null;
 let cachedQuranFr = null;
@@ -112,6 +114,7 @@ export default function RevisionPage() {
   const [correctCount, setCorrectCount]   = useState(0);
   const [totalCount, setTotalCount]       = useState(0);
   const [showTranslit, setShowTranslit]   = useState(false);
+  const { showTajweed, setShowTajweed }  = useTajweed();
   const answerHandledRef                = useRef(false);
   const correctRef                      = useRef(0); // sync ref for score calculation
   const totalRef                        = useRef(0);
@@ -401,8 +404,30 @@ export default function RevisionPage() {
             aria-hidden={!revealed}
             style={{ overflow: 'hidden', transition: 'opacity 0.4s ease', opacity: revealed ? 1 : 0, pointerEvents: revealed ? 'auto' : 'none', userSelect: revealed ? 'auto' : 'none' }}
           >
-            <p className="font-amiri" style={{ fontSize: 'clamp(26px, 6vw, 42px)', fontWeight: 700, color: '#163026', textAlign: 'center', direction: 'rtl', lineHeight: 1.8, margin: 0, overflowWrap: 'break-word', wordBreak: 'break-word' }}>
-              {item?.arabicText}
+            {/* Tajweed toggle */}
+            <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '8px' }}>
+              <button
+                type="button"
+                onClick={() => setShowTajweed(!showTajweed)}
+                style={{
+                  background: 'transparent', border: `1px solid ${showTajweed ? '#163026' : '#D4CCC2'}`,
+                  borderRadius: '20px', padding: '4px 12px',
+                  fontFamily: 'DM Sans, sans-serif', fontSize: '11px', fontWeight: 500,
+                  color: showTajweed ? '#163026' : '#A09890', cursor: 'pointer',
+                  transition: 'all 0.2s',
+                }}
+              >
+                {showTajweed ? 'Tajweed actif' : 'Afficher le tajweed'}
+              </button>
+            </div>
+
+            <p className="font-amiri" style={{ fontSize: 'clamp(26px, 6vw, 42px)', fontWeight: 700, textAlign: 'center', direction: 'rtl', lineHeight: 1.8, margin: 0, overflowWrap: 'break-word', wordBreak: 'break-word' }}>
+              <TajweedText
+                plainText={item?.arabicText ?? ''}
+                tajweedSegments={item?.tajweedSegments}
+                enabled={showTajweed}
+                style={{ color: '#163026' }}
+              />
             </p>
           </div>
 

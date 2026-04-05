@@ -210,7 +210,6 @@ export default function DashboardPage() {
   async function loadHifz(userId) {
     const now = Date.now();
     if (hifzLoading || (now - hifzLastLoadRef.current < 30_000)) return;
-    hifzLastLoadRef.current = now;
     setHifzLoading(true);
     try {
       const itemsPromise = supabase.from('review_items').select('*').eq('user_id', userId).order('surah_number', { ascending: true });
@@ -231,6 +230,7 @@ export default function DashboardPage() {
       setHifzItems(allItems ?? []);
       setHifzQuran(quran);
       setHifzQuranFr(quranFr);
+      hifzLastLoadRef.current = Date.now(); // only advance TTL on success
     } catch (err) {
       console.error('[dashboard] loadHifz error:', err);
     } finally {

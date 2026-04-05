@@ -213,16 +213,15 @@ export default function SessionPage() {
             setLoading(false);
             return;
           }
-          const [{ error: advErr }, { error: planAdvErr }] = await Promise.all([
-            supabase.from('progress').update({ current_surah: newSurah, current_ayah: 0 }).eq('user_id', authUser.id),
-            supabase.from('plans').update({ surah_start: newSurah }).eq('user_id', authUser.id),
-          ]);
+          const { error: advErr } = await supabase
+            .from('progress')
+            .update({ current_surah: newSurah, current_ayah: 0 })
+            .eq('user_id', authUser.id);
           if (advErr) {
             setError('Erreur lors de la progression. Recharge la page.');
             setLoading(false);
             return;
           }
-          if (planAdvErr) console.warn('[session] plans.surah_start update (non-fatal):', planAdvErr);
           currentSurah = newSurah;
           currentAyah  = 0;
           continue;

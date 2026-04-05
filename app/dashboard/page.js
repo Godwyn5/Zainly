@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
-import { nextZainlySurah, ZAINLY_ORDER, ZAINLY_INDEX_BY_SURAH } from '@/lib/zainlyOrder';
+import { nextZainlySurah, ZAINLY_ORDER } from '@/lib/zainlyOrder';
 
 // ─── Data ────────────────────────────────────────────────────────────────────
 
@@ -161,8 +161,9 @@ export default function DashboardPage() {
   const [hifzQuranFr, setHifzQuranFr]   = useState(null); // quran_fr.json
   const [hifzLoading, setHifzLoading]   = useState(false);
   const [expandedSurah, setExpandedSurah] = useState(null);
-  const quranDataRef   = useRef(null);
-  const quranFrDataRef = useRef(null);
+  const quranDataRef     = useRef(null);
+  const quranFrDataRef   = useRef(null);
+  const hifzLastLoadRef  = useRef(0);
 
   useEffect(() => {
     async function loadData() {
@@ -207,7 +208,9 @@ export default function DashboardPage() {
   }, [router]);
 
   async function loadHifz(userId) {
-    if (hifzLoading) return;
+    const now = Date.now();
+    if (hifzLoading || (now - hifzLastLoadRef.current < 30_000)) return;
+    hifzLastLoadRef.current = now;
     setHifzLoading(true);
     try {
       const itemsPromise = supabase.from('review_items').select('*').eq('user_id', userId).order('surah_number', { ascending: true });
@@ -277,7 +280,7 @@ export default function DashboardPage() {
   const currentAyah     = progress?.current_ayah ?? 0;
   const ayahPerDay      = plan.ayah_per_day ?? 2;
   const currentSurah    = progress?.current_surah ?? 1;
-  const surahTotalAyat  = ZAINLY_AYAT_BY_SURAH[currentSurah] ?? ZAINLY_ORDER.find(s => s.surah === currentSurah)?.ayahs ?? 7;
+  const surahTotalAyat  = ZAINLY_AYAT_BY_SURAH[currentSurah] ?? 7;
   const memStart        = currentAyah + 1;
   const memEnd          = Math.min(currentAyah + ayahPerDay, surahTotalAyat);
   const surahExhausted  = memStart > surahTotalAyat;

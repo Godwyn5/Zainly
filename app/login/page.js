@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, Suspense } from 'react';
+import { useState, useEffect, useRef, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
@@ -16,6 +16,7 @@ export default function LoginPage() {
 function LoginInner() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const isRoutingRef = useRef(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -29,12 +30,10 @@ function LoginInner() {
   const [forgotError, setForgotError] = useState('');
 
   async function routeAfterAuth(user) {
+    if (isRoutingRef.current) return;
+    isRoutingRef.current = true;
     const { data: plans } = await supabase.from('plans').select('id').eq('user_id', user.id).limit(1);
-    if (plans && plans.length > 0) {
-      router.push('/dashboard');
-    } else {
-      router.push('/onboarding');
-    }
+    router.push(plans && plans.length > 0 ? '/dashboard' : '/onboarding');
   }
 
   useEffect(() => {

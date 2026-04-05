@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
 
@@ -78,7 +79,13 @@ const features = [
   },
 ];
 
+async function routeAuthUser(user, router) {
+  const { data: plans } = await supabase.from('plans').select('id').eq('user_id', user.id).limit(1);
+  router.push(plans && plans.length > 0 ? '/dashboard' : '/onboarding');
+}
+
 export default function Home() {
+  const router = useRouter();
   const [pageVisible, setPageVisible] = useState(false);
   const [newsletterEmail, setNewsletterEmail] = useState('');
   const [newsletterSubmitted, setNewsletterSubmitted] = useState(false);
@@ -100,9 +107,19 @@ export default function Home() {
   }
 
   useEffect(() => {
-    const t = setTimeout(() => setPageVisible(true), 100);
-    return () => clearTimeout(t);
-  }, []);
+    let cancelled = false;
+
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (!cancelled && session?.user) routeAuthUser(session.user, router);
+      else if (!cancelled) setTimeout(() => setPageVisible(true), 100);
+    });
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_IN' && session?.user) routeAuthUser(session.user, router);
+    });
+
+    return () => { cancelled = true; subscription.unsubscribe(); };
+  }, [router]);
 
   useEffect(() => {
     function onScroll() { setNavScrolled(window.scrollY > 20); }

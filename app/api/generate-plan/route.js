@@ -150,12 +150,15 @@ export async function POST(request) {
     const ayahPerDay = Math.min(6, Math.max(1, parseInt(ayahPerDayRaw) || 1))
 
     // ── Sanitize partialSurahs ──
+    // Strict: reject if from/to are NaN, from < 1, or to < from — no silent fallback
     const sanitizedPartials = {}
     if (partialSurahs && typeof partialSurahs === 'object') {
       for (const [name, range] of Object.entries(partialSurahs)) {
-        const from = parseInt(range?.from) || 1
-        const to   = parseInt(range?.to)   || 1
-        if (from >= 1 && to >= from) sanitizedPartials[name] = { from, to }
+        const from = parseInt(range?.from)
+        const to   = parseInt(range?.to)
+        if (!isNaN(from) && !isNaN(to) && from >= 1 && to >= from) {
+          sanitizedPartials[name] = { from, to }
+        }
       }
     }
 
@@ -170,8 +173,9 @@ export async function POST(request) {
         startPosition = i + 1
         startAyah     = 1
       } else if (sanitizedPartials[s.name]) {
-        const { to } = sanitizedPartials[s.name]
-        if (to >= s.ayahs) {
+        const { from, to } = sanitizedPartials[s.name]
+        // Complete only if starts from ayah 1 AND covers all ayahs
+        if (from === 1 && to >= s.ayahs) {
           startPosition = i + 1
           startAyah     = 1
         } else {

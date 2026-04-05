@@ -370,6 +370,7 @@ export default function SessionPage() {
         .lte('next_review', today)
         .limit(1);
       const hasDue = Array.isArray(dueItems) && dueItems.length > 0;
+      revealHandledRef.current = false;
       router.push(hasDue ? '/revision' : '/done');
     } catch (err) {
       console.error('[session] saveAndContinue error:', err);

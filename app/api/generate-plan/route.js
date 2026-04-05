@@ -75,36 +75,18 @@ export async function POST(request) {
 
     // ── Input validation ──
     const body = await request.json()
-    const { intention, niveau, temps, objectif, sourates, partialSurahs } = body
-    // partialSurahs: { [surahName]: { from: number, to: number } } — optional
+    const { ayahPerDay: ayahPerDayRaw, sourates, partialSurahs } = body
     if (
-      typeof intention !== 'string' || !intention.trim() ||
-      typeof niveau    !== 'string' || !niveau.trim()    ||
-      typeof temps     !== 'string' || !temps.trim()     ||
-      typeof objectif  !== 'string' || !objectif.trim()  ||
-      !Array.isArray(sourates)
+      !Array.isArray(sourates) ||
+      ayahPerDayRaw == null
     ) {
       return NextResponse.json({ error: 'Champs manquants ou invalides.' }, { status: 400 })
     }
 
     // ── Ayat par jour ──
-    const timeMap = { '10': 1, '20': 2, '30': 3, '45': 4 }
-    let ayahPerDay = timeMap[temps.trim()] ?? 2
-    if (niveau === 'Je reprends après une longue pause') ayahPerDay = Math.max(1, ayahPerDay - 1)
-    if (niveau === "J'ai déjà commencé et abandonné")    ayahPerDay = Math.max(1, ayahPerDay - 1)
-    if (objectif === 'Finir une sourate courte')         ayahPerDay = Math.min(6, ayahPerDay)
-    if (objectif === 'Mémoriser le Juz Amma')            ayahPerDay = Math.min(6, ayahPerDay)
+    const ayahPerDay = Math.min(6, Math.max(1, parseInt(ayahPerDayRaw) || 1))
 
-    // ── Sourate de départ ──
-    let surahStart    = 78
-    let firstSurahName = 'An-Naba'
-    if (objectif === 'Finir une sourate courte')    { surahStart = 112; firstSurahName = 'Al-Ikhlas' }
-    else if (objectif === 'Mémoriser le Coran complet') { surahStart = 1;   firstSurahName = 'Al-Fatiha' }
-
-    // startAyah: within surahStart, which ayah to begin from (1-based, default 1)
-    let startAyah = 1
-
-    // Bug 5 — sanitize partialSurahs: parse to int, reject invalid ranges
+    // ── Sanitize partialSurahs ──
     const sanitizedPartials = {}
     if (partialSurahs && typeof partialSurahs === 'object') {
       for (const [name, range] of Object.entries(partialSurahs)) {
@@ -116,9 +98,14 @@ export async function POST(request) {
       }
     }
 
-    const objectifFixedStart = objectif === 'Finir une sourate courte' || objectif === 'Mémoriser le Juz Amma'
-    if (!objectifFixedStart && Array.isArray(sourates) && sourates.length > 0) {
-      // Build a set of fully-known indices (exclude partials — Bug 3: removed dead knownSet)
+    // ── Sourate de départ ──
+    // Zainly order: Al-Fatiha first, then An-Nas → An-Naba (Juz Amma), then Al-Baqara → Al-Mursalat
+    // surahStart is the 1-based Quran index of the first surah to memorize
+    let surahStart    = 1
+    let firstSurahName = 'Al-Fatiha'
+    let startAyah     = 1
+
+    if (Array.isArray(sourates) && sourates.length > 0) {
       const fullyKnownSet = new Set(
         sourates
           .filter(s => !sanitizedPartials[s])
@@ -126,13 +113,14 @@ export async function POST(request) {
           .filter(i => i >= 0)
       )
       if (fullyKnownSet.size > 0 || Object.keys(sanitizedPartials).length > 0) {
+        // Scan consecutively from index 0 (Al-Fatiha)
         let consecutiveEnd = 0
         while (fullyKnownSet.has(consecutiveEnd)) consecutiveEnd++
         if (consecutiveEnd > 0 && consecutiveEnd < SURAH_LIST.length) {
           surahStart     = consecutiveEnd + 1
           firstSurahName = SURAH_LIST[consecutiveEnd]
         }
-        // Bug 1+2 — if no fully-known surahs but partials exist, use first partial as surahStart
+        // No fully-known but partials exist — use first partial
         if (consecutiveEnd === 0 && Object.keys(sanitizedPartials).length > 0) {
           const firstPartialName = SURAH_LIST.find(s => sanitizedPartials[s])
           if (firstPartialName) {
@@ -140,12 +128,11 @@ export async function POST(request) {
             firstSurahName = firstPartialName
           }
         }
-        // Determine startAyah if surahStart is a partial surah
+        // If surahStart is itself partial, determine startAyah
         const startName  = SURAH_LIST[surahStart - 1]
         const partialRow = sanitizedPartials[startName]
         if (partialRow) {
           const surahTotal = SURAH_AYAT[surahStart - 1] ?? 1
-          // Bug 4 — if user knows up to or past last ayah, advance to next surah
           if (partialRow.to >= surahTotal) {
             surahStart     = Math.min(surahStart + 1, 114)
             firstSurahName = SURAH_LIST[surahStart - 1]
@@ -157,26 +144,17 @@ export async function POST(request) {
       }
     }
 
-    // ── Jours par semaine ──
-    const daysPerWeek = DAYS_MAP[objectif] ?? 5
+    // ── Plan defaults ──
+    const daysPerWeek         = 6
+    const minutesPerSession   = 20
+    const memorizationMinutes = 8
+    const revisionMinutes     = 12
 
-    // ── Minutes ──
-    const tempsNum            = parseInt(temps) || 20
-    const minutesPerSession   = tempsNum
-    const memorizationMinutes = Math.round(tempsNum * 0.4)
-    const revisionMinutes     = Math.round(tempsNum * 0.6)
-
-    // ── Durée estimée ──
-    let totalAyats = 0
-    if (objectif === 'Finir une sourate courte') {
-      totalAyats = SURAH_AYAT[surahStart - 1] ?? 0
-    } else if (objectif === 'Mémoriser le Juz Amma') {
-      totalAyats = SURAH_AYAT.slice(77, 114).reduce((a, b) => a + b, 0)
-    } else {
-      totalAyats = SURAH_AYAT.reduce((a, b) => a + b, 0)
-    }
+    // ── Durée estimée (Coran complet = 6236 ayats) ──
+    const totalQuranAyats = SURAH_AYAT.reduce((a, b) => a + b, 0)
+    let knownAyats = 0
     if (Array.isArray(sourates) && sourates.length > 0) {
-      const knownAyats = sourates.reduce((total, s) => {
+      knownAyats = sourates.reduce((total, s) => {
         const idx = SURAH_LIST.indexOf(s)
         if (idx < 0) return total
         if (sanitizedPartials[s]) {
@@ -185,17 +163,14 @@ export async function POST(request) {
         }
         return total + SURAH_AYAT[idx]
       }, 0)
-      totalAyats = Math.max(0, totalAyats - knownAyats)
     }
+    const totalAyats      = Math.max(0, totalQuranAyats - knownAyats)
     const safeAyahPerDay  = ayahPerDay > 0 ? ayahPerDay : 1
     const estimatedDays   = Math.ceil(totalAyats / safeAyahPerDay)
-    const estimatedWeeks  = daysPerWeek > 0 ? Math.ceil(estimatedDays / daysPerWeek) : estimatedDays
+    const estimatedWeeks  = Math.ceil(estimatedDays / daysPerWeek)
     const estimatedMonths = Math.round(estimatedWeeks / 4.33)
 
-    // ── Motivation ──
-    const motivationPhrase =
-      MOTIVATION_MAP[intention] ??
-      "Allah facilite le chemin de celui qui cherche à s'en rapprocher."
+    const motivationPhrase = "Allah facilite le chemin de celui qui cherche à s'en rapprocher."
 
     return NextResponse.json({
       surahStart,

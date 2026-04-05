@@ -189,7 +189,7 @@ export default function DonePage() {
           margin: '24px 0 0 0', lineHeight: 1.2,
           animation: 'fadeUp 0.5s ease 0.5s both',
         }}>
-          Session terminée ✅
+          Session terminée.
         </h1>
 
         {/* ── STREAK ── */}

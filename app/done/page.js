@@ -72,12 +72,13 @@ export default function DonePage() {
       const startToday    = localMidnightISO(0);
       const startTomorrow = localMidnightISO(1);
 
-      // Fetch progress + plan + memorized today + revised today in parallel
+      // Fetch all data in parallel
       const [
         { data: progRows },
         { data: planRows },
         { data: memorizedItems },
         { data: revisedItems },
+        { data: dueItems },
       ] = await Promise.all([
         supabase.from('progress').select('*').eq('user_id', authUser.id)
           .order('created_at', { ascending: false }).limit(1),
@@ -95,6 +96,12 @@ export default function DonePage() {
           .lt('updated_at', startTomorrow)
           .lt('created_at', startToday)
           .gt('review_cycle', 1),
+        // Due items: next_review <= today, not mastered, NOT created today (would be empty in /revision)
+        supabase.from('review_items').select('id')
+          .eq('user_id', authUser.id)
+          .eq('mastered', false)
+          .lte('next_review', localDateStr())
+          .lt('created_at', startToday),
       ]);
 
       const prog = Array.isArray(progRows) ? progRows[0] : progRows;
@@ -103,14 +110,6 @@ export default function DonePage() {
       setPlan(planData ?? null);
       setTodayMemorized(memorizedItems?.length ?? 0);
       setTodayRevised(revisedItems?.length ?? 0);
-
-      // Count due review items (next_review <= today, not mastered)
-      const { data: dueItems } = await supabase
-        .from('review_items')
-        .select('id', { count: 'exact', head: false })
-        .eq('user_id', authUser.id)
-        .eq('mastered', false)
-        .lte('next_review', localDateStr());
       setDueCount(dueItems?.length ?? 0);
 
       setLoading(false);
@@ -122,9 +121,8 @@ export default function DonePage() {
     });
   }, [router]);
 
-  const streak           = progress?.streak ?? 0;
-  const totalMemorized   = progress?.total_memorized ?? 0;
-  const sessionIncomplete = plan !== null && todayMemorized > 0 && todayMemorized < (plan.ayah_per_day ?? 2);
+  const streak         = progress?.streak ?? 0;
+  const totalMemorized = progress?.total_memorized ?? 0;
 
   if (loading) {
     return (
@@ -236,13 +234,15 @@ export default function DonePage() {
           {getMotivation(streak)}
         </p>
 
-        <p style={{
-          fontFamily: 'DM Sans, sans-serif', fontSize: '15px', color: '#163026',
-          maxWidth: '380px', margin: '16px auto 0', lineHeight: 1.6,
-          animation: 'fadeUp 0.5s ease 0.85s both',
-        }}>
-          Pour consolider ta mémorisation, je te recommande de réviser maintenant.
-        </p>
+        {dueCount > 0 && (
+          <p style={{
+            fontFamily: 'DM Sans, sans-serif', fontSize: '15px', color: '#163026',
+            maxWidth: '380px', margin: '16px auto 0', lineHeight: 1.6,
+            animation: 'fadeUp 0.5s ease 0.85s both',
+          }}>
+            Pour consolider ta mémorisation, je te recommande de réviser maintenant.
+          </p>
+        )}
 
         {/* ── DUE COUNT ── */}
         <div style={{

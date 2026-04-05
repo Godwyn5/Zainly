@@ -146,16 +146,12 @@ export default function RevisionPage() {
         return;
       }
 
-      if (!cachedQuran || !cachedQuranFr || !cachedTajweed) {
-        const [q, qfr, qtj] = await Promise.all([
-          fetch('/data/quran.json').then(r => r.json()),
-          fetch('/data/quran_fr.json').then(r => r.json()),
-          fetch('/data/quran_tajweed.json').then(r => r.json()).catch(() => ({})),
-        ]);
-        cachedQuran   = q;
-        cachedQuranFr = qfr;
-        cachedTajweed = qtj;
-      }
+      // Load quran files — each cache is checked and fetched independently
+      const fetches = [];
+      if (!cachedQuran)   fetches.push(fetch('/data/quran.json').then(r => r.json()).then(d => { cachedQuran = d; }));
+      if (!cachedQuranFr) fetches.push(fetch('/data/quran_fr.json').then(r => r.json()).then(d => { cachedQuranFr = d; }));
+      if (!cachedTajweed) fetches.push(fetch('/data/quran_tajweed.json').then(r => r.json()).catch(() => ({})).then(d => { cachedTajweed = d; }));
+      if (fetches.length) await Promise.all(fetches);
       const quran   = cachedQuran;
       const quranFr = cachedQuranFr;
       const tajweed = cachedTajweed;
@@ -410,7 +406,7 @@ export default function RevisionPage() {
             style={{ overflow: 'hidden', transition: 'opacity 0.4s ease', opacity: revealed ? 1 : 0, pointerEvents: revealed ? 'auto' : 'none', userSelect: revealed ? 'auto' : 'none' }}
           >
             {/* Tajweed toggle */}
-            <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '8px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', marginBottom: '8px', gap: '4px' }}>
               <button
                 type="button"
                 onClick={() => setShowTajweed(!showTajweed)}
@@ -424,6 +420,11 @@ export default function RevisionPage() {
               >
                 {showTajweed ? 'Tajweed actif' : 'Afficher le tajweed'}
               </button>
+              {showTajweed && !item?.tajweedSegments && (
+                <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '10px', color: '#A09890', fontStyle: 'italic' }}>
+                  Pas encore disponible pour cet ayat
+                </span>
+              )}
             </div>
 
             <p className="font-amiri" style={{ fontSize: 'clamp(26px, 6vw, 42px)', fontWeight: 700, textAlign: 'center', direction: 'rtl', lineHeight: 1.8, margin: 0, overflowWrap: 'break-word', wordBreak: 'break-word' }}>

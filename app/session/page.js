@@ -171,17 +171,12 @@ export default function SessionPage() {
       setProgress(progRow);
       setPlan(plRow);
 
-      // Load quran files (use module-level cache to avoid re-fetching)
-      if (!cachedQuran || !cachedQuranFr || !cachedTajweed) {
-        const [q, qfr, qtj] = await Promise.all([
-          fetch('/data/quran.json').then(r => r.json()),
-          fetch('/data/quran_fr.json').then(r => r.json()),
-          fetch('/data/quran_tajweed.json').then(r => r.json()).catch(() => ({})),
-        ]);
-        cachedQuran   = q;
-        cachedQuranFr = qfr;
-        cachedTajweed = qtj;
-      }
+      // Load quran files — each cache is checked and fetched independently
+      const fetches = [];
+      if (!cachedQuran)   fetches.push(fetch('/data/quran.json').then(r => r.json()).then(d => { cachedQuran = d; }));
+      if (!cachedQuranFr) fetches.push(fetch('/data/quran_fr.json').then(r => r.json()).then(d => { cachedQuranFr = d; }));
+      if (!cachedTajweed) fetches.push(fetch('/data/quran_tajweed.json').then(r => r.json()).catch(() => ({})).then(d => { cachedTajweed = d; }));
+      if (fetches.length) await Promise.all(fetches);
       const quran   = cachedQuran;
       const quranFr = cachedQuranFr;
       const tajweed = cachedTajweed;
@@ -593,7 +588,7 @@ export default function SessionPage() {
           {sessionPhase !== 'validated' && (
             <>
               {/* Tajweed toggle */}
-              <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '8px' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', marginBottom: '8px', gap: '4px' }}>
                 <button
                   type="button"
                   onClick={() => setShowTajweed(!showTajweed)}
@@ -607,6 +602,11 @@ export default function SessionPage() {
                 >
                   {showTajweed ? 'Tajweed actif' : 'Afficher le tajweed'}
                 </button>
+                {showTajweed && !ayat?.tajweedSegments && (
+                  <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '10px', color: '#A09890', fontStyle: 'italic' }}>
+                    Pas encore disponible pour cet ayat
+                  </span>
+                )}
               </div>
 
               <p className="font-amiri" style={{

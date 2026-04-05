@@ -55,10 +55,29 @@ function mapRule(raw) {
   return null;
 }
 
+// Unicode categories: diacritics and combining marks that should stay with their base letter
+// Arabic diacritics range: U+0610–U+061A, U+064B–U+065F, U+0670, U+06D6–U+06DC, U+06DF–U+06E4, U+06E7–U+06E8, U+06EA–U+06ED
+// Also includes tatweel U+0640, sukun, shadda, etc.
+function isArabicDiacritic(cp) {
+  return (cp >= 0x0610 && cp <= 0x061A) ||
+         (cp >= 0x064B && cp <= 0x065F) ||
+         cp === 0x0670 ||
+         (cp >= 0x06D6 && cp <= 0x06DC) ||
+         (cp >= 0x06DF && cp <= 0x06E4) ||
+         (cp >= 0x06E7 && cp <= 0x06E8) ||
+         (cp >= 0x06EA && cp <= 0x06ED) ||
+         cp === 0x06E1; // small high sign
+}
+
 /**
  * Convert index-based annotations into text segments.
  * Annotations are non-overlapping and sorted by start.
  * Gaps between annotations become {text, rule: null} segments.
+ *
+ * After building raw segments, colored spans of 1-2 chars are expanded
+ * leftward to absorb the preceding base letter + its diacritics from the
+ * preceding null segment. This ensures colored spans cover a readable
+ * portion of the word rather than an isolated diacritic mark.
  */
 function buildSegments(text, annotations) {
   const chars = [...text]; // Unicode-safe split
@@ -72,7 +91,6 @@ function buildSegments(text, annotations) {
     const s = ann.start;
     const e = ann.end; // exclusive in source
     if (s > cursor) {
-      // Gap before this annotation
       segments.push({ text: chars.slice(cursor, s).join(''), rule: null });
     }
     if (s < e && e <= total) {
@@ -85,9 +103,49 @@ function buildSegments(text, annotations) {
     segments.push({ text: chars.slice(cursor).join(''), rule: null });
   }
 
-  // Merge adjacent segments with the same rule to avoid micro-fragments
+  // ── Expand short colored segments ──────────────────────────────────────────
+  // Target: colored segments of ≤ 2 Unicode chars absorb chars from the
+  // preceding null segment until the colored span reaches ≥ 4 chars or
+  // we've consumed the base letter + all its leading diacritics.
+  const MIN_COLORED_LEN = 4;
+
+  for (let i = 0; i < segments.length; i++) {
+    const seg = segments[i];
+    if (seg.rule === null) continue;
+
+    const segChars = [...seg.text];
+    if (segChars.length >= MIN_COLORED_LEN) continue; // already long enough
+
+    // Only expand if there is a preceding null segment to borrow from
+    if (i === 0 || segments[i - 1].rule !== null) continue;
+
+    const prev      = segments[i - 1];
+    const prevChars = [...prev.text];
+
+    // How many chars to steal from the end of the previous null segment:
+    // grab back through diacritics + the first non-diacritic (base letter) we find,
+    // stopping when the colored segment reaches MIN_COLORED_LEN.
+    let steal = 0;
+    for (let j = prevChars.length - 1; j >= 0; j--) {
+      const cp = prevChars[j].codePointAt(0);
+      steal++;
+      if (!isArabicDiacritic(cp)) break; // consumed the base letter, stop
+      if ([...seg.text].length + steal >= MIN_COLORED_LEN) break;
+    }
+
+    if (steal > 0 && steal < prevChars.length) {
+      const borrowed = prevChars.splice(prevChars.length - steal).join('');
+      segments[i - 1] = { ...prev, text: prevChars.join('') };
+      segments[i]     = { ...seg,  text: borrowed + seg.text };
+    }
+  }
+
+  // Remove any null segments that became empty after borrowing
+  const nonEmpty = segments.filter(s => s.text.length > 0);
+
+  // ── Merge adjacent same-rule segments ──────────────────────────────────────
   const merged = [];
-  for (const seg of segments) {
+  for (const seg of nonEmpty) {
     const last = merged[merged.length - 1];
     if (last && last.rule === seg.rule) {
       last.text += seg.text;

@@ -2,8 +2,15 @@
 
 import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { motion } from 'framer-motion';
 import { supabase } from '@/lib/supabase';
 import { ZAINLY_ORDER as ZAINLY_ORDER_DATA, calcSequentialKnown } from '@/lib/zainlyOrder';
+
+const fadeUp = (delay = 0) => ({
+  initial: { opacity: 0, y: 20 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.6, ease: 'easeOut', delay },
+});
 
 // ─── Constants ───────────────────────────────────────────────────────────────
 
@@ -273,7 +280,12 @@ function OnboardingInner() {
   // ── Plan screen ──
   if (plan) {
     return (
-      <div style={{ minHeight: '100vh', backgroundColor: '#F5F0E6', position: 'relative', opacity: planVisible ? 1 : 0, transition: 'opacity 0.6s ease' }}>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.8, ease: 'easeOut' }}
+        style={{ minHeight: '100vh', backgroundColor: '#F5F0E6', position: 'relative' }}
+      >
         <style>{CSS}</style>
         <span className="font-amiri" style={calligStyle}>الله</span>
         <div style={{ maxWidth: '520px', margin: '0 auto', padding: '60px 24px 48px', position: 'relative', zIndex: 1 }}>
@@ -281,14 +293,27 @@ function OnboardingInner() {
           <div style={{ textAlign: 'center', marginBottom: '20px' }}>
             <span style={{ fontSize: '11px', fontWeight: 700, letterSpacing: '0.12em', color: '#B8962E', border: '1px solid #B8962E', borderRadius: '20px', padding: '5px 14px' }}>PLAN PERSONNALISE</span>
           </div>
-          <h1 className="font-playfair" style={{ fontSize: '36px', fontWeight: 600, color: '#163026', textAlign: 'center', margin: '0 0 8px 0', lineHeight: 1.2 }}>
-            Deviens Hafiz{prenom ? ',' : '.'}
-          </h1>
-          {prenom && <p className="font-playfair" style={{ fontSize: '28px', fontStyle: 'italic', color: '#B8962E', textAlign: 'center', margin: '0 0 12px 0' }}>{prenom}</p>}
-          <p className="font-playfair" style={{ fontSize: '16px', fontStyle: 'italic', color: '#6B6357', textAlign: 'center', margin: '0 0 40px 0', lineHeight: 1.6 }}>
-            Ton plan est pret. Il ne reste qu&apos;a commencer.
-          </p>
-          <div style={{ backgroundColor: '#FFFFFF', border: '1px solid #E2D9CC', borderRadius: '16px', padding: '28px' }}>
+
+          <motion.h1
+            {...fadeUp(0)}
+            className="font-playfair"
+            style={{ fontSize: '36px', fontWeight: 600, color: '#163026', textAlign: 'center', margin: '0 0 12px 0', lineHeight: 1.2 }}
+          >
+            Deviens Hafiz{prenom ? `, ${prenom}.` : '.'}
+          </motion.h1>
+
+          <motion.p
+            {...fadeUp(0.2)}
+            className="font-playfair"
+            style={{ fontSize: '16px', fontStyle: 'italic', color: '#6B6357', textAlign: 'center', margin: '0 0 40px 0', lineHeight: 1.6 }}
+          >
+            Ton plan est prêt. Il ne reste qu&apos;à commencer.
+          </motion.p>
+
+          <motion.div
+            {...fadeUp(0.4)}
+            style={{ backgroundColor: '#FFFFFF', border: '1px solid #E2D9CC', borderRadius: '16px', padding: '28px' }}
+          >
             <div style={{ display: 'flex', justifyContent: 'space-around', textAlign: 'center' }}>
               <div style={{ flex: 1 }}>
                 <p className="font-playfair" style={{ fontSize: '32px', fontWeight: 600, color: '#163026', margin: '0 0 4px 0' }}>{plan.ayahPerDay}</p>
@@ -303,17 +328,26 @@ function OnboardingInner() {
                 <p style={{ fontSize: '12px', color: '#6B6357', margin: 0 }}>Ans pour le Coran</p>
               </div>
             </div>
-          </div>
-          <button
+          </motion.div>
+
+          <motion.p
+            {...fadeUp(0.5)}
+            style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '13px', color: '#A09890', textAlign: 'center', margin: '20px 0 0 0', lineHeight: 1.7 }}
+          >
+            Aujourd&apos;hui : {plan.ayahPerDay} ayat{plan.ayahPerDay > 1 ? 's' : ''}. Un premier pas, chaque jour.
+          </motion.p>
+
+          <motion.button
+            {...fadeUp(0.6)}
             type="button"
             onClick={() => router.push('/dashboard')}
             className="font-playfair"
-            style={{ marginTop: '40px', width: '100%', padding: '16px', fontSize: '17px', fontWeight: 600, backgroundColor: '#163026', color: '#FFFFFF', border: 'none', borderRadius: '12px', cursor: 'pointer', boxShadow: '0 8px 32px rgba(22,48,38,0.25)' }}
+            style={{ marginTop: '28px', width: '100%', padding: '16px', fontSize: '17px', fontWeight: 600, backgroundColor: '#163026', color: '#FFFFFF', border: 'none', borderRadius: '12px', cursor: 'pointer', boxShadow: '0 8px 32px rgba(22,48,38,0.25)' }}
           >
-            Commencer mon Hifz →
-          </button>
+            Commencer aujourd&apos;hui
+          </motion.button>
         </div>
-      </div>
+      </motion.div>
     );
   }
 

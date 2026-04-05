@@ -249,43 +249,6 @@ function OnboardingInner() {
       const planData = await res.json();
       if (!res.ok) throw new Error(planData.error || 'Erreur lors de la generation du plan.');
 
-      const planPayload = {
-        user_id:              user.id,
-        ayah_per_day:         planData.ayahPerDay ?? ayahPerDay ?? 2,
-        days_per_week:        planData.daysPerWeek ?? 6,
-        minutes_per_session:  planData.minutesPerSession ?? 20,
-        memorization_minutes: planData.memorizationMinutes ?? 8,
-        revision_minutes:     planData.revisionMinutes ?? 12,
-        motivation_phrase:    planData.motivationPhrase ?? '',
-        first_surah_name:     planData.firstSurahName ?? 'Al-Fatiha',
-        surah_start:          planData.surahStart ?? 1,
-      };
-
-      const { error: planInsertErr } = await supabase.from('plans').insert(planPayload);
-      if (planInsertErr) {
-        if (planInsertErr.code === '23505' || planInsertErr.message?.includes('duplicate')) {
-          const { error: planUpdateErr } = await supabase.from('plans').update(planPayload).eq('user_id', user.id);
-          if (planUpdateErr) { allTimers.forEach(clearTimeout); throw new Error(`Sauvegarde plan echouee: ${planUpdateErr.message}`); }
-        } else {
-          allTimers.forEach(clearTimeout);
-          throw new Error(`Sauvegarde plan echouee: ${planInsertErr.message}`);
-        }
-      }
-
-      const correctSurah = planData.surahStart ?? 1;
-      const correctAyah  = planData.startAyah != null ? planData.startAyah - 1 : 0;
-      const { data: existingProg } = await supabase.from('progress').select('user_id').eq('user_id', user.id).limit(1);
-      if (!existingProg || existingProg.length === 0) {
-        const { error: progErr } = await supabase.from('progress').insert({
-          user_id: user.id, current_surah: correctSurah, current_ayah: correctAyah,
-          streak: 0, total_memorized: 0, session_dates: [],
-        });
-        if (progErr) { allTimers.forEach(clearTimeout); throw new Error(`Sauvegarde progression echouee: ${progErr.message}`); }
-      } else {
-        const { error: progUpdateErr } = await supabase.from('progress').update({ current_surah: correctSurah, current_ayah: correctAyah }).eq('user_id', user.id);
-        if (progUpdateErr) { allTimers.forEach(clearTimeout); throw new Error(`Sauvegarde progression echouee: ${progUpdateErr.message}`); }
-      }
-
       allTimers.forEach(clearTimeout);
       setLoadingPercent(100);
       setLoadingPhrase(LOADING_PHRASES[3]);

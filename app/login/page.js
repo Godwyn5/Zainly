@@ -34,7 +34,7 @@ export default function LoginPage() {
     setForgotLoading(true);
     setForgotError('');
     const { error: resetErr } = await supabase.auth.resetPasswordForEmail(forgotEmail.trim(), {
-      redirectTo: 'https://zainly-alpha.vercel.app/reset-password',
+      redirectTo: `${process.env.NEXT_PUBLIC_APP_URL ?? 'https://zainly-alpha.vercel.app'}/reset-password`,
     });
     setForgotLoading(false);
     if (resetErr) {

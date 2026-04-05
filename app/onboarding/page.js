@@ -3,30 +3,12 @@
 import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
-import { calcSequentialKnown } from '@/lib/zainlyOrder';
+import { ZAINLY_ORDER as ZAINLY_ORDER_DATA, calcSequentialKnown } from '@/lib/zainlyOrder';
 
 // ─── Constants ───────────────────────────────────────────────────────────────
 
-const ZAINLY_ORDER = [
-  'Al-Fatiha',
-  'An-Nas','Al-Falaq','Al-Ikhlas','Al-Masad','An-Nasr','Al-Kafirun','Al-Kawthar',
-  'Al-Maun','Quraysh','Al-Fil','Al-Humaza','Al-Asr','At-Takathur','Al-Qaria',
-  'Al-Adiyat','Az-Zalzala','Al-Bayyina','Al-Qadr','Al-Alaq','At-Tin','Ash-Sharh',
-  'Ad-Duha','Al-Layl','Ash-Shams','Al-Balad','Al-Fajr','Al-Ghashiya','Al-Ala',
-  'At-Tariq','Al-Buruj','Al-Inshiqaq','Al-Mutaffifin','Al-Infitar','At-Takwir',
-  'Abasa','An-Naziat','An-Naba',
-  'Al-Baqara','Al-Imran','An-Nisa','Al-Maida','Al-Anam','Al-Araf','Al-Anfal',
-  'At-Tawba','Yunus','Hud','Yusuf','Ar-Rad','Ibrahim','Al-Hijr','An-Nahl',
-  'Al-Isra','Al-Kahf','Maryam','Ta-Ha','Al-Anbiya','Al-Hajj','Al-Muminun',
-  'An-Nur','Al-Furqan','Ash-Shuara','An-Naml','Al-Qasas','Al-Ankabut','Ar-Rum',
-  'Luqman','As-Sajda','Al-Ahzab','Saba','Fatir','Ya-Sin','As-Saffat','Sad',
-  'Az-Zumar','Ghafir','Fussilat','Ash-Shura','Az-Zukhruf','Ad-Dukhan','Al-Jathiya',
-  'Al-Ahqaf','Muhammad','Al-Fath','Al-Hujurat','Qaf','Adh-Dhariyat','At-Tur',
-  'An-Najm','Al-Qamar','Ar-Rahman','Al-Waqia','Al-Hadid','Al-Mujadila','Al-Hashr',
-  'Al-Mumtahana','As-Saf','Al-Jumua','Al-Munafiqun','At-Taghabun','At-Talaq',
-  'At-Tahrim','Al-Mulk','Al-Qalam','Al-Haqqa','Al-Maarij','Nuh','Al-Jinn',
-  'Al-Muzzammil','Al-Muddaththir','Al-Qiyama','Al-Insan','Al-Mursalat',
-];
+// Derived from shared lib — single source of truth
+const ZAINLY_ORDER = ZAINLY_ORDER_DATA.map(s => s.name);
 
 const QURAN_ORDER = [
   'Al-Fatiha','Al-Baqara','Al-Imran','An-Nisa','Al-Maida','Al-Anam','Al-Araf',
@@ -155,6 +137,7 @@ function OnboardingInner() {
   const [loadingPercent, setLoadingPercent] = useState(0);
   const [loadingPhrase, setLoadingPhrase] = useState(LOADING_PHRASES[0]);
   const [error, setError]                 = useState('');
+  const [coranComplete, setCoranComplete] = useState(false);
   const [plan, setPlan]                   = useState(null);
   const [planVisible, setPlanVisible]     = useState(false);
   const [prenom, setPrenom]               = useState('');
@@ -234,6 +217,12 @@ function OnboardingInner() {
       });
       const planData = await res.json();
       if (!res.ok) throw new Error(planData.error || 'Erreur lors de la generation du plan.');
+      if (planData.message === 'coran_complete') {
+        allTimers.forEach(clearTimeout);
+        setLoading(false);
+        setCoranComplete(true);
+        return;
+      }
 
       allTimers.forEach(clearTimeout);
       setLoadingPercent(100);
@@ -248,6 +237,45 @@ function OnboardingInner() {
   }
 
   const estimatedYears = ayahPerDay ? calcEstimatedYears(ayahPerDay, sourates, partialSurahs) : null;
+
+  // ── Coran complet screen ──
+  if (coranComplete) {
+    return (
+      <div style={{ minHeight: '100vh', backgroundColor: '#F5F0E6', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '20px', padding: '32px', textAlign: 'center', position: 'relative' }}>
+        <style>{CSS}</style>
+        <span className="font-amiri" style={calligStyle}>الله</span>
+        <div style={{ position: 'relative', zIndex: 1 }}>
+          <span className="font-amiri" style={{ fontSize: '72px', color: '#B8962E', display: 'block', marginBottom: '8px' }}>الله</span>
+          <h1 className="font-playfair" style={{ fontSize: '30px', fontWeight: 600, color: '#163026', margin: '0 0 16px 0', lineHeight: 1.3 }}>
+            MashaAllah !
+          </h1>
+          <p className="font-playfair" style={{ fontSize: '18px', fontStyle: 'italic', color: '#6B6357', margin: '0 0 8px 0', lineHeight: 1.6, maxWidth: '480px' }}>
+            Tu sembles déjà avoir complété tout le parcours Zainly.
+          </p>
+          <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '15px', color: '#6B6357', margin: '0 0 36px 0', lineHeight: 1.6 }}>
+            Si ce n&apos;est pas le cas, désélectionne les sourates que tu n&apos;as pas encore mémorisées.
+          </p>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', alignItems: 'center' }}>
+            <button
+              type="button"
+              onClick={() => router.push('/dashboard')}
+              className="font-playfair"
+              style={{ padding: '14px 40px', fontSize: '16px', fontWeight: 600, backgroundColor: '#163026', color: '#fff', border: 'none', borderRadius: '12px', cursor: 'pointer', boxShadow: '0 8px 24px rgba(22,48,38,0.2)' }}
+            >
+              Retour au dashboard
+            </button>
+            <button
+              type="button"
+              onClick={() => setCoranComplete(false)}
+              style={{ background: 'none', border: 'none', fontFamily: 'DM Sans, sans-serif', fontSize: '14px', color: '#6B6357', cursor: 'pointer', padding: '8px' }}
+            >
+              ← Modifier mes sourates
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   // ── Plan screen ──
   if (plan) {

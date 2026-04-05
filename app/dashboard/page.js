@@ -845,7 +845,13 @@ export default function DashboardPage() {
               if (!grouped[sn]) grouped[sn] = [];
               grouped[sn].push(item);
             }
-            const surahNumbers = Object.keys(grouped).map(Number).sort((a, b) => a - b);
+            // Sort by Zainly memorization order (Al-Fatiha first, then An-Nas, etc.)
+            const zainlyPos = Object.fromEntries(ZAINLY_ORDER.map((s, i) => [s.surah, i]));
+            const surahNumbers = Object.keys(grouped).map(Number).sort((a, b) => {
+              const ia = zainlyPos[a] ?? Infinity;
+              const ib = zainlyPos[b] ?? Infinity;
+              return ia - ib;
+            });
 
             return (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>

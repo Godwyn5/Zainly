@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
-import { nextZainlySurah } from '@/lib/zainlyOrder';
+import { nextZainlySurah, ZAINLY_INDEX_BY_SURAH } from '@/lib/zainlyOrder';
 
 let cachedQuran = null;
 let cachedQuranFr = null;
@@ -182,6 +182,13 @@ export default function SessionPage() {
       let currentSurah = progRow.current_surah ?? 1;
       let currentAyah  = progRow.current_ayah ?? 0;
       const ayahPerDay = plRow.ayah_per_day ?? 2;
+
+      // ── Validate current_surah is in the Zainly order ──
+      if (ZAINLY_INDEX_BY_SURAH[currentSurah] == null) {
+        setError('INVALID_SURAH');
+        setLoading(false);
+        return;
+      }
 
       // ── End-of-surah detection loop ──
       // Advance surah(s) until we find one with remaining ayats
@@ -422,6 +429,23 @@ export default function SessionPage() {
         </h1>
         <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '15px', color: '#6B6357', margin: 0 }}>
           Reviens demain إن شاء الله
+        </p>
+        <button onClick={() => router.push('/dashboard')} className="font-playfair" style={{ marginTop: '8px', padding: '14px 40px', backgroundColor: '#163026', color: '#fff', border: 'none', borderRadius: '12px', cursor: 'pointer', fontSize: '16px', fontWeight: 600 }}>
+          Retour au dashboard
+        </button>
+      </div>
+    );
+  }
+
+  if (error === 'INVALID_SURAH') {
+    return (
+      <div style={{ minHeight: '100vh', backgroundColor: '#F5F0E6', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '16px', padding: '32px', textAlign: 'center' }}>
+        <span style={{ fontSize: '48px' }}>⚠️</span>
+        <h1 className="font-playfair" style={{ fontSize: '24px', fontWeight: 600, color: '#163026', margin: 0, lineHeight: 1.3 }}>
+          Progression invalide.
+        </h1>
+        <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '15px', color: '#6B6357', margin: 0, maxWidth: '360px', lineHeight: 1.6 }}>
+          Ton point de départ ne correspond pas à l&apos;ordre Zainly. Merci de régénérer ton programme depuis le dashboard.
         </p>
         <button onClick={() => router.push('/dashboard')} className="font-playfair" style={{ marginTop: '8px', padding: '14px 40px', backgroundColor: '#163026', color: '#fff', border: 'none', borderRadius: '12px', cursor: 'pointer', fontSize: '16px', fontWeight: 600 }}>
           Retour au dashboard

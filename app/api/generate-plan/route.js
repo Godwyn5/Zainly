@@ -12,11 +12,15 @@ export async function POST(request) {
     if (!token) {
       return NextResponse.json({ error: 'Non autorise.' }, { status: 401 })
     }
+    // Pass the JWT in global headers so every DB write carries auth.uid()
     const supabase = createClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL,
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+      { global: { headers: { Authorization: `Bearer ${token}` } } }
     )
     const { data: { user }, error: authErr } = await supabase.auth.getUser(token)
+    console.log('[generate-plan] token present:', !!token)
+    console.log('[generate-plan] auth.getUser result — user.id:', user?.id ?? 'NULL', '| error:', authErr?.message ?? 'none')
     if (authErr || !user) {
       return NextResponse.json({ error: 'Non autorise.' }, { status: 401 })
     }
@@ -100,24 +104,34 @@ export async function POST(request) {
     const estimatedMonths = Math.round(estimatedWeeks / 4.33)
     const estimatedYears  = (estimatedMonths / 12).toFixed(1)
 
-    // ── Upsert plan ──
-    const { error: planErr } = await supabase.from('plans').upsert({
-      user_id:            userId,
-      ayah_per_day:       ayahPerDay,
-      days_per_week:      daysPerWeek,
-      first_surah_name:   startSurah.name,
-      surah_start:        startSurah.surah,
-      start_ayah:         startAyah,
-      remaining_ayats:    remainingAyats,
-      estimated_months:   estimatedMonths,
-    }, { onConflict: 'user_id' })
+    // ── Write plan: explicit select → update or insert (no UNIQUE constraint required) ──
+    const planPayload = {
+      ayah_per_day:     ayahPerDay,
+      days_per_week:    daysPerWeek,
+      first_surah_name: startSurah.name,
+      surah_start:      startSurah.surah,
+      start_ayah:       startAyah,
+      remaining_ayats:  remainingAyats,
+      estimated_months: estimatedMonths,
+    }
+    console.log('[generate-plan] writing plan — user_id:', userId, '| payload:', JSON.stringify(planPayload))
+
+    const { data: existingPlan } = await supabase
+      .from('plans').select('id').eq('user_id', userId).maybeSingle()
+
+    let planErr
+    if (existingPlan) {
+      ;({ error: planErr } = await supabase.from('plans').update(planPayload).eq('user_id', userId))
+    } else {
+      ;({ error: planErr } = await supabase.from('plans').insert({ user_id: userId, ...planPayload }))
+    }
     if (planErr) {
-      console.error('[generate-plan] plan upsert error:', planErr)
+      console.error('[generate-plan] plan write error:', planErr)
       return NextResponse.json({ error: planErr.message }, { status: 500 })
     }
 
     // ── Update or insert progress — never overwrite historical data ──
-    // Check if a progress row already exists for this user
+    console.log('[generate-plan] writing progress — user_id:', userId)
     const { data: existingProg } = await supabase
       .from('progress')
       .select('id')

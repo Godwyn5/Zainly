@@ -48,12 +48,22 @@ const SURAH_AYAT = [
 const TOTAL_AYATS = SURAH_AYAT.reduce((a, b) => a + b, 0);
 
 const RHYTHMS = [
-  { ayah: 1, label: '1 ayat/jour',  tag: 'Tranquille' },
-  { ayah: 2, label: '2 ayats/jour', tag: 'Regulier' },
-  { ayah: 3, label: '3 ayats/jour', tag: 'Soutenu' },
-  { ayah: 4, label: '4 ayats/jour', tag: 'Intensif' },
-  { ayah: 5, label: '5 ayats/jour', tag: 'Tres intensif' },
-  { ayah: 6, label: '6 ayats/jour', tag: 'Maximum' },
+  { ayah: 1, label: '1 ayat / jour',  desc: 'Parfait pour commencer en douceur' },
+  { ayah: 2, label: '2 ayats / jour', desc: 'Un rythme stable et durable' },
+  { ayah: 3, label: '3 ayats / jour', desc: 'Un excellent équilibre' },
+  { ayah: 4, label: '4 ayats / jour', desc: 'Tu progresses rapidement' },
+  { ayah: 5, label: '5 ayats / jour', desc: 'Très engagé — résultats visibles' },
+  { ayah: 6, label: '6 ayats / jour', desc: 'Niveau avancé — forte discipline' },
+];
+
+const RHYTHM_MOTIVATION = [
+  '',
+  'Tu construis une habitude solide.',
+  'La régularité fait tout.',
+  'Un excellent point de départ.',
+  'Tu avances vite et bien.',
+  'Peu le font — bravo.',
+  'Discipline maximale.',
 ];
 
 const LOADING_PHRASES = [
@@ -397,15 +407,41 @@ function OnboardingInner() {
             <div>
               <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '13px', color: '#B8962E', letterSpacing: '0.1em', fontWeight: 600, textAlign: 'center', margin: '0 0 12px 0' }}>ETAPE 1 / 2</p>
               <h1 className="font-playfair" style={{ fontSize: '32px', fontWeight: 600, color: '#163026', textAlign: 'center', lineHeight: 1.3, margin: '0 0 8px 0' }}>
-                Combien d&apos;ayats veux-tu memoriser par jour ?
+                À quel rythme veux-tu avancer ?
               </h1>
-              <p className="font-playfair" style={{ fontSize: '16px', fontStyle: 'italic', color: '#6B6357', textAlign: 'center', margin: '0 0 36px 0', lineHeight: 1.6 }}>
-                Tu pourras changer ca a tout moment.
+              <p className="font-playfair" style={{ fontSize: '16px', fontStyle: 'italic', color: '#6B6357', textAlign: 'center', margin: '0 0 28px 0', lineHeight: 1.6 }}>
+                Tu pourras ajuster à tout moment.
               </p>
 
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              {/* Dynamic 30-day preview */}
+              <div style={{
+                minHeight: '64px',
+                marginBottom: '24px',
+                padding: '16px 20px',
+                backgroundColor: ayahPerDay ? '#FFFFFF' : 'transparent',
+                border: ayahPerDay ? '1px solid #E2D9CC' : '1px solid transparent',
+                borderRadius: '14px',
+                transition: 'all 0.3s ease',
+                textAlign: 'center',
+              }}>
+                {ayahPerDay ? (
+                  <>
+                    <p className="font-playfair" style={{ margin: '0 0 4px 0', fontSize: '17px', fontWeight: 600, color: '#163026', lineHeight: 1.4 }}>
+                      En 30 jours, tu auras mémorisé ~{Math.round(ayahPerDay * 6 * 4.33)} ayats.
+                    </p>
+                    <p style={{ margin: 0, fontFamily: 'DM Sans, sans-serif', fontSize: '13px', color: '#B8962E' }}>
+                      {RHYTHM_MOTIVATION[ayahPerDay]}
+                    </p>
+                  </>
+                ) : (
+                  <p style={{ margin: 0, fontFamily: 'DM Sans, sans-serif', fontSize: '14px', color: '#A09890' }}>
+                    Choisis un rythme pour voir ta progression.
+                  </p>
+                )}
+              </div>
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                 {RHYTHMS.map(r => {
-                  const years = calcEstimatedYears(r.ayah, sourates, partialSurahs);
                   const sel = ayahPerDay === r.ayah;
                   return (
                     <button
@@ -413,20 +449,16 @@ function OnboardingInner() {
                       type="button"
                       onClick={() => setAyahPerDay(r.ayah)}
                       style={{
-                        width: '100%', padding: '20px 24px', borderRadius: '16px', textAlign: 'left', cursor: 'pointer',
+                        width: '100%', padding: '18px 22px', borderRadius: '14px', textAlign: 'left', cursor: 'pointer',
                         border: `1.5px solid ${sel ? '#163026' : '#E2D9CC'}`,
                         backgroundColor: sel ? '#F5F0E6' : '#FFFFFF',
-                        transition: 'all 0.18s ease',
-                        display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                        transform: sel ? 'scale(1.02)' : 'scale(1)',
+                        transition: 'all 0.2s ease',
+                        boxShadow: sel ? '0 4px 16px rgba(22,48,38,0.10)' : 'none',
                       }}
                     >
-                      <div>
-                        <p className="font-playfair" style={{ margin: '0 0 4px 0', fontSize: '18px', fontWeight: 600, color: '#163026' }}>{r.label}</p>
-                        <p style={{ margin: 0, fontFamily: 'DM Sans, sans-serif', fontSize: '14px', fontWeight: 500, color: '#B8962E' }}>{r.tag}</p>
-                      </div>
-                      <p style={{ margin: 0, fontFamily: 'DM Sans, sans-serif', fontSize: '13px', color: '#6B6357', textAlign: 'right', flexShrink: 0, marginLeft: '12px' }}>
-                        ~{years} an{years > 1 ? 's' : ''} pour<br/>le Coran complet
-                      </p>
+                      <p className="font-playfair" style={{ margin: '0 0 3px 0', fontSize: '17px', fontWeight: 600, color: '#163026' }}>{r.label}</p>
+                      <p style={{ margin: 0, fontFamily: 'DM Sans, sans-serif', fontSize: '13px', color: sel ? '#163026' : '#6B6357' }}>{r.desc}</p>
                     </button>
                   );
                 })}
@@ -438,7 +470,7 @@ function OnboardingInner() {
                 disabled={!ayahPerDay}
                 className="font-playfair"
                 style={{
-                  marginTop: '32px', width: '100%', padding: '16px', fontSize: '17px', fontWeight: 600,
+                  marginTop: '28px', width: '100%', padding: '16px', fontSize: '17px', fontWeight: 600,
                   backgroundColor: ayahPerDay ? '#163026' : '#E2D9CC',
                   color: ayahPerDay ? '#FFFFFF' : '#A09890',
                   border: 'none', borderRadius: '12px',
@@ -447,7 +479,7 @@ function OnboardingInner() {
                   transition: 'all 0.2s ease',
                 }}
               >
-                Continuer →
+                Commencer avec ce rythme →
               </button>
             </div>
           )}

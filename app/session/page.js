@@ -266,19 +266,41 @@ export default function SessionPage() {
     }, 220);
   }
 
+  const tapLastPlayedRef = useRef(0);
   function playSuccessSound() {
+    const now = Date.now();
+    if (now - tapLastPlayedRef.current < 150) return;
+    tapLastPlayedRef.current = now;
     try {
-      const ctx = new (window.AudioContext || window.webkitAudioContext)();
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.connect(gain);
-      gain.connect(ctx.destination);
-      osc.frequency.value = 523;
-      gain.gain.value = 0.3;
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      if (!AudioCtx) return;
+      const ctx = new AudioCtx();
       ctx.resume().then(() => {
-        osc.start();
-        osc.stop(ctx.currentTime + 0.15);
-        setTimeout(() => ctx.close().catch(() => {}), 300);
+        const sampleRate  = ctx.sampleRate;
+        const duration    = 0.06; // 60ms — very short tap
+        const frameCount  = Math.floor(sampleRate * duration);
+        const buffer      = ctx.createBuffer(1, frameCount, sampleRate);
+        const data        = buffer.getChannelData(0);
+        for (let i = 0; i < frameCount; i++) data[i] = Math.random() * 2 - 1;
+
+        // Low-pass filter: rounds off the noise into a soft thud
+        const filter         = ctx.createBiquadFilter();
+        filter.type          = 'lowpass';
+        filter.frequency.value = 800;
+        filter.Q.value         = 0.5;
+
+        const gain           = ctx.createGain();
+        gain.gain.setValueAtTime(0.28, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + duration);
+
+        const source = ctx.createBufferSource();
+        source.buffer = buffer;
+        source.connect(filter);
+        filter.connect(gain);
+        gain.connect(ctx.destination);
+        source.start();
+        source.stop(ctx.currentTime + duration);
+        source.onended = () => ctx.close().catch(() => {});
       });
     } catch (e) {}
   }

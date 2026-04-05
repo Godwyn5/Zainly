@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
+import { nextZainlySurah } from '@/lib/zainlyOrder';
 
 let cachedQuran = null;
 let cachedQuranFr = null;
@@ -198,8 +199,13 @@ export default function SessionPage() {
 
         const startAyah = currentAyah + 1;
         if (startAyah > surah.verses.length) {
-          // Surah finished — advance to next surah
-          const newSurah = currentSurah + 1;
+          // Surah finished — advance to next surah in Zainly order
+          const newSurah = nextZainlySurah(currentSurah);
+          if (newSurah === null) {
+            setError('QURAN_COMPLETE');
+            setLoading(false);
+            return;
+          }
           const { error: advErr } = await supabase
             .from('progress')
             .update({ current_surah: newSurah, current_ayah: 0 })

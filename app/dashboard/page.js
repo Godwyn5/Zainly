@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
+import { nextZainlySurah, ZAINLY_ORDER } from '@/lib/zainlyOrder';
 
 // ─── Data ────────────────────────────────────────────────────────────────────
 
@@ -285,7 +286,8 @@ export default function DashboardPage() {
   const memStart        = currentAyah + 1;
   const memEnd          = Math.min(currentAyah + ayahPerDay, surahTotalAyat);
   const surahExhausted  = memStart > surahTotalAyat;
-  const nextSurahName   = surahExhausted ? getSurahName(currentSurah + 1) : '';
+  const nextZainlySurahNum = surahExhausted ? nextZainlySurah(currentSurah) : null;
+  const nextSurahName   = nextZainlySurahNum != null ? getSurahName(nextZainlySurahNum) : nextZainlySurahNum === null && surahExhausted ? 'Coran complet' : '';
   const surahName       = getSurahName(currentSurah);
   const totalMemorized  = progress?.total_memorized ?? 0;
   const progressPct     = Math.min((totalMemorized / 6236) * 100, 100);
@@ -580,7 +582,7 @@ export default function DashboardPage() {
                     <p style={{ textAlign: 'center', fontFamily: 'DM Sans, sans-serif', fontSize: '15px', color: '#163026', padding: '16px 0' }}>✓ Rythme mis à jour</p>
                   ) : (
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
-                      {[1, 2, 3, 4].map(val => (
+                      {[1, 2, 3, 4, 5, 6].map(val => (
                         <button
                           key={val}
                           type="button"

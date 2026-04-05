@@ -3,6 +3,7 @@
 import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
+import { calcSequentialKnown } from '@/lib/zainlyOrder';
 
 // ─── Constants ───────────────────────────────────────────────────────────────
 
@@ -75,24 +76,9 @@ const LOADING_PHRASES = [
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
-function surahAyatCount(name) {
-  const idx = QURAN_ORDER.indexOf(name);
-  return idx >= 0 ? (SURAH_AYAT[idx] ?? 0) : 0;
-}
-
 function calcEstimatedYears(ayahPerDay, sourates, partialSurahs) {
-  let known = 0;
-  for (const s of sourates) {
-    const partial = partialSurahs[s];
-    if (partial) {
-      const { from = 1, to = 1 } = partial;
-      known += Math.max(0, to - from + 1);
-    } else {
-      known += surahAyatCount(s);
-    }
-  }
-  const remaining = Math.max(0, TOTAL_AYATS - known);
-  const weeks = Math.ceil(remaining / (ayahPerDay * 6));
+  const { remainingAyats } = calcSequentialKnown(sourates, partialSurahs);
+  const weeks = Math.ceil(remainingAyats / (ayahPerDay * 6));
   return Math.max(1, Math.round(weeks / 52.18));
 }
 
@@ -288,7 +274,7 @@ function OnboardingInner() {
                 <p style={{ fontSize: '12px', color: '#6B6357', margin: 0 }}>Ayats / jour</p>
               </div>
               <div style={{ flex: 1 }}>
-                <p className="font-playfair" style={{ fontSize: '32px', fontWeight: 600, color: '#163026', margin: '0 0 4px 0' }}>{plan.daysPerWeek}</p>
+                <p className="font-playfair" style={{ fontSize: '32px', fontWeight: 600, color: '#163026', margin: '0 0 4px 0' }}>6</p>
                 <p style={{ fontSize: '12px', color: '#6B6357', margin: 0 }}>Jours / semaine</p>
               </div>
               <div style={{ flex: 1 }}>

@@ -13,22 +13,31 @@ export default function ResetPasswordPage() {
   const [success, setSuccess]         = useState(false);
   const [error, setError]             = useState('');
   const [sessionReady, setSessionReady] = useState(false);
+  const [linkExpired, setLinkExpired]   = useState(false);
 
   // Supabase sends the recovery token as a hash fragment — listen for the
   // PASSWORD_RECOVERY event so the session is established before we try to update.
   useEffect(() => {
+    let resolved = false;
+
     // If the user already has a valid recovery session (e.g. page refresh), mark ready immediately.
     supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) setSessionReady(true);
+      if (session) { resolved = true; setSessionReady(true); }
     });
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
       if (event === 'PASSWORD_RECOVERY' || event === 'SIGNED_IN') {
+        resolved = true;
         setSessionReady(true);
       }
     });
 
-    return () => subscription.unsubscribe();
+    // Timeout: if session not established within 9s, link is likely expired/invalid
+    const timer = setTimeout(() => {
+      if (!resolved) setLinkExpired(true);
+    }, 9000);
+
+    return () => { subscription.unsubscribe(); clearTimeout(timer); };
   }, []);
 
   async function handleSubmit(e) {
@@ -55,6 +64,39 @@ export default function ResetPasswordPage() {
 
     setSuccess(true);
     setTimeout(() => router.push('/login'), 3000);
+  }
+
+  if (linkExpired) {
+    return (
+      <div style={{
+        minHeight: '100vh', backgroundColor: '#F5F0E6',
+        display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+        gap: '16px', padding: '32px', textAlign: 'center',
+      }}>
+        <span style={{ fontSize: '48px' }}>⏱</span>
+        <h1 className="font-playfair" style={{ fontSize: '24px', fontWeight: 600, color: '#163026', margin: 0, lineHeight: 1.3 }}>
+          Lien invalide ou expiré.
+        </h1>
+        <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '15px', color: '#6B6357', margin: 0, maxWidth: '340px', lineHeight: 1.6 }}>
+          Ce lien de réinitialisation n&apos;est plus valide. Demande-en un nouveau.
+        </p>
+        <button
+          type="button"
+          onClick={() => router.push('/login?forgot=1')}
+          className="font-playfair"
+          style={{ marginTop: '8px', padding: '14px 36px', fontSize: '16px', fontWeight: 600, backgroundColor: '#163026', color: '#fff', border: 'none', borderRadius: '12px', cursor: 'pointer' }}
+        >
+          Redemander un lien
+        </button>
+        <button
+          type="button"
+          onClick={() => router.push('/login')}
+          style={{ background: 'none', border: 'none', fontFamily: 'DM Sans, sans-serif', fontSize: '14px', color: '#6B6357', cursor: 'pointer', textDecoration: 'underline', padding: '4px' }}
+        >
+          Retour à la connexion
+        </button>
+      </div>
+    );
   }
 
   if (success) {

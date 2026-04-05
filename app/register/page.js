@@ -21,7 +21,11 @@ export default function RegisterPage() {
   useEffect(() => {
     async function checkAuth() {
       const { data: { user } } = await supabase.auth.getUser();
-      if (user) { router.push('/dashboard'); return; }
+      if (user) {
+        const { data: plans } = await supabase.from('plans').select('id').eq('user_id', user.id).limit(1);
+        router.push(plans && plans.length > 0 ? '/dashboard' : '/onboarding');
+        return;
+      }
       setTimeout(() => setPageVisible(true), 100);
     }
     checkAuth();

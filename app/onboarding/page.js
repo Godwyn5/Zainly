@@ -162,6 +162,7 @@ function OnboardingInner() {
   }
 
   function toggleSourate(s) {
+    if (s === 'Al-Fatiha') return; // always required
     setSourates(prev => {
       const next = prev.includes(s) ? prev.filter(x => x !== s) : [...prev, s];
       if (prev.includes(s)) {
@@ -198,14 +199,6 @@ function OnboardingInner() {
       const { data: { user }, error: userErr } = await supabase.auth.getUser();
       if (userErr || !user) throw new Error('Utilisateur non connecte.');
       setPrenom(user.user_metadata?.prenom || '');
-
-      if (isReset) {
-        const { error: delErr } = await supabase.from('plans').delete().eq('user_id', user.id);
-        if (delErr) {
-          allTimers.forEach(clearTimeout);
-          throw new Error('Erreur lors de la reinitialisation. Reessaie.');
-        }
-      }
 
       const { data: { session }, error: sessionErr } = await supabase.auth.getSession();
       if (sessionErr || !session?.access_token) throw new Error('Session expiree. Reconnecte-toi.');
@@ -450,7 +443,7 @@ function OnboardingInner() {
               <div style={{ textAlign: 'center', marginBottom: '12px' }}>
                 <button
                   type="button"
-                  onClick={() => { setSourates([]); setPartialSurahs({}); setExpandedPartial(null); }}
+                  onClick={() => { setSourates(['Al-Fatiha']); setPartialSurahs({}); setExpandedPartial(null); }}
                   style={{
                     padding: '10px 28px', fontSize: '14px', fontWeight: 500, cursor: 'pointer',
                     border: `1.5px solid ${sourates.length === 0 ? '#163026' : '#E2D9CC'}`,
@@ -470,14 +463,16 @@ function OnboardingInner() {
                   const isExpanded = expandedPartial === s;
                   const partial = partialSurahs[s];
                   const qNum = QURAN_ORDER.indexOf(s) + 1;
+                  const isMandatory = s === 'Al-Fatiha';
                   return (
                     <div key={s}>
-                      <label style={{ display: 'flex', alignItems: 'center', gap: '14px', padding: '12px 20px', cursor: 'pointer', backgroundColor: checked ? 'rgba(22,48,38,0.04)' : 'transparent', transition: 'background-color 0.15s' }}>
+                      <label style={{ display: 'flex', alignItems: 'center', gap: '14px', padding: '12px 20px', cursor: isMandatory ? 'default' : 'pointer', backgroundColor: checked ? 'rgba(22,48,38,0.04)' : 'transparent', transition: 'background-color 0.15s' }}>
                         <input
                           type="checkbox"
                           checked={checked}
                           onChange={() => toggleSourate(s)}
-                          style={{ accentColor: '#163026', width: '16px', height: '16px', cursor: 'pointer', flexShrink: 0 }}
+                          disabled={isMandatory}
+                          style={{ accentColor: '#163026', width: '16px', height: '16px', cursor: isMandatory ? 'default' : 'pointer', flexShrink: 0, opacity: isMandatory ? 0.5 : 1 }}
                         />
                         <span style={{ fontSize: '15px', color: '#163026', flex: 1 }}>
                           <span style={{ color: '#6B6357', marginRight: '6px', fontSize: '12px' }}>{qNum}.</span>

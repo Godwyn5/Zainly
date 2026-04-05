@@ -1,32 +1,58 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState, useEffect, Suspense } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
 
 export default function LoginPage() {
+  return (
+    <Suspense>
+      <LoginInner />
+    </Suspense>
+  );
+}
+
+function LoginInner() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [pageVisible, setPageVisible] = useState(false);
-  const [forgotMode, setForgotMode] = useState(false);
+  const [forgotMode, setForgotMode] = useState(searchParams.get('forgot') === '1');
   const [forgotEmail, setForgotEmail] = useState('');
   const [forgotSent, setForgotSent] = useState(false);
   const [forgotLoading, setForgotLoading] = useState(false);
   const [forgotError, setForgotError] = useState('');
 
+  async function routeAfterAuth(user) {
+    const { data: plans } = await supabase.from('plans').select('id').eq('user_id', user.id).limit(1);
+    if (plans && plans.length > 0) {
+      router.push('/dashboard');
+    } else {
+      router.push('/onboarding');
+    }
+  }
+
   useEffect(() => {
     async function checkAuth() {
       const { data: { user } } = await supabase.auth.getUser();
-      if (user) { router.push('/dashboard'); return; }
+      if (user) { await routeAfterAuth(user); return; }
       setTimeout(() => setPageVisible(true), 100);
     }
     checkAuth();
-  }, [router]);
+
+    // R1: Listen for SIGNED_IN after email confirmation click
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+      if (event === 'SIGNED_IN' && session?.user) {
+        await routeAfterAuth(session.user);
+      }
+    });
+    return () => subscription.unsubscribe();
+  }, [router]); // eslint-disable-line react-hooks/exhaustive-deps
 
   async function handleForgot(e) {
     e.preventDefault();

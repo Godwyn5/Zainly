@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
-import { nextZainlySurah, ZAINLY_ORDER } from '@/lib/zainlyOrder';
+import { nextZainlySurah, ZAINLY_ORDER, ZAINLY_INDEX_BY_SURAH } from '@/lib/zainlyOrder';
 
 // ─── Data ────────────────────────────────────────────────────────────────────
 
@@ -29,13 +29,8 @@ function getSurahName(num) {
   return SURAH_NAMES[(num ?? 1) - 1] ?? `Sourate ${num}`;
 }
 
-const SURAH_AYAT_COUNT = [
-  7,286,200,176,120,165,206,75,129,109,123,111,43,52,99,128,111,110,98,135,112,78,118,64,77,
-  227,93,88,69,60,34,30,73,54,45,83,182,88,75,85,54,53,89,59,37,35,38,29,18,45,
-  60,49,62,55,78,96,29,22,24,13,14,11,11,18,12,12,30,52,52,44,28,28,20,56,40,31,
-  50,40,46,42,29,19,36,25,22,17,19,26,30,20,15,21,11,8,8,19,5,8,8,11,11,8,
-  3,9,5,4,7,3,6,3,5,4,5,6,
-];
+// R9: derive ayat count from ZAINLY_ORDER (single source of truth)
+const ZAINLY_AYAT_BY_SURAH = Object.fromEntries(ZAINLY_ORDER.map(s => [s.surah, s.ayahs]));
 
 function todayStr() {
   const d = new Date();
@@ -212,7 +207,7 @@ export default function DashboardPage() {
   }, [router]);
 
   async function loadHifz(userId) {
-    if (hifzLoading || hifzItems.length > 0) return;
+    if (hifzLoading) return;
     setHifzLoading(true);
     try {
       const itemsPromise = supabase.from('review_items').select('*').eq('user_id', userId).order('surah_number', { ascending: true });
@@ -282,7 +277,7 @@ export default function DashboardPage() {
   const currentAyah     = progress?.current_ayah ?? 0;
   const ayahPerDay      = plan.ayah_per_day ?? 2;
   const currentSurah    = progress?.current_surah ?? 1;
-  const surahTotalAyat  = SURAH_AYAT_COUNT[currentSurah - 1] ?? 7;
+  const surahTotalAyat  = ZAINLY_AYAT_BY_SURAH[currentSurah] ?? ZAINLY_ORDER.find(s => s.surah === currentSurah)?.ayahs ?? 7;
   const memStart        = currentAyah + 1;
   const memEnd          = Math.min(currentAyah + ayahPerDay, surahTotalAyat);
   const surahExhausted  = memStart > surahTotalAyat;
@@ -296,7 +291,7 @@ export default function DashboardPage() {
   const minutesSession  = plan.minutes_per_session ?? 20;
 
   // Estimated months remaining — prefer DB value, recalculate live as fallback
-  const daysPerWeek = plan.days_per_week ?? 5;
+  const daysPerWeek = plan.days_per_week ?? 6;
   const ayatLeft    = Math.max(0, 6236 - totalMemorized);
   const estMonths   = ayatLeft === 0 ? 0
     : (ayahPerDay > 0 && daysPerWeek > 0)

@@ -25,20 +25,21 @@ export const metadata = {
   title: 'Zainly',
   description: 'Deviens Hafiz. Un ayat à la fois.',
   manifest: '/manifest.json',
-  themeColor: '#163026',
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',
     title: 'Zainly',
   },
-  viewport: {
-    width: 'device-width',
-    initialScale: 1,
-    maximumScale: 1,
-  },
   verification: {
     google: 'gCIMd-1qGIq1lrgOE73oHOT0yusVwwR9KnkwNFHGBgc',
   },
+};
+
+export const viewport = {
+  themeColor: '#163026',
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
 };
 
 export default function RootLayout({ children }) {

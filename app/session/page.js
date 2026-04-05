@@ -213,15 +213,16 @@ export default function SessionPage() {
             setLoading(false);
             return;
           }
-          const { error: advErr } = await supabase
-            .from('progress')
-            .update({ current_surah: newSurah, current_ayah: 0 })
-            .eq('user_id', authUser.id);
+          const [{ error: advErr }, { error: planAdvErr }] = await Promise.all([
+            supabase.from('progress').update({ current_surah: newSurah, current_ayah: 0 }).eq('user_id', authUser.id),
+            supabase.from('plans').update({ surah_start: newSurah }).eq('user_id', authUser.id),
+          ]);
           if (advErr) {
             setError('Erreur lors de la progression. Recharge la page.');
             setLoading(false);
             return;
           }
+          if (planAdvErr) console.warn('[session] plans.surah_start update (non-fatal):', planAdvErr);
           currentSurah = newSurah;
           currentAyah  = 0;
           continue;
@@ -319,6 +320,12 @@ export default function SessionPage() {
       const tomorrow = tomorrowStr();
       const today    = todayStr();
 
+      // R7: re-fetch fresh progress to avoid stale snapshot (e.g. two devices, adaptPlan running)
+      const { data: freshProgRows } = await supabase
+        .from('progress').select('streak,total_memorized,session_dates,last_session_date')
+        .eq('user_id', user.id).order('created_at', { ascending: false }).limit(1);
+      const freshProg = freshProgRows?.[0] ?? progress;
+
       const reviewRows = ayats.map(ayat => ({
         user_id:      user.id,
         surah_number: surahNumber,   // use state, not progress closure
@@ -344,12 +351,12 @@ export default function SessionPage() {
       const qd = quranDataRef.current;
       const surahTotal        = qd ? (qd[surahNumber - 1]?.verses?.length ?? ayats.length) : ayats.length;
       const newAyah           = Math.min(savedAyah + ayats.length, surahTotal);
-      const alreadyDoneToday  = progress.last_session_date === today;
-      const newStreak         = alreadyDoneToday ? (progress.streak ?? 0) : (progress.streak ?? 0) + 1;
-      const newTotalMemorized = (progress.total_memorized ?? 0) + ayats.length;
+      const alreadyDoneToday  = freshProg.last_session_date === today;
+      const newStreak         = alreadyDoneToday ? (freshProg.streak ?? 0) : (freshProg.streak ?? 0) + 1;
+      const newTotalMemorized = (freshProg.total_memorized ?? 0) + ayats.length;
 
       // Append today to session_dates without duplicates
-      const existingDates   = Array.isArray(progress.session_dates) ? progress.session_dates : [];
+      const existingDates   = Array.isArray(freshProg.session_dates) ? freshProg.session_dates : [];
       const newSessionDates = existingDates.includes(today) ? existingDates : [...existingDates, today];
 
       const avgDifficulty = ayats.reduce((sum, a) => sum + getAyahDifficulty(a.text), 0) / ayats.length;

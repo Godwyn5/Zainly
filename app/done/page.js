@@ -58,6 +58,7 @@ export default function DonePage() {
   const [plan, setPlan]                   = useState(null);
   const [todayMemorized, setTodayMemorized] = useState(0);
   const [todayRevised, setTodayRevised]   = useState(0);
+  const [dueCount, setDueCount]           = useState(0);
   const [loading, setLoading]             = useState(true);
 
   useEffect(() => {
@@ -102,6 +103,15 @@ export default function DonePage() {
       setPlan(planData ?? null);
       setTodayMemorized(memorizedItems?.length ?? 0);
       setTodayRevised(revisedItems?.length ?? 0);
+
+      // Count due review items (next_review <= today, not mastered)
+      const { data: dueItems } = await supabase
+        .from('review_items')
+        .select('id', { count: 'exact', head: false })
+        .eq('user_id', authUser.id)
+        .eq('mastered', false)
+        .lte('next_review', localDateStr());
+      setDueCount(dueItems?.length ?? 0);
 
       setLoading(false);
     }
@@ -177,11 +187,11 @@ export default function DonePage() {
 
         {/* ── TITLE ── */}
         <h1 className="font-playfair" style={{
-          fontSize: 'clamp(28px, 8vw, 42px)', fontWeight: 600, color: '#163026',
+          fontSize: 'clamp(26px, 7vw, 38px)', fontWeight: 600, color: '#163026',
           margin: '24px 0 0 0', lineHeight: 1.2,
           animation: 'fadeUp 0.5s ease 0.5s both',
         }}>
-          Session accomplie.
+          Session terminée ✅
         </h1>
 
         {/* ── STREAK ── */}
@@ -217,56 +227,98 @@ export default function DonePage() {
           <StatCol value={totalMemorized} label="Total" />
         </div>
 
-        {/* ── MOTIVATION ── */}
+        {/* ── COACH MESSAGE ── */}
         <p className="font-playfair" style={{
-          fontSize: '18px', fontStyle: 'italic', color: '#6B6357',
-          maxWidth: '380px', margin: '24px auto 0', lineHeight: 1.7,
+          fontSize: '17px', fontStyle: 'italic', color: '#6B6357',
+          maxWidth: '380px', margin: '20px auto 0', lineHeight: 1.7,
           animation: 'fadeUp 0.5s ease 0.8s both',
         }}>
           {getMotivation(streak)}
         </p>
 
-        {/* ── BUTTONS ── */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginTop: '32px', animation: 'fadeUp 0.5s ease 1s both' }}>
-          <button
-            type="button"
-            className="font-playfair"
-            onClick={() => router.push('/dashboard')}
-            style={{
-              width: '100%',
-              padding: '16px',
-              fontSize: '17px', fontWeight: 600,
-              color: '#fff',
-              background: 'linear-gradient(135deg, #163026, #2d5a42)',
-              border: 'none', borderRadius: '12px', cursor: 'pointer',
-              boxShadow: '0 8px 24px rgba(15,35,24,0.3)',
-              transition: 'transform 0.15s, box-shadow 0.15s',
-            }}
-            onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 12px 32px rgba(15,35,24,0.38)'; }}
-            onMouseLeave={(e) => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 8px 24px rgba(15,35,24,0.3)'; }}
-          >
-            À demain إن شاء الله
-          </button>
+        <p style={{
+          fontFamily: 'DM Sans, sans-serif', fontSize: '15px', color: '#163026',
+          maxWidth: '380px', margin: '16px auto 0', lineHeight: 1.6,
+          animation: 'fadeUp 0.5s ease 0.85s both',
+        }}>
+          Pour consolider ta mémorisation, je te recommande de réviser maintenant.
+        </p>
 
-          {sessionIncomplete && (
+        {/* ── DUE COUNT ── */}
+        <div style={{
+          margin: '20px auto 0', maxWidth: '380px',
+          padding: '14px 20px',
+          backgroundColor: dueCount > 0 ? '#FFFFFF' : 'rgba(22,48,38,0.04)',
+          border: `1px solid ${dueCount > 0 ? '#E2D9CC' : 'transparent'}`,
+          borderRadius: '12px',
+          animation: 'fadeUp 0.5s ease 0.9s both',
+        }}>
+          {dueCount > 0 ? (
+            <p style={{ margin: 0, fontFamily: 'DM Sans, sans-serif', fontSize: '15px', color: '#163026', fontWeight: 500 }}>
+              Tu as <strong>{dueCount} ayat{dueCount > 1 ? 's' : ''}</strong> à réviser aujourd’hui.
+            </p>
+          ) : (
+            <p style={{ margin: 0, fontFamily: 'DM Sans, sans-serif', fontSize: '15px', color: '#2d5a42', fontWeight: 500 }}>
+              Tu es à jour aujourd’hui. Excellent travail.
+            </p>
+          )}
+        </div>
+
+        {/* ── BUTTONS ── */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginTop: '28px', animation: 'fadeUp 0.5s ease 1s both' }}>
+          {dueCount > 0 ? (
+            <>
+              <button
+                type="button"
+                className="font-playfair"
+                onClick={() => router.push('/revision')}
+                style={{
+                  width: '100%', padding: '16px',
+                  fontSize: '17px', fontWeight: 600, color: '#fff',
+                  background: 'linear-gradient(135deg, #163026, #2d5a42)',
+                  border: 'none', borderRadius: '12px', cursor: 'pointer',
+                  boxShadow: '0 8px 24px rgba(15,35,24,0.3)',
+                  transition: 'transform 0.15s, box-shadow 0.15s',
+                }}
+                onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 12px 32px rgba(15,35,24,0.38)'; }}
+                onMouseLeave={(e) => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 8px 24px rgba(15,35,24,0.3)'; }}
+              >
+                Commencer la révision
+              </button>
+              <button
+                type="button"
+                className="font-playfair"
+                onClick={() => router.push('/dashboard')}
+                style={{
+                  width: '100%', padding: '13px',
+                  fontSize: '15px', fontWeight: 500,
+                  color: '#6B6357', background: 'transparent',
+                  border: '1px solid #D4CCC2', borderRadius: '12px', cursor: 'pointer',
+                  transition: 'border-color 0.15s, color 0.15s',
+                }}
+                onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#163026'; e.currentTarget.style.color = '#163026'; }}
+                onMouseLeave={(e) => { e.currentTarget.style.borderColor = '#D4CCC2'; e.currentTarget.style.color = '#6B6357'; }}
+              >
+                Je reviendrai plus tard
+              </button>
+            </>
+          ) : (
             <button
               type="button"
               className="font-playfair"
-              onClick={() => router.push('/session')}
+              onClick={() => router.push('/dashboard')}
               style={{
-                width: '100%',
-                padding: '12px 32px',
-                fontSize: '16px', fontWeight: 600,
-                color: '#163026',
-                background: 'transparent',
-                border: '1.5px solid #163026',
-                borderRadius: '12px', cursor: 'pointer',
-                transition: 'background-color 0.15s, color 0.15s',
+                width: '100%', padding: '16px',
+                fontSize: '17px', fontWeight: 600, color: '#fff',
+                background: 'linear-gradient(135deg, #163026, #2d5a42)',
+                border: 'none', borderRadius: '12px', cursor: 'pointer',
+                boxShadow: '0 8px 24px rgba(15,35,24,0.3)',
+                transition: 'transform 0.15s, box-shadow 0.15s',
               }}
-              onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = '#163026'; e.currentTarget.style.color = '#fff'; }}
-              onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.color = '#163026'; }}
+              onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 12px 32px rgba(15,35,24,0.38)'; }}
+              onMouseLeave={(e) => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 8px 24px rgba(15,35,24,0.3)'; }}
             >
-              Faire une autre session →
+              Retour au tableau de bord
             </button>
           )}
         </div>

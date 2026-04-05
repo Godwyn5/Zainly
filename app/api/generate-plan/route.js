@@ -19,8 +19,6 @@ export async function POST(request) {
       { global: { headers: { Authorization: `Bearer ${token}` } } }
     )
     const { data: { user }, error: authErr } = await supabase.auth.getUser(token)
-    console.log('[generate-plan] token present:', !!token)
-    console.log('[generate-plan] auth.getUser result — user.id:', user?.id ?? 'NULL', '| error:', authErr?.message ?? 'none')
     if (authErr || !user) {
       return NextResponse.json({ error: 'Non autorise.' }, { status: 401 })
     }
@@ -114,8 +112,6 @@ export async function POST(request) {
       remaining_ayats:  remainingAyats,
       estimated_months: estimatedMonths,
     }
-    console.log('[generate-plan] writing plan — user_id:', userId, '| payload:', JSON.stringify(planPayload))
-
     const { data: existingPlan } = await supabase
       .from('plans').select('id').eq('user_id', userId).maybeSingle()
 
@@ -131,7 +127,6 @@ export async function POST(request) {
     }
 
     // ── Update or insert progress — never overwrite historical data ──
-    console.log('[generate-plan] writing progress — user_id:', userId)
     const { data: existingProg } = await supabase
       .from('progress')
       .select('id')

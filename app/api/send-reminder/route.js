@@ -13,57 +13,11 @@ function localDateStr() {
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 }
 
-async function getSupabase() {
-  return createClient(
+async function sendReminderNotifications() {
+  const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL,
     process.env.SUPABASE_SERVICE_ROLE_KEY
   );
-}
-
-async function sendMainNotifications() {
-  const supabase = await getSupabase();
-  const today = localDateStr();
-
-  // Only users not yet notified today
-  const { data: subscriptions } = await supabase
-    .from('push_subscriptions')
-    .select('*')
-    .or(`last_notified_at.is.null,last_notified_at.lt.${today}`);
-
-  if (!subscriptions || subscriptions.length === 0) return 0;
-
-  const results = await Promise.allSettled(
-    subscriptions.map(async (sub) => {
-      const { data: prog } = await supabase
-        .from('progress')
-        .select('last_session_date, total_memorized')
-        .eq('user_id', sub.user_id)
-        .order('created_at', { ascending: false })
-        .limit(1)
-        .maybeSingle();
-
-      if (prog?.last_session_date === today) return; // session done → skip
-
-      const hasProgress = (prog?.total_memorized ?? 0) > 0;
-      const body = hasProgress
-        ? "Ta session t'attend — ne perds pas ton progrès 🔥"
-        : "Ta session t'attend aujourd'hui";
-
-      await webpush.sendNotification(sub.subscription, JSON.stringify({
-        title: 'Zainly 🕌', body, icon: '/icon-192.png', badge: '/icon-192.png', url: '/dashboard',
-      }));
-
-      await supabase.from('push_subscriptions')
-        .update({ last_notified_at: today })
-        .eq('id', sub.id);
-    })
-  );
-
-  return results.filter(r => r.status === 'fulfilled').length;
-}
-
-async function sendReminderNotifications() {
-  const supabase = await getSupabase();
   const today = localDateStr();
 
   // Only users who received the main notif today but not yet the reminder
@@ -104,13 +58,13 @@ async function sendReminderNotifications() {
   return results.filter(r => r.status === 'fulfilled').length;
 }
 
-// Called by Vercel cron at 18h30 (GET, header x-vercel-cron: 1)
+// Called by Vercel cron at 21h (GET, header x-vercel-cron: 1)
 export async function GET(request) {
   try {
     if (request.headers.get('x-vercel-cron') !== '1') {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
-    const sent = await sendMainNotifications();
+    const sent = await sendReminderNotifications();
     return NextResponse.json({ success: true, sent });
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
@@ -124,7 +78,7 @@ export async function POST(request) {
     if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
-    const sent = await sendMainNotifications();
+    const sent = await sendReminderNotifications();
     return NextResponse.json({ success: true, sent });
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });

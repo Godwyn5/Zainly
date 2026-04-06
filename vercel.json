@@ -2,6 +2,10 @@
   "crons": [
     {
       "path": "/api/send-notifications",
+      "schedule": "30 16 * * *"
+    },
+    {
+      "path": "/api/send-reminder",
       "schedule": "0 19 * * *"
     }
   ]

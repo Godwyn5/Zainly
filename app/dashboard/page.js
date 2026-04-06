@@ -195,7 +195,10 @@ export default function DashboardPage() {
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${session.access_token}` },
         body: JSON.stringify({ subscription: sub }),
       });
-      if (!res.ok) throw new Error(`subscribe ${res.status}`);
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        throw new Error(`${res.status}: ${body.error || 'unknown'}`);
+      }
       setPushStatus('granted');
     } catch (err) {
       console.error('[dashboard] push subscription error:', err);

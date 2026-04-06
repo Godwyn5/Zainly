@@ -15,10 +15,15 @@ export async function POST(request) {
     const { data: { user }, error: authError } = await supabase.auth.getUser(token);
     if (authError || !user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
-    await supabase.from('push_subscriptions').upsert({
+    const { error: upsertErr } = await supabase.from('push_subscriptions').upsert({
       user_id: user.id,
       subscription: subscription,
     }, { onConflict: 'user_id' });
+
+    if (upsertErr) {
+      console.error('[subscribe] upsert error:', upsertErr);
+      return NextResponse.json({ error: upsertErr.message }, { status: 500 });
+    }
 
     return NextResponse.json({ success: true });
   } catch (error) {

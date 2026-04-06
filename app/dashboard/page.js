@@ -112,6 +112,7 @@ export default function DashboardPage() {
   const [recoveryDismissed, setRecoveryDismissed] = useState(false);
 
   // ── Modifier programme state ──
+  const [pushStatus, setPushStatus]       = useState('idle'); // 'idle'|'asking'|'granted'|'denied'|'error'
   const [editOpen, setEditOpen]           = useState(false);
   const [editView, setEditView]           = useState('menu'); // 'menu' | 'rythme'
   const [editSaving, setEditSaving]       = useState(false);
@@ -165,11 +166,16 @@ export default function DashboardPage() {
   const quranFrDataRef   = useRef(null);
   const hifzLastLoadRef  = useRef(0);
 
-  async function subscribeToPush() {
+  async function enableNotifications() {
+    if (typeof window === 'undefined' || !('Notification' in window) || !('serviceWorker' in navigator)) {
+      setPushStatus('error');
+      return;
+    }
+    setPushStatus('asking');
     try {
-      if (typeof window === 'undefined' || !('Notification' in window) || !('serviceWorker' in navigator)) return;
       const permission = await Notification.requestPermission();
-      if (permission !== 'granted') return;
+      if (permission === 'denied') { setPushStatus('denied'); return; }
+      if (permission !== 'granted') { setPushStatus('idle'); return; }
       const registration = await navigator.serviceWorker.ready;
       const existing = await registration.pushManager.getSubscription();
       const sub = existing ?? await registration.pushManager.subscribe({
@@ -177,17 +183,17 @@ export default function DashboardPage() {
         applicationServerKey: process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY,
       });
       const { data: { session } } = await supabase.auth.getSession();
-      if (!session?.access_token) return;
-      await fetch('/api/subscribe', {
+      if (!session?.access_token) { setPushStatus('error'); return; }
+      const res = await fetch('/api/subscribe', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${session.access_token}`,
-        },
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${session.access_token}` },
         body: JSON.stringify({ subscription: sub }),
       });
+      if (!res.ok) throw new Error(`subscribe ${res.status}`);
+      setPushStatus('granted');
     } catch (err) {
       console.error('[dashboard] push subscription error:', err);
+      setPushStatus('error');
     }
   }
 
@@ -230,9 +236,10 @@ export default function DashboardPage() {
 
       setLoading(false);
 
-      // Request push permission silently if not yet decided
-      if (typeof window !== 'undefined' && 'Notification' in window && Notification.permission === 'default') {
-        subscribeToPush();
+      // Reflect existing permission state without asking
+      if (typeof window !== 'undefined' && 'Notification' in window) {
+        if (Notification.permission === 'granted') setPushStatus('granted');
+        else if (Notification.permission === 'denied') setPushStatus('denied');
       }
     }
     loadData();
@@ -493,6 +500,48 @@ export default function DashboardPage() {
             >Commencer la session →</button>
           )}
         </div>
+
+        {/* ── NOTIFICATIONS BUTTON ── */}
+        {pushStatus !== 'granted' && (
+          <div style={{ margin: '12px 16px 0 16px', textAlign: 'center' }}>
+            <button
+              type="button"
+              disabled={pushStatus === 'asking'}
+              onClick={enableNotifications}
+              onMouseEnter={e => { if (pushStatus !== 'asking') { e.currentTarget.style.borderColor = '#163026'; e.currentTarget.style.color = '#163026'; } }}
+              onMouseLeave={e => { e.currentTarget.style.borderColor = '#E2D9CC'; e.currentTarget.style.color = '#6B6357'; }}
+              style={{
+                background: 'transparent', border: '1.5px solid #E2D9CC',
+                borderRadius: '12px', padding: '12px 20px',
+                fontFamily: 'DM Sans, sans-serif', fontSize: '14px', color: '#6B6357',
+                cursor: pushStatus === 'asking' ? 'default' : 'pointer',
+                opacity: pushStatus === 'asking' ? 0.6 : 1,
+                transition: 'border-color 0.2s, color 0.2s',
+                display: 'inline-flex', alignItems: 'center', gap: '8px',
+              }}
+            >
+              <span>🔔</span>
+              <span>
+                {pushStatus === 'asking'  && 'Activation...'}
+                {pushStatus === 'denied'  && 'Notifications bloquées'}
+                {pushStatus === 'error'   && 'Erreur — réessayer'}
+                {pushStatus === 'idle'    && 'Activer les rappels quotidiens'}
+              </span>
+            </button>
+            {pushStatus === 'denied' && (
+              <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '11px', color: '#A09890', margin: '6px 0 0 0' }}>
+                Autorise les notifications dans les réglages de ton navigateur.
+              </p>
+            )}
+          </div>
+        )}
+        {pushStatus === 'granted' && (
+          <div style={{ margin: '12px 16px 0 16px', textAlign: 'center' }}>
+            <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '12px', color: '#2d5a42', margin: 0 }}>
+              🔔 Rappels quotidiens activés
+            </p>
+          </div>
+        )}
 
         {/* ── MODIFIER PROGRAMME BUTTON ── */}
         <div style={{ margin: '12px 16px 0 16px', textAlign: 'center' }}>

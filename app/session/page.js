@@ -53,6 +53,12 @@ const CSS = `
   60%  { transform: scale(1.2); opacity: 1; }
   100% { transform: scale(1);   opacity: 1; }
 }
+@keyframes successFade {
+  0%   { opacity: 0; transform: translateY(6px) scale(0.95); }
+  30%  { opacity: 1; transform: translateY(0)   scale(1); }
+  70%  { opacity: 1; }
+  100% { opacity: 0; }
+}
 `;
 
 // ─── Ayah difficulty scorer ─────────────────────────────────────────────────
@@ -137,13 +143,13 @@ export default function SessionPage() {
   const [loading, setLoading]           = useState(true);
   const [saving, setSaving]             = useState(false);
   const [error, setError]               = useState('');
-
-  // ── 4-step memorization flow ──
   const [listenCount, setListenCount]   = useState(0);
   const [sessionPhase, setSessionPhase] = useState('listen'); // 'listen'|'test'|'reveal'|'validated'
   const [retryMsg, setRetryMsg]         = useState(false);
   const [audioError, setAudioError]     = useState(false);
+  const [showSuccess, setShowSuccess]   = useState(false); // micro-feedback after correct
 
+  // ── 4-step memorization flow ──
 
   useEffect(() => {
     async function loadSession() {
@@ -310,9 +316,14 @@ export default function SessionPage() {
   const revealHandledRef = useRef(false);
   const saveHandledRef   = useRef(false);
 
-  function handleRevealChoice(remembered) {
+  async function handleRevealChoice(remembered) {
     if (revealHandledRef.current) return;
     revealHandledRef.current = true;
+    if (remembered) {
+      setShowSuccess(true);
+      setTimeout(() => setShowSuccess(false), 1400);
+      if (typeof navigator !== 'undefined' && navigator.vibrate) navigator.vibrate(40);
+    }
     if (remembered) {
       playSuccessSound();
       setSessionPhase('validated');
@@ -543,8 +554,8 @@ export default function SessionPage() {
             {startAyah === endAyah ? `Ayat ${startAyah}` : `Ayat ${startAyah} à ${endAyah}`}
           </span>
         </div>
-        <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '14px', color: '#fff', justifySelf: 'end' }}>
-          {currentIndex + 1}/{ayats.length}
+        <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '13px', color: 'rgba(255,255,255,0.75)', justifySelf: 'end', fontVariantNumeric: 'tabular-nums' }}>
+          {currentIndex + 1} / {ayats.length}
         </span>
       </div>
 
@@ -552,6 +563,7 @@ export default function SessionPage() {
       <div style={{ flex: 1, margin: '16px', display: 'flex', flexDirection: 'column' }}>
         <div style={{
           flex: 1,
+          position: 'relative',
           backgroundColor: '#fff',
           borderRadius: '24px',
           boxShadow: '0 20px 60px rgba(15,35,24,0.15)',
@@ -579,16 +591,34 @@ export default function SessionPage() {
             })}
           </div>
 
-          {/* Badge */}
-          <p style={{ fontFamily: 'DM Sans, sans-serif', fontWeight: 500, fontSize: '12px', letterSpacing: '1px', color: '#B8962E', textAlign: 'center', textTransform: 'uppercase', margin: '0 0 20px 0' }}>
-            Ayat {ayat?.id}
-          </p>
+          {/* Badge + inline counter */}
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px', margin: '0 0 20px 0' }}>
+            <p style={{ fontFamily: 'DM Sans, sans-serif', fontWeight: 500, fontSize: '12px', letterSpacing: '1px', color: '#B8962E', textTransform: 'uppercase', margin: 0 }}>
+              Ayat {ayat?.id}
+            </p>
+            <span style={{ width: '3px', height: '3px', borderRadius: '50%', backgroundColor: '#D4CCC2', display: 'inline-block' }} />
+            <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '12px', color: '#A09890', margin: 0, fontVariantNumeric: 'tabular-nums' }}>
+              {currentIndex + 1} / {ayats.length} ayats
+            </p>
+          </div>
 
           {/* ── VALIDATED screen ── */}
           {sessionPhase === 'validated' && (
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '32px 0' }}>
               <span style={{ fontSize: '72px', animation: 'checkPop 0.4s ease both', color: '#2d5a42' }}>✓</span>
             </div>
+          )}
+
+          {/* ── Micro-feedback "Bien ✓" ── */}
+          {showSuccess && (
+            <p style={{
+              position: 'absolute', top: '12px', left: '50%', transform: 'translateX(-50%)',
+              fontFamily: 'DM Sans, sans-serif', fontSize: '13px', fontWeight: 600,
+              color: '#2d5a42', margin: 0, whiteSpace: 'nowrap', pointerEvents: 'none',
+              animation: 'successFade 1.4s ease forwards',
+            }}>
+              Bien ✓
+            </p>
           )}
 
           {/* ── Arabic + audio (hidden during test) ── */}

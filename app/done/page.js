@@ -59,6 +59,7 @@ export default function DonePage() {
   const [todayMemorized, setTodayMemorized] = useState(0);
   const [todayRevised, setTodayRevised]   = useState(0);
   const [dueCount, setDueCount]           = useState(0);
+  const [tomorrowCount, setTomorrowCount] = useState(0);
   const [loading, setLoading]             = useState(true);
 
   useEffect(() => {
@@ -79,6 +80,7 @@ export default function DonePage() {
         { data: memorizedItems },
         { data: revisedItems },
         { data: dueItems },
+        { data: tomorrowItems },
       ] = await Promise.all([
         supabase.from('progress').select('*').eq('user_id', authUser.id)
           .order('created_at', { ascending: false }).limit(1),
@@ -102,6 +104,11 @@ export default function DonePage() {
           .eq('mastered', false)
           .lte('next_review', localDateStr())
           .lt('created_at', startToday),
+        // Tomorrow's due items (for tension message)
+        supabase.from('review_items').select('id')
+          .eq('user_id', authUser.id)
+          .eq('mastered', false)
+          .lte('next_review', localDateStr(new Date(Date.now() + 86400000))),
       ]);
 
       const prog = Array.isArray(progRows) ? progRows[0] : progRows;
@@ -111,6 +118,7 @@ export default function DonePage() {
       setTodayMemorized(memorizedItems?.length ?? 0);
       setTodayRevised(revisedItems?.length ?? 0);
       setDueCount(dueItems?.length ?? 0);
+      setTomorrowCount(tomorrowItems?.length ?? 0);
 
       setLoading(false);
     }
@@ -192,6 +200,21 @@ export default function DonePage() {
           {todayMemorized > 0 ? 'Session terminée.' : 'Révision terminée.'}
         </h1>
 
+        {/* ── Sub-label: +X ayats or X révisés ── */}
+        <p style={{
+          fontFamily: 'DM Sans, sans-serif', fontSize: '15px',
+          color: todayMemorized > 0 ? '#2d5a42' : '#6B6357',
+          fontWeight: 500, margin: '8px 0 0 0',
+          animation: 'fadeUp 0.5s ease 0.55s both',
+        }}>
+          {todayMemorized > 0
+            ? `+${todayMemorized} ayat${todayMemorized > 1 ? 's' : ''} mémorisé${todayMemorized > 1 ? 's' : ''} aujourd’hui`
+            : todayRevised > 0
+              ? `${todayRevised} ayat${todayRevised > 1 ? 's' : ''} révisé${todayRevised > 1 ? 's' : ''} aujourd’hui`
+              : null
+          }
+        </p>
+
         {/* ── STREAK ── */}
         <p className="font-playfair" style={{
           fontSize: '28px', fontWeight: 700, color: '#B8962E',
@@ -264,8 +287,23 @@ export default function DonePage() {
           )}
         </div>
 
+        {/* ── TENSION DEMAIN ── */}
+        <p style={{
+          fontFamily: 'DM Sans, sans-serif', fontSize: '13px', color: '#A09890',
+          fontStyle: 'italic', textAlign: 'center', maxWidth: '340px',
+          margin: '16px auto 0', lineHeight: 1.6,
+          animation: 'fadeUp 0.5s ease 0.95s both',
+        }}>
+          {tomorrowCount > 0
+            ? `Demain : ${tomorrowCount} ayat${tomorrowCount > 1 ? 's' : ''} à réviser`
+            : todayMemorized > 0
+              ? 'Reviens demain pour consolider ta mémorisation.'
+              : 'Continue demain pour garder ta progression.'
+          }
+        </p>
+
         {/* ── BUTTONS ── */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginTop: '28px', animation: 'fadeUp 0.5s ease 1s both' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginTop: '20px', animation: 'fadeUp 0.5s ease 1s both' }}>
           {dueCount > 0 ? (
             <>
               <button

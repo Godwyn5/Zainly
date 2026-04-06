@@ -115,6 +115,7 @@ export default function RevisionPage() {
   const [correctCount, setCorrectCount]   = useState(0);
   const [totalCount, setTotalCount]       = useState(0);
   const [showTranslit, setShowTranslit]   = useState(false);
+  const [srsMessage, setSrsMessage]       = useState(''); // shown briefly after answer
   const answerHandledRef                = useRef(false);
   const correctRef                      = useRef(0); // sync ref for score calculation
   const totalRef                        = useRef(0);
@@ -211,6 +212,10 @@ export default function RevisionPage() {
     const nextCycle    = remembered ? Math.min(currentCycle + 1, CYCLE_DAYS.length - 1) : 1;
     const nextReview   = addDays(CYCLE_DAYS[nextCycle]);
     const mastered     = remembered && currentCycle >= CYCLE_DAYS.length - 1;
+    const srsDays      = CYCLE_DAYS[nextCycle];
+    const srsMsg       = remembered
+      ? (mastered ? 'Maîtrisé — plus de révision nécessaire' : `Prochaine révision dans ${srsDays} jour${srsDays > 1 ? 's' : ''}`)
+      : 'Cet ayat revient demain';
 
     const { error: updateErr } = await supabase
       .from('review_items')
@@ -224,6 +229,8 @@ export default function RevisionPage() {
       answerHandledRef.current = false;
       return;
     }
+
+    setSrsMessage(srsMsg);
 
     // Update sync refs immediately (state updates are async)
     if (remembered) correctRef.current += 1;
@@ -241,8 +248,9 @@ export default function RevisionPage() {
         setCurrentIndex(i => i + 1);
         setRevealed(false);
         setShowTranslit(false);
+        setSrsMessage('');
         setVisible(true);
-      }, 300);
+      }, 500);
     } else {
       // Save revision score before navigating (only if at least one answer was given)
       try {
@@ -336,13 +344,11 @@ export default function RevisionPage() {
           <span className="font-playfair" style={{ fontSize: '18px', fontWeight: 600, color: '#fff', display: 'block' }}>
             Révision
           </span>
-          <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '13px', color: 'rgba(255,255,255,0.6)', display: 'block', marginTop: '2px' }}>
-            {items.length} ayat{items.length > 1 ? 's' : ''} à réviser
+          <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '13px', color: 'rgba(255,255,255,0.6)', display: 'block', marginTop: '2px', fontVariantNumeric: 'tabular-nums' }}>
+            {currentIndex + 1} / {items.length} révisés
           </span>
         </div>
-        <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '14px', color: '#fff', justifySelf: 'end' }}>
-          {currentIndex + 1}/{items.length}
-        </span>
+        <span style={{ justifySelf: 'end', width: '44px' }} />
       </div>
 
       {/* ── REVISION CARD ── */}
@@ -440,24 +446,35 @@ export default function RevisionPage() {
 
           {/* SRS buttons — shown after reveal */}
           {revealed && (
-            <div style={{ display: 'flex', gap: '12px', marginTop: '8px' }}>
-              <button type="button" className="font-playfair" onClick={() => handleAnswer(true)} disabled={saving} style={{
-                flex: 1, padding: '14px', fontSize: '14px', fontWeight: 600, color: '#fff',
-                background: 'linear-gradient(135deg, #163026, #2d5a42)', border: 'none',
-                borderRadius: '12px', cursor: saving ? 'wait' : 'pointer',
-                opacity: saving ? 0.7 : 1, transition: 'opacity 0.2s',
-              }}>
-                Je m&apos;en souvenais ✓
-              </button>
-              <button type="button" className="font-playfair" onClick={() => handleAnswer(false)} disabled={saving} style={{
-                flex: 1, padding: '14px', fontSize: '14px', fontWeight: 600, color: '#999',
-                backgroundColor: 'transparent', border: '1.5px solid #E2D9CC',
-                borderRadius: '12px', cursor: saving ? 'wait' : 'pointer',
-                opacity: saving ? 0.7 : 1, transition: 'opacity 0.2s',
-              }}>
-                Je ne m&apos;en souvenais pas ✗
-              </button>
-            </div>
+            <>
+              <div style={{ display: 'flex', gap: '12px', marginTop: '8px' }}>
+                <button type="button" className="font-playfair" onClick={() => handleAnswer(true)} disabled={saving} style={{
+                  flex: 1, padding: '14px', fontSize: '14px', fontWeight: 600, color: '#fff',
+                  background: 'linear-gradient(135deg, #163026, #2d5a42)', border: 'none',
+                  borderRadius: '12px', cursor: saving ? 'wait' : 'pointer',
+                  opacity: saving ? 0.7 : 1, transition: 'opacity 0.2s',
+                }}>
+                  Je m&apos;en souvenais ✓
+                </button>
+                <button type="button" className="font-playfair" onClick={() => handleAnswer(false)} disabled={saving} style={{
+                  flex: 1, padding: '14px', fontSize: '14px', fontWeight: 600, color: '#999',
+                  backgroundColor: 'transparent', border: '1.5px solid #E2D9CC',
+                  borderRadius: '12px', cursor: saving ? 'wait' : 'pointer',
+                  opacity: saving ? 0.7 : 1, transition: 'opacity 0.2s',
+                }}>
+                  Je ne m&apos;en souvenais pas ✗
+                </button>
+              </div>
+              {srsMessage ? (
+                <p style={{
+                  fontFamily: 'DM Sans, sans-serif', fontSize: '12px', color: '#6B6357',
+                  fontStyle: 'italic', textAlign: 'center', margin: '10px 0 0 0',
+                  animation: 'fadeIn 0.3s ease both',
+                }}>
+                  {srsMessage}
+                </p>
+              ) : null}
+            </>
           )}
         </div>
       </div>

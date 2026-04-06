@@ -3,9 +3,8 @@
 import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
-import { useTajweed } from '@/lib/useTajweed';
 import TajweedText from '@/components/TajweedText';
-import { resolveTajweed, TAJWEED_STATE } from '@/lib/tajweedResolver';
+import { resolveTajweed } from '@/lib/tajweedResolver';
 
 let cachedQuran   = null;
 let cachedQuranFr = null;
@@ -116,7 +115,6 @@ export default function RevisionPage() {
   const [correctCount, setCorrectCount]   = useState(0);
   const [totalCount, setTotalCount]       = useState(0);
   const [showTranslit, setShowTranslit]   = useState(false);
-  const { showTajweed, setShowTajweed }  = useTajweed();
   const answerHandledRef                = useRef(false);
   const correctRef                      = useRef(0); // sync ref for score calculation
   const totalRef                        = useRef(0);
@@ -137,9 +135,17 @@ export default function RevisionPage() {
 
       const today = todayStr();
 
-      // Fetch review items (quran files use module-level cache)
+      // Build local-midnight ISO for created_at exclusion (same logic as session)
+      const midnightLocal = new Date(); midnightLocal.setHours(0,0,0,0);
+      const offMin = -midnightLocal.getTimezoneOffset();
+      const offSign = offMin >= 0 ? '+' : '-';
+      const offHH = String(Math.floor(Math.abs(offMin)/60)).padStart(2,'0');
+      const offMM = String(Math.abs(offMin)%60).padStart(2,'0');
+      const startTodayStr = `${today}T00:00:00${offSign}${offHH}:${offMM}`;
+
+      // Fetch review items — exclude items created today (just memorized)
       const { data: reviewData, error: reviewErr } = await supabase
-        .from('review_items').select('*').eq('user_id', authUser.id).eq('mastered', false).lte('next_review', today);
+        .from('review_items').select('*').eq('user_id', authUser.id).eq('mastered', false).lte('next_review', today).lt('created_at', startTodayStr);
 
       if (reviewErr) {
         setError('Erreur lors du chargement des révisions. Réessaie.');
@@ -395,8 +401,8 @@ export default function RevisionPage() {
             </p>
           ) : null}
 
-          {/* Audio */}
-          <AudioButton globalNum={item?.globalNum ?? 1} />
+          {/* Audio — only after reveal */}
+          {revealed && <AudioButton globalNum={item?.globalNum ?? 1} />}
 
           {/* Divider */}
           <div style={{ borderTop: '1px solid #E2D9CC', margin: '24px 0' }} />
@@ -406,38 +412,12 @@ export default function RevisionPage() {
             aria-hidden={!revealed}
             style={{ overflow: 'hidden', transition: 'opacity 0.4s ease', opacity: revealed ? 1 : 0, pointerEvents: revealed ? 'auto' : 'none', userSelect: revealed ? 'auto' : 'none' }}
           >
-            {/* Tajweed toggle */}
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', marginBottom: '8px', gap: '4px' }}>
-              <button
-                type="button"
-                onClick={() => setShowTajweed(!showTajweed)}
-                style={{
-                  background: 'transparent', border: `1px solid ${showTajweed ? '#163026' : '#D4CCC2'}`,
-                  borderRadius: '20px', padding: '4px 12px',
-                  fontFamily: 'DM Sans, sans-serif', fontSize: '11px', fontWeight: 500,
-                  color: showTajweed ? '#163026' : '#A09890', cursor: 'pointer',
-                  transition: 'all 0.2s',
-                }}
-              >
-                {showTajweed ? 'Tajweed actif' : 'Afficher le tajweed'}
-              </button>
-              {showTajweed && item?.tajweedState === TAJWEED_STATE.NO_RULE && (
-                <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '10px', color: '#A09890', fontStyle: 'italic' }}>
-                  Lecture naturelle
-                </span>
-              )}
-              {showTajweed && item?.tajweedState === TAJWEED_STATE.UNAVAILABLE && (
-                <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '10px', color: '#A09890', fontStyle: 'italic' }}>
-                  Pas encore disponible pour cet ayat
-                </span>
-              )}
-            </div>
 
             <p className="font-amiri" style={{ fontSize: 'clamp(26px, 6vw, 42px)', fontWeight: 700, textAlign: 'center', direction: 'rtl', lineHeight: 1.8, margin: 0, overflowWrap: 'break-word', wordBreak: 'break-word' }}>
               <TajweedText
                 plainText={item?.arabicText ?? ''}
                 tajweedSegments={item?.tajweedSegments}
-                enabled={showTajweed}
+                enabled={true}
                 style={{ color: '#163026' }}
               />
             </p>

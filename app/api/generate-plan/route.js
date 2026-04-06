@@ -112,12 +112,13 @@ export async function POST(request) {
       remaining_ayats:  remainingAyats,
       estimated_months: estimatedMonths,
     }
-    const { data: existingPlan } = await supabase
-      .from('plans').select('id').eq('user_id', userId).maybeSingle()
+    const { data: existingPlans } = await supabase
+      .from('plans').select('id').eq('user_id', userId).order('created_at', { ascending: false }).limit(2)
+    const existingPlan = existingPlans?.[0] ?? null
 
     let planErr
     if (existingPlan) {
-      ;({ error: planErr } = await supabase.from('plans').update(planPayload).eq('user_id', userId))
+      ;({ error: planErr } = await supabase.from('plans').update(planPayload).eq('id', existingPlan.id))
     } else {
       ;({ error: planErr } = await supabase.from('plans').insert({ user_id: userId, ...planPayload }))
     }
@@ -127,11 +128,13 @@ export async function POST(request) {
     }
 
     // ── Update or insert progress — never overwrite historical data ──
-    const { data: existingProg } = await supabase
+    const { data: existingProgRows } = await supabase
       .from('progress')
       .select('id')
       .eq('user_id', userId)
-      .maybeSingle()
+      .order('created_at', { ascending: false })
+      .limit(2)
+    const existingProg = existingProgRows?.[0] ?? null
 
     if (existingProg) {
       // Row exists — only update position + ayah_per_day, preserve streak/total/dates

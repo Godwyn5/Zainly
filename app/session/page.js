@@ -4,9 +4,8 @@ import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 import { nextZainlySurah, ZAINLY_INDEX_BY_SURAH } from '@/lib/zainlyOrder';
-import { useTajweed } from '@/lib/useTajweed';
 import TajweedText from '@/components/TajweedText';
-import { resolveTajweed, TAJWEED_STATE } from '@/lib/tajweedResolver';
+import { resolveTajweed } from '@/lib/tajweedResolver';
 
 let cachedQuran   = null;
 let cachedQuranFr = null;
@@ -145,7 +144,6 @@ export default function SessionPage() {
   const [retryMsg, setRetryMsg]         = useState(false);
   const [audioError, setAudioError]     = useState(false);
 
-  const { showTajweed, setShowTajweed } = useTajweed();
 
   useEffect(() => {
     async function loadSession() {
@@ -407,12 +405,20 @@ export default function SessionPage() {
       }
 
       // Only go to revision if there are items due today
+      const todayForDue   = todayStr();
+      const startTodayISO  = new Date(); startTodayISO.setHours(0,0,0,0);
+      const offMin = -startTodayISO.getTimezoneOffset();
+      const offSign = offMin >= 0 ? '+' : '-';
+      const offHH = String(Math.floor(Math.abs(offMin)/60)).padStart(2,'0');
+      const offMM = String(Math.abs(offMin)%60).padStart(2,'0');
+      const startTodayStr = `${todayForDue}T00:00:00${offSign}${offHH}:${offMM}`;
       const { data: dueItems } = await supabase
         .from('review_items')
         .select('id')
         .eq('user_id', user.id)
         .eq('mastered', false)
-        .lte('next_review', today)
+        .lte('next_review', todayForDue)
+        .lt('created_at', startTodayStr)
         .limit(1);
       const hasDue = Array.isArray(dueItems) && dueItems.length > 0;
       revealHandledRef.current = false;
@@ -588,32 +594,6 @@ export default function SessionPage() {
           {/* ── Arabic + audio (hidden during test) ── */}
           {sessionPhase !== 'validated' && (
             <>
-              {/* Tajweed toggle */}
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', marginBottom: '8px', gap: '4px' }}>
-                <button
-                  type="button"
-                  onClick={() => setShowTajweed(!showTajweed)}
-                  style={{
-                    background: 'transparent', border: `1px solid ${showTajweed ? '#163026' : '#D4CCC2'}`,
-                    borderRadius: '20px', padding: '4px 12px',
-                    fontFamily: 'DM Sans, sans-serif', fontSize: '11px', fontWeight: 500,
-                    color: showTajweed ? '#163026' : '#A09890', cursor: 'pointer',
-                    transition: 'all 0.2s',
-                  }}
-                >
-                  {showTajweed ? 'Tajweed actif' : 'Afficher le tajweed'}
-                </button>
-                {showTajweed && ayat?.tajweedState === TAJWEED_STATE.NO_RULE && (
-                  <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '10px', color: '#A09890', fontStyle: 'italic' }}>
-                    Lecture naturelle
-                  </span>
-                )}
-                {showTajweed && ayat?.tajweedState === TAJWEED_STATE.UNAVAILABLE && (
-                  <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '10px', color: '#A09890', fontStyle: 'italic' }}>
-                    Pas encore disponible pour cet ayat
-                  </span>
-                )}
-              </div>
 
               <p className="font-amiri" style={{
                 fontSize: 'clamp(26px, 6vw, 42px)', fontWeight: 700, textAlign: 'center',
@@ -625,7 +605,7 @@ export default function SessionPage() {
                 <TajweedText
                   plainText={ayat?.text ?? ''}
                   tajweedSegments={ayat?.tajweedSegments}
-                  enabled={showTajweed}
+                  enabled={true}
                   style={{ color: '#163026' }}
                 />
               </p>

@@ -427,13 +427,20 @@ export default function DashboardPage() {
 
           <span style={{ fontFamily: 'DM Sans, sans-serif', fontWeight: 500, fontSize: '10px', color: '#B8962E', textTransform: 'uppercase', letterSpacing: '1.5px' }}>Révision</span>
           {reviews.length > 0 ? (
-            <ul style={{ margin: '10px 0 0 0', padding: '0 0 0 18px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
-              {reviews.map((r) => (
-                <li key={r.id} style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '14px', color: '#163026' }}>
-                  {getSurahName(r.surah_number)} — ayat {r.ayah}
-                </li>
-              ))}
-            </ul>
+            <>
+              <ul style={{ margin: '10px 0 0 0', padding: '0 0 0 18px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                {reviews.slice(0, 5).map((r) => (
+                  <li key={r.id} style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '14px', color: '#163026' }}>
+                    {getSurahName(r.surah_number)} — ayat {r.ayah}
+                  </li>
+                ))}
+              </ul>
+              {reviews.length > 5 && (
+                <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '13px', color: '#6B6357', margin: '6px 0 0 18px' }}>
+                  et {reviews.length - 5} autre{reviews.length - 5 > 1 ? 's' : ''} ayat{reviews.length - 5 > 1 ? 's' : ''} à réviser
+                </p>
+              )}
+            </>
           ) : (
             <div style={{ marginTop: '10px', display: 'inline-block', backgroundColor: 'rgba(184,150,46,0.1)', borderRadius: '20px', padding: '6px 14px' }}>
               <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '13px', color: '#B8962E' }}>Aucune révision aujourd&apos;hui 🎉</span>

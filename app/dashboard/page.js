@@ -178,9 +178,15 @@ export default function DashboardPage() {
       if (permission !== 'granted') { setPushStatus('idle'); return; }
       const registration = await navigator.serviceWorker.ready;
       const existing = await registration.pushManager.getSubscription();
+      const vapidKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY;
+      if (!vapidKey) throw new Error('VAPID public key missing');
+      // Convert Base64url → Uint8Array (required by pushManager.subscribe)
+      const padding = '='.repeat((4 - (vapidKey.length % 4)) % 4);
+      const base64 = (vapidKey + padding).replace(/-/g, '+').replace(/_/g, '/');
+      const rawKey = Uint8Array.from(atob(base64), c => c.charCodeAt(0));
       const sub = existing ?? await registration.pushManager.subscribe({
         userVisibleOnly: true,
-        applicationServerKey: process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY,
+        applicationServerKey: rawKey,
       });
       const { data: { session } } = await supabase.auth.getSession();
       if (!session?.access_token) { setPushStatus('error'); return; }

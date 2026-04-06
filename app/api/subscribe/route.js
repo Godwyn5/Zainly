@@ -7,15 +7,21 @@ export async function POST(request) {
     const authHeader = request.headers.get('Authorization');
     const token = authHeader?.replace('Bearer ', '');
 
-    const supabase = createClient(
+    const supabaseAnon = createClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL,
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
     );
 
-    const { data: { user }, error: authError } = await supabase.auth.getUser(token);
+    const { data: { user }, error: authError } = await supabaseAnon.auth.getUser(token);
     if (authError || !user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
-    const { error: upsertErr } = await supabase.from('push_subscriptions').upsert({
+    // Use service role to bypass RLS for the upsert
+    const supabaseAdmin = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL,
+      process.env.SUPABASE_SERVICE_ROLE_KEY
+    );
+
+    const { error: upsertErr } = await supabaseAdmin.from('push_subscriptions').upsert({
       user_id: user.id,
       subscription: subscription,
     }, { onConflict: 'user_id' });

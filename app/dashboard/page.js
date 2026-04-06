@@ -244,8 +244,16 @@ export default function DashboardPage() {
 
       // Reflect existing permission state without asking
       if (typeof window !== 'undefined' && 'Notification' in window) {
-        if (Notification.permission === 'granted') setPushStatus('granted');
-        else if (Notification.permission === 'denied') setPushStatus('denied');
+        if (Notification.permission === 'denied') {
+          setPushStatus('denied');
+        } else if (Notification.permission === 'granted' && 'serviceWorker' in navigator) {
+          // Only show 'granted' if a push subscription is actually registered
+          navigator.serviceWorker.ready.then(reg =>
+            reg.pushManager.getSubscription()
+          ).then(sub => {
+            setPushStatus(sub ? 'granted' : 'idle');
+          }).catch(() => setPushStatus('idle'));
+        }
       }
     }
     loadData();

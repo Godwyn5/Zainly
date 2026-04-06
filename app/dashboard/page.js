@@ -199,7 +199,7 @@ export default function DashboardPage() {
       setPushStatus('granted');
     } catch (err) {
       console.error('[dashboard] push subscription error:', err);
-      setPushStatus('error');
+      setPushStatus('error:' + (err?.message || 'unknown'));
     }
   }
 
@@ -516,7 +516,7 @@ export default function DashboardPage() {
         </div>
 
         {/* ── NOTIFICATIONS BUTTON ── */}
-        {pushStatus !== 'granted' && (
+        {pushStatus !== 'granted' && pushStatus !== 'asking' && (
           <div style={{ margin: '12px 16px 0 16px', textAlign: 'center' }}>
             <button
               type="button"
@@ -536,10 +536,11 @@ export default function DashboardPage() {
             >
               <span>🔔</span>
               <span>
-                {pushStatus === 'asking'  && 'Activation...'}
-                {pushStatus === 'denied'  && 'Notifications bloquées'}
-                {pushStatus === 'error'   && 'Erreur — réessayer'}
-                {pushStatus === 'idle'    && 'Activer les rappels quotidiens'}
+                {pushStatus === 'asking'         && 'Activation...'}
+                {pushStatus === 'denied'         && 'Notifications bloquées'}
+                {pushStatus === 'error'          && 'Erreur — réessayer'}
+                {pushStatus === 'idle'           && 'Activer les rappels quotidiens'}
+                {pushStatus.startsWith('error:') && `Erreur: ${pushStatus.slice(6)}`}
               </span>
             </button>
             {pushStatus === 'denied' && (

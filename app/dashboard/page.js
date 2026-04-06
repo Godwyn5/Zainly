@@ -165,6 +165,32 @@ export default function DashboardPage() {
   const quranFrDataRef   = useRef(null);
   const hifzLastLoadRef  = useRef(0);
 
+  async function subscribeToPush() {
+    try {
+      if (typeof window === 'undefined' || !('Notification' in window) || !('serviceWorker' in navigator)) return;
+      const permission = await Notification.requestPermission();
+      if (permission !== 'granted') return;
+      const registration = await navigator.serviceWorker.ready;
+      const existing = await registration.pushManager.getSubscription();
+      const sub = existing ?? await registration.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY,
+      });
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.access_token) return;
+      await fetch('/api/subscribe', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${session.access_token}`,
+        },
+        body: JSON.stringify({ subscription: sub }),
+      });
+    } catch (err) {
+      console.error('[dashboard] push subscription error:', err);
+    }
+  }
+
   useEffect(() => {
     async function loadData() {
       const { data: { user: authUser }, error: userError } = await supabase.auth.getUser();
@@ -203,6 +229,11 @@ export default function DashboardPage() {
       }
 
       setLoading(false);
+
+      // Request push permission silently if not yet decided
+      if (typeof window !== 'undefined' && 'Notification' in window && Notification.permission === 'default') {
+        subscribeToPush();
+      }
     }
     loadData();
   }, [router]);

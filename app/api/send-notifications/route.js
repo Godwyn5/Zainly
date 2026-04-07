@@ -56,10 +56,12 @@ async function sendMainNotifications() {
       await supabase.from('push_subscriptions')
         .update({ last_notified_at: today })
         .eq('id', sub.id);
+
+      return 'sent';
     })
   );
 
-  return results.filter(r => r.status === 'fulfilled').length;
+  return results.filter(r => r.status === 'fulfilled' && r.value === 'sent').length;
 }
 
 async function sendReminderNotifications() {
@@ -98,10 +100,12 @@ async function sendReminderNotifications() {
       await supabase.from('push_subscriptions')
         .update({ last_reminder_at: today })
         .eq('id', sub.id);
+
+      return 'sent';
     })
   );
 
-  return results.filter(r => r.status === 'fulfilled').length;
+  return results.filter(r => r.status === 'fulfilled' && r.value === 'sent').length;
 }
 
 // Called by Vercel cron at 18h30 (GET, header x-vercel-cron: 1)

@@ -295,9 +295,9 @@ export default function DonePage() {
           animation: 'fadeUp 0.5s ease 0.95s both',
         }}>
           {tomorrowCount > 0
-            ? `Demain : ${tomorrowCount} ayat${tomorrowCount > 1 ? 's' : ''} à réviser`
+            ? `Demain : ${tomorrowCount} ayat${tomorrowCount > 1 ? 's' : ''} à réviser`
             : todayMemorized > 0
-              ? 'Reviens demain pour consolider ta mémorisation.'
+              ? 'Si tu reviens demain, tu consolides ta mémorisation.'
               : 'Continue demain pour garder ta progression.'
           }
         </p>

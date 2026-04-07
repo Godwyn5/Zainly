@@ -400,6 +400,7 @@ export default function DashboardPage() {
                 <span className="font-playfair" style={{ fontSize: '32px', fontWeight: 700, color: '#fff', lineHeight: 1 }}>{streak}</span>
               </div>
               <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '11px', color: 'rgba(255,255,255,0.5)', display: 'block', marginTop: '2px' }}>jours</span>
+              {streak > 0 && <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '10px', color: 'rgba(255,255,255,0.35)', display: 'block', marginTop: '1px' }}>Continue comme ça</span>}
             </div>
           </div>
 
@@ -507,14 +508,19 @@ export default function DashboardPage() {
               Session du jour complétée ✓
             </div>
           ) : (
-            <button type="button" className="font-playfair" onClick={() => router.push('/session')} style={{
-              marginTop: '24px', width: '100%', padding: '16px', fontSize: '16px', fontWeight: 600, color: '#fff',
-              background: 'linear-gradient(135deg, #163026, #2d5a42)', border: 'none', borderRadius: '12px', cursor: 'pointer',
-              boxShadow: '0 8px 24px rgba(15,35,24,0.3)', transition: 'transform 0.15s, box-shadow 0.15s',
-            }}
-              onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 12px 32px rgba(15,35,24,0.38)'; }}
-              onMouseLeave={(e) => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 8px 24px rgba(15,35,24,0.3)'; }}
-            >Commencer la session →</button>
+            <>
+              <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '12px', fontStyle: 'italic', color: '#A09890', margin: '16px 0 0 0', textAlign: 'center' }}>
+                Ta session t&apos;attend aujourd&apos;hui.
+              </p>
+              <button type="button" className="font-playfair" onClick={() => router.push('/session')} style={{
+                marginTop: '12px', width: '100%', padding: '16px', fontSize: '16px', fontWeight: 600, color: '#fff',
+                background: 'linear-gradient(135deg, #163026, #2d5a42)', border: 'none', borderRadius: '12px', cursor: 'pointer',
+                boxShadow: '0 8px 24px rgba(15,35,24,0.3)', transition: 'transform 0.15s, box-shadow 0.15s',
+              }}
+                onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 12px 32px rgba(15,35,24,0.38)'; }}
+                onMouseLeave={(e) => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 8px 24px rgba(15,35,24,0.3)'; }}
+              >Commencer la session →</button>
+            </>
           )}
         </div>
 

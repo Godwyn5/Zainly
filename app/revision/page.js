@@ -214,8 +214,8 @@ export default function RevisionPage() {
     const mastered     = remembered && currentCycle >= CYCLE_DAYS.length - 1;
     const srsDays      = CYCLE_DAYS[nextCycle];
     const srsMsg       = remembered
-      ? (mastered ? 'Maîtrisé — plus de révision nécessaire' : `Prochaine révision dans ${srsDays} jour${srsDays > 1 ? 's' : ''}`)
-      : 'Cet ayat revient demain';
+      ? (mastered ? 'Maîtrisé — plus de révision nécessaire' : 'Bien retenu')
+      : 'Cet ayat reviendra demain pour être renforcé';
 
     const { error: updateErr } = await supabase
       .from('review_items')
@@ -370,6 +370,13 @@ export default function RevisionPage() {
           <p style={{ fontFamily: 'DM Sans, sans-serif', fontWeight: 500, fontSize: '10px', letterSpacing: '2px', color: '#B8962E', textAlign: 'center', textTransform: 'uppercase', margin: '0 0 8px 0' }}>
             RÉVISION
           </p>
+
+          {/* Intro micro-text — shown only before reveal */}
+          {!revealed && (
+            <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '11px', fontStyle: 'italic', color: '#A09890', textAlign: 'center', margin: '-4px 0 12px 0' }}>
+              Ces ayats reviennent au bon moment pour être mémorisés durablement.
+            </p>
+          )}
 
           {/* Surah label */}
           <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '12px', color: '#6B6357', textAlign: 'center', margin: '0 0 20px 0' }}>

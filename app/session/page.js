@@ -316,10 +316,14 @@ export default function SessionPage() {
   const revealHandledRef = useRef(false);
   const saveHandledRef   = useRef(false);
 
+  const SUCCESS_MSGS = ['Parfait', 'Excellent', 'Très bien'];
+  const [successMsg, setSuccessMsg] = useState('Bien ✓');
+
   async function handleRevealChoice(remembered) {
     if (revealHandledRef.current) return;
     revealHandledRef.current = true;
     if (remembered) {
+      setSuccessMsg(SUCCESS_MSGS[Math.floor(Math.random() * SUCCESS_MSGS.length)]);
       setShowSuccess(true);
       setTimeout(() => setShowSuccess(false), 1400);
       if (typeof navigator !== 'undefined' && navigator.vibrate) navigator.vibrate(40);
@@ -616,7 +620,7 @@ export default function SessionPage() {
             </div>
           )}
 
-          {/* ── Micro-feedback "Bien ✓" ── */}
+          {/* ── Micro-feedback (random success message) ── */}
           {showSuccess && (
             <p style={{
               position: 'absolute', top: '12px', left: '50%', transform: 'translateX(-50%)',
@@ -624,7 +628,7 @@ export default function SessionPage() {
               color: '#2d5a42', margin: 0, whiteSpace: 'nowrap', pointerEvents: 'none',
               animation: 'successFade 1.4s ease forwards',
             }}>
-              Bien ✓
+              {successMsg} ✓
             </p>
           )}
 
@@ -727,8 +731,8 @@ export default function SessionPage() {
 
               {/* Retry message */}
               {retryMsg && (
-                <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '14px', color: '#B8962E', textAlign: 'center', margin: '12px 0 0 0' }}>
-                  Pas de souci. Réessaie.
+                <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '14px', fontStyle: 'italic', color: '#B8962E', textAlign: 'center', margin: '12px 0 0 0' }}>
+                  Recommence tranquillement, ça va venir.
                 </p>
               )}
             </>

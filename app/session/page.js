@@ -647,6 +647,12 @@ export default function SessionPage() {
                 />
               </p>
 
+              {ayat?.tajweedState === 'no_rule' && sessionPhase !== 'test' && (
+                <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '11px', fontStyle: 'italic', color: '#A09890', textAlign: 'center', margin: '4px 0 0 0' }}>
+                  Pas de règle de tajweed sur cet ayat
+                </p>
+              )}
+
               {/* Audio button — only in listen phase */}
               {sessionPhase === 'listen' && (
                 <div style={{ marginTop: '20px' }}>

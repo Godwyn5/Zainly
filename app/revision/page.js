@@ -429,6 +429,12 @@ export default function RevisionPage() {
                 style={{ color: '#163026' }}
               />
             </p>
+
+            {item?.tajweedState === 'no_rule' && (
+              <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '11px', fontStyle: 'italic', color: '#A09890', textAlign: 'center', margin: '4px 0 0 0' }}>
+                Pas de règle de tajweed sur cet ayat
+              </p>
+            )}
           </div>
 
           {/* Reveal button — shown until revealed */}

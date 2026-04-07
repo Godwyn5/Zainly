@@ -432,7 +432,7 @@ export default function RevisionPage() {
 
             {item?.tajweedState === 'no_rule' && (
               <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '11px', fontStyle: 'italic', color: '#A09890', textAlign: 'center', margin: '4px 0 0 0' }}>
-                Pas de règle de tajweed sur cet ayat
+                Aucune coloration de tajweed sur cet ayat
               </p>
             )}
           </div>

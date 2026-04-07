@@ -367,7 +367,7 @@ export default function SessionPage() {
         next_review:  tomorrow,
         review_cycle: 1,
       }));
-
+      let insertedCount = 0;
       // Insert each review item individually — skip if already exists (23505)
       // Never overwrite existing SRS cycle for an ayat already memorized
       for (const row of reviewRows) {
@@ -380,14 +380,21 @@ export default function SessionPage() {
           revealHandledRef.current = false;
           return;
         }
+        if (!e) insertedCount++;
       }
 
       const qd = quranDataRef.current;
       const surahTotal        = qd ? (qd[surahNumber - 1]?.verses?.length ?? ayats.length) : ayats.length;
       const newAyah           = Math.min(savedAyah + ayats.length, surahTotal);
       const alreadyDoneToday  = freshProg.last_session_date === today;
-      const newStreak         = alreadyDoneToday ? (freshProg.streak ?? 0) : (freshProg.streak ?? 0) + 1;
-      const newTotalMemorized = (freshProg.total_memorized ?? 0) + ayats.length;
+      // Reset streak if last session was not yesterday or today
+      const yesterday = new Date(); yesterday.setDate(yesterday.getDate() - 1);
+      const yesterdayStr = `${yesterday.getFullYear()}-${String(yesterday.getMonth()+1).padStart(2,'0')}-${String(yesterday.getDate()).padStart(2,'0')}`;
+      const lastDate = freshProg.last_session_date;
+      const streakBase = (lastDate === yesterdayStr || lastDate === today) ? (freshProg.streak ?? 0) : 0;
+      const newStreak = alreadyDoneToday ? streakBase : streakBase + 1;
+      // Only count actually new ayats (non-duplicate inserts)
+      const newTotalMemorized = (freshProg.total_memorized ?? 0) + insertedCount;
 
       // Append today to session_dates without duplicates
       const existingDates   = Array.isArray(freshProg.session_dates) ? freshProg.session_dates : [];

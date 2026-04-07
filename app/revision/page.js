@@ -260,6 +260,8 @@ export default function RevisionPage() {
             .from('progress')
             .select('last_revision_scores')
             .eq('user_id', userId)
+            .order('created_at', { ascending: false })
+            .limit(1)
             .maybeSingle();
           const existingScores = prog?.last_revision_scores || [];
           const newScores = [...existingScores, score].slice(-5);

@@ -41,13 +41,22 @@ async function sendReminderNotifications() {
 
       if (prog?.last_session_date === today) return; // session done → skip
 
-      await webpush.sendNotification(sub.subscription, JSON.stringify({
-        title: 'Zainly 🕌',
-        body: 'Il te reste quelques minutes pour faire ta session',
-        icon: '/icon-192.png',
-        badge: '/icon-192.png',
-        url: '/dashboard',
-      }));
+      try {
+        await webpush.sendNotification(sub.subscription, JSON.stringify({
+          title: 'Zainly 🕌',
+          body: 'Il te reste quelques minutes pour faire ta session',
+          icon: '/icon-192.png',
+          badge: '/icon-192.png',
+          url: '/dashboard',
+        }));
+      } catch (e) {
+        if (e.statusCode === 410 || e.statusCode === 404) {
+          await supabase.from('push_subscriptions').delete().eq('id', sub.id);
+        } else {
+          console.error('[send-reminder] webpush error:', e.statusCode, e.message);
+        }
+        return;
+      }
 
       await supabase.from('push_subscriptions')
         .update({ last_reminder_at: today })

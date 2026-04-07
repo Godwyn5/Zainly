@@ -49,9 +49,18 @@ async function sendMainNotifications() {
         ? "Ta session t'attend — ne perds pas ton progrès 🔥"
         : "Ta session t'attend aujourd'hui";
 
-      await webpush.sendNotification(sub.subscription, JSON.stringify({
-        title: 'Zainly 🕌', body, icon: '/icon-192.png', badge: '/icon-192.png', url: '/dashboard',
-      }));
+      try {
+        await webpush.sendNotification(sub.subscription, JSON.stringify({
+          title: 'Zainly 🕌', body, icon: '/icon-192.png', badge: '/icon-192.png', url: '/dashboard',
+        }));
+      } catch (e) {
+        if (e.statusCode === 410 || e.statusCode === 404) {
+          await supabase.from('push_subscriptions').delete().eq('id', sub.id);
+        } else {
+          console.error('[send-notifications] webpush error:', e.statusCode, e.message);
+        }
+        return;
+      }
 
       await supabase.from('push_subscriptions')
         .update({ last_notified_at: today })

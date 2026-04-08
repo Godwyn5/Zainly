@@ -316,16 +316,26 @@ export default function DashboardPage() {
   if (!plan) {
     return (
       <div style={{ minHeight: '100vh', backgroundColor: '#F5F0E6', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '24px', gap: '16px' }}>
-        <p className="font-playfair" style={{ fontSize: '20px', color: '#163026' }}>Aucun plan trouvé.</p>
-        {fetchError && (
-          <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '13px', color: '#B8962E', backgroundColor: 'rgba(184,150,46,0.08)', borderRadius: '8px', padding: '8px 16px', maxWidth: '400px', textAlign: 'center' }}>
-            Erreur Supabase : [{fetchError.code}] {fetchError.message}
-          </p>
+        {fetchError ? (
+          <>
+            <p className="font-playfair" style={{ fontSize: '20px', color: '#163026', textAlign: 'center' }}>Erreur de connexion.</p>
+            <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '14px', color: '#6B6357', textAlign: 'center', maxWidth: '320px', lineHeight: 1.5 }}>
+              Impossible de charger ton plan. Vérifie ta connexion et réessaie.
+            </p>
+            <button type="button" onClick={() => window.location.reload()} className="font-playfair"
+              style={{ padding: '12px 28px', fontSize: '16px', fontWeight: 600, backgroundColor: '#163026', color: '#FFF', border: 'none', borderRadius: '12px', cursor: 'pointer' }}>
+              Réessayer
+            </button>
+          </>
+        ) : (
+          <>
+            <p className="font-playfair" style={{ fontSize: '20px', color: '#163026' }}>Aucun plan trouvé.</p>
+            <button type="button" onClick={() => router.push('/onboarding')} className="font-playfair"
+              style={{ padding: '12px 28px', fontSize: '16px', fontWeight: 600, backgroundColor: '#163026', color: '#FFF', border: 'none', borderRadius: '12px', cursor: 'pointer' }}>
+              Créer mon plan →
+            </button>
+          </>
         )}
-        <button type="button" onClick={() => router.push('/onboarding')} className="font-playfair"
-          style={{ padding: '12px 28px', fontSize: '16px', fontWeight: 600, backgroundColor: '#163026', color: '#FFF', border: 'none', borderRadius: '12px', cursor: 'pointer' }}>
-          Créer mon plan →
-        </button>
       </div>
     );
   }

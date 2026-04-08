@@ -371,8 +371,8 @@ export default function RevisionPage() {
             RÉVISION
           </p>
 
-          {/* Intro micro-text — shown only before reveal */}
-          {!revealed && (
+          {/* Intro micro-text — shown only before reveal on first ayat */}
+          {currentIndex === 0 && !revealed && (
             <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '11px', fontStyle: 'italic', color: '#A09890', textAlign: 'center', margin: '-4px 0 12px 0' }}>
               Ces ayats reviennent au bon moment pour être mémorisés durablement.
             </p>

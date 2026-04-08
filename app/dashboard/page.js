@@ -514,8 +514,20 @@ export default function DashboardPage() {
           )}
 
           {sessionDone ? (
-            <div style={{ marginTop: '24px', width: '100%', padding: '16px', textAlign: 'center', backgroundColor: 'rgba(22,48,38,0.06)', borderRadius: '12px', fontFamily: 'DM Sans, sans-serif', fontSize: '15px', color: '#163026' }}>
-              Session du jour complétée ✓
+            <div style={{ marginTop: '24px' }}>
+              <div style={{ width: '100%', padding: '16px', textAlign: 'center', backgroundColor: 'rgba(22,48,38,0.06)', borderRadius: '12px', fontFamily: 'DM Sans, sans-serif', fontSize: '15px', color: '#163026' }}>
+                Session du jour complétée ✓
+              </div>
+              {reviews.length > 0 && (
+                <button type="button" className="font-playfair" onClick={() => router.push('/revision')} style={{
+                  marginTop: '12px', width: '100%', padding: '14px', fontSize: '16px', fontWeight: 600, color: '#fff',
+                  background: 'linear-gradient(135deg, #B8962E, #9a7a24)', border: 'none', borderRadius: '12px', cursor: 'pointer',
+                  boxShadow: '0 8px 24px rgba(184,150,46,0.3)', transition: 'transform 0.15s, box-shadow 0.15s',
+                }}
+                  onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 12px 32px rgba(184,150,46,0.38)'; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 8px 24px rgba(184,150,46,0.3)'; }}
+                >Commencer la révision →</button>
+              )}
             </div>
           ) : (
             <>
@@ -555,11 +567,10 @@ export default function DashboardPage() {
             >
               <span>🔔</span>
               <span>
-                {pushStatus === 'asking'         && 'Activation...'}
-                {pushStatus === 'denied'         && 'Notifications bloquées'}
-                {pushStatus === 'error'          && 'Erreur — réessayer'}
-                {pushStatus === 'idle'           && 'Activer les rappels quotidiens'}
-                {pushStatus.startsWith('error:') && `Erreur: ${pushStatus.slice(6)}`}
+                {pushStatus === 'asking'                          && 'Activation...'}
+                {pushStatus === 'denied'                          && 'Notifications bloquées'}
+                {(pushStatus === 'error' || pushStatus.startsWith('error:')) && 'Erreur — réessayer'}
+                {pushStatus === 'idle'                            && 'Activer les rappels quotidiens'}
               </span>
             </button>
             {pushStatus === 'denied' && (

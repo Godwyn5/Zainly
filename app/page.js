@@ -100,7 +100,10 @@ export default function Home() {
   }
 
   useEffect(() => {
-    setTimeout(() => setPageVisible(true), 100);
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      if (user) { window.location.replace('/dashboard'); return; }
+      setTimeout(() => setPageVisible(true), 100);
+    });
   }, []);
 
   useEffect(() => {

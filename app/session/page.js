@@ -11,6 +11,8 @@ let cachedQuran   = null;
 let cachedQuranFr = null;
 let cachedTajweed = null;
 
+const SUCCESS_MSGS = ['Parfait', 'Excellent', 'Très bien'];
+
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
 function todayStr() {
@@ -316,7 +318,6 @@ export default function SessionPage() {
   const revealHandledRef = useRef(false);
   const saveHandledRef   = useRef(false);
 
-  const SUCCESS_MSGS = ['Parfait', 'Excellent', 'Très bien'];
   const [successMsg, setSuccessMsg] = useState('Bien ✓');
 
   async function handleRevealChoice(remembered) {

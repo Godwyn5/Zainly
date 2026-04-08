@@ -1,6 +1,10 @@
-const CACHE_NAME = 'zainly-v1';
+const CACHE_NAME = 'zainly-v2';
+const PRECACHE_URLS = ['/', '/dashboard', '/offline.html', '/icon-192.png', '/manifest.json'];
 
 self.addEventListener('install', (event) => {
+  event.waitUntil(
+    caches.open(CACHE_NAME).then(cache => cache.addAll(PRECACHE_URLS).catch(() => {}))
+  );
   self.skipWaiting();
 });
 

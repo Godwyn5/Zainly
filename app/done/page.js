@@ -104,11 +104,11 @@ export default function DonePage() {
           .eq('mastered', false)
           .lte('next_review', localDateStr())
           .lt('created_at', startToday),
-        // Tomorrow's due items (for tension message)
+        // Tomorrow's due items (for tension message) — exactly tomorrow, not cumulative
         supabase.from('review_items').select('id')
           .eq('user_id', authUser.id)
           .eq('mastered', false)
-          .lte('next_review', localDateStr(new Date(Date.now() + 86400000))),
+          .eq('next_review', localDateStr(new Date(Date.now() + 86400000))),
       ]);
 
       const prog = Array.isArray(progRows) ? progRows[0] : progRows;

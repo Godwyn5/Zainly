@@ -55,9 +55,11 @@ const CSS = `
 
 function AudioButton({ globalNum }) {
   const [playing, setPlaying] = useState(false);
+  const [audioError, setAudioError] = useState(false);
   const audioRef = useRef(null);
 
   function handleAudio() {
+    setAudioError(false);
     if (playing) {
       if (audioRef.current) { audioRef.current.pause(); }
       setPlaying(false);
@@ -65,36 +67,44 @@ function AudioButton({ globalNum }) {
     }
     // Resume existing audio if paused, otherwise create new
     if (audioRef.current) {
-      audioRef.current.play().catch(() => setPlaying(false));
+      audioRef.current.play().catch(() => { setPlaying(false); setAudioError(true); });
       setPlaying(true);
       return;
     }
     const a = new Audio(`https://cdn.islamic.network/quran/audio/128/ar.alafasy/${globalNum}.mp3`);
     audioRef.current = a;
     setPlaying(true);
-    a.play().catch(() => setPlaying(false));
+    a.play().catch(() => { setPlaying(false); setAudioError(true); audioRef.current = null; });
     a.onended = () => { setPlaying(false); audioRef.current = null; };
-    a.onerror = () => { setPlaying(false); audioRef.current = null; };
+    a.onerror = () => { setPlaying(false); setAudioError(true); audioRef.current = null; };
   }
 
   useEffect(() => () => { if (audioRef.current) { audioRef.current.pause(); audioRef.current = null; } }, []);
   useEffect(() => {
     if (audioRef.current) { audioRef.current.pause(); audioRef.current = null; }
     setPlaying(false);
+    setAudioError(false);
   }, [globalNum]);
 
   return (
-    <button type="button" onClick={handleAudio} style={{
-      display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px',
-      margin: '8px auto 0', background: 'none', border: 'none',
-      cursor: 'pointer', padding: '12px 20px',
-      minWidth: '44px', minHeight: '44px',
-      fontFamily: 'DM Sans, sans-serif', fontSize: '14px',
-      color: '#B8962E', transition: 'opacity 0.2s',
-    }}>
-      <span>{playing ? '⏸' : '🔊'}</span>
-      <span>{playing ? 'Pause' : 'Écouter'}</span>
-    </button>
+    <>
+      <button type="button" onClick={handleAudio} style={{
+        display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px',
+        margin: '8px auto 0', background: 'none', border: 'none',
+        cursor: 'pointer', padding: '12px 20px',
+        minWidth: '44px', minHeight: '44px',
+        fontFamily: 'DM Sans, sans-serif', fontSize: '14px',
+        color: '#B8962E', transition: 'opacity 0.2s',
+      }}>
+        <span>{playing ? '⏸' : '🔊'}</span>
+        <span>{playing ? 'Pause' : 'Écouter'}</span>
+      </button>
+      {audioError && (
+        <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '12px', color: '#c0392b', textAlign: 'center', margin: '4px 0 0 0' }}>
+          Impossible de charger l&apos;audio. Vérifie ta connexion.
+        </p>
+      )}
+    </>
   );
 }
 

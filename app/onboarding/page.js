@@ -637,11 +637,13 @@ function OnboardingInner() {
                 <button
                   type="button"
                   onClick={generate}
+                  disabled={loading}
                   className="font-playfair"
                   style={{
                     marginTop: '28px', width: '100%', padding: '16px', fontSize: '17px', fontWeight: 600,
                     backgroundColor: '#163026', color: '#FFFFFF', border: 'none', borderRadius: '12px',
-                    cursor: 'pointer', boxShadow: '0 8px 32px rgba(22,48,38,0.2)', transition: 'all 0.2s ease',
+                    cursor: loading ? 'wait' : 'pointer', opacity: loading ? 0.7 : 1,
+                    boxShadow: '0 8px 32px rgba(22,48,38,0.2)', transition: 'all 0.2s ease',
                   }}
                 >
                   Generer mon plan →

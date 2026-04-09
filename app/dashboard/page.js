@@ -119,10 +119,10 @@ export default function DashboardPage() {
   const [editSuccess, setEditSuccess]     = useState(false);
 
   async function saveRythme(newVal) {
-    if (editSaving) return;
+    if (editSaving || !plan?.id) return;
     setEditSaving(true);
     const [{ error: e1 }, { error: e2 }] = await Promise.all([
-      supabase.from('plans').update({ ayah_per_day: newVal }).eq('user_id', user.id),
+      supabase.from('plans').update({ ayah_per_day: newVal }).eq('id', plan.id),
       supabase.from('progress').update({ ayah_per_day: newVal }).eq('user_id', user.id),
     ]);
     setEditSaving(false);

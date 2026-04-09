@@ -24,6 +24,8 @@ export async function POST(request) {
     const { error: upsertErr } = await supabaseAdmin.from('push_subscriptions').upsert({
       user_id: user.id,
       subscription: subscription,
+      last_notified_at: null,
+      last_reminder_at: null,
     }, { onConflict: 'user_id' });
 
     if (upsertErr) {

@@ -73,50 +73,6 @@ async function sendMainNotifications() {
   return results.filter(r => r.status === 'fulfilled' && r.value === 'sent').length;
 }
 
-async function sendReminderNotifications() {
-  const supabase = await getSupabase();
-  const today = localDateStr();
-
-  // Only users who received the main notif today but not yet the reminder
-  const { data: subscriptions } = await supabase
-    .from('push_subscriptions')
-    .select('*')
-    .eq('last_notified_at', today)
-    .or(`last_reminder_at.is.null,last_reminder_at.lt.${today}`);
-
-  if (!subscriptions || subscriptions.length === 0) return 0;
-
-  const results = await Promise.allSettled(
-    subscriptions.map(async (sub) => {
-      const { data: prog } = await supabase
-        .from('progress')
-        .select('last_session_date')
-        .eq('user_id', sub.user_id)
-        .order('created_at', { ascending: false })
-        .limit(1)
-        .maybeSingle();
-
-      if (prog?.last_session_date === today) return; // session done → skip
-
-      await webpush.sendNotification(sub.subscription, JSON.stringify({
-        title: 'Zainly 🕌',
-        body: 'Il te reste quelques minutes pour faire ta session',
-        icon: '/icon-192.png',
-        badge: '/icon-192.png',
-        url: '/dashboard',
-      }));
-
-      await supabase.from('push_subscriptions')
-        .update({ last_reminder_at: today })
-        .eq('id', sub.id);
-
-      return 'sent';
-    })
-  );
-
-  return results.filter(r => r.status === 'fulfilled' && r.value === 'sent').length;
-}
-
 // Called by Vercel cron at 18h30 (GET, header x-vercel-cron: 1)
 export async function GET(request) {
   try {

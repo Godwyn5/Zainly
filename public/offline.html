@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zainly — Hors ligne</title>
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background-color: #F5F0E6;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 24px;
+      text-align: center;
+      font-family: 'DM Sans', sans-serif;
+      box-sizing: border-box;
+    }
+    h1 { font-size: 24px; color: #163026; margin: 16px 0 8px; }
+    p  { font-size: 15px; color: #6B6357; margin: 0 0 24px; line-height: 1.6; max-width: 320px; }
+    button {
+      padding: 14px 32px;
+      background-color: #163026;
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <span style="font-size:48px">📵</span>
+  <h1>Tu es hors ligne.</h1>
+  <p>Vérifie ta connexion internet et réessaie.</p>
+  <button onclick="window.location.reload()">Réessayer</button>
+</body>
+</html>

@@ -20,11 +20,11 @@ async function sendReminderNotifications() {
   );
   const today = localDateStr();
 
-  // Only users who received the main notif today but not yet the reminder
+  // Target all users not yet reminded today — regardless of whether main notif was sent
+  // (covers: main cron failed, user subscribed after 18h30)
   const { data: subscriptions } = await supabase
     .from('push_subscriptions')
     .select('*')
-    .eq('last_notified_at', today)
     .or(`last_reminder_at.is.null,last_reminder_at.lt.${today}`);
 
   if (!subscriptions || subscriptions.length === 0) return 0;

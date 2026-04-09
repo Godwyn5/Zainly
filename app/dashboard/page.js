@@ -177,14 +177,17 @@ export default function DashboardPage() {
       if (permission === 'denied') { setPushStatus('denied'); return; }
       if (permission !== 'granted') { setPushStatus('idle'); return; }
       const registration = await navigator.serviceWorker.ready;
-      const existing = await registration.pushManager.getSubscription();
       const vapidKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY;
       if (!vapidKey) throw new Error('VAPID public key missing');
       // Convert Base64url → Uint8Array (required by pushManager.subscribe)
       const padding = '='.repeat((4 - (vapidKey.length % 4)) % 4);
       const base64 = (vapidKey + padding).replace(/-/g, '+').replace(/_/g, '/');
       const rawKey = Uint8Array.from(atob(base64), c => c.charCodeAt(0));
-      const sub = existing ?? await registration.pushManager.subscribe({
+      // Always unsubscribe first to get a guaranteed fresh subscription
+      // (avoids silently stale subscriptions that fail with 410)
+      const existing = await registration.pushManager.getSubscription();
+      if (existing) await existing.unsubscribe().catch(() => {});
+      const sub = await registration.pushManager.subscribe({
         userVisibleOnly: true,
         applicationServerKey: rawKey,
       });
@@ -250,12 +253,16 @@ export default function DashboardPage() {
         if (Notification.permission === 'denied') {
           setPushStatus('denied');
         } else if (Notification.permission === 'granted' && 'serviceWorker' in navigator) {
-          // Only show 'granted' if a push subscription is actually registered
-          navigator.serviceWorker.ready.then(reg =>
-            reg.pushManager.getSubscription()
-          ).then(sub => {
-            setPushStatus(sub ? 'granted' : 'idle');
-          }).catch(() => setPushStatus('idle'));
+          // Cross-check browser subscription AND DB — both must be active
+          const { data: { session: s } } = await supabase.auth.getSession();
+          const [sub, dbRes] = await Promise.all([
+            navigator.serviceWorker.ready.then(reg => reg.pushManager.getSubscription()).catch(() => null),
+            s?.access_token
+              ? fetch('/api/subscribe', { headers: { Authorization: `Bearer ${s.access_token}` } })
+                  .then(r => r.json()).catch(() => ({ active: false }))
+              : Promise.resolve({ active: false }),
+          ]);
+          setPushStatus(sub && dbRes.active ? 'granted' : 'idle');
         }
       }
     }

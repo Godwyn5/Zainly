@@ -1,9 +1,38 @@
 'use client';
 
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { supabase } from '@/lib/supabase';
 
 export default function PremiumPage() {
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
+  const [checkoutError, setCheckoutError] = useState('');
+
+  async function handleCheckout() {
+    if (loading) return;
+    setLoading(true);
+    setCheckoutError('');
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.access_token) { router.push('/login'); return; }
+
+      const res = await fetch('/api/create-checkout-session', {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${session.access_token}` },
+      });
+      const json = await res.json();
+      if (!res.ok || !json.url) {
+        setCheckoutError(json.error ?? 'Impossible de lancer le paiement. Réessaie.');
+        setLoading(false);
+        return;
+      }
+      window.location.href = json.url;
+    } catch (err) {
+      setCheckoutError('Impossible de lancer le paiement. Réessaie.');
+      setLoading(false);
+    }
+  }
 
   return (
     <div style={{
@@ -93,6 +122,8 @@ export default function PremiumPage() {
 
       <button
         type="button"
+        onClick={handleCheckout}
+        disabled={loading}
         className="font-playfair"
         style={{
           width: '100%',
@@ -104,21 +135,24 @@ export default function PremiumPage() {
           background: 'linear-gradient(135deg, #163026, #2d5a42)',
           border: 'none',
           borderRadius: '12px',
-          cursor: 'pointer',
+          cursor: loading ? 'wait' : 'pointer',
+          opacity: loading ? 0.75 : 1,
           boxShadow: '0 8px 24px rgba(15,35,24,0.3)',
           marginBottom: '6px',
+          transition: 'opacity 0.2s',
         }}
       >
-        Continuer avec Premium
+        {loading ? 'Redirection...' : 'Continuer avec Premium'}
       </button>
-      <p style={{
-        fontFamily: 'DM Sans, sans-serif',
-        fontSize: '12px',
-        color: '#A09890',
-        margin: '0 0 12px 0',
-      }}>
-        Paiement bientôt disponible
-      </p>
+      {checkoutError ? (
+        <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '13px', color: '#c0392b', margin: '0 0 12px 0' }}>
+          {checkoutError}
+        </p>
+      ) : (
+        <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '12px', color: '#A09890', margin: '0 0 12px 0' }}>
+          2,99 € / mois — résiliable à tout moment
+        </p>
+      )}
 
       <button
         type="button"

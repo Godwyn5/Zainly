@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 import { nextZainlySurah, ZAINLY_ORDER } from '@/lib/zainlyOrder';
+import { LegalFooter } from '@/components/LegalLayout';
 
 // ─── Data ────────────────────────────────────────────────────────────────────
 
@@ -1192,6 +1193,8 @@ export default function DashboardPage() {
           )}
         </button>
       </div>
+
+      <LegalFooter />
 
     </div>
   );

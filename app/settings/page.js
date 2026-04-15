@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
+import { LegalFooter } from '@/components/LegalLayout';
 
 const CSS = `
 @keyframes fadeUp {
@@ -296,6 +297,8 @@ export default function SettingsPage() {
             </Card>
           </div>
         )}
+
+        <LegalFooter />
 
       </div>
     </div>

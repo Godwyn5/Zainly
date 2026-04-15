@@ -110,6 +110,7 @@ export default function DashboardPage() {
   const [activeTab, setActiveTab]   = useState('today');
   const [recoveryMode, setRecoveryMode] = useState(false);
   const [recoveryDismissed, setRecoveryDismissed] = useState(false);
+  const [isPremium, setIsPremium]       = useState(false);
 
   // ── Modifier programme state ──
   const [pushStatus, setPushStatus]       = useState('idle'); // 'idle'|'asking'|'granted'|'denied'|'error'
@@ -221,11 +222,14 @@ export default function DashboardPage() {
         { data: planRows,      error: planFetchErr },
         { data: progressRows,  error: progFetchErr },
         { data: reviewData,    error: revFetchErr  },
+        { data: profileData },
       ] = await Promise.all([
         supabase.from('plans').select('*').eq('user_id', authUser.id).order('created_at', { ascending: false }).limit(1),
         supabase.from('progress').select('*').eq('user_id', authUser.id).order('created_at', { ascending: false }).limit(1),
         supabase.from('review_items').select('*').eq('user_id', authUser.id).eq('mastered', false).lte('next_review', today),
+        supabase.from('profiles').select('is_premium').eq('id', authUser.id).maybeSingle(),
       ]);
+      setIsPremium(profileData?.is_premium === true);
 
       const planData     = planRows?.[0] ?? null;
       const progressData = progressRows?.[0] ?? null;
@@ -421,7 +425,36 @@ export default function DashboardPage() {
             </div>
           </div>
 
-          <div style={{ position: 'absolute', bottom: '36px', right: '24px' }}>
+          <div style={{ position: 'absolute', bottom: '36px', right: '24px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            {isPremium ? (
+              <span
+                aria-label="Premium actif"
+                style={{
+                  fontSize: '13px', fontWeight: 600,
+                  color: '#fff', backgroundColor: '#C9A227',
+                  borderRadius: '999px', padding: '4px 12px',
+                  cursor: 'default', userSelect: 'none',
+                  fontFamily: 'DM Sans, sans-serif',
+                  letterSpacing: '0.1px',
+                }}
+              >👑 Premium</span>
+            ) : (
+              <button
+                aria-label="Passer à Premium"
+                onClick={() => router.push('/premium?source=voluntary')}
+                style={{
+                  fontSize: '13px', fontWeight: 600,
+                  color: '#C9A227', backgroundColor: 'transparent',
+                  border: '1px solid #C9A227', borderRadius: '999px',
+                  padding: '4px 12px', cursor: 'pointer',
+                  fontFamily: 'DM Sans, sans-serif',
+                  transition: 'background-color 0.15s ease, color 0.15s ease',
+                  letterSpacing: '0.1px',
+                }}
+                onMouseEnter={e => { e.currentTarget.style.backgroundColor = 'rgba(201,162,39,0.12)'; }}
+                onMouseLeave={e => { e.currentTarget.style.backgroundColor = 'transparent'; }}
+              >✨ Premium</button>
+            )}
             <button onClick={handleSignOut} style={{
               fontFamily: 'DM Sans, sans-serif', fontSize: '12px',
               color: 'rgba(255,255,255,0.5)', backgroundColor: 'transparent',

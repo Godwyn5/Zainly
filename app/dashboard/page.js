@@ -118,12 +118,14 @@ export default function DashboardPage() {
 
   // ── Settings menu + subscription modal ──
   const [menuOpen, setMenuOpen]                 = useState(false);
+  const [menuPos, setMenuPos]                   = useState({ top: 0, right: 0 });
   const [subModalOpen, setSubModalOpen]         = useState(false);
   const [cancelStep, setCancelStep]             = useState('info'); // 'info' | 'confirm'
   const [cancelLoading, setCancelLoading]       = useState(false);
   const [cancelDone, setCancelDone]             = useState(false);
   const [cancelError, setCancelError]           = useState('');
   const menuRef = useRef(null);
+  const gearRef = useRef(null);
 
   // ── Modifier programme state ──
   const [pushStatus, setPushStatus]       = useState('idle'); // 'idle'|'asking'|'granted'|'denied'|'error'
@@ -504,8 +506,19 @@ export default function DashboardPage() {
             )}
             <div style={{ position: 'relative' }} ref={menuRef}>
               <button
+                ref={gearRef}
                 aria-label="Paramètres"
-                onClick={() => setMenuOpen(v => !v)}
+                onClick={() => {
+                  if (menuOpen) { setMenuOpen(false); return; }
+                  const rect = gearRef.current?.getBoundingClientRect();
+                  if (rect) {
+                    setMenuPos({
+                      top: rect.bottom + 8,
+                      right: window.innerWidth - rect.right,
+                    });
+                  }
+                  setMenuOpen(true);
+                }}
                 style={{
                   background: 'none', border: 'none', cursor: 'pointer',
                   padding: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -525,14 +538,16 @@ export default function DashboardPage() {
                 <>
                   <div
                     onClick={() => setMenuOpen(false)}
-                    style={{ position: 'fixed', inset: 0, zIndex: 200 }}
+                    style={{ position: 'fixed', inset: 0, zIndex: 9998 }}
                   />
                   <div style={{
-                    position: 'fixed', top: '72px', right: '16px',
+                    position: 'fixed',
+                    top: menuPos.top,
+                    right: menuPos.right,
                     backgroundColor: '#fff', borderRadius: '12px',
                     boxShadow: '0 8px 32px rgba(0,0,0,0.14)',
                     padding: '8px', width: '200px',
-                    zIndex: 201,
+                    zIndex: 9999,
                     animation: 'fadeUp 0.18s ease both',
                   }}>
                     {isPremium && (

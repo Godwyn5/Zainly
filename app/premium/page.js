@@ -86,6 +86,19 @@ function PremiumPageInner() {
   }
 
   return (
+    <>
+    <style>{`
+      @keyframes pw-fade-up {
+        from { opacity: 0; transform: translateY(20px); }
+        to   { opacity: 1; transform: translateY(0); }
+      }
+      .pw-s1 { animation: pw-fade-up 0.5s ease-out 0.05s both; }
+      .pw-s2 { animation: pw-fade-up 0.5s ease-out 0.15s both; }
+      .pw-s3 { animation: pw-fade-up 0.5s ease-out 0.25s both; }
+      .pw-s4 { animation: pw-fade-up 0.5s ease-out 0.35s both; }
+      .pw-s5 { animation: pw-fade-up 0.5s ease-out 0.43s both; }
+      .pw-s6 { animation: pw-fade-up 0.5s ease-out 0.50s both; }
+    `}</style>
     <div style={{
       minHeight: '100vh',
       backgroundColor: '#F5F0E6',
@@ -96,7 +109,7 @@ function PremiumPageInner() {
     }}>
 
       {/* ── SECTION 1 — HEADER ── */}
-      <div style={{ textAlign: 'center', marginBottom: '32px' }}>
+      <div className="pw-s1" style={{ textAlign: 'center', marginBottom: '32px' }}>
         <div style={{ width: '40px', height: '2px', background: '#B8962E', margin: '0 auto 16px' }} />
         <p className="font-playfair" style={{
           fontStyle: 'italic', fontSize: '16px', color: '#B8962E',
@@ -119,7 +132,7 @@ function PremiumPageInner() {
       </div>
 
       {/* ── SECTION 2 — CARTE PRIX ── */}
-      <div style={{
+      <div className="pw-s2" style={{
         backgroundColor: '#fff',
         borderRadius: '24px',
         boxShadow: '0 4px 24px rgba(0,0,0,0.08)',
@@ -170,7 +183,7 @@ function PremiumPageInner() {
       </div>
 
       {/* ── SECTION 3 — FEATURES ── */}
-      <div style={{ marginBottom: '32px' }}>
+      <div className="pw-s3" style={{ marginBottom: '32px' }}>
         <p style={{
           fontFamily: 'DM Sans, sans-serif',
           fontWeight: 600, fontSize: '13px', color: '#B8962E',
@@ -196,7 +209,7 @@ function PremiumPageInner() {
       </div>
 
       {/* ── SECTION 4 — CITATION ── */}
-      <div style={{
+      <div className="pw-s4" style={{
         background: '#163026',
         borderRadius: '20px',
         padding: '28px',
@@ -218,7 +231,7 @@ function PremiumPageInner() {
       </div>
 
       {/* ── SECTION 5 — RÉASSURANCE ── */}
-      <div style={{ textAlign: 'center', marginBottom: '32px' }}>
+      <div className="pw-s5" style={{ textAlign: 'center', marginBottom: '32px' }}>
         {REASSURANCES.map((line, i) => (
           <p key={i} style={{
             fontFamily: 'DM Sans, sans-serif', fontSize: '13px', color: '#6B6357',
@@ -230,7 +243,7 @@ function PremiumPageInner() {
       </div>
 
       {/* ── SECTION 6 — CTA FINAL ── */}
-      <div style={{ textAlign: 'center' }}>
+      <div className="pw-s6" style={{ textAlign: 'center' }}>
         <CTAButton loading={loading} onClick={handleSubscribe}>
           {loading ? 'Redirection…' : 'Commencer mon Hifz →'}
         </CTAButton>
@@ -243,6 +256,7 @@ function PremiumPageInner() {
       </div>
 
     </div>
+    </>
   );
 }
 

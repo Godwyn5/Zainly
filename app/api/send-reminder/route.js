@@ -19,6 +19,7 @@ async function sendReminderNotifications() {
     process.env.SUPABASE_SERVICE_ROLE_KEY
   );
   const today = localDateStr();
+  console.log('[send-reminder] triggered, date:', today);
 
   // Target all users not yet reminded today — regardless of whether main notif was sent
   // (covers: main cron failed, user subscribed after 18h30)
@@ -27,6 +28,7 @@ async function sendReminderNotifications() {
     .select('*')
     .or(`last_reminder_at.is.null,last_reminder_at.lt.${today}`);
 
+  console.log('[send-reminder] users eligible:', subscriptions?.length ?? 0);
   if (!subscriptions || subscriptions.length === 0) return 0;
 
   const results = await Promise.allSettled(
@@ -66,7 +68,9 @@ async function sendReminderNotifications() {
     })
   );
 
-  return results.filter(r => r.status === 'fulfilled' && r.value === 'sent').length;
+  const sent = results.filter(r => r.status === 'fulfilled' && r.value === 'sent').length;
+  console.log('[send-reminder] sent:', sent, '/', subscriptions.length);
+  return sent;
 }
 
 // Called by Vercel cron (GET) — Vercel injects Authorization: Bearer CRON_SECRET automatically

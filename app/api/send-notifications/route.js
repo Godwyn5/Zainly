@@ -23,6 +23,7 @@ async function getSupabase() {
 async function sendMainNotifications() {
   const supabase = await getSupabase();
   const today = localDateStr();
+  console.log('[send-notifications] triggered, date:', today);
 
   // Only users not yet notified today
   const { data: subscriptions } = await supabase
@@ -30,6 +31,7 @@ async function sendMainNotifications() {
     .select('*')
     .or(`last_notified_at.is.null,last_notified_at.lt.${today}`);
 
+  console.log('[send-notifications] users eligible:', subscriptions?.length ?? 0);
   if (!subscriptions || subscriptions.length === 0) return 0;
 
   const results = await Promise.allSettled(
@@ -70,7 +72,9 @@ async function sendMainNotifications() {
     })
   );
 
-  return results.filter(r => r.status === 'fulfilled' && r.value === 'sent').length;
+  const sent = results.filter(r => r.status === 'fulfilled' && r.value === 'sent').length;
+  console.log('[send-notifications] sent:', sent, '/', subscriptions.length);
+  return sent;
 }
 
 // Called by Vercel cron (GET) — Vercel injects Authorization: Bearer CRON_SECRET automatically

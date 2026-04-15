@@ -180,7 +180,7 @@ export default function SessionPage() {
         : 0;
       const shouldBlock = !isPremium && sessionsCount >= 5 && daysSinceFirst >= 7;
       console.log(`[session-premium] sessions=${sessionsCount} days=${daysSinceFirst} isPremium=${isPremium} shouldBlock=${shouldBlock}`);
-      if (shouldBlock) { router.replace('/premium'); return; }
+      if (shouldBlock) { router.replace('/premium?source=blocked'); return; }
 
       // If session already done today, show message instead of silent redirect
       if (progRow.last_session_date === todayStr()) {

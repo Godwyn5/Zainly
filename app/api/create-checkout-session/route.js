@@ -38,7 +38,10 @@ export async function POST(request) {
       return NextResponse.json({ error: 'Déjà premium.' }, { status: 400 });
     }
 
-    const appUrl = process.env.NEXT_PUBLIC_APP_URL;
+    const appUrl =
+      process.env.NEXT_PUBLIC_APP_URL ||
+      request.headers.get('origin') ||
+      'https://zainly-alpha.vercel.app';
 
     const session = await stripe.checkout.sessions.create({
       mode: 'subscription',

@@ -525,14 +525,14 @@ export default function DashboardPage() {
                 <>
                   <div
                     onClick={() => setMenuOpen(false)}
-                    style={{ position: 'fixed', inset: 0, zIndex: 10 }}
+                    style={{ position: 'fixed', inset: 0, zIndex: 200 }}
                   />
                   <div style={{
-                    position: 'absolute', top: '36px', right: 0,
+                    position: 'fixed', top: '72px', right: '16px',
                     backgroundColor: '#fff', borderRadius: '12px',
-                    boxShadow: '0 8px 24px rgba(0,0,0,0.08)',
+                    boxShadow: '0 8px 32px rgba(0,0,0,0.14)',
                     padding: '8px', width: '200px',
-                    zIndex: 20,
+                    zIndex: 201,
                     animation: 'fadeUp 0.18s ease both',
                   }}>
                     {isPremium && (

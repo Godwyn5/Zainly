@@ -48,5 +48,45 @@ export async function POST(request) {
     console.log('[stripe-webhook] premium activated for user', userId);
   }
 
+  if (event.type === 'customer.subscription.deleted') {
+    const subscription = event.data.object;
+    const subscriptionId = subscription.id;
+
+    console.log('[stripe-webhook] subscription deleted:', subscriptionId);
+
+    const supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL,
+      process.env.SUPABASE_SERVICE_ROLE_KEY
+    );
+
+    const { data: profile, error: findErr } = await supabase
+      .from('profiles')
+      .select('id')
+      .eq('stripe_subscription_id', subscriptionId)
+      .maybeSingle();
+
+    if (findErr) {
+      console.error('[stripe-webhook] error finding user for subscription:', findErr.message);
+      return NextResponse.json({ error: findErr.message }, { status: 500 });
+    }
+
+    if (!profile) {
+      console.warn('[stripe-webhook] no user found for subscription_id:', subscriptionId);
+      return NextResponse.json({ received: true });
+    }
+
+    const { error: updateErr } = await supabase
+      .from('profiles')
+      .update({ is_premium: false })
+      .eq('id', profile.id);
+
+    if (updateErr) {
+      console.error('[stripe-webhook] error deactivating premium:', updateErr.message);
+      return NextResponse.json({ error: updateErr.message }, { status: 500 });
+    }
+
+    console.log('[stripe-webhook] premium deactivated for user', profile.id);
+  }
+
   return NextResponse.json({ received: true });
 }

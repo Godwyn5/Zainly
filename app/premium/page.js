@@ -3,6 +3,7 @@
 import { useState, useEffect, Suspense } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
+import { LegalFooter } from '@/components/LegalLayout';
 
 const FEATURES = [
   'Le Coran complet — 114 sourates, 6236 ayats',
@@ -251,9 +252,14 @@ function PremiumPageInner() {
           fontFamily: 'DM Sans, sans-serif', fontSize: '12px', color: '#999',
           marginTop: '12px',
         }}>
-          En continuant tu acceptes nos conditions d&apos;utilisation
+          En continuant tu acceptes nos{' '}
+          <a href="/legal/terms" style={{ color: '#999', textDecoration: 'underline' }}>
+            conditions d&apos;utilisation
+          </a>
         </p>
       </div>
+
+      <LegalFooter />
 
     </div>
     </>

@@ -1,6 +1,7 @@
 ﻿import { NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 import { ZAINLY_ORDER } from '@/lib/zainlyOrder'
+import { checkRateLimit } from '@/lib/rate-limit'
 
 // ─── Route handler ────────────────────────────────────────────────────────────
 
@@ -23,6 +24,11 @@ export async function POST(request) {
       return NextResponse.json({ error: 'Non autorise.' }, { status: 401 })
     }
     const userId = user.id
+
+    const { blocked } = await checkRateLimit('plan', `user:${userId}`)
+    if (blocked) {
+      return NextResponse.json({ error: 'Trop de requêtes. Réessaie dans un instant.' }, { status: 429 })
+    }
 
     // ── Input validation ──
     const body = await request.json()

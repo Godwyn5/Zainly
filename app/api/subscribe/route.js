@@ -1,5 +1,6 @@
 import { createClient } from '@supabase/supabase-js';
 import { NextResponse } from 'next/server';
+import { checkRateLimit } from '@/lib/rate-limit';
 
 export async function GET(request) {
   try {
@@ -42,6 +43,11 @@ export async function POST(request) {
 
     const { data: { user }, error: authError } = await supabaseAnon.auth.getUser(token);
     if (authError || !user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+
+    const { blocked } = await checkRateLimit('subscribe', `user:${user.id}`);
+    if (blocked) {
+      return NextResponse.json({ error: 'Trop de requêtes. Réessaie dans un instant.' }, { status: 429 });
+    }
 
     if (
       !subscription ||

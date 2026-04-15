@@ -1,6 +1,7 @@
 import Stripe from 'stripe';
 import { createClient } from '@supabase/supabase-js';
 import { NextResponse } from 'next/server';
+import { checkRateLimit } from '@/lib/rate-limit';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
@@ -20,6 +21,11 @@ export async function POST(request) {
     const { data: { user }, error: authErr } = await supabase.auth.getUser(token);
     if (authErr || !user) {
       return NextResponse.json({ error: 'Non autorisé.' }, { status: 401 });
+    }
+
+    const { blocked } = await checkRateLimit('checkout', `user:${user.id}`);
+    if (blocked) {
+      return NextResponse.json({ error: 'Trop de requêtes. Réessaie dans un instant.' }, { status: 429 });
     }
 
     const { data: profile } = await supabase

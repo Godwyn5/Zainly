@@ -229,7 +229,7 @@ export default function RevisionPage() {
 
     const { error: updateErr } = await supabase
       .from('review_items')
-      .update({ review_cycle: nextCycle, next_review: nextReview, mastered })
+      .update({ review_cycle: nextCycle, next_review: nextReview, mastered, updated_at: new Date().toISOString() })
       .eq('id', item.id);
 
     if (updateErr) {

@@ -6,6 +6,7 @@ import { checkRateLimit } from '@/lib/rate-limit';
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 export async function POST(request) {
+  console.log('[checkout] POST called, STRIPE_KEY present:', !!process.env.STRIPE_SECRET_KEY, 'PRICE_ID present:', !!process.env.STRIPE_PREMIUM_PRICE_ID);
   try {
     const supabase = createClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL,
@@ -63,7 +64,7 @@ export async function POST(request) {
     console.log('[stripe] checkout session created for user', user.id);
     return NextResponse.json({ url: session.url });
   } catch (err) {
-    console.error('[stripe] create-checkout-session error:', err.message);
+    console.error('[stripe] create-checkout-session error:', err.message, '| type:', err.type, '| code:', err.code);
     return NextResponse.json({ error: err.message }, { status: 500 });
   }
 }

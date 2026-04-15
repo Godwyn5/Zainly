@@ -73,6 +73,10 @@ const CSS = `
   from { opacity: 0; }
   to   { opacity: 1; }
 }
+@keyframes modalSlideUp {
+  from { opacity: 0; transform: translateY(32px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
 `;
 
 // ─── Shared styles ────────────────────────────────────────────────────────────
@@ -111,6 +115,15 @@ export default function DashboardPage() {
   const [recoveryMode, setRecoveryMode] = useState(false);
   const [recoveryDismissed, setRecoveryDismissed] = useState(false);
   const [isPremium, setIsPremium]       = useState(false);
+
+  // ── Settings menu + subscription modal ──
+  const [menuOpen, setMenuOpen]                 = useState(false);
+  const [subModalOpen, setSubModalOpen]         = useState(false);
+  const [cancelStep, setCancelStep]             = useState('info'); // 'info' | 'confirm'
+  const [cancelLoading, setCancelLoading]       = useState(false);
+  const [cancelDone, setCancelDone]             = useState(false);
+  const [cancelError, setCancelError]           = useState('');
+  const menuRef = useRef(null);
 
   // ── Modifier programme state ──
   const [pushStatus, setPushStatus]       = useState('idle'); // 'idle'|'asking'|'granted'|'denied'|'error'
@@ -314,6 +327,40 @@ export default function DashboardPage() {
     router.push('/');
   }
 
+  function openSubModal() {
+    setMenuOpen(false);
+    setCancelStep('info');
+    setCancelDone(false);
+    setCancelError('');
+    setSubModalOpen(true);
+  }
+
+  async function handleCancelSubscription() {
+    if (cancelLoading) return;
+    setCancelLoading(true);
+    setCancelError('');
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.access_token) { router.push('/login'); return; }
+      const res = await fetch('/api/cancel-subscription', {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${session.access_token}` },
+      });
+      const json = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        setCancelError(json.error || 'Une erreur est survenue. Réessaie.');
+        setCancelLoading(false);
+        return;
+      }
+      setCancelDone(true);
+      setCancelLoading(false);
+      setTimeout(() => setSubModalOpen(false), 3000);
+    } catch {
+      setCancelError('Une erreur est survenue. Réessaie.');
+      setCancelLoading(false);
+    }
+  }
+
   // ── Loading ──
   if (loading) {
     return (
@@ -455,12 +502,75 @@ export default function DashboardPage() {
                 onMouseLeave={e => { e.currentTarget.style.backgroundColor = 'transparent'; }}
               >✨ Premium</button>
             )}
-            <button onClick={handleSignOut} style={{
-              fontFamily: 'DM Sans, sans-serif', fontSize: '12px',
-              color: 'rgba(255,255,255,0.5)', backgroundColor: 'transparent',
-              border: '1px solid rgba(255,255,255,0.2)', borderRadius: '8px',
-              padding: '6px 12px', cursor: 'pointer',
-            }}>Déconnexion</button>
+            <div style={{ position: 'relative' }} ref={menuRef}>
+              <button
+                aria-label="Paramètres"
+                onClick={() => setMenuOpen(v => !v)}
+                style={{
+                  background: 'none', border: 'none', cursor: 'pointer',
+                  padding: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  opacity: menuOpen ? 1 : 0.9,
+                  transition: 'opacity 0.15s',
+                }}
+                onMouseEnter={e => { e.currentTarget.style.opacity = '1'; }}
+                onMouseLeave={e => { if (!menuOpen) e.currentTarget.style.opacity = '0.9'; }}
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="12" cy="12" r="3"/>
+                  <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                </svg>
+              </button>
+
+              {menuOpen && (
+                <>
+                  <div
+                    onClick={() => setMenuOpen(false)}
+                    style={{ position: 'fixed', inset: 0, zIndex: 10 }}
+                  />
+                  <div style={{
+                    position: 'absolute', top: '36px', right: 0,
+                    backgroundColor: '#fff', borderRadius: '12px',
+                    boxShadow: '0 8px 24px rgba(0,0,0,0.08)',
+                    padding: '8px', width: '200px',
+                    zIndex: 20,
+                    animation: 'fadeUp 0.18s ease both',
+                  }}>
+                    {isPremium && (
+                      <button
+                        type="button"
+                        onClick={openSubModal}
+                        style={{
+                          display: 'block', width: '100%', textAlign: 'left',
+                          padding: '12px 14px', borderRadius: '8px',
+                          fontFamily: 'DM Sans, sans-serif', fontSize: '14px',
+                          color: '#163026', background: 'none', border: 'none',
+                          cursor: 'pointer', transition: 'background 0.12s',
+                        }}
+                        onMouseEnter={e => { e.currentTarget.style.background = '#F5F0E6'; }}
+                        onMouseLeave={e => { e.currentTarget.style.background = 'none'; }}
+                      >
+                        Gérer mon abonnement
+                      </button>
+                    )}
+                    <button
+                      type="button"
+                      onClick={() => { setMenuOpen(false); handleSignOut(); }}
+                      style={{
+                        display: 'block', width: '100%', textAlign: 'left',
+                        padding: '12px 14px', borderRadius: '8px',
+                        fontFamily: 'DM Sans, sans-serif', fontSize: '14px',
+                        color: '#163026', background: 'none', border: 'none',
+                        cursor: 'pointer', transition: 'background 0.12s',
+                      }}
+                      onMouseEnter={e => { e.currentTarget.style.background = '#F5F0E6'; }}
+                      onMouseLeave={e => { e.currentTarget.style.background = 'none'; }}
+                    >
+                      Déconnexion
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
           </div>
         </div>
 
@@ -1175,6 +1285,162 @@ export default function DashboardPage() {
           )}
         </button>
       </div>
+
+      {/* ══════════════════════ SUBSCRIPTION MODAL ══════════════════════ */}
+      {subModalOpen && (
+        <>
+          {/* Overlay */}
+          <div
+            onClick={() => { if (!cancelLoading) setSubModalOpen(false); }}
+            style={{
+              position: 'fixed', inset: 0,
+              backgroundColor: 'rgba(0,0,0,0.3)',
+              zIndex: 100,
+              animation: 'fadeIn 0.2s ease both',
+            }}
+          />
+
+          {/* Modal */}
+          <div style={{
+            position: 'fixed',
+            bottom: 0, left: 0, right: 0,
+            zIndex: 101,
+            display: 'flex', justifyContent: 'center',
+            padding: '0 16px 24px',
+          }}>
+            <div style={{
+              backgroundColor: '#fff',
+              borderRadius: '20px',
+              padding: '28px 24px 24px',
+              width: '100%',
+              maxWidth: '400px',
+              animation: 'modalSlideUp 0.25s ease both',
+            }}>
+
+              {cancelDone ? (
+                /* ── Success state ── */
+                <div style={{ textAlign: 'center', padding: '8px 0' }}>
+                  <p style={{ fontSize: '32px', margin: '0 0 12px' }}>✓</p>
+                  <p className="font-playfair" style={{ fontSize: '18px', fontWeight: 600, color: '#163026', margin: '0 0 10px' }}>
+                    Résiliation prise en compte
+                  </p>
+                  <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '14px', color: '#6B6357', lineHeight: 1.6, margin: 0 }}>
+                    Ton accès reste actif jusqu&apos;à la fin de la période en cours.
+                  </p>
+                </div>
+
+              ) : cancelStep === 'info' ? (
+                /* ── Info state ── */
+                <>
+                  <p className="font-playfair" style={{ fontSize: '22px', fontWeight: 700, color: '#163026', margin: '0 0 20px' }}>
+                    Abonnement Premium
+                  </p>
+
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '20px' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '14px', color: '#6B6357' }}>Statut</span>
+                      <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '14px', fontWeight: 600, color: '#163026' }}>Premium actif 👑</span>
+                    </div>
+                    <div style={{ height: '1px', backgroundColor: '#F0EBE3' }} />
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '14px', color: '#6B6357' }}>Prix</span>
+                      <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '14px', fontWeight: 600, color: '#163026' }}>2,99 € / mois</span>
+                    </div>
+                    <div style={{ height: '1px', backgroundColor: '#F0EBE3' }} />
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '14px', color: '#6B6357' }}>Renouvellement</span>
+                      <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '14px', fontWeight: 600, color: '#163026' }}>Mensuel automatique</span>
+                    </div>
+                  </div>
+
+                  <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '13px', color: '#A09890', lineHeight: 1.6, margin: '0 0 20px' }}>
+                    Ton accès reste actif jusqu&apos;à la fin de la période en cours si tu résilie.
+                  </p>
+
+                  <button
+                    type="button"
+                    onClick={() => setSubModalOpen(false)}
+                    style={{
+                      width: '100%', padding: '14px',
+                      fontFamily: 'DM Sans, sans-serif', fontSize: '15px', fontWeight: 600,
+                      color: '#fff', backgroundColor: '#163026',
+                      border: 'none', borderRadius: '12px', cursor: 'pointer',
+                      marginBottom: '8px',
+                    }}
+                  >
+                    Fermer
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setCancelStep('confirm')}
+                    style={{
+                      width: '100%', padding: '10px',
+                      background: 'none', border: 'none', cursor: 'pointer',
+                      fontFamily: 'DM Sans, sans-serif', fontSize: '14px',
+                      color: '#DC2626', marginTop: '8px',
+                    }}
+                  >
+                    Résilier mon abonnement
+                  </button>
+                </>
+
+              ) : (
+                /* ── Confirm state ── */
+                <>
+                  <p className="font-playfair" style={{ fontSize: '20px', fontWeight: 700, color: '#163026', margin: '0 0 12px' }}>
+                    Confirmer la résiliation
+                  </p>
+                  <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '14px', color: '#6B6357', lineHeight: 1.6, margin: '0 0 24px' }}>
+                    Tu garderas ton accès Premium jusqu&apos;à la fin de la période en cours.
+                  </p>
+
+                  {cancelError && (
+                    <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '13px', color: '#DC2626', margin: '0 0 16px' }}>
+                      {cancelError}
+                    </p>
+                  )}
+
+                  <div style={{ display: 'flex', gap: '10px' }}>
+                    <button
+                      type="button"
+                      disabled={cancelLoading}
+                      onClick={() => setCancelStep('info')}
+                      style={{
+                        flex: 1, padding: '14px',
+                        fontFamily: 'DM Sans, sans-serif', fontSize: '15px', fontWeight: 500,
+                        color: '#163026', backgroundColor: 'transparent',
+                        border: '1px solid #D4CCC2', borderRadius: '12px',
+                        cursor: cancelLoading ? 'not-allowed' : 'pointer',
+                        opacity: cancelLoading ? 0.5 : 1,
+                      }}
+                    >
+                      Annuler
+                    </button>
+                    <button
+                      type="button"
+                      disabled={cancelLoading}
+                      onClick={handleCancelSubscription}
+                      style={{
+                        flex: 1, padding: '14px',
+                        fontFamily: 'DM Sans, sans-serif', fontSize: '15px', fontWeight: 600,
+                        color: '#fff', backgroundColor: '#DC2626',
+                        border: 'none', borderRadius: '12px',
+                        cursor: cancelLoading ? 'wait' : 'pointer',
+                        opacity: cancelLoading ? 0.75 : 1,
+                        transition: 'opacity 0.2s',
+                      }}
+                    >
+                      {cancelLoading ? 'Résiliation…' : 'Confirmer'}
+                    </button>
+                  </div>
+                </>
+              )}
+
+            </div>
+          </div>
+        </>
+      )}
 
     </div>
   );

@@ -159,14 +159,28 @@ export default function SessionPage() {
       if (userErr || !authUser) { router.push('/login'); return; }
       setUser(authUser);
 
-      const [{ data: prog }, { data: pl }] = await Promise.all([
+      const [{ data: prog }, { data: pl }, { data: profile }] = await Promise.all([
         supabase.from('progress').select('*').eq('user_id', authUser.id).order('created_at', { ascending: false }).limit(1),
         supabase.from('plans').select('*').eq('user_id', authUser.id).order('created_at', { ascending: false }).limit(1),
+        supabase.from('profiles').select('is_premium').eq('id', authUser.id).maybeSingle(),
       ]);
 
       const progRow = Array.isArray(prog) ? prog[0] : prog;
       const plRow   = Array.isArray(pl)   ? pl[0]   : pl;
       if (!progRow || !plRow) { router.push('/dashboard'); return; }
+
+      // ── Premium gate ──
+      const isPremium = profile?.is_premium === true;
+      const sessionDates = Array.isArray(progRow.session_dates) ? progRow.session_dates : [];
+      const sessionsCount = sessionDates.length;
+      const sortedDates = [...sessionDates].sort();
+      const firstSessionDate = sortedDates[0] ?? null;
+      const daysSinceFirst = firstSessionDate
+        ? Math.floor((Date.now() - new Date(firstSessionDate).getTime()) / 86400000)
+        : 0;
+      const shouldBlock = !isPremium && sessionsCount >= 5 && daysSinceFirst >= 7;
+      console.log(`[session-premium] sessions=${sessionsCount} days=${daysSinceFirst} isPremium=${isPremium} shouldBlock=${shouldBlock}`);
+      if (shouldBlock) { router.replace('/premium'); return; }
 
       // If session already done today, show message instead of silent redirect
       if (progRow.last_session_date === todayStr()) {

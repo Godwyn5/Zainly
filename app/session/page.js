@@ -171,7 +171,10 @@ export default function SessionPage() {
 
       // ── Premium gate ──
       const isPremium = profile?.is_premium === true;
-      const sessionDates = Array.isArray(progRow.session_dates) ? progRow.session_dates : [];
+      const today0 = todayStr();
+      const rawDates = Array.isArray(progRow.session_dates) ? progRow.session_dates : [];
+      // Count this session immediately (deduplicated) — prevents bypassing limit by not finishing
+      const sessionDates = rawDates.includes(today0) ? rawDates : [...rawDates, today0];
       const sessionsCount = sessionDates.length;
       const sortedDates = [...sessionDates].sort();
       const firstSessionDate = sortedDates[0] ?? null;
@@ -181,6 +184,10 @@ export default function SessionPage() {
       const shouldBlock = !isPremium && sessionsCount >= 5 && daysSinceFirst >= 7;
       console.log(`[session-premium] sessions=${sessionsCount} days=${daysSinceFirst} isPremium=${isPremium} shouldBlock=${shouldBlock}`);
       if (shouldBlock) { router.replace('/premium?source=blocked'); return; }
+      // Persist the session start immediately so closing mid-session still counts
+      if (!rawDates.includes(today0)) {
+        await supabase.from('progress').update({ session_dates: sessionDates }).eq('user_id', authUser.id);
+      }
 
       // If session already done today, show message instead of silent redirect
       if (progRow.last_session_date === todayStr()) {

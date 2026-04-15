@@ -2,12 +2,6 @@ import webpush from 'web-push';
 import { createClient } from '@supabase/supabase-js';
 import { NextResponse } from 'next/server';
 
-webpush.setVapidDetails(
-  process.env.VAPID_SUBJECT,
-  process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY,
-  process.env.VAPID_PRIVATE_KEY
-);
-
 function localDateStr() {
   const d = new Date();
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
@@ -21,6 +15,11 @@ async function getSupabase() {
 }
 
 async function sendMainNotifications() {
+  webpush.setVapidDetails(
+    process.env.VAPID_SUBJECT,
+    process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY,
+    process.env.VAPID_PRIVATE_KEY
+  );
   const supabase = await getSupabase();
   const today = localDateStr();
   console.log('[send-notifications] triggered, date:', today);

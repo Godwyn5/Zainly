@@ -88,5 +88,9 @@ export async function POST(request) {
     console.log('[stripe-webhook] premium deactivated for user', profile.id);
   }
 
+  if (event.type !== 'checkout.session.completed' && event.type !== 'customer.subscription.deleted') {
+    console.log('[stripe-webhook] unhandled event type:', event.type);
+  }
+
   return NextResponse.json({ received: true });
 }

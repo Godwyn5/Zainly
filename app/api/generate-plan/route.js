@@ -168,6 +168,7 @@ export async function POST(request) {
     }
 
     // ── Response ──
+    console.log(`[generate-plan] plan saved for user ${userId} — surah=${startSurah.surah} ayah=${startAyah} ayahPerDay=${ayahPerDay}`)
     return NextResponse.json({
       success:          true,
       firstSurahName:   startSurah.name,

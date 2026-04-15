@@ -43,6 +43,15 @@ export async function POST(request) {
     const { data: { user }, error: authError } = await supabaseAnon.auth.getUser(token);
     if (authError || !user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
+    if (
+      !subscription ||
+      typeof subscription.endpoint !== 'string' ||
+      typeof subscription.keys?.p256dh !== 'string' ||
+      typeof subscription.keys?.auth !== 'string'
+    ) {
+      return NextResponse.json({ error: 'Invalid subscription object.' }, { status: 400 });
+    }
+
     // Use service role to bypass RLS for the upsert
     const supabaseAdmin = createClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL,

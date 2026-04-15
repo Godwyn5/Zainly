@@ -22,6 +22,16 @@ export async function POST(request) {
       return NextResponse.json({ error: 'Non autorisé.' }, { status: 401 });
     }
 
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('is_premium')
+      .eq('id', user.id)
+      .maybeSingle();
+
+    if (profile?.is_premium === true) {
+      return NextResponse.json({ error: 'Déjà premium.' }, { status: 400 });
+    }
+
     const appUrl = process.env.NEXT_PUBLIC_APP_URL;
 
     const session = await stripe.checkout.sessions.create({

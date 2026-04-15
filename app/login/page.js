@@ -58,9 +58,11 @@ function LoginInner() {
     if (!forgotEmail.trim()) return;
     setForgotLoading(true);
     setForgotError('');
+    const redirectUrl = `${process.env.NEXT_PUBLIC_APP_URL ?? 'https://zainly-alpha.vercel.app'}/reset-password`;
     const { error: resetErr } = await supabase.auth.resetPasswordForEmail(forgotEmail.trim(), {
-      redirectTo: `${process.env.NEXT_PUBLIC_APP_URL ?? 'https://zainly-alpha.vercel.app'}/reset-password`,
+      redirectTo: redirectUrl,
     });
+    console.log('[forgot] resetPasswordForEmail result — email:', forgotEmail.trim(), '| redirectTo:', redirectUrl, '| error:', resetErr);
     setForgotLoading(false);
     if (resetErr) {
       setForgotError('Une erreur est survenue. Vérifie ton adresse et réessaie.');

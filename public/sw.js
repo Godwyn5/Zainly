@@ -1,4 +1,4 @@
-const CACHE_NAME = 'zainly-v2';
+const CACHE_NAME = 'zainly-v3';
 const PRECACHE_URLS = ['/', '/dashboard', '/offline.html', '/icon-192.png', '/manifest.json'];
 
 self.addEventListener('install', (event) => {

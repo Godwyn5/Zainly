@@ -73,21 +73,8 @@ async function sendMainNotifications() {
   return results.filter(r => r.status === 'fulfilled' && r.value === 'sent').length;
 }
 
-// Called by Vercel cron at 18h30 (GET, header x-vercel-cron: 1)
+// Called by Vercel cron (GET) — Vercel injects Authorization: Bearer CRON_SECRET automatically
 export async function GET(request) {
-  try {
-    if (request.headers.get('x-vercel-cron') !== '1') {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-    const sent = await sendMainNotifications();
-    return NextResponse.json({ success: true, sent });
-  } catch (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
-  }
-}
-
-// Called manually with Authorization: Bearer CRON_SECRET
-export async function POST(request) {
   try {
     const authHeader = request.headers.get('Authorization');
     if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {

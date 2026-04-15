@@ -106,11 +106,19 @@ export default function PremiumPage() {
           borderRadius: '12px',
           cursor: 'pointer',
           boxShadow: '0 8px 24px rgba(15,35,24,0.3)',
-          marginBottom: '12px',
+          marginBottom: '6px',
         }}
       >
-        Passer à Premium — bientôt disponible
+        Continuer avec Premium
       </button>
+      <p style={{
+        fontFamily: 'DM Sans, sans-serif',
+        fontSize: '12px',
+        color: '#A09890',
+        margin: '0 0 12px 0',
+      }}>
+        Paiement bientôt disponible
+      </p>
 
       <button
         type="button"

@@ -160,9 +160,10 @@ function PremiumPageInner() {
           PREMIUM
         </span>
 
-        <p className="font-playfair" style={{
+        <p style={{
+          fontFamily: 'DM Sans, sans-serif',
           fontSize: '52px', fontWeight: 700, color: '#163026',
-          margin: '0 0 6px 0', lineHeight: 1,
+          margin: '0 0 6px 0', lineHeight: 1, letterSpacing: '-1px',
         }}>
           2,99€
         </p>

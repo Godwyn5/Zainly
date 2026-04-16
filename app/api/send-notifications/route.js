@@ -78,11 +78,19 @@ async function sendMainNotifications() {
 
 // Called by Vercel cron (GET) — Vercel injects Authorization: Bearer CRON_SECRET automatically
 export async function GET(request) {
+  console.log('[notifications] route triggered');
   try {
     const authHeader = request.headers.get('Authorization');
-    if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+    const expected = `Bearer ${process.env.CRON_SECRET}`;
+    if (!process.env.CRON_SECRET) {
+      console.error('[notifications] CRON_SECRET env var is not set — rejecting');
+      return NextResponse.json({ error: 'CRON_SECRET not configured' }, { status: 500 });
+    }
+    if (authHeader !== expected) {
+      console.error('[notifications] auth failed — received:', authHeader?.slice(0, 20), '...');
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
+    console.log('[notifications] auth OK');
     const sent = await sendMainNotifications();
     return NextResponse.json({ success: true, sent });
   } catch (error) {

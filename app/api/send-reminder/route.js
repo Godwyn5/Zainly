@@ -74,11 +74,19 @@ async function sendReminderNotifications() {
 
 // Called by Vercel cron (GET) — Vercel injects Authorization: Bearer CRON_SECRET automatically
 export async function GET(request) {
+  console.log('[reminder] route triggered');
   try {
     const authHeader = request.headers.get('Authorization');
-    if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+    const expected = `Bearer ${process.env.CRON_SECRET}`;
+    if (!process.env.CRON_SECRET) {
+      console.error('[reminder] CRON_SECRET env var is not set — rejecting');
+      return NextResponse.json({ error: 'CRON_SECRET not configured' }, { status: 500 });
+    }
+    if (authHeader !== expected) {
+      console.error('[reminder] auth failed — received:', authHeader?.slice(0, 20), '...');
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
+    console.log('[reminder] auth OK');
     const sent = await sendReminderNotifications();
     return NextResponse.json({ success: true, sent });
   } catch (error) {

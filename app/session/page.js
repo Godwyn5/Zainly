@@ -176,13 +176,8 @@ export default function SessionPage() {
       // Count this session immediately (deduplicated) — prevents bypassing limit by not finishing
       const sessionDates = rawDates.includes(today0) ? rawDates : [...rawDates, today0];
       const sessionsCount = sessionDates.length;
-      const sortedDates = [...sessionDates].sort();
-      const firstSessionDate = sortedDates[0] ?? null;
-      const daysSinceFirst = firstSessionDate
-        ? Math.floor((Date.now() - new Date(firstSessionDate).getTime()) / 86400000)
-        : 0;
-      const shouldBlock = !isPremium && sessionsCount >= 5 && daysSinceFirst >= 7;
-      console.log(`[session-premium] sessions=${sessionsCount} days=${daysSinceFirst} isPremium=${isPremium} shouldBlock=${shouldBlock}`);
+      const shouldBlock = !isPremium && sessionsCount >= 5;
+      console.log(`[session-premium] sessions=${sessionsCount} isPremium=${isPremium} shouldBlock=${shouldBlock}`);
       if (shouldBlock) { router.replace('/premium?source=blocked'); return; }
       // Persist the session start immediately so closing mid-session still counts
       if (!rawDates.includes(today0)) {

@@ -374,6 +374,8 @@ export default function DashboardPage() {
   const progressPct     = Math.min((totalMemorized / 6236) * 100, 100);
   const today           = todayStr();
   const sessionDone     = progress?.last_session_date === today;
+  const sessionsCount   = Array.isArray(progress?.session_dates) ? progress.session_dates.length : 0;
+  const isSessionBlocked = !isPremium && sessionsCount >= 5;
   const minutesSession  = plan.minutes_per_session ?? 20;
 
   // Estimated months remaining — prefer DB value, recalculate live as fallback
@@ -586,6 +588,55 @@ export default function DashboardPage() {
                   onMouseLeave={(e) => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 8px 24px rgba(184,150,46,0.3)'; }}
                 >Commencer la révision →</button>
               )}
+            </div>
+          ) : isSessionBlocked ? (
+            <div style={{ marginTop: '16px', position: 'relative' }}>
+              {/* Carte fantôme (arrière-plan visible mais inaccessible) */}
+              <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '12px', fontStyle: 'italic', color: '#A09890', margin: '16px 0 0 0', textAlign: 'center', filter: 'blur(2px)', userSelect: 'none', pointerEvents: 'none' }}>
+                Ta session t&apos;attend aujourd&apos;hui.
+              </p>
+              <button disabled style={{
+                marginTop: '12px', width: '100%', padding: '16px', fontSize: '16px', fontWeight: 600, color: '#fff',
+                background: 'linear-gradient(135deg, #163026, #2d5a42)', border: 'none', borderRadius: '12px',
+                boxShadow: '0 8px 24px rgba(15,35,24,0.3)', opacity: 0.35, cursor: 'default', filter: 'blur(1px)',
+                pointerEvents: 'none',
+              }}>Commencer la session →</button>
+
+              {/* Overlay de blocage */}
+              <div style={{
+                position: 'absolute', inset: 0,
+                display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+                backgroundColor: 'rgba(245,240,230,0.92)',
+                borderRadius: '16px',
+                padding: '20px 16px',
+                textAlign: 'center',
+                backdropFilter: 'blur(4px)',
+                WebkitBackdropFilter: 'blur(4px)',
+              }}>
+                <span style={{ fontSize: '28px', marginBottom: '8px' }}>🔒</span>
+                <p className="font-playfair" style={{ fontSize: '16px', fontWeight: 700, color: '#163026', margin: '0 0 8px' }}>
+                  Limite gratuite atteinte
+                </p>
+                <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '13px', color: '#6B6357', lineHeight: 1.6, margin: '0 0 16px' }}>
+                  Tu as utilisé tes 5 sessions gratuites.<br/>Passe à Premium pour continuer.
+                </p>
+                <button
+                  type="button"
+                  onClick={() => router.push('/premium?source=blocked')}
+                  style={{
+                    padding: '13px 24px',
+                    fontFamily: 'DM Sans, sans-serif', fontSize: '14px', fontWeight: 600,
+                    color: '#fff', backgroundColor: '#163026',
+                    border: 'none', borderRadius: '12px', cursor: 'pointer',
+                    boxShadow: '0 6px 20px rgba(15,35,24,0.25)',
+                    transition: 'transform 0.15s, box-shadow 0.15s',
+                  }}
+                  onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 10px 28px rgba(15,35,24,0.35)'; }}
+                  onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 6px 20px rgba(15,35,24,0.25)'; }}
+                >
+                  Continuer avec Premium →
+                </button>
+              </div>
             </div>
           ) : (
             <>

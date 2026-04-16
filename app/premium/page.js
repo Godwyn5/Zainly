@@ -6,10 +6,10 @@ import { supabase } from '@/lib/supabase';
 import { LegalFooter } from '@/components/LegalLayout';
 
 const FEATURES = [
-  'Le Coran complet — 114 sourates, 6236 ayats',
-  'Sessions illimitées — avance sans interruption',
-  'Révisions complètes — garde ton rythme chaque jour',
-  'Accès Premium continu — ton parcours ne s\'arrête pas',
+  'Le Coran complet — toutes les sourates accessibles, sans restriction',
+  'Sessions illimitées — mémorise sans être bloqué',
+  'Révisions quotidiennes — ne perds plus ce que tu apprends',
+  'Accès aux futures améliorations — ton hifz évolue avec Zainly',
 ];
 
 const REASSURANCES = [
@@ -99,6 +99,10 @@ function PremiumPageInner() {
       .pw-s4 { animation: pw-fade-up 0.5s ease-out 0.35s both; }
       .pw-s5 { animation: pw-fade-up 0.5s ease-out 0.43s both; }
       .pw-s6 { animation: pw-fade-up 0.5s ease-out 0.50s both; }
+      .pw-s7 { animation: pw-fade-up 0.5s ease-out 0.57s both; }
+      @media (max-width: 400px) {
+        .pw-compare-grid { grid-template-columns: 1fr !important; }
+      }
     `}</style>
     <div style={{
       minHeight: '100vh',
@@ -209,8 +213,64 @@ function PremiumPageInner() {
         ))}
       </div>
 
-      {/* ── SECTION 4 — CITATION ── */}
-      <div className="pw-s4" style={{
+      {/* ── SECTION 4 — COMPARAISON FREEMIUM / PREMIUM ── */}
+      <div className="pw-s4" style={{ marginBottom: '32px' }}>
+        <p style={{
+          fontFamily: 'DM Sans, sans-serif',
+          fontWeight: 600, fontSize: '13px', color: '#B8962E',
+          letterSpacing: '1.5px', textAlign: 'center',
+          textTransform: 'uppercase',
+          margin: '0 0 16px 0',
+        }}>
+          Sans Premium / Avec Premium
+        </p>
+        <div className="pw-compare-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+          {/* Colonne gratuit */}
+          <div style={{
+            backgroundColor: '#fff',
+            borderRadius: '16px',
+            padding: '18px 16px',
+            border: '1px solid #D4CCC2',
+          }}>
+            <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '12px', fontWeight: 600, color: '#6B6357', margin: '0 0 12px', lineHeight: 1.4 }}>
+              Tu peux commencer… mais tu es vite limité
+            </p>
+            {[
+              '5 sessions gratuites seulement',
+              'Progression restreinte',
+              'Ton rythme peut s\'interrompre',
+              'Difficile d\'avancer sur la durée',
+            ].map((line, i) => (
+              <p key={i} style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '12px', color: '#6B6357', margin: '0 0 8px', display: 'flex', alignItems: 'flex-start', gap: '6px', lineHeight: 1.5 }}>
+                <span style={{ flexShrink: 0, marginTop: '1px', color: '#C0392B' }}>✗</span>{line}
+              </p>
+            ))}
+          </div>
+          {/* Colonne premium */}
+          <div style={{
+            backgroundColor: '#163026',
+            borderRadius: '16px',
+            padding: '18px 16px',
+          }}>
+            <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '12px', fontWeight: 600, color: '#B8962E', margin: '0 0 12px', lineHeight: 1.4 }}>
+              Tu progresses chaque jour, sans interruption
+            </p>
+            {[
+              'Sessions illimitées',
+              'Progression continue',
+              'Tu gardes ton rythme',
+              'Tu construis ton hifz sereinement',
+            ].map((line, i) => (
+              <p key={i} style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '12px', color: 'rgba(255,255,255,0.85)', margin: '0 0 8px', display: 'flex', alignItems: 'flex-start', gap: '6px', lineHeight: 1.5 }}>
+                <span style={{ flexShrink: 0, color: '#B8962E', marginTop: '1px' }}>✓</span>{line}
+              </p>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* ── SECTION 5 — CITATION ── */}
+      <div className="pw-s5" style={{
         background: '#163026',
         borderRadius: '20px',
         padding: '28px',
@@ -231,8 +291,8 @@ function PremiumPageInner() {
         </p>
       </div>
 
-      {/* ── SECTION 5 — RÉASSURANCE ── */}
-      <div className="pw-s5" style={{ textAlign: 'center', marginBottom: '32px' }}>
+      {/* ── SECTION 6 — RÉASSURANCE ── */}
+      <div className="pw-s6" style={{ textAlign: 'center', marginBottom: '32px' }}>
         {REASSURANCES.map((line, i) => (
           <p key={i} style={{
             fontFamily: 'DM Sans, sans-serif', fontSize: '13px', color: '#6B6357',
@@ -243,8 +303,8 @@ function PremiumPageInner() {
         ))}
       </div>
 
-      {/* ── SECTION 6 — CTA FINAL ── */}
-      <div className="pw-s6" style={{ textAlign: 'center' }}>
+      {/* ── SECTION 7 — CTA FINAL ── */}
+      <div className="pw-s7" style={{ textAlign: 'center' }}>
         <CTAButton loading={loading} onClick={handleSubscribe}>
           {loading ? 'Redirection…' : 'Commencer mon Hifz →'}
         </CTAButton>

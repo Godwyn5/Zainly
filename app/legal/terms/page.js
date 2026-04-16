@@ -53,7 +53,7 @@ export default function TermsPage() {
 
       <h2>8. Contact</h2>
       <p>
-        Pour toute question concernant ces conditions, contacte-nous à : <strong>support@zainly.app</strong>
+        Pour toute question, demande ou exercice de tes droits, contacte-nous à : <strong>zainlyapp@gmail.com</strong>
       </p>
 
     </LegalLayout>

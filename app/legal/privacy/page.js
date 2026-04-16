@@ -59,7 +59,7 @@ export default function PrivacyPage() {
         <li><strong>Droit à la portabilité</strong> — recevoir tes données dans un format structuré.</li>
         <li><strong>Droit d'opposition</strong> — t'opposer à certains traitements.</li>
       </ul>
-      <p>Pour exercer ces droits, contacte-nous à : <strong>support@zainly.app</strong></p>
+      <p>Pour toute question, demande ou exercice de tes droits, contacte-nous à : <strong>zainlyapp@gmail.com</strong></p>
 
       <h2>8. Durée de conservation</h2>
       <p>
@@ -68,7 +68,7 @@ export default function PrivacyPage() {
 
       <h2>9. Contact</h2>
       <p>
-        Pour toute question relative à la protection de tes données, contacte-nous à : <strong>support@zainly.app</strong>
+        Pour toute question, demande ou exercice de tes droits, contacte-nous à : <strong>zainlyapp@gmail.com</strong>
       </p>
 
     </LegalLayout>

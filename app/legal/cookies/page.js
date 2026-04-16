@@ -50,7 +50,7 @@ export default function CookiesPage() {
 
       <h2>6. Contact</h2>
       <p>
-        Pour toute question sur notre utilisation des cookies, contacte-nous à : <strong>support@zainly.app</strong>
+        Pour toute question, demande ou exercice de tes droits, contacte-nous à : <strong>zainlyapp@gmail.com</strong>
       </p>
 
     </LegalLayout>

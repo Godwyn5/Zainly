@@ -32,7 +32,7 @@ export default function RefundPage() {
 
       <h2>5. Contact</h2>
       <p>
-        Pour toute demande de remboursement ou question, contacte-nous à : <strong>support@zainly.app</strong>
+        Pour toute question, demande ou exercice de tes droits, contacte-nous à : <strong>zainlyapp@gmail.com</strong>
       </p>
       <p>
         Nous nous engageons à répondre dans les 48 heures ouvrées.

@@ -32,12 +32,17 @@ export async function POST(request) {
       process.env.SUPABASE_SERVICE_ROLE_KEY
     );
 
+    const planType = session.metadata?.plan === 'yearly' ? 'yearly'
+      : session.metadata?.plan === 'monthly' ? 'monthly'
+      : null;
+
     const { error: upsertErr } = await supabase.from('profiles').upsert({
       id:                     userId,
       is_premium:             true,
       premium_since:          new Date().toISOString(),
       stripe_customer_id:     session.customer ?? null,
       stripe_subscription_id: session.subscription ?? null,
+      plan_type:              planType,
     }, { onConflict: 'id' });
 
     if (upsertErr) {

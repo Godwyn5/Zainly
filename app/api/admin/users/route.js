@@ -2,6 +2,22 @@ import { createClient } from '@supabase/supabase-js';
 import { NextResponse } from 'next/server';
 
 const ADMIN_EMAIL = 'test2@gmail.com';
+const PAGE_SIZE = 50;
+
+function parisDateStr() {
+  return new Date().toLocaleDateString('sv-SE', { timeZone: 'Europe/Paris' });
+}
+
+function activityStatus(lastSessionDate) {
+  if (!lastSessionDate) return 'never';
+  const today = parisDateStr();
+  if (lastSessionDate === today) return 'active';
+  const todayMs = new Date(today + 'T00:00:00').getTime();
+  const lastMs  = new Date(lastSessionDate + 'T00:00:00').getTime();
+  const days = Math.round((todayMs - lastMs) / 86400000);
+  if (days <= 2) return 'recent';
+  return 'inactive';
+}
 
 export async function GET(request) {
   try {
@@ -19,27 +35,106 @@ export async function GET(request) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
-    const { page = '0' } = Object.fromEntries(new URL(request.url).searchParams);
-    const PAGE_SIZE = 50;
-    const from = parseInt(page, 10) * PAGE_SIZE;
-    const to   = from + PAGE_SIZE - 1;
+    const params = Object.fromEntries(new URL(request.url).searchParams);
+    const page      = parseInt(params.page ?? '0', 10);
+    const filter    = params.filter ?? 'all';     // all | active | recent | inactive | never | premium | free
+    const sortBy    = params.sort ?? 'created_at'; // created_at | last_session | sessions
+    const sortDir   = params.dir ?? 'desc';        // asc | desc
 
     const supabaseAdmin = createClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL,
       process.env.SUPABASE_SERVICE_ROLE_KEY
     );
-    const { data, error: fetchError, count } = await supabaseAdmin
-      .from('profiles')
-      .select('id, prenom, email, created_at', { count: 'exact' })
-      .order('created_at', { ascending: false })
-      .range(from, to);
 
-    if (fetchError) {
-      console.error('[admin/users] fetch error:', fetchError);
-      return NextResponse.json({ error: fetchError.message }, { status: 500 });
+    // Fetch all profiles with plan_type (may be null if column not yet added)
+    const { data: profiles, error: profErr, count } = await supabaseAdmin
+      .from('profiles')
+      .select('id, prenom, email, created_at, is_premium, plan_type', { count: 'exact' });
+
+    if (profErr) {
+      console.error('[admin/users] profiles fetch error:', profErr);
+      return NextResponse.json({ error: profErr.message }, { status: 500 });
     }
 
-    return NextResponse.json({ users: data ?? [], total: count ?? 0 });
+    if (!profiles || profiles.length === 0) {
+      return NextResponse.json({ users: [], total: 0 });
+    }
+
+    // Fetch latest progress row per user (last_session_date, streak, session_dates)
+    const userIds = profiles.map(p => p.id);
+    const { data: progressRows, error: progErr } = await supabaseAdmin
+      .from('progress')
+      .select('user_id, last_session_date, streak, session_dates')
+      .in('user_id', userIds);
+
+    if (progErr) {
+      console.error('[admin/users] progress fetch error:', progErr);
+      return NextResponse.json({ error: progErr.message }, { status: 500 });
+    }
+
+    // Keep only most recent progress row per user
+    const progressMap = {};
+    for (const row of (progressRows ?? [])) {
+      if (!progressMap[row.user_id]) progressMap[row.user_id] = row;
+    }
+
+    // Build enriched user list
+    let users = profiles.map(p => {
+      const prog = progressMap[p.id] ?? null;
+      const lastSession = prog?.last_session_date ?? null;
+      const streak = prog?.streak ?? 0;
+      const sessionsCount = Array.isArray(prog?.session_dates) ? prog.session_dates.length : 0;
+      const status = activityStatus(lastSession);
+      let planLabel = 'Gratuit';
+      if (p.is_premium) {
+        planLabel = p.plan_type === 'yearly' ? 'Premium annuel' : p.plan_type === 'monthly' ? 'Premium mensuel' : 'Premium';
+      }
+      return {
+        id: p.id,
+        prenom: p.prenom ?? null,
+        email: p.email ?? null,
+        created_at: p.created_at,
+        is_premium: p.is_premium ?? false,
+        plan_type: p.plan_type ?? null,
+        plan_label: planLabel,
+        last_session: lastSession,
+        streak,
+        sessions_count: sessionsCount,
+        status,
+      };
+    });
+
+    // Filter
+    if (filter === 'active')   users = users.filter(u => u.status === 'active');
+    if (filter === 'recent')   users = users.filter(u => u.status === 'recent');
+    if (filter === 'inactive') users = users.filter(u => u.status === 'inactive');
+    if (filter === 'never')    users = users.filter(u => u.status === 'never');
+    if (filter === 'premium')  users = users.filter(u => u.is_premium);
+    if (filter === 'free')     users = users.filter(u => !u.is_premium);
+
+    // Sort
+    users.sort((a, b) => {
+      let va, vb;
+      if (sortBy === 'last_session') {
+        va = a.last_session ?? '0000-00-00';
+        vb = b.last_session ?? '0000-00-00';
+      } else if (sortBy === 'sessions') {
+        va = a.sessions_count;
+        vb = b.sessions_count;
+      } else {
+        va = a.created_at ?? '';
+        vb = b.created_at ?? '';
+      }
+      if (va < vb) return sortDir === 'asc' ? -1 : 1;
+      if (va > vb) return sortDir === 'asc' ? 1 : -1;
+      return 0;
+    });
+
+    const total = users.length;
+    const from  = page * PAGE_SIZE;
+    const paged = users.slice(from, from + PAGE_SIZE);
+
+    return NextResponse.json({ users: paged, total });
   } catch (error) {
     console.error('[admin/users] unexpected error:', error);
     return NextResponse.json({ error: error.message }, { status: 500 });

@@ -69,6 +69,7 @@ export async function POST(request) {
       ],
       metadata: {
         userId: user.id,
+        plan,
       },
       customer_email: user.email ?? undefined,
       success_url: `${appUrl}/premium/success`,

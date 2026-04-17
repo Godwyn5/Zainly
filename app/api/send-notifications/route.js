@@ -2,9 +2,9 @@ import webpush from 'web-push';
 import { createClient } from '@supabase/supabase-js';
 import { NextResponse } from 'next/server';
 
-function localDateStr() {
-  const d = new Date();
-  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+// Returns today's date string in Paris timezone (Europe/Paris)
+function parisDateStr() {
+  return new Date().toLocaleDateString('sv-SE', { timeZone: 'Europe/Paris' });
 }
 
 async function getSupabase() {
@@ -14,30 +14,31 @@ async function getSupabase() {
   );
 }
 
-async function sendMainNotifications() {
+// Morning notification — 9h Paris
+async function sendMorningNotifications() {
   webpush.setVapidDetails(
     process.env.VAPID_SUBJECT,
     process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY,
     process.env.VAPID_PRIVATE_KEY
   );
   const supabase = await getSupabase();
-  const today = localDateStr();
-  console.log('[send-notifications] triggered, date:', today);
+  const today = parisDateStr();
+  console.log('[send-notifications/morning] triggered, date:', today);
 
-  // Only users not yet notified today
+  // Only users not yet sent the morning notif today
   const { data: subscriptions } = await supabase
     .from('push_subscriptions')
     .select('*')
     .or(`last_notified_at.is.null,last_notified_at.lt.${today}`);
 
-  console.log('[send-notifications] users eligible:', subscriptions?.length ?? 0);
+  console.log('[send-notifications/morning] users eligible:', subscriptions?.length ?? 0);
   if (!subscriptions || subscriptions.length === 0) return 0;
 
   const results = await Promise.allSettled(
     subscriptions.map(async (sub) => {
       const { data: prog } = await supabase
         .from('progress')
-        .select('last_session_date, total_memorized')
+        .select('last_session_date')
         .eq('user_id', sub.user_id)
         .order('created_at', { ascending: false })
         .limit(1)
@@ -45,20 +46,19 @@ async function sendMainNotifications() {
 
       if (prog?.last_session_date === today) return; // session done → skip
 
-      const hasProgress = (prog?.total_memorized ?? 0) > 0;
-      const body = hasProgress
-        ? "Ta session t'attend — ne perds pas ton progrès 🔥"
-        : "Ta session t'attend aujourd'hui";
-
       try {
         await webpush.sendNotification(sub.subscription, JSON.stringify({
-          title: 'Zainly 🕌', body, icon: '/icon-192.png', badge: '/icon-192.png', url: '/dashboard',
+          title: 'Ta session du jour est prête',
+          body: '2 ayat · 3 minutes.\nCommence tôt, avance sereinement.',
+          icon: '/icon-192.png',
+          badge: '/icon-192.png',
+          url: '/dashboard',
         }));
       } catch (e) {
         if (e.statusCode === 410 || e.statusCode === 404) {
           await supabase.from('push_subscriptions').delete().eq('id', sub.id);
         } else {
-          console.error('[send-notifications] webpush error:', e.statusCode, e.message);
+          console.error('[send-notifications/morning] webpush error:', e.statusCode, e.message);
         }
         return;
       }
@@ -72,26 +72,26 @@ async function sendMainNotifications() {
   );
 
   const sent = results.filter(r => r.status === 'fulfilled' && r.value === 'sent').length;
-  console.log('[send-notifications] sent:', sent, '/', subscriptions.length);
+  console.log('[send-notifications/morning] sent:', sent, '/', subscriptions.length);
   return sent;
 }
 
 // Called by Vercel cron (GET) — Vercel injects Authorization: Bearer CRON_SECRET automatically
 export async function GET(request) {
-  console.log('[notifications] route triggered');
+  console.log('[notifications/morning] route triggered');
   try {
     const authHeader = request.headers.get('Authorization');
     const expected = `Bearer ${process.env.CRON_SECRET}`;
     if (!process.env.CRON_SECRET) {
-      console.error('[notifications] CRON_SECRET env var is not set — rejecting');
+      console.error('[notifications/morning] CRON_SECRET env var is not set — rejecting');
       return NextResponse.json({ error: 'CRON_SECRET not configured' }, { status: 500 });
     }
     if (authHeader !== expected) {
-      console.error('[notifications] auth failed — received:', authHeader?.slice(0, 20), '...');
+      console.error('[notifications/morning] auth failed — received:', authHeader?.slice(0, 20), '...');
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
-    console.log('[notifications] auth OK');
-    const sent = await sendMainNotifications();
+    console.log('[notifications/morning] auth OK');
+    const sent = await sendMorningNotifications();
     return NextResponse.json({ success: true, sent });
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });

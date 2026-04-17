@@ -49,7 +49,7 @@ export async function GET(request) {
     // Fetch all profiles with plan_type (may be null if column not yet added)
     const { data: profiles, error: profErr, count } = await supabaseAdmin
       .from('profiles')
-      .select('id, prenom, email, created_at, is_premium, plan_type', { count: 'exact' });
+      .select('id, prenom, email, created_at, is_premium, plan_type, stripe_subscription_id, subscription_status', { count: 'exact' });
 
     if (profErr) {
       console.error('[admin/users] profiles fetch error:', profErr);
@@ -85,17 +85,25 @@ export async function GET(request) {
       const streak = prog?.streak ?? 0;
       const sessionsCount = Array.isArray(prog?.session_dates) ? prog.session_dates.length : 0;
       const status = activityStatus(lastSession);
+      // Strict premium: flag + subscription ID + plan_type + status active
+      const realPremium = p.is_premium === true
+        && !!p.stripe_subscription_id
+        && !!p.plan_type
+        && p.subscription_status === 'active';
       let planLabel = 'Gratuit';
-      if (p.is_premium) {
-        planLabel = p.plan_type === 'yearly' ? 'Premium annuel' : p.plan_type === 'monthly' ? 'Premium mensuel' : 'Premium';
+      if (realPremium) {
+        planLabel = p.plan_type === 'yearly' ? 'Premium annuel' : 'Premium mensuel';
+      } else if (p.is_premium) {
+        planLabel = 'Premium (incohérent)';
       }
       return {
         id: p.id,
         prenom: p.prenom ?? null,
         email: p.email ?? null,
         created_at: p.created_at,
-        is_premium: p.is_premium ?? false,
+        is_premium: realPremium,
         plan_type: p.plan_type ?? null,
+        subscription_status: p.subscription_status ?? null,
         plan_label: planLabel,
         last_session: lastSession,
         streak,

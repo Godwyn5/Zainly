@@ -43,6 +43,7 @@ export async function POST(request) {
       stripe_customer_id:     session.customer ?? null,
       stripe_subscription_id: session.subscription ?? null,
       plan_type:              planType,
+      subscription_status:    'active',
     }, { onConflict: 'id' });
 
     if (upsertErr) {
@@ -82,7 +83,14 @@ export async function POST(request) {
 
     const { error: updateErr } = await supabase
       .from('profiles')
-      .update({ is_premium: false })
+      .update({
+        is_premium:             false,
+        plan_type:              null,
+        stripe_subscription_id: null,
+        stripe_customer_id:     null,
+        premium_since:          null,
+        subscription_status:    'canceled',
+      })
       .eq('id', profile.id);
 
     if (updateErr) {

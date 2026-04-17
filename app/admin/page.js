@@ -32,22 +32,23 @@ export default function AdminPage() {
   }, [router]);
 
   useEffect(() => {
-    if (loading) return;
+    if (loading || !token) return;
     fetchUsers(page);
-  }, [loading, page]);
+  }, [loading, page, token]);
 
   async function fetchUsers(p) {
-    const from = p * PAGE_SIZE;
-    const to   = from + PAGE_SIZE - 1;
-    const { data, error: err, count } = await supabase
-      .from('profiles')
-      .select('id, prenom, email, created_at', { count: 'exact' })
-      .order('created_at', { ascending: false })
-      .range(from, to);
-
-    if (err) { setError(err.message); return; }
-    setUsers(data ?? []);
-    setTotal(count ?? 0);
+    setError('');
+    try {
+      const res = await fetch(`/api/admin/users?page=${p}`, {
+        headers: { 'Authorization': `Bearer ${token}` },
+      });
+      const body = await res.json();
+      if (!res.ok) { setError(body.error ?? 'Erreur inconnue'); return; }
+      setUsers(body.users ?? []);
+      setTotal(body.total ?? 0);
+    } catch (e) {
+      setError(e.message);
+    }
   }
 
   async function handleDelete(userId) {

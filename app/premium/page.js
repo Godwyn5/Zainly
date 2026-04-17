@@ -147,30 +147,31 @@ function PremiumPageInner() {
         margin: '0 0 32px 0',
         textAlign: 'center',
       }}>
-        <span style={{
-          display: 'inline-block',
-          fontFamily: 'DM Sans, sans-serif',
-          fontWeight: 700,
-          fontSize: '11px',
-          letterSpacing: '2px',
-          color: '#B8962E',
-          background: 'rgba(184,150,46,0.12)',
-          borderRadius: '20px',
-          padding: '6px 16px',
-          marginBottom: '20px',
-        }}>
-          PREMIUM
-        </span>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '4px' }}>
+          <span style={{
+            display: 'inline-block',
+            fontFamily: 'DM Sans, sans-serif',
+            fontWeight: 700,
+            fontSize: '11px',
+            letterSpacing: '2px',
+            color: '#B8962E',
+            background: 'rgba(184,150,46,0.12)',
+            borderRadius: '20px',
+            padding: '6px 16px',
+            marginBottom: '16px',
+          }}>
+            PREMIUM
+          </span>
 
-        {/* Toggle mensuel / annuel */}
-        <div style={{
-          display: 'inline-flex',
-          backgroundColor: '#F5F0E6',
-          borderRadius: '12px',
-          padding: '4px',
-          marginBottom: '24px',
-          gap: '4px',
-        }}>
+          {/* Toggle mensuel / annuel */}
+          <div style={{
+            display: 'inline-flex',
+            backgroundColor: '#F5F0E6',
+            borderRadius: '12px',
+            padding: '4px',
+            marginBottom: '24px',
+            gap: '4px',
+          }}>
           {[['monthly', 'Mensuel'], ['yearly', 'Annuel']].map(([val, label]) => (
             <button
               key={val}
@@ -204,6 +205,7 @@ function PremiumPageInner() {
               )}
             </button>
           ))}
+          </div>
         </div>
 
         <p style={{

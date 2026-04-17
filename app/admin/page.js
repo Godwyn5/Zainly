@@ -41,7 +41,7 @@ export default function AdminPage() {
     const to   = from + PAGE_SIZE - 1;
     const { data, error: err, count } = await supabase
       .from('profiles')
-      .select('id, first_name, email, created_at', { count: 'exact' })
+      .select('id, prenom, email, created_at', { count: 'exact' })
       .order('created_at', { ascending: false })
       .range(from, to);
 
@@ -129,7 +129,7 @@ export default function AdminPage() {
                   key={u.id}
                   style={{ borderBottom: i < users.length - 1 ? '1px solid #F0EBE1' : 'none' }}
                 >
-                  <td style={tdStyle}>{u.first_name ?? '—'}</td>
+                  <td style={tdStyle}>{u.prenom ?? '—'}</td>
                   <td style={{ ...tdStyle, color: '#6B6357' }}>{u.email ?? '—'}</td>
                   <td style={{ ...tdStyle, color: '#6B6357', fontSize: '13px' }}>
                     {u.created_at ? new Date(u.created_at).toLocaleDateString('fr-FR') : '—'}

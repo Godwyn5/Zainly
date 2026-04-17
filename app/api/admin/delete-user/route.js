@@ -16,10 +16,16 @@ export async function POST(request) {
     );
     const { data: { user }, error: authError } = await supabaseAnon.auth.getUser(token);
     if (authError || !user || user.email !== ADMIN_EMAIL) {
-      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+      return NextResponse.json({ error: 'Forbidden', detail: authError?.message ?? null }, { status: 403 });
     }
 
-    const { user_id } = await request.json();
+    let body;
+    try {
+      body = await request.json();
+    } catch {
+      return NextResponse.json({ error: 'Body JSON invalide' }, { status: 400 });
+    }
+    const { user_id } = body;
     if (!user_id || typeof user_id !== 'string') {
       return NextResponse.json({ error: 'user_id manquant ou invalide' }, { status: 400 });
     }
@@ -32,13 +38,17 @@ export async function POST(request) {
     const { error: deleteError } = await supabaseAdmin.auth.admin.deleteUser(user_id);
     if (deleteError) {
       console.error('[admin/delete-user] deleteUser error:', deleteError);
-      return NextResponse.json({ error: deleteError.message }, { status: 500 });
+      return NextResponse.json({
+        error: deleteError.message,
+        code: deleteError.code ?? null,
+        status: deleteError.status ?? null,
+      }, { status: 500 });
     }
 
     console.log('[admin/delete-user] deleted user:', user_id, 'by:', user.email);
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error('[admin/delete-user] unexpected error:', error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: error.message, stack: error.stack?.split('\n')[0] ?? null }, { status: 500 });
   }
 }

@@ -36,6 +36,8 @@ export default function AdminPage() {
   const [deleting, setDeleting] = useState(null);
   const [error, setError]       = useState('');
   const [token, setToken]       = useState('');
+  const [resyncing, setResyncing] = useState(false);
+  const [resyncResult, setResyncResult] = useState(null);
 
   useEffect(() => {
     async function init() {
@@ -85,6 +87,28 @@ export default function AdminPage() {
     setPage(0);
   }
 
+  async function handleResync(dryRun) {
+    if (resyncing) return;
+    setResyncing(true);
+    setResyncResult(null);
+    setError('');
+    try {
+      const res = await fetch('/api/admin/resync-premium', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ dry_run: dryRun }),
+      });
+      const body = await res.json();
+      if (!res.ok) { setError(body.error ?? 'Erreur resync'); return; }
+      setResyncResult(body);
+      if (!dryRun) fetchUsers(page, filter, sortBy, sortDir);
+    } catch (e) {
+      setError(e.message);
+    } finally {
+      setResyncing(false);
+    }
+  }
+
   async function handleDelete(userId) {
     if (!confirm('Supprimer cet utilisateur ? Cette action est irréversible.')) return;
     setDeleting(userId);
@@ -129,6 +153,44 @@ export default function AdminPage() {
             {total} utilisateur{total !== 1 ? 's' : ''} · page {page + 1}/{totalPages}
           </p>
         </div>
+        <div style={{ display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap' }}>
+          <button
+            onClick={() => handleResync(true)}
+            disabled={resyncing}
+            style={{ padding: '7px 14px', fontSize: '13px', fontWeight: 500, backgroundColor: '#fff', color: '#163026', border: '1px solid #163026', borderRadius: '8px', cursor: resyncing ? 'wait' : 'pointer' }}
+          >
+            {resyncing ? '…' : '🔍 Dry run Stripe'}
+          </button>
+          <button
+            onClick={() => { if (confirm('Appliquer la resync Stripe → Supabase ?')) handleResync(false); }}
+            disabled={resyncing}
+            style={{ padding: '7px 14px', fontSize: '13px', fontWeight: 500, backgroundColor: '#163026', color: '#fff', border: 'none', borderRadius: '8px', cursor: resyncing ? 'wait' : 'pointer' }}
+          >
+            {resyncing ? '…' : '⚡ Resync Stripe'}
+          </button>
+        </div>
+
+        {/* Resync result */}
+        {resyncResult && (
+          <div style={{ margin: '16px 0', padding: '14px 16px', backgroundColor: '#f0f7f4', border: '1px solid #c3e0d4', borderRadius: '8px', fontSize: '13px', color: '#163026' }}>
+            <strong>{resyncResult.dry_run ? '🔍 Dry run — aucune modification appliquée' : '⚡ Resync appliquée'}</strong>
+            <div style={{ marginTop: '8px', display: 'flex', gap: '24px', flexWrap: 'wrap' }}>
+              <span>✅ À activer : <strong>{resyncResult.activated?.length ?? 0}</strong></span>
+              <span>🔴 À désactiver : <strong>{resyncResult.deactivated?.length ?? 0}</strong></span>
+              <span>⚠️ Sans correspondance Supabase : <strong>{resyncResult.no_match?.length ?? 0}</strong></span>
+            </div>
+            {resyncResult.no_match?.length > 0 && (
+              <details style={{ marginTop: '8px' }}>
+                <summary style={{ cursor: 'pointer', color: '#6B6357' }}>Voir les abonnements sans correspondance</summary>
+                <ul style={{ margin: '6px 0 0 16px', padding: 0 }}>
+                  {resyncResult.no_match.map((s, i) => (
+                    <li key={i} style={{ marginBottom: '2px' }}>{s.email ?? s.customer_id} — {s.subscription_id} ({s.plan})</li>
+                  ))}
+                </ul>
+              </details>
+            )}
+          </div>
+        )}
 
         {/* Error */}
         {error && (

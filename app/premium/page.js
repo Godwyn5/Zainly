@@ -48,6 +48,7 @@ function PremiumPageInner() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [checkoutError, setCheckoutError] = useState('');
+  const [plan, setPlan] = useState('monthly');  // 'monthly' | 'yearly'
 
   useEffect(() => {
     supabase.from('profiles')
@@ -71,7 +72,8 @@ function PremiumPageInner() {
 
       const res = await fetch('/api/create-checkout-session', {
         method: 'POST',
-        headers: { Authorization: `Bearer ${session.access_token}` },
+        headers: { Authorization: `Bearer ${session.access_token}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ plan }),
       });
       const json = await res.json().catch(() => ({}));
       if (!res.ok || !json.url) {
@@ -155,27 +157,82 @@ function PremiumPageInner() {
           background: 'rgba(184,150,46,0.12)',
           borderRadius: '20px',
           padding: '6px 16px',
-          marginBottom: '16px',
+          marginBottom: '20px',
         }}>
           PREMIUM
         </span>
 
+        {/* Toggle mensuel / annuel */}
+        <div style={{
+          display: 'inline-flex',
+          backgroundColor: '#F5F0E6',
+          borderRadius: '12px',
+          padding: '4px',
+          marginBottom: '24px',
+          gap: '4px',
+        }}>
+          {[['monthly', 'Mensuel'], ['yearly', 'Annuel']].map(([val, label]) => (
+            <button
+              key={val}
+              type="button"
+              onClick={() => setPlan(val)}
+              style={{
+                padding: '8px 20px',
+                fontFamily: 'DM Sans, sans-serif',
+                fontSize: '14px',
+                fontWeight: plan === val ? 700 : 500,
+                color: plan === val ? '#163026' : '#A09890',
+                backgroundColor: plan === val ? '#fff' : 'transparent',
+                border: 'none',
+                borderRadius: '9px',
+                cursor: 'pointer',
+                boxShadow: plan === val ? '0 2px 8px rgba(0,0,0,0.08)' : 'none',
+                transition: 'all 0.18s ease',
+                position: 'relative',
+              }}
+            >
+              {label}
+              {val === 'yearly' && (
+                <span style={{
+                  position: 'absolute', top: '-8px', right: '-6px',
+                  backgroundColor: '#163026', color: '#B8962E',
+                  fontSize: '9px', fontWeight: 700, letterSpacing: '0.5px',
+                  padding: '2px 5px', borderRadius: '6px',
+                }}>
+                  -30%
+                </span>
+              )}
+            </button>
+          ))}
+        </div>
+
         <p style={{
           fontFamily: 'DM Sans, sans-serif',
           fontSize: '52px', fontWeight: 700, color: '#163026',
-          margin: '0 0 6px 0', lineHeight: 1, letterSpacing: '-1px',
+          margin: '0 0 4px 0', lineHeight: 1, letterSpacing: '-1px',
+          transition: 'opacity 0.15s',
         }}>
-          2,99€
+          {plan === 'monthly' ? '2,99€' : '24,99€'}
         </p>
         <p style={{
           fontSize: '14px', color: '#6B6357',
-          margin: '0 0 24px 0',
+          margin: '0 0 4px 0',
         }}>
-          par mois — annulable à tout moment
+          {plan === 'monthly' ? 'par mois — annulable à tout moment' : 'par an — annulable à tout moment'}
         </p>
+        {plan === 'yearly' && (
+          <p style={{
+            fontFamily: 'DM Sans, sans-serif', fontSize: '13px',
+            color: '#2d5a42', fontWeight: 600,
+            margin: '0 0 20px 0',
+          }}>
+            ✨ 2 mois offerts avec l’abonnement annuel
+          </p>
+        )}
+        {plan === 'monthly' && <div style={{ marginBottom: '20px' }} />}
 
         <CTAButton loading={loading} onClick={handleSubscribe}>
-          {loading ? 'Redirection…' : 'Commencer mon Hifz →'}
+          {loading ? 'Redirection…' : plan === 'yearly' ? 'Commencer mon Hifz (annuel) →' : 'Commencer mon Hifz →'}
         </CTAButton>
 
         {checkoutError && (

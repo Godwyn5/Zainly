@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
@@ -64,17 +64,17 @@ const features = [
   {
     icon: <IconPlan />,
     title: 'Un plan fait pour toi',
-    desc: 'R├®ponds ├á quelques questions et re├ºois un programme de m├®morisation adapt├® ├á ton niveau et ton emploi du temps.',
+    desc: 'Réponds à quelques questions et reçois un programme de mémorisation adapté à ton niveau et ton emploi du temps.',
   },
   {
     icon: <IconRevision />,
     title: 'Ne jamais oublier',
-    desc: "L'app te rappelle chaque jour quels versets revoir, au bon moment, pour que ta m├®moire reste solide.",
+    desc: "L'app te rappelle chaque jour quels versets revoir, au bon moment, pour que ta mémoire reste solide.",
   },
   {
     icon: <IconConstance />,
     title: 'La constance enfin possible',
-    desc: 'Des sessions courtes et guid├®es chaque jour pour avancer r├®guli├¿rement, sans te d├®courager.',
+    desc: 'Des sessions courtes et guidées chaque jour pour avancer régulièrement, sans te décourager.',
   },
 ];
 
@@ -93,7 +93,7 @@ export default function Home() {
     const { error } = await supabase.from('waitlist').insert({ email: newsletterEmail.trim() });
     if (error) {
       const isDuplicate = error.code === '23505' || (error.message ?? '').toLowerCase().includes('duplicate');
-      setNewsletterError(isDuplicate ? 'Tu es d├®j├á inscrit(e) avec cet email.' : 'Une erreur est survenue. R├®essaie.');
+      setNewsletterError(isDuplicate ? 'Tu es déjà inscrit(e) avec cet email.' : 'Une erreur est survenue. Réessaie.');
       return;
     }
     setNewsletterSubmitted(true);
@@ -192,7 +192,7 @@ export default function Home() {
             whiteSpace: 'nowrap',
           }}
         >
-          Ïº┘ä┘ä┘ç
+          الله
         </span>
 
         <RevealSection>
@@ -207,7 +207,7 @@ export default function Home() {
               position: 'relative',
             }}
           >
-            M├®morise. Retiens. <span style={{ color: '#B8962E' }}>Deviens.</span>
+            Mémorise. Retiens. <span style={{ color: '#B8962E' }}>Deviens.</span>
           </h1>
           <p
             className="font-playfair"
@@ -221,7 +221,7 @@ export default function Home() {
               position: 'relative',
             }}
           >
-            Un hafiz ne na├«t pas. Il se construit, un ayat ├á la fois.
+            Un hafiz ne naît pas. Il se construit, un ayat à la fois.
           </p>
 
           <div style={{ marginTop: '48px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', position: 'relative' }}>
@@ -257,7 +257,7 @@ export default function Home() {
               onMouseEnter={(e) => (e.currentTarget.style.borderBottomColor = '#6B6357')}
               onMouseLeave={(e) => (e.currentTarget.style.borderBottomColor = 'transparent')}
             >
-              D├®j├á un compte ? Connexion
+              Déjà un compte ? Connexion
             </Link>
           </div>
         </RevealSection>
@@ -326,7 +326,7 @@ export default function Home() {
               className="font-playfair"
               style={{ fontSize: '72px', color: '#B8962E', lineHeight: 0.6, display: 'block', marginBottom: '24px' }}
             >
-              "
+              &ldquo;
             </span>
             <p
               className="font-playfair"
@@ -335,7 +335,7 @@ export default function Home() {
               Le meilleur d&apos;entre vous est celui qui apprend le Coran et l&apos;enseigne.
             </p>
             <p style={{ marginTop: '20px', fontSize: '14px', color: '#6B6357', letterSpacing: '0.05em' }}>
-              ÔÇö Sahih al-Bukhari
+              &mdash; Sahih al-Bukhari
             </p>
           </div>
         </RevealSection>
@@ -358,7 +358,7 @@ export default function Home() {
               className="font-playfair"
               style={{ fontSize: '28px', fontWeight: 600, color: '#163026', margin: '0 0 12px 0' }}
             >
-              Rejoins la communaut├® Zainly
+              Rejoins la communauté Zainly
             </h2>
             <p
               className="font-playfair"
@@ -415,7 +415,7 @@ export default function Home() {
               </form>
             ) : (
               <p style={{ fontSize: '16px', fontWeight: 500, color: '#163026', margin: 0 }}>
-                Bienvenue dans la communaut├® Ô£ô
+                Bienvenue dans la communauté ✓
               </p>
             )}
           </div>
@@ -432,7 +432,7 @@ export default function Home() {
         }}
       >
         <p style={{ fontSize: '13px', color: '#6B6357', margin: 0 }}>
-          ┬® {new Date().getFullYear()} Zainly. Tous droits r├®serv├®s.
+          &copy; {new Date().getFullYear()} Zainly. Tous droits réservés.
         </p>
       </footer>
     </div>

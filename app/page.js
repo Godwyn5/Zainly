@@ -121,8 +121,55 @@ export default function Home() {
         minHeight: '100vh',
       }}
     >
+      <style>{`
+        @media (max-width: 768px) {
+          .desktop-only { display: none !important; }
+          .mobile-landing { display: flex !important; }
+        }
+        @media (min-width: 769px) {
+          .mobile-landing { display: none !important; }
+        }
+      `}</style>
+
+      {/* MOBILE LANDING */}
+      <div
+        className="mobile-landing"
+        style={{
+          display: 'none',
+          flexDirection: 'column',
+          minHeight: '100vh',
+          padding: '0 20px',
+          backgroundColor: '#F5F0E6',
+          boxSizing: 'border-box',
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: '20px' }}>
+          <span className="font-playfair" style={{ fontSize: '28px', fontWeight: 700, color: '#163026', letterSpacing: '0.01em' }}>Zainly</span>
+          <Link href="/login" style={{ fontFamily: 'DM Sans, sans-serif', fontWeight: 500, fontSize: '14px', color: '#163026', padding: '8px 16px', border: '1.5px solid #163026', borderRadius: '8px', textDecoration: 'none', backgroundColor: 'transparent' }}>Connexion</Link>
+        </div>
+        <div style={{ paddingTop: '48px', textAlign: 'center', flex: 1 }}>
+          <span style={{ display: 'inline-block', backgroundColor: '#163026', color: '#FFFFFF', fontFamily: 'DM Sans, sans-serif', fontWeight: 600, fontSize: '11px', letterSpacing: '1.5px', borderRadius: '20px', padding: '6px 16px' }}>
+            🕌 App de mémorisation du Coran
+          </span>
+          <h1 className="font-playfair" style={{ fontSize: '36px', fontWeight: 700, color: '#163026', lineHeight: 1.2, marginTop: '16px', marginBottom: 0 }}>
+            Deviens Hafiz.<br />Un ayat à la fois.
+          </h1>
+          <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '15px', color: '#6B6357', marginTop: '12px', lineHeight: 1.55 }}>
+            Ton plan personnel. Ta progression. Chaque jour.
+          </p>
+          <Link href="/register" className="font-playfair" style={{ display: 'block', width: '100%', padding: '18px', marginTop: '24px', fontSize: '17px', fontWeight: 600, backgroundColor: '#163026', color: '#FFFFFF', borderRadius: '14px', textDecoration: 'none', boxSizing: 'border-box', boxShadow: '0 4px 20px rgba(22,48,38,0.18)' }}>
+            Commencer maintenant
+          </Link>
+          <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '12px', color: '#999999', marginTop: '8px' }}>Gratuit · Sans engagement</p>
+          <div style={{ width: '200px', height: '400px', backgroundColor: '#163026', borderRadius: '24px', boxShadow: '0 8px 40px rgba(0,0,0,0.15)', margin: '32px auto 0', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <span className="font-playfair" style={{ color: '#FFFFFF', fontSize: '24px', fontWeight: 700 }}>Zainly</span>
+          </div>
+        </div>
+      </div>
+
       {/* NAVBAR */}
       <nav
+        className="desktop-only"
         style={{
           position: 'fixed',
           top: 0,
@@ -166,6 +213,7 @@ export default function Home() {
 
       {/* HERO */}
       <section
+        className="desktop-only"
         style={{
           paddingTop: 'clamp(100px, 20vw, 180px)',
           paddingBottom: '120px',
@@ -264,7 +312,7 @@ export default function Home() {
       </section>
 
       {/* FEATURES */}
-      <section style={{ paddingBottom: '100px', paddingLeft: '24px', paddingRight: '24px' }}>
+      <section className="desktop-only" style={{ paddingBottom: '100px', paddingLeft: '24px', paddingRight: '24px' }}>
         <RevealSection>
           <div
             style={{
@@ -310,6 +358,7 @@ export default function Home() {
 
       {/* CITATION */}
       <section
+        className="desktop-only"
         style={{
           paddingTop: '80px',
           paddingBottom: '80px',
@@ -342,7 +391,7 @@ export default function Home() {
       </section>
 
       {/* NEWSLETTER */}
-      <section style={{ paddingTop: '80px', paddingBottom: '80px', paddingLeft: '24px', paddingRight: '24px' }}>
+      <section className="desktop-only" style={{ paddingTop: '80px', paddingBottom: '80px', paddingLeft: '24px', paddingRight: '24px' }}>
         <RevealSection>
           <div
             style={{
@@ -424,6 +473,7 @@ export default function Home() {
 
       {/* FOOTER */}
       <footer
+        className="desktop-only"
         style={{
           paddingTop: '32px',
           paddingBottom: '32px',

@@ -150,6 +150,9 @@ export default function SessionPage() {
   const [retryMsg, setRetryMsg]         = useState(false);
   const [audioError, setAudioError]     = useState(false);
   const [showSuccess, setShowSuccess]   = useState(false); // micro-feedback after correct
+  const [finalTestPhase, setFinalTestPhase] = useState(null); // null|'intro'|'recitation'|'sincerity'|'success'|'reinforce'
+  const [revealShown, setRevealShown]   = useState(false); // whether user clicked "Voir la réponse"
+  const finalTestHandledRef = useRef(false);
 
   // ── 4-step memorization flow ──
 
@@ -352,7 +355,8 @@ export default function SessionPage() {
       setTimeout(() => {
         revealHandledRef.current = false;
         if (idx < ayats.length - 1) goNext();
-        else saveAndContinue();
+        else if (ayats.length > 0) setFinalTestPhase('intro'); // trigger final test
+        else saveAndContinue(true);
       }, 600);
     } else {
       setListenCount(0);
@@ -363,7 +367,7 @@ export default function SessionPage() {
     }
   }
 
-  async function saveAndContinue() {
+  async function saveAndContinue(validated = true) {
     if (saveHandledRef.current) return;
     if (!progress) {
       setError('Données de progression manquantes. Retourne au dashboard.');
@@ -381,12 +385,14 @@ export default function SessionPage() {
         .eq('user_id', user.id).order('created_at', { ascending: false }).limit(1);
       const freshProg = freshProgRows?.[0] ?? progress;
 
+      const finalStatus = validated ? 'validated' : 'reinforce';
       const reviewRows = ayats.map(ayat => ({
-        user_id:      user.id,
-        surah_number: surahNumber,   // use state, not progress closure
-        ayah:         ayat.id,
-        next_review:  tomorrow,
-        review_cycle: 1,
+        user_id:           user.id,
+        surah_number:      surahNumber,   // use state, not progress closure
+        ayah:              ayat.id,
+        next_review:       tomorrow,
+        review_cycle:      1,
+        final_test_status: finalStatus,
       }));
       let insertedCount = 0;
       // Insert each review item individually — skip if already exists (23505)
@@ -414,8 +420,11 @@ export default function SessionPage() {
       const lastDate = freshProg.last_session_date;
       const streakBase = (lastDate === yesterdayStr || lastDate === today) ? (freshProg.streak ?? 0) : 0;
       const newStreak = alreadyDoneToday ? streakBase : streakBase + 1;
-      // Only count actually new ayats (non-duplicate inserts)
-      const newTotalMemorized = (freshProg.total_memorized ?? 0) + insertedCount;
+      // Only count new ayats toward total_memorized if final test was validated
+      // reinforce = worked but not yet solid — not counted as memorized
+      const newTotalMemorized = validated
+        ? (freshProg.total_memorized ?? 0) + insertedCount
+        : (freshProg.total_memorized ?? 0);
 
       // Append today to session_dates without duplicates
       const existingDates   = Array.isArray(freshProg.session_dates) ? freshProg.session_dates : [];
@@ -461,6 +470,7 @@ export default function SessionPage() {
         .limit(1);
       const hasDue = Array.isArray(dueItems) && dueItems.length > 0;
       revealHandledRef.current = false;
+      console.log(`[session] final-test validated=${validated}`);
       router.push(hasDue ? '/revision' : '/done');
     } catch (err) {
       console.error('[session] saveAndContinue error:', err);
@@ -469,6 +479,28 @@ export default function SessionPage() {
       saveHandledRef.current = false;
       revealHandledRef.current = false;
     }
+  }
+
+  function handleFinalSuccess() {
+    if (finalTestHandledRef.current) return;
+    finalTestHandledRef.current = true;
+    setFinalTestPhase('success');
+  }
+
+  function handleFinalReinforce() {
+    if (finalTestHandledRef.current) return;
+    finalTestHandledRef.current = true;
+    setFinalTestPhase('reinforce');
+  }
+
+  function handleFinalRetry() {
+    // Restart session from scratch
+    router.replace('/session');
+  }
+
+  function handleFinalContinue(validated) {
+    finalTestHandledRef.current = false;
+    saveAndContinue(validated);
   }
 
   const ayat      = ayats[currentIndex];
@@ -555,6 +587,158 @@ export default function SessionPage() {
         <button onClick={() => router.push('/dashboard')} style={{ padding: '10px 24px', backgroundColor: '#163026', color: '#fff', border: 'none', borderRadius: '10px', cursor: 'pointer', fontFamily: 'DM Sans, sans-serif' }}>
           Retour au dashboard
         </button>
+      </div>
+    );
+  }
+
+  // ── FINAL TEST SCREENS ──
+  if (finalTestPhase !== null) {
+    const ref = `${surahName} • ${startAyah === endAyah ? `Ayat ${startAyah}` : `Ayat ${startAyah} à ${endAyah}`}`;
+
+    // S1 — Intro
+    if (finalTestPhase === 'intro') return (
+      <div style={{ minHeight: '100vh', backgroundColor: '#F5F0E6', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '32px 24px', textAlign: 'center', gap: '0' }}>
+        <style>{CSS}</style>
+        <span style={{ fontSize: '48px', marginBottom: '24px' }}>🎯</span>
+        <h1 className="font-playfair" style={{ fontSize: '28px', fontWeight: 700, color: '#163026', margin: '0 0 16px 0', lineHeight: 1.2 }}>Test final</h1>
+        <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '16px', color: '#6B6357', lineHeight: 1.65, margin: '0 0 40px 0', maxWidth: '320px' }}>
+          Récite maintenant sans aide les versets travaillés aujourd&apos;hui.
+        </p>
+        <button
+          type="button"
+          className="font-playfair"
+          onClick={() => setFinalTestPhase('recitation')}
+          style={{ width: '100%', maxWidth: '360px', padding: '18px', fontSize: '17px', fontWeight: 600, backgroundColor: '#163026', color: '#fff', border: 'none', borderRadius: '14px', cursor: 'pointer', boxShadow: '0 8px 28px rgba(22,48,38,0.22)' }}
+        >
+          Commencer le test
+        </button>
+      </div>
+    );
+
+    // S2 — Récitation
+    if (finalTestPhase === 'recitation') return (
+      <div style={{ minHeight: '100vh', backgroundColor: '#F5F0E6', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '32px 24px', textAlign: 'center' }}>
+        <style>{CSS}</style>
+        <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '12px', fontWeight: 600, letterSpacing: '1.5px', color: '#B8962E', textTransform: 'uppercase', margin: '0 0 16px 0' }}>
+          À réciter
+        </p>
+        <h2 className="font-playfair" style={{ fontSize: '22px', fontWeight: 700, color: '#163026', margin: '0 0 40px 0', lineHeight: 1.3 }}>
+          {ref}
+        </h2>
+        <p className="font-playfair" style={{ fontSize: '16px', fontStyle: 'italic', color: '#6B6357', margin: '0 0 48px 0', lineHeight: 1.6, maxWidth: '300px' }}>
+          Récite de mémoire, sans regarder le texte.
+        </p>
+        {!revealShown ? (
+          <button
+            type="button"
+            className="font-playfair"
+            onClick={() => setRevealShown(true)}
+            style={{ width: '100%', maxWidth: '360px', padding: '16px', fontSize: '16px', fontWeight: 600, backgroundColor: 'transparent', color: '#163026', border: '1.5px solid #163026', borderRadius: '14px', cursor: 'pointer' }}
+          >
+            Voir la réponse
+          </button>
+        ) : (
+          <button
+            type="button"
+            className="font-playfair"
+            onClick={() => { setRevealShown(false); setFinalTestPhase('sincerity'); }}
+            style={{ width: '100%', maxWidth: '360px', padding: '16px', fontSize: '16px', fontWeight: 600, backgroundColor: '#163026', color: '#fff', border: 'none', borderRadius: '14px', cursor: 'pointer', boxShadow: '0 8px 28px rgba(22,48,38,0.22)' }}
+          >
+            Continuer →
+          </button>
+        )}
+      </div>
+    );
+
+    // S3 — Sincérité
+    if (finalTestPhase === 'sincerity') return (
+      <div style={{ minHeight: '100vh', backgroundColor: '#F5F0E6', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '32px 24px', textAlign: 'center' }}>
+        <style>{CSS}</style>
+        <h2 className="font-playfair" style={{ fontSize: '24px', fontWeight: 700, color: '#163026', margin: '0 0 20px 0', lineHeight: 1.3 }}>
+          As-tu réussi à réciter sans aide&nbsp;?
+        </h2>
+        <div style={{ backgroundColor: '#EDE5D0', borderRadius: '16px', padding: '20px 24px', maxWidth: '360px', marginBottom: '36px' }}>
+          <p className="font-playfair" style={{ fontSize: '14px', fontStyle: 'italic', color: '#163026', lineHeight: 1.7, margin: '0 0 10px 0' }}>
+            &ldquo;La vérité mène au bien, et le mensonge mène à l&apos;égarement.&rdquo;
+          </p>
+          <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '11px', color: '#9B9189', margin: '0 0 12px 0', letterSpacing: '0.05em' }}>Rapporté par al-Bukhari et Muslim</p>
+          <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '13px', color: '#6B6357', margin: 0, fontWeight: 500 }}>Sois sincère avec toi-même.</p>
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', width: '100%', maxWidth: '360px' }}>
+          <button
+            type="button"
+            className="font-playfair"
+            onClick={handleFinalSuccess}
+            style={{ padding: '18px', fontSize: '16px', fontWeight: 600, backgroundColor: '#163026', color: '#fff', border: 'none', borderRadius: '14px', cursor: 'pointer', boxShadow: '0 8px 28px rgba(22,48,38,0.22)' }}
+          >
+            Oui, j&apos;ai réussi ✓
+          </button>
+          <button
+            type="button"
+            className="font-playfair"
+            onClick={handleFinalReinforce}
+            style={{ padding: '16px', fontSize: '16px', fontWeight: 600, backgroundColor: 'transparent', color: '#6B6357', border: '1.5px solid #D4CCC2', borderRadius: '14px', cursor: 'pointer' }}
+          >
+            Non, je dois renforcer
+          </button>
+        </div>
+      </div>
+    );
+
+    // S4a — Succès
+    if (finalTestPhase === 'success') return (
+      <div style={{ minHeight: '100vh', backgroundColor: '#F5F0E6', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '32px 24px', textAlign: 'center', gap: '0' }}>
+        <style>{CSS}</style>
+        <span style={{ fontSize: '64px', animation: 'checkPop 0.4s ease both', display: 'block', marginBottom: '24px' }}>✓</span>
+        <h2 className="font-playfair" style={{ fontSize: '28px', fontWeight: 700, color: '#163026', margin: '0 0 12px 0', lineHeight: 1.2 }}>Mémorisation validée</h2>
+        <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '15px', color: '#6B6357', margin: '0 0 40px 0', lineHeight: 1.6 }}>
+          Tu connais maintenant ces versets.
+        </p>
+        <button
+          type="button"
+          className="font-playfair"
+          onClick={() => handleFinalContinue(true)}
+          disabled={saving}
+          style={{ width: '100%', maxWidth: '360px', padding: '18px', fontSize: '17px', fontWeight: 600, backgroundColor: '#163026', color: '#fff', border: 'none', borderRadius: '14px', cursor: saving ? 'wait' : 'pointer', opacity: saving ? 0.7 : 1, boxShadow: '0 8px 28px rgba(22,48,38,0.22)' }}
+        >
+          {saving ? 'Sauvegarde...' : 'Terminer la session'}
+        </button>
+      </div>
+    );
+
+    // S4b — Renforcement
+    if (finalTestPhase === 'reinforce') return (
+      <div style={{ minHeight: '100vh', backgroundColor: '#F5F0E6', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '32px 24px', textAlign: 'center', gap: '0' }}>
+        <style>{CSS}</style>
+        <span style={{ fontSize: '48px', marginBottom: '24px' }}>📖</span>
+        <h2 className="font-playfair" style={{ fontSize: '24px', fontWeight: 700, color: '#163026', margin: '0 0 16px 0', lineHeight: 1.25 }}>
+          Session terminée — à renforcer
+        </h2>
+        <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '15px', color: '#163026', margin: '0 0 10px 0', lineHeight: 1.65, maxWidth: '320px', fontWeight: 500 }}>
+          Tu as avancé, mais ces versets ne sont pas encore parfaitement ancrés.
+        </p>
+        <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '14px', color: '#6B6357', margin: '0 0 40px 0', lineHeight: 1.65, maxWidth: '320px' }}>
+          Tu peux les retrouver et les revoir à tout moment dans &ldquo;Mon Hifz&rdquo;.
+        </p>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', width: '100%', maxWidth: '360px' }}>
+          <button
+            type="button"
+            className="font-playfair"
+            onClick={handleFinalRetry}
+            style={{ padding: '18px', fontSize: '17px', fontWeight: 600, backgroundColor: '#163026', color: '#fff', border: 'none', borderRadius: '14px', cursor: 'pointer', boxShadow: '0 8px 28px rgba(22,48,38,0.22)' }}
+          >
+            Refaire maintenant
+          </button>
+          <button
+            type="button"
+            className="font-playfair"
+            onClick={() => handleFinalContinue(false)}
+            disabled={saving}
+            style={{ padding: '16px', fontSize: '16px', fontWeight: 600, backgroundColor: 'transparent', color: '#6B6357', border: '1.5px solid #D4CCC2', borderRadius: '14px', cursor: saving ? 'wait' : 'pointer', opacity: saving ? 0.7 : 1 }}
+          >
+            {saving ? 'Sauvegarde...' : 'Continuer'}
+          </button>
+        </div>
       </div>
     );
   }

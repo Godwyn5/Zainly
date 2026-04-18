@@ -620,13 +620,13 @@ export default function SessionPage() {
     const ref = `${surahName} • ${startAyah === endAyah ? `Ayat ${startAyah}` : `Ayat ${startAyah} à ${endAyah}`}`;
 
     const screenVariants = {
-      initial:  { opacity: 0, y: 20 },
-      animate:  { opacity: 1, y: 0,  transition: { duration: 0.35, ease: 'easeOut' } },
-      exit:     { opacity: 0, scale: 0.98, transition: { duration: 0.2, ease: 'easeIn' } },
+      initial:  { opacity: 0, y: 24, scale: 0.98 },
+      animate:  { opacity: 1, y: 0,  scale: 1,    transition: { duration: 0.4, ease: 'easeOut' } },
+      exit:     { opacity: 0, y: -10, scale: 0.98, transition: { duration: 0.2, ease: 'easeIn' } },
     };
 
     return (
-      <div style={{ minHeight: '100vh', backgroundColor: '#F5F0E6', position: 'relative', overflow: 'hidden' }}>
+      <div style={{ minHeight: '100vh', backgroundColor: '#F5F0E6', position: 'relative' }}>
         <style>{CSS}</style>
         <AnimatePresence mode="wait">
 

@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
@@ -64,17 +64,17 @@ const features = [
   {
     icon: <IconPlan />,
     title: 'Un plan fait pour toi',
-    desc: 'Réponds à quelques questions et reçois un programme de mémorisation adapté à ton niveau et ton emploi du temps.',
+    desc: 'R├®ponds ├á quelques questions et re├ºois un programme de m├®morisation adapt├® ├á ton niveau et ton emploi du temps.',
   },
   {
     icon: <IconRevision />,
     title: 'Ne jamais oublier',
-    desc: "L'app te rappelle chaque jour quels versets revoir, au bon moment, pour que ta mémoire reste solide.",
+    desc: "L'app te rappelle chaque jour quels versets revoir, au bon moment, pour que ta m├®moire reste solide.",
   },
   {
     icon: <IconConstance />,
     title: 'La constance enfin possible',
-    desc: 'Des sessions courtes et guidées chaque jour pour avancer régulièrement, sans te décourager.',
+    desc: 'Des sessions courtes et guid├®es chaque jour pour avancer r├®guli├¿rement, sans te d├®courager.',
   },
 ];
 
@@ -93,7 +93,7 @@ export default function Home() {
     const { error } = await supabase.from('waitlist').insert({ email: newsletterEmail.trim() });
     if (error) {
       const isDuplicate = error.code === '23505' || (error.message ?? '').toLowerCase().includes('duplicate');
-      setNewsletterError(isDuplicate ? 'Tu es déjà inscrit(e) avec cet email.' : 'Une erreur est survenue. Réessaie.');
+      setNewsletterError(isDuplicate ? 'Tu es d├®j├á inscrit(e) avec cet email.' : 'Une erreur est survenue. R├®essaie.');
       return;
     }
     setNewsletterSubmitted(true);
@@ -121,55 +121,8 @@ export default function Home() {
         minHeight: '100vh',
       }}
     >
-      <style>{`
-        @media (max-width: 768px) {
-          .desktop-only { display: none !important; }
-          .mobile-landing { display: flex !important; }
-        }
-        @media (min-width: 769px) {
-          .mobile-landing { display: none !important; }
-        }
-      `}</style>
-
-      {/* MOBILE LANDING */}
-      <div
-        className="mobile-landing"
-        style={{
-          display: 'none',
-          flexDirection: 'column',
-          minHeight: '100vh',
-          padding: '0 20px',
-          backgroundColor: '#F5F0E6',
-          boxSizing: 'border-box',
-        }}
-      >
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: '20px' }}>
-          <span className="font-playfair" style={{ fontSize: '28px', fontWeight: 700, color: '#163026', letterSpacing: '0.01em' }}>Zainly</span>
-          <Link href="/login" style={{ fontFamily: 'DM Sans, sans-serif', fontWeight: 500, fontSize: '14px', color: '#163026', padding: '8px 16px', border: '1.5px solid #163026', borderRadius: '8px', textDecoration: 'none', backgroundColor: 'transparent' }}>Connexion</Link>
-        </div>
-        <div style={{ paddingTop: '48px', textAlign: 'center', flex: 1 }}>
-          <span style={{ display: 'inline-block', backgroundColor: '#163026', color: '#FFFFFF', fontFamily: 'DM Sans, sans-serif', fontWeight: 600, fontSize: '11px', letterSpacing: '1.5px', borderRadius: '20px', padding: '6px 16px' }}>
-            🕌 App de mémorisation du Coran
-          </span>
-          <h1 className="font-playfair" style={{ fontSize: '36px', fontWeight: 700, color: '#163026', lineHeight: 1.2, marginTop: '16px', marginBottom: 0 }}>
-            Deviens Hafiz.<br />Un ayat à la fois.
-          </h1>
-          <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '15px', color: '#6B6357', marginTop: '12px', lineHeight: 1.55 }}>
-            Ton plan personnel. Ta progression. Chaque jour.
-          </p>
-          <Link href="/register" className="font-playfair" style={{ display: 'block', width: '100%', padding: '18px', marginTop: '24px', fontSize: '17px', fontWeight: 600, backgroundColor: '#163026', color: '#FFFFFF', borderRadius: '14px', textDecoration: 'none', boxSizing: 'border-box', boxShadow: '0 4px 20px rgba(22,48,38,0.18)' }}>
-            Commencer maintenant
-          </Link>
-          <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '12px', color: '#999999', marginTop: '8px' }}>Gratuit · Sans engagement</p>
-          <div style={{ width: '200px', height: '400px', backgroundColor: '#163026', borderRadius: '24px', boxShadow: '0 8px 40px rgba(0,0,0,0.15)', margin: '32px auto 0', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <span className="font-playfair" style={{ color: '#FFFFFF', fontSize: '24px', fontWeight: 700 }}>Zainly</span>
-          </div>
-        </div>
-      </div>
-
       {/* NAVBAR */}
       <nav
-        className="desktop-only"
         style={{
           position: 'fixed',
           top: 0,
@@ -213,7 +166,6 @@ export default function Home() {
 
       {/* HERO */}
       <section
-        className="desktop-only"
         style={{
           paddingTop: 'clamp(100px, 20vw, 180px)',
           paddingBottom: '120px',
@@ -240,7 +192,7 @@ export default function Home() {
             whiteSpace: 'nowrap',
           }}
         >
-          الله
+          Ïº┘ä┘ä┘ç
         </span>
 
         <RevealSection>
@@ -255,7 +207,7 @@ export default function Home() {
               position: 'relative',
             }}
           >
-            Mémorise. Retiens. <span style={{ color: '#B8962E' }}>Deviens.</span>
+            M├®morise. Retiens. <span style={{ color: '#B8962E' }}>Deviens.</span>
           </h1>
           <p
             className="font-playfair"
@@ -269,7 +221,7 @@ export default function Home() {
               position: 'relative',
             }}
           >
-            Un hafiz ne naît pas. Il se construit, un ayat à la fois.
+            Un hafiz ne na├«t pas. Il se construit, un ayat ├á la fois.
           </p>
 
           <div style={{ marginTop: '48px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', position: 'relative' }}>
@@ -305,14 +257,14 @@ export default function Home() {
               onMouseEnter={(e) => (e.currentTarget.style.borderBottomColor = '#6B6357')}
               onMouseLeave={(e) => (e.currentTarget.style.borderBottomColor = 'transparent')}
             >
-              Déjà un compte ? Connexion
+              D├®j├á un compte ? Connexion
             </Link>
           </div>
         </RevealSection>
       </section>
 
       {/* FEATURES */}
-      <section className="desktop-only" style={{ paddingBottom: '100px', paddingLeft: '24px', paddingRight: '24px' }}>
+      <section style={{ paddingBottom: '100px', paddingLeft: '24px', paddingRight: '24px' }}>
         <RevealSection>
           <div
             style={{
@@ -358,7 +310,6 @@ export default function Home() {
 
       {/* CITATION */}
       <section
-        className="desktop-only"
         style={{
           paddingTop: '80px',
           paddingBottom: '80px',
@@ -384,14 +335,14 @@ export default function Home() {
               Le meilleur d&apos;entre vous est celui qui apprend le Coran et l&apos;enseigne.
             </p>
             <p style={{ marginTop: '20px', fontSize: '14px', color: '#6B6357', letterSpacing: '0.05em' }}>
-              — Sahih al-Bukhari
+              ÔÇö Sahih al-Bukhari
             </p>
           </div>
         </RevealSection>
       </section>
 
       {/* NEWSLETTER */}
-      <section className="desktop-only" style={{ paddingTop: '80px', paddingBottom: '80px', paddingLeft: '24px', paddingRight: '24px' }}>
+      <section style={{ paddingTop: '80px', paddingBottom: '80px', paddingLeft: '24px', paddingRight: '24px' }}>
         <RevealSection>
           <div
             style={{
@@ -407,7 +358,7 @@ export default function Home() {
               className="font-playfair"
               style={{ fontSize: '28px', fontWeight: 600, color: '#163026', margin: '0 0 12px 0' }}
             >
-              Rejoins la communauté Zainly
+              Rejoins la communaut├® Zainly
             </h2>
             <p
               className="font-playfair"
@@ -464,7 +415,7 @@ export default function Home() {
               </form>
             ) : (
               <p style={{ fontSize: '16px', fontWeight: 500, color: '#163026', margin: 0 }}>
-                Bienvenue dans la communauté ✓
+                Bienvenue dans la communaut├® Ô£ô
               </p>
             )}
           </div>
@@ -473,7 +424,6 @@ export default function Home() {
 
       {/* FOOTER */}
       <footer
-        className="desktop-only"
         style={{
           paddingTop: '32px',
           paddingBottom: '32px',
@@ -482,7 +432,7 @@ export default function Home() {
         }}
       >
         <p style={{ fontSize: '13px', color: '#6B6357', margin: 0 }}>
-          © {new Date().getFullYear()} Zainly. Tous droits réservés.
+          ┬® {new Date().getFullYear()} Zainly. Tous droits r├®serv├®s.
         </p>
       </footer>
     </div>

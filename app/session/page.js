@@ -153,6 +153,7 @@ export default function SessionPage() {
   const [finalTestPhase, setFinalTestPhase] = useState(null); // null|'intro'|'recitation'|'sincerity'|'success'|'reinforce'
   const [revealShown, setRevealShown]   = useState(false); // whether user clicked "Voir la réponse"
   const finalTestHandledRef = useRef(false);
+  const loadSessionRef      = useRef(null);
 
   // ── 4-step memorization flow ──
 
@@ -278,6 +279,7 @@ export default function SessionPage() {
       }
     }
 
+    loadSessionRef.current = loadSession;
     loadSession().catch(err => {
       console.error('[session] load error:', err);
       setError(err.message);
@@ -494,8 +496,29 @@ export default function SessionPage() {
   }
 
   function handleFinalRetry() {
-    // Restart session from scratch
-    router.replace('/session');
+    // router.replace('/session') is a no-op in Next.js App Router when already on /session
+    // (component stays mounted, useEffect does not re-run).
+    // Instead: reset all local state then re-invoke loadSession directly.
+    setCurrentIndex(0);
+    setVisible(true);
+    setListenCount(0);
+    setSessionPhase('listen');
+    setRetryMsg(false);
+    setAudioError(false);
+    setShowSuccess(false);
+    setFinalTestPhase(null);
+    setRevealShown(false);
+    setSaving(false);
+    setError('');
+    finalTestHandledRef.current = false;
+    revealHandledRef.current    = false;
+    saveHandledRef.current      = false;
+    setLoading(true);
+    loadSessionRef.current?.().catch(err => {
+      console.error('[session] retry load error:', err);
+      setError(err.message);
+      setLoading(false);
+    });
   }
 
   function handleFinalContinue(validated) {

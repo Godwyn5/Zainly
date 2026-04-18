@@ -6,7 +6,6 @@ import { supabase } from '@/lib/supabase';
 import { nextZainlySurah, ZAINLY_INDEX_BY_SURAH } from '@/lib/zainlyOrder';
 import TajweedText from '@/components/TajweedText';
 import { resolveTajweed } from '@/lib/tajweedResolver';
-import { motion, AnimatePresence } from 'framer-motion';
 
 let cachedQuran   = null;
 let cachedQuranFr = null;
@@ -62,23 +61,6 @@ const CSS = `
   70%  { opacity: 1; }
   100% { opacity: 0; }
 }
-@keyframes screenEnter {
-  from { opacity: 0; transform: translateY(12px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-@keyframes iconPop {
-  0%   { transform: scale(0.6); opacity: 0; }
-  65%  { transform: scale(1.08); opacity: 1; }
-  100% { transform: scale(1); opacity: 1; }
-}
-.ft-btn-primary {
-  transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
-}
-.ft-btn-primary:active { transform: scale(0.97); }
-.ft-btn-secondary {
-  transition: transform 0.15s ease, background-color 0.15s ease;
-}
-.ft-btn-secondary:active { transform: scale(0.97); }
 `;
 
 // ─── Ayah difficulty scorer ─────────────────────────────────────────────────
@@ -638,278 +620,148 @@ export default function SessionPage() {
 
     // S1 — Intro
     if (finalTestPhase === 'intro') return (
-      <div style={{ minHeight: '100vh', background: 'linear-gradient(170deg, #F5F0E6 0%, #EDE5D5 100%)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '40px 24px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
+      <div style={{ minHeight: '100vh', backgroundColor: '#F5F0E6', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '32px 24px', textAlign: 'center', gap: '0' }}>
         <style>{CSS}</style>
-        <span className="font-amiri" style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', fontSize: 'clamp(180px, 55vw, 320px)', color: '#163026', opacity: 0.03, pointerEvents: 'none', userSelect: 'none', lineHeight: 1, whiteSpace: 'nowrap' }}>الله</span>
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, ease: 'easeOut' }}
-          style={{ position: 'relative' }}
+        <span style={{ fontSize: '48px', marginBottom: '24px' }}>🎯</span>
+        <h1 className="font-playfair" style={{ fontSize: '28px', fontWeight: 700, color: '#163026', margin: '0 0 16px 0', lineHeight: 1.2 }}>Test final</h1>
+        <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '16px', color: '#6B6357', lineHeight: 1.65, margin: '0 0 40px 0', maxWidth: '320px' }}>
+          Récite maintenant sans aide les versets travaillés aujourd&apos;hui.
+        </p>
+        <button
+          type="button"
+          className="font-playfair"
+          onClick={() => setFinalTestPhase('recitation')}
+          style={{ width: '100%', maxWidth: '360px', padding: '18px', fontSize: '17px', fontWeight: 600, backgroundColor: '#163026', color: '#fff', border: 'none', borderRadius: '14px', cursor: 'pointer', boxShadow: '0 8px 28px rgba(22,48,38,0.22)' }}
         >
-          <motion.div
-            initial={{ scale: 0.6, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.35, ease: 'easeOut', delay: 0.08 }}
-            style={{ width: '72px', height: '72px', borderRadius: '50%', backgroundColor: '#163026', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 28px auto', boxShadow: '0 12px 32px rgba(22,48,38,0.28)' }}
-          >
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#B8962E" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg>
-          </motion.div>
-          <h1 className="font-playfair" style={{ fontSize: '32px', fontWeight: 700, color: '#163026', margin: '0 0 14px 0', lineHeight: 1.15 }}>Test final</h1>
-          <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '16px', color: '#6B6357', lineHeight: 1.7, margin: '0 0 48px 0', maxWidth: '300px' }}>
-            Récite maintenant sans aide les versets travaillés aujourd&apos;hui.
-          </p>
-          <motion.button
-            type="button"
-            className="font-playfair"
-            onClick={() => setFinalTestPhase('recitation')}
-            whileTap={{ scale: 0.96 }}
-            whileHover={{ scale: 1.02 }}
-            transition={{ duration: 0.15 }}
-            style={{ width: '100%', maxWidth: '360px', padding: '19px', fontSize: '17px', fontWeight: 600, backgroundColor: '#163026', color: '#fff', border: 'none', borderRadius: '16px', cursor: 'pointer', boxShadow: '0 12px 36px rgba(22,48,38,0.30)' }}
-          >
-            Commencer le test
-          </motion.button>
-        </motion.div>
+          Commencer le test
+        </button>
       </div>
     );
 
     // S2 — Récitation
     if (finalTestPhase === 'recitation') return (
-      <div style={{ minHeight: '100vh', background: 'linear-gradient(170deg, #F5F0E6 0%, #EDE5D5 100%)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '40px 24px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
+      <div style={{ minHeight: '100vh', backgroundColor: '#F5F0E6', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '32px 24px', textAlign: 'center' }}>
         <style>{CSS}</style>
-        <span className="font-amiri" style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', fontSize: 'clamp(180px, 55vw, 320px)', color: '#163026', opacity: 0.03, pointerEvents: 'none', userSelect: 'none', lineHeight: 1, whiteSpace: 'nowrap' }}>الله</span>
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, ease: 'easeOut' }}
-          style={{ position: 'relative', width: '100%', maxWidth: '400px' }}
-        >
-          <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '11px', fontWeight: 700, letterSpacing: '2px', color: '#B8962E', textTransform: 'uppercase', margin: '0 0 24px 0' }}>
-            À réciter
-          </p>
-          <motion.div
-            initial={{ scale: 0.95, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.3, ease: 'easeOut', delay: 0.08 }}
-            style={{ backgroundColor: '#fff', borderRadius: '20px', padding: '32px 28px', marginBottom: '32px', boxShadow: '0 4px 24px rgba(22,48,38,0.08), 0 1px 4px rgba(22,48,38,0.05)', border: '1px solid rgba(22,48,38,0.06)' }}
+        <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '12px', fontWeight: 600, letterSpacing: '1.5px', color: '#B8962E', textTransform: 'uppercase', margin: '0 0 16px 0' }}>
+          À réciter
+        </p>
+        <h2 className="font-playfair" style={{ fontSize: '22px', fontWeight: 700, color: '#163026', margin: '0 0 40px 0', lineHeight: 1.3 }}>
+          {ref}
+        </h2>
+        <p className="font-playfair" style={{ fontSize: '16px', fontStyle: 'italic', color: '#6B6357', margin: '0 0 48px 0', lineHeight: 1.6, maxWidth: '300px' }}>
+          Récite de mémoire, sans regarder le texte.
+        </p>
+        {!revealShown ? (
+          <button
+            type="button"
+            className="font-playfair"
+            onClick={() => setRevealShown(true)}
+            style={{ width: '100%', maxWidth: '360px', padding: '16px', fontSize: '16px', fontWeight: 600, backgroundColor: 'transparent', color: '#163026', border: '1.5px solid #163026', borderRadius: '14px', cursor: 'pointer' }}
           >
-            <h2 className="font-playfair" style={{ fontSize: '24px', fontWeight: 700, color: '#163026', margin: '0 0 16px 0', lineHeight: 1.3 }}>
-              {ref}
-            </h2>
-            <p className="font-playfair" style={{ fontSize: '15px', fontStyle: 'italic', color: '#6B6357', margin: 0, lineHeight: 1.65 }}>
-              Récite de mémoire, sans regarder le texte.
-            </p>
-          </motion.div>
-          <AnimatePresence mode="wait">
-            {!revealShown ? (
-              <motion.button
-                key="voir"
-                type="button"
-                className="font-playfair"
-                onClick={() => setRevealShown(true)}
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -8 }}
-                transition={{ duration: 0.2 }}
-                whileTap={{ scale: 0.96 }}
-                whileHover={{ scale: 1.02 }}
-                style={{ width: '100%', padding: '17px', fontSize: '16px', fontWeight: 600, backgroundColor: 'transparent', color: '#163026', border: '1.5px solid #163026', borderRadius: '16px', cursor: 'pointer' }}
-              >
-                Voir la réponse
-              </motion.button>
-            ) : (
-              <motion.button
-                key="continuer"
-                type="button"
-                className="font-playfair"
-                onClick={() => { setRevealShown(false); setFinalTestPhase('sincerity'); }}
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -8 }}
-                transition={{ duration: 0.2 }}
-                whileTap={{ scale: 0.96 }}
-                whileHover={{ scale: 1.02 }}
-                style={{ width: '100%', padding: '17px', fontSize: '16px', fontWeight: 600, backgroundColor: '#163026', color: '#fff', border: 'none', borderRadius: '16px', cursor: 'pointer', boxShadow: '0 12px 36px rgba(22,48,38,0.30)' }}
-              >
-                Continuer →
-              </motion.button>
-            )}
-          </AnimatePresence>
-        </motion.div>
+            Voir la réponse
+          </button>
+        ) : (
+          <button
+            type="button"
+            className="font-playfair"
+            onClick={() => { setRevealShown(false); setFinalTestPhase('sincerity'); }}
+            style={{ width: '100%', maxWidth: '360px', padding: '16px', fontSize: '16px', fontWeight: 600, backgroundColor: '#163026', color: '#fff', border: 'none', borderRadius: '14px', cursor: 'pointer', boxShadow: '0 8px 28px rgba(22,48,38,0.22)' }}
+          >
+            Continuer →
+          </button>
+        )}
       </div>
     );
 
     // S3 — Sincérité
     if (finalTestPhase === 'sincerity') return (
-      <div style={{ minHeight: '100vh', background: 'linear-gradient(170deg, #F5F0E6 0%, #EDE5D5 100%)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '40px 24px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
+      <div style={{ minHeight: '100vh', backgroundColor: '#F5F0E6', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '32px 24px', textAlign: 'center' }}>
         <style>{CSS}</style>
-        <span className="font-amiri" style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', fontSize: 'clamp(180px, 55vw, 320px)', color: '#163026', opacity: 0.03, pointerEvents: 'none', userSelect: 'none', lineHeight: 1, whiteSpace: 'nowrap' }}>الله</span>
-        <motion.div
-          initial="hidden"
-          animate="visible"
-          variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.1 } } }}
-          style={{ position: 'relative', width: '100%', maxWidth: '400px' }}
-        >
-          <motion.h2
-            variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: 'easeOut' } } }}
+        <h2 className="font-playfair" style={{ fontSize: '24px', fontWeight: 700, color: '#163026', margin: '0 0 20px 0', lineHeight: 1.3 }}>
+          As-tu réussi à réciter sans aide&nbsp;?
+        </h2>
+        <div style={{ backgroundColor: '#EDE5D0', borderRadius: '16px', padding: '20px 24px', maxWidth: '360px', marginBottom: '36px' }}>
+          <p className="font-playfair" style={{ fontSize: '14px', fontStyle: 'italic', color: '#163026', lineHeight: 1.7, margin: '0 0 10px 0' }}>
+            &ldquo;La vérité mène au bien, et le mensonge mène à l&apos;égarement.&rdquo;
+          </p>
+          <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '11px', color: '#9B9189', margin: '0 0 12px 0', letterSpacing: '0.05em' }}>Rapporté par al-Bukhari et Muslim</p>
+          <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '13px', color: '#6B6357', margin: 0, fontWeight: 500 }}>Sois sincère avec toi-même.</p>
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', width: '100%', maxWidth: '360px' }}>
+          <button
+            type="button"
             className="font-playfair"
-            style={{ fontSize: '26px', fontWeight: 700, color: '#163026', margin: '0 0 28px 0', lineHeight: 1.25 }}
+            onClick={handleFinalSuccess}
+            style={{ padding: '18px', fontSize: '16px', fontWeight: 600, backgroundColor: '#163026', color: '#fff', border: 'none', borderRadius: '14px', cursor: 'pointer', boxShadow: '0 8px 28px rgba(22,48,38,0.22)' }}
           >
-            As-tu réussi à réciter sans aide&nbsp;?
-          </motion.h2>
-          <motion.div
-            variants={{ hidden: { opacity: 0, scale: 0.95 }, visible: { opacity: 1, scale: 1, transition: { duration: 0.3, ease: 'easeOut' } } }}
-            style={{ backgroundColor: '#fff', borderRadius: '20px', padding: '24px 28px', marginBottom: '28px', boxShadow: '0 4px 24px rgba(22,48,38,0.08), 0 1px 4px rgba(22,48,38,0.05)', border: '1px solid rgba(22,48,38,0.06)', textAlign: 'left' }}
+            Oui, j&apos;ai réussi ✓
+          </button>
+          <button
+            type="button"
+            className="font-playfair"
+            onClick={handleFinalReinforce}
+            style={{ padding: '16px', fontSize: '16px', fontWeight: 600, backgroundColor: 'transparent', color: '#6B6357', border: '1.5px solid #D4CCC2', borderRadius: '14px', cursor: 'pointer' }}
           >
-            <div style={{ width: '28px', height: '2px', backgroundColor: '#B8962E', borderRadius: '2px', marginBottom: '16px' }} />
-            <p className="font-playfair" style={{ fontSize: '15px', fontStyle: 'italic', color: '#163026', lineHeight: 1.75, margin: '0 0 12px 0' }}>
-              &ldquo;La vérité mène au bien, et le mensonge mène à l&apos;égarement.&rdquo;
-            </p>
-            <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '11px', color: '#B8962E', margin: '0 0 14px 0', letterSpacing: '0.08em', textTransform: 'uppercase', fontWeight: 600 }}>Rapporté par al-Bukhari et Muslim</p>
-            <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '13px', color: '#6B6357', margin: 0, fontWeight: 500 }}>Sois sincère avec toi-même.</p>
-          </motion.div>
-          <motion.div
-            variants={{ hidden: { opacity: 0, y: 12 }, visible: { opacity: 1, y: 0, transition: { duration: 0.3, ease: 'easeOut' } } }}
-            style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}
-          >
-            <motion.button
-              type="button"
-              className="font-playfair"
-              onClick={handleFinalSuccess}
-              whileTap={{ scale: 0.96 }}
-              whileHover={{ scale: 1.02 }}
-              transition={{ duration: 0.15 }}
-              style={{ padding: '19px', fontSize: '16px', fontWeight: 600, backgroundColor: '#163026', color: '#fff', border: 'none', borderRadius: '16px', cursor: 'pointer', boxShadow: '0 12px 36px rgba(22,48,38,0.30)' }}
-            >
-              Oui, j&apos;ai réussi ✓
-            </motion.button>
-            <motion.button
-              type="button"
-              className="font-playfair"
-              onClick={handleFinalReinforce}
-              whileTap={{ scale: 0.96 }}
-              whileHover={{ scale: 1.02 }}
-              transition={{ duration: 0.15 }}
-              style={{ padding: '17px', fontSize: '16px', fontWeight: 600, backgroundColor: 'transparent', color: '#6B6357', border: '1.5px solid #D4CCC2', borderRadius: '16px', cursor: 'pointer' }}
-            >
-              Non, je dois renforcer
-            </motion.button>
-          </motion.div>
-        </motion.div>
+            Non, je dois renforcer
+          </button>
+        </div>
       </div>
     );
 
     // S4a — Succès
     if (finalTestPhase === 'success') return (
-      <div style={{ minHeight: '100vh', background: 'linear-gradient(170deg, #0d1f17 0%, #163026 55%, #1e4535 100%)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '40px 24px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
+      <div style={{ minHeight: '100vh', backgroundColor: '#F5F0E6', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '32px 24px', textAlign: 'center', gap: '0' }}>
         <style>{CSS}</style>
-        <span className="font-amiri" style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', fontSize: 'clamp(180px, 55vw, 320px)', color: '#fff', opacity: 0.04, pointerEvents: 'none', userSelect: 'none', lineHeight: 1, whiteSpace: 'nowrap' }}>الله</span>
-        <motion.div
-          initial="hidden"
-          animate="visible"
-          variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.1 } } }}
-          style={{ position: 'relative', width: '100%', maxWidth: '400px' }}
+        <span style={{ fontSize: '64px', animation: 'checkPop 0.4s ease both', display: 'block', marginBottom: '24px' }}>✓</span>
+        <h2 className="font-playfair" style={{ fontSize: '28px', fontWeight: 700, color: '#163026', margin: '0 0 12px 0', lineHeight: 1.2 }}>Mémorisation validée</h2>
+        <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '15px', color: '#6B6357', margin: '0 0 40px 0', lineHeight: 1.6 }}>
+          Tu connais maintenant ces versets.
+        </p>
+        <button
+          type="button"
+          className="font-playfair"
+          onClick={() => handleFinalContinue(true)}
+          disabled={saving}
+          style={{ width: '100%', maxWidth: '360px', padding: '18px', fontSize: '17px', fontWeight: 600, backgroundColor: '#163026', color: '#fff', border: 'none', borderRadius: '14px', cursor: saving ? 'wait' : 'pointer', opacity: saving ? 0.7 : 1, boxShadow: '0 8px 28px rgba(22,48,38,0.22)' }}
         >
-          <motion.div
-            variants={{ hidden: { scale: 0, opacity: 0 }, visible: { scale: 1, opacity: 1, transition: { type: 'spring', stiffness: 260, damping: 18, delay: 0.05 } } }}
-            style={{ width: '80px', height: '80px', borderRadius: '50%', border: '2px solid rgba(184,150,46,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 32px auto' }}
-          >
-            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#B8962E" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-          </motion.div>
-          <motion.h2
-            variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0, transition: { duration: 0.35, ease: 'easeOut' } } }}
-            className="font-playfair"
-            style={{ fontSize: '32px', fontWeight: 700, color: '#fff', margin: '0 0 12px 0', lineHeight: 1.15 }}
-          >
-            Mémorisation validée
-          </motion.h2>
-          <motion.p
-            variants={{ hidden: { opacity: 0, y: 12 }, visible: { opacity: 1, y: 0, transition: { duration: 0.3, ease: 'easeOut' } } }}
-            style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '16px', color: 'rgba(255,255,255,0.6)', margin: '0 0 52px 0', lineHeight: 1.6 }}
-          >
-            Tu connais maintenant ces versets.
-          </motion.p>
-          <motion.button
-            variants={{ hidden: { opacity: 0, y: 12 }, visible: { opacity: 1, y: 0, transition: { duration: 0.3, ease: 'easeOut' } } }}
-            type="button"
-            className="font-playfair"
-            onClick={() => handleFinalContinue(true)}
-            disabled={saving}
-            whileTap={{ scale: 0.96 }}
-            whileHover={{ scale: 1.02 }}
-            style={{ width: '100%', padding: '19px', fontSize: '17px', fontWeight: 600, backgroundColor: '#B8962E', color: '#fff', border: 'none', borderRadius: '16px', cursor: saving ? 'wait' : 'pointer', opacity: saving ? 0.7 : 1, boxShadow: '0 12px 36px rgba(184,150,46,0.35)' }}
-          >
-            {saving ? 'Sauvegarde...' : 'Terminer la session'}
-          </motion.button>
-        </motion.div>
+          {saving ? 'Sauvegarde...' : 'Terminer la session'}
+        </button>
       </div>
     );
 
     // S4b — Renforcement
     if (finalTestPhase === 'reinforce') return (
-      <div style={{ minHeight: '100vh', background: 'linear-gradient(170deg, #F5F0E6 0%, #EDE5D5 100%)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '40px 24px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
+      <div style={{ minHeight: '100vh', backgroundColor: '#F5F0E6', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '32px 24px', textAlign: 'center', gap: '0' }}>
         <style>{CSS}</style>
-        <span className="font-amiri" style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', fontSize: 'clamp(180px, 55vw, 320px)', color: '#163026', opacity: 0.03, pointerEvents: 'none', userSelect: 'none', lineHeight: 1, whiteSpace: 'nowrap' }}>الله</span>
-        <motion.div
-          initial="hidden"
-          animate="visible"
-          variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.1 } } }}
-          style={{ position: 'relative', width: '100%', maxWidth: '400px' }}
-        >
-          <motion.div
-            variants={{ hidden: { scale: 0.6, opacity: 0 }, visible: { scale: 1, opacity: 1, transition: { type: 'spring', stiffness: 240, damping: 18, delay: 0.05 } } }}
-            style={{ width: '72px', height: '72px', borderRadius: '50%', backgroundColor: '#EDE5D0', border: '1.5px solid #D4CCC2', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 28px auto' }}
-          >
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#163026" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
-          </motion.div>
-          <motion.h2
-            variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0, transition: { duration: 0.35, ease: 'easeOut' } } }}
+        <span style={{ fontSize: '48px', marginBottom: '24px' }}>📖</span>
+        <h2 className="font-playfair" style={{ fontSize: '24px', fontWeight: 700, color: '#163026', margin: '0 0 16px 0', lineHeight: 1.25 }}>
+          Session terminée — à renforcer
+        </h2>
+        <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '15px', color: '#163026', margin: '0 0 10px 0', lineHeight: 1.65, maxWidth: '320px', fontWeight: 500 }}>
+          Tu as avancé, mais ces versets ne sont pas encore parfaitement ancrés.
+        </p>
+        <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '14px', color: '#6B6357', margin: '0 0 40px 0', lineHeight: 1.65, maxWidth: '320px' }}>
+          Tu peux les retrouver et les revoir à tout moment dans &ldquo;Mon Hifz&rdquo;.
+        </p>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', width: '100%', maxWidth: '360px' }}>
+          <button
+            type="button"
             className="font-playfair"
-            style={{ fontSize: '26px', fontWeight: 700, color: '#163026', margin: '0 0 20px 0', lineHeight: 1.25 }}
+            onClick={handleFinalRetry}
+            style={{ padding: '18px', fontSize: '17px', fontWeight: 600, backgroundColor: '#163026', color: '#fff', border: 'none', borderRadius: '14px', cursor: 'pointer', boxShadow: '0 8px 28px rgba(22,48,38,0.22)' }}
           >
-            Session terminée — à renforcer
-          </motion.h2>
-          <motion.div
-            variants={{ hidden: { opacity: 0, scale: 0.95 }, visible: { opacity: 1, scale: 1, transition: { duration: 0.3, ease: 'easeOut' } } }}
-            style={{ backgroundColor: '#fff', borderRadius: '20px', padding: '24px 28px', marginBottom: '32px', boxShadow: '0 4px 24px rgba(22,48,38,0.08), 0 1px 4px rgba(22,48,38,0.05)', border: '1px solid rgba(22,48,38,0.06)', textAlign: 'left' }}
+            Refaire maintenant
+          </button>
+          <button
+            type="button"
+            className="font-playfair"
+            onClick={() => handleFinalContinue(false)}
+            disabled={saving}
+            style={{ padding: '16px', fontSize: '16px', fontWeight: 600, backgroundColor: 'transparent', color: '#6B6357', border: '1.5px solid #D4CCC2', borderRadius: '14px', cursor: saving ? 'wait' : 'pointer', opacity: saving ? 0.7 : 1 }}
           >
-            <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '15px', color: '#163026', margin: '0 0 10px 0', lineHeight: 1.65, fontWeight: 500 }}>
-              Tu as avancé, mais ces versets ne sont pas encore parfaitement ancrés.
-            </p>
-            <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '14px', color: '#6B6357', margin: 0, lineHeight: 1.65 }}>
-              Tu peux les retrouver et les revoir à tout moment dans &ldquo;Mon Hifz&rdquo;.
-            </p>
-          </motion.div>
-          <motion.div
-            variants={{ hidden: { opacity: 0, y: 12 }, visible: { opacity: 1, y: 0, transition: { duration: 0.3, ease: 'easeOut' } } }}
-            style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}
-          >
-            <motion.button
-              type="button"
-              className="font-playfair"
-              onClick={handleFinalRetry}
-              whileTap={{ scale: 0.96 }}
-              whileHover={{ scale: 1.02 }}
-              transition={{ duration: 0.15 }}
-              style={{ padding: '19px', fontSize: '17px', fontWeight: 600, backgroundColor: '#163026', color: '#fff', border: 'none', borderRadius: '16px', cursor: 'pointer', boxShadow: '0 12px 36px rgba(22,48,38,0.28)' }}
-            >
-              Refaire maintenant
-            </motion.button>
-            <motion.button
-              type="button"
-              className="font-playfair"
-              onClick={() => handleFinalContinue(false)}
-              disabled={saving}
-              whileTap={{ scale: 0.96 }}
-              whileHover={{ scale: 1.02 }}
-              transition={{ duration: 0.15 }}
-              style={{ padding: '17px', fontSize: '16px', fontWeight: 600, backgroundColor: 'transparent', color: '#6B6357', border: '1.5px solid #D4CCC2', borderRadius: '16px', cursor: saving ? 'wait' : 'pointer', opacity: saving ? 0.7 : 1 }}
-            >
-              {saving ? 'Sauvegarde...' : 'Continuer'}
-            </motion.button>
-          </motion.div>
-        </motion.div>
+            {saving ? 'Sauvegarde...' : 'Continuer'}
+          </button>
+        </div>
       </div>
     );
   }

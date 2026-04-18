@@ -6,6 +6,7 @@ import { supabase } from '@/lib/supabase';
 import { nextZainlySurah, ZAINLY_INDEX_BY_SURAH } from '@/lib/zainlyOrder';
 import TajweedText from '@/components/TajweedText';
 import { resolveTajweed } from '@/lib/tajweedResolver';
+import { motion } from 'framer-motion';
 
 let cachedQuran   = null;
 let cachedQuranFr = null;
@@ -620,21 +621,52 @@ export default function SessionPage() {
 
     // S1 — Intro
     if (finalTestPhase === 'intro') return (
-      <div style={{ minHeight: '100vh', backgroundColor: '#F5F0E6', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '32px 24px', textAlign: 'center', gap: '0' }}>
+      <div style={{ minHeight: '100vh', backgroundColor: '#F5F0E6', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '32px 24px', textAlign: 'center' }}>
         <style>{CSS}</style>
-        <span style={{ fontSize: '48px', marginBottom: '24px' }}>🎯</span>
-        <h1 className="font-playfair" style={{ fontSize: '28px', fontWeight: 700, color: '#163026', margin: '0 0 16px 0', lineHeight: 1.2 }}>Test final</h1>
-        <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '16px', color: '#6B6357', lineHeight: 1.65, margin: '0 0 40px 0', maxWidth: '320px' }}>
-          Récite maintenant sans aide les versets travaillés aujourd&apos;hui.
-        </p>
-        <button
-          type="button"
-          className="font-playfair"
-          onClick={() => setFinalTestPhase('recitation')}
-          style={{ width: '100%', maxWidth: '360px', padding: '18px', fontSize: '17px', fontWeight: 600, backgroundColor: '#163026', color: '#fff', border: 'none', borderRadius: '14px', cursor: 'pointer', boxShadow: '0 8px 28px rgba(22,48,38,0.22)' }}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: 'easeOut' }}
+          style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}
         >
-          Commencer le test
-        </button>
+          <motion.span
+            initial={{ scale: 0, rotate: -10 }}
+            animate={{ scale: [0, 1.2, 1], rotate: ['-10deg', '0deg'] }}
+            transition={{ duration: 0.5, delay: 0.1, ease: 'easeOut' }}
+            style={{ fontSize: '48px', marginBottom: '24px', display: 'block' }}
+          >
+            🎯
+          </motion.span>
+          <motion.h1
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.2, ease: 'easeOut' }}
+            className="font-playfair"
+            style={{ fontSize: '28px', fontWeight: 700, color: '#163026', margin: '0 0 16px 0', lineHeight: 1.2 }}
+          >
+            Test final
+          </motion.h1>
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.4, delay: 0.3, ease: 'easeOut' }}
+            style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '16px', color: '#6B6357', lineHeight: 1.65, margin: '0 0 40px 0', maxWidth: '320px' }}
+          >
+            Récite maintenant sans aide les versets travaillés aujourd&apos;hui.
+          </motion.p>
+          <motion.button
+            type="button"
+            className="font-playfair"
+            onClick={() => setFinalTestPhase('recitation')}
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.3, delay: 0.4, ease: 'easeOut' }}
+            whileTap={{ scale: 0.96 }}
+            style={{ width: '100%', maxWidth: '360px', padding: '18px', fontSize: '17px', fontWeight: 600, backgroundColor: '#163026', color: '#fff', border: 'none', borderRadius: '14px', cursor: 'pointer', boxShadow: '0 8px 28px rgba(22,48,38,0.22)' }}
+          >
+            Commencer le test
+          </motion.button>
+        </motion.div>
       </div>
     );
 

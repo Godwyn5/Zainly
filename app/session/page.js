@@ -6,7 +6,7 @@ import { supabase } from '@/lib/supabase';
 import { nextZainlySurah, ZAINLY_INDEX_BY_SURAH } from '@/lib/zainlyOrder';
 import TajweedText from '@/components/TajweedText';
 import { resolveTajweed } from '@/lib/tajweedResolver';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 
 let cachedQuran   = null;
 let cachedQuranFr = null;
@@ -619,181 +619,209 @@ export default function SessionPage() {
   if (finalTestPhase !== null) {
     const ref = `${surahName} • ${startAyah === endAyah ? `Ayat ${startAyah}` : `Ayat ${startAyah} à ${endAyah}`}`;
 
-    // S1 — Intro
-    if (finalTestPhase === 'intro') return (
-      <div style={{ minHeight: '100vh', backgroundColor: '#F5F0E6', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '32px 24px', textAlign: 'center' }}>
-        <style>{CSS}</style>
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, ease: 'easeOut' }}
-          style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}
-        >
-          <motion.span
-            initial={{ scale: 0, rotate: -10 }}
-            animate={{ scale: [0, 1.2, 1], rotate: ['-10deg', '0deg'] }}
-            transition={{ duration: 0.5, delay: 0.1, ease: 'easeOut' }}
-            style={{ fontSize: '48px', marginBottom: '24px', display: 'block' }}
-          >
-            🎯
-          </motion.span>
-          <motion.h1
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: 0.2, ease: 'easeOut' }}
-            className="font-playfair"
-            style={{ fontSize: '28px', fontWeight: 700, color: '#163026', margin: '0 0 16px 0', lineHeight: 1.2 }}
-          >
-            Test final
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.4, delay: 0.3, ease: 'easeOut' }}
-            style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '16px', color: '#6B6357', lineHeight: 1.65, margin: '0 0 40px 0', maxWidth: '320px' }}
-          >
-            Récite maintenant sans aide les versets travaillés aujourd&apos;hui.
-          </motion.p>
-          <motion.button
-            type="button"
-            className="font-playfair"
-            onClick={() => setFinalTestPhase('recitation')}
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.3, delay: 0.4, ease: 'easeOut' }}
-            whileTap={{ scale: 0.96 }}
-            style={{ width: '100%', maxWidth: '360px', padding: '18px', fontSize: '17px', fontWeight: 600, backgroundColor: '#163026', color: '#fff', border: 'none', borderRadius: '14px', cursor: 'pointer', boxShadow: '0 8px 28px rgba(22,48,38,0.22)' }}
-          >
-            Commencer le test
-          </motion.button>
-        </motion.div>
-      </div>
-    );
+    const screenVariants = {
+      initial:  { opacity: 0, y: 20 },
+      animate:  { opacity: 1, y: 0,  transition: { duration: 0.35, ease: 'easeOut' } },
+      exit:     { opacity: 0, scale: 0.98, transition: { duration: 0.2, ease: 'easeIn' } },
+    };
 
-    // S2 — Récitation
-    if (finalTestPhase === 'recitation') return (
-      <div style={{ minHeight: '100vh', backgroundColor: '#F5F0E6', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '32px 24px', textAlign: 'center' }}>
+    return (
+      <div style={{ minHeight: '100vh', backgroundColor: '#F5F0E6', position: 'relative', overflow: 'hidden' }}>
         <style>{CSS}</style>
-        <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '12px', fontWeight: 600, letterSpacing: '1.5px', color: '#B8962E', textTransform: 'uppercase', margin: '0 0 16px 0' }}>
-          À réciter
-        </p>
-        <h2 className="font-playfair" style={{ fontSize: '22px', fontWeight: 700, color: '#163026', margin: '0 0 40px 0', lineHeight: 1.3 }}>
-          {ref}
-        </h2>
-        <p className="font-playfair" style={{ fontSize: '16px', fontStyle: 'italic', color: '#6B6357', margin: '0 0 48px 0', lineHeight: 1.6, maxWidth: '300px' }}>
-          Récite de mémoire, sans regarder le texte.
-        </p>
-        {!revealShown ? (
-          <button
-            type="button"
-            className="font-playfair"
-            onClick={() => setRevealShown(true)}
-            style={{ width: '100%', maxWidth: '360px', padding: '16px', fontSize: '16px', fontWeight: 600, backgroundColor: 'transparent', color: '#163026', border: '1.5px solid #163026', borderRadius: '14px', cursor: 'pointer' }}
-          >
-            Voir la réponse
-          </button>
-        ) : (
-          <button
-            type="button"
-            className="font-playfair"
-            onClick={() => { setRevealShown(false); setFinalTestPhase('sincerity'); }}
-            style={{ width: '100%', maxWidth: '360px', padding: '16px', fontSize: '16px', fontWeight: 600, backgroundColor: '#163026', color: '#fff', border: 'none', borderRadius: '14px', cursor: 'pointer', boxShadow: '0 8px 28px rgba(22,48,38,0.22)' }}
-          >
-            Continuer →
-          </button>
-        )}
-      </div>
-    );
+        <AnimatePresence mode="wait">
 
-    // S3 — Sincérité
-    if (finalTestPhase === 'sincerity') return (
-      <div style={{ minHeight: '100vh', backgroundColor: '#F5F0E6', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '32px 24px', textAlign: 'center' }}>
-        <style>{CSS}</style>
-        <h2 className="font-playfair" style={{ fontSize: '24px', fontWeight: 700, color: '#163026', margin: '0 0 20px 0', lineHeight: 1.3 }}>
-          As-tu réussi à réciter sans aide&nbsp;?
-        </h2>
-        <div style={{ backgroundColor: '#EDE5D0', borderRadius: '16px', padding: '20px 24px', maxWidth: '360px', marginBottom: '36px' }}>
-          <p className="font-playfair" style={{ fontSize: '14px', fontStyle: 'italic', color: '#163026', lineHeight: 1.7, margin: '0 0 10px 0' }}>
-            &ldquo;La vérité mène au bien, et le mensonge mène à l&apos;égarement.&rdquo;
-          </p>
-          <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '11px', color: '#9B9189', margin: '0 0 12px 0', letterSpacing: '0.05em' }}>Rapporté par al-Bukhari et Muslim</p>
-          <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '13px', color: '#6B6357', margin: 0, fontWeight: 500 }}>Sois sincère avec toi-même.</p>
-        </div>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', width: '100%', maxWidth: '360px' }}>
-          <button
-            type="button"
-            className="font-playfair"
-            onClick={handleFinalSuccess}
-            style={{ padding: '18px', fontSize: '16px', fontWeight: 600, backgroundColor: '#163026', color: '#fff', border: 'none', borderRadius: '14px', cursor: 'pointer', boxShadow: '0 8px 28px rgba(22,48,38,0.22)' }}
-          >
-            Oui, j&apos;ai réussi ✓
-          </button>
-          <button
-            type="button"
-            className="font-playfair"
-            onClick={handleFinalReinforce}
-            style={{ padding: '16px', fontSize: '16px', fontWeight: 600, backgroundColor: 'transparent', color: '#6B6357', border: '1.5px solid #D4CCC2', borderRadius: '14px', cursor: 'pointer' }}
-          >
-            Non, je dois renforcer
-          </button>
-        </div>
-      </div>
-    );
+          {/* S1 — Intro */}
+          {finalTestPhase === 'intro' && (
+            <motion.div
+              key="intro"
+              variants={screenVariants}
+              initial="initial" animate="animate" exit="exit"
+              style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '32px 24px', textAlign: 'center' }}
+            >
+              <motion.span
+                initial={{ scale: 0, rotate: -10 }}
+                animate={{ scale: [0, 1.2, 1], rotate: ['-10deg', '0deg'] }}
+                transition={{ duration: 0.5, delay: 0.15, ease: 'easeOut' }}
+                style={{ fontSize: '48px', marginBottom: '24px', display: 'block' }}
+              >
+                🎯
+              </motion.span>
+              <motion.h1
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: 0.25, ease: 'easeOut' }}
+                className="font-playfair"
+                style={{ fontSize: '28px', fontWeight: 700, color: '#163026', margin: '0 0 16px 0', lineHeight: 1.2 }}
+              >
+                Test final
+              </motion.h1>
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.4, delay: 0.35, ease: 'easeOut' }}
+                style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '16px', color: '#6B6357', lineHeight: 1.65, margin: '0 0 40px 0', maxWidth: '320px' }}
+              >
+                Récite maintenant sans aide les versets travaillés aujourd&apos;hui.
+              </motion.p>
+              <motion.button
+                type="button"
+                className="font-playfair"
+                onClick={() => setFinalTestPhase('recitation')}
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.3, delay: 0.4, ease: 'easeOut' }}
+                whileTap={{ scale: 0.96 }}
+                style={{ width: '100%', maxWidth: '360px', padding: '18px', fontSize: '17px', fontWeight: 600, backgroundColor: '#163026', color: '#fff', border: 'none', borderRadius: '14px', cursor: 'pointer', boxShadow: '0 8px 28px rgba(22,48,38,0.22)' }}
+              >
+                Commencer le test
+              </motion.button>
+            </motion.div>
+          )}
 
-    // S4a — Succès
-    if (finalTestPhase === 'success') return (
-      <div style={{ minHeight: '100vh', backgroundColor: '#F5F0E6', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '32px 24px', textAlign: 'center', gap: '0' }}>
-        <style>{CSS}</style>
-        <span style={{ fontSize: '64px', animation: 'checkPop 0.4s ease both', display: 'block', marginBottom: '24px' }}>✓</span>
-        <h2 className="font-playfair" style={{ fontSize: '28px', fontWeight: 700, color: '#163026', margin: '0 0 12px 0', lineHeight: 1.2 }}>Mémorisation validée</h2>
-        <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '15px', color: '#6B6357', margin: '0 0 40px 0', lineHeight: 1.6 }}>
-          Tu connais maintenant ces versets.
-        </p>
-        <button
-          type="button"
-          className="font-playfair"
-          onClick={() => handleFinalContinue(true)}
-          disabled={saving}
-          style={{ width: '100%', maxWidth: '360px', padding: '18px', fontSize: '17px', fontWeight: 600, backgroundColor: '#163026', color: '#fff', border: 'none', borderRadius: '14px', cursor: saving ? 'wait' : 'pointer', opacity: saving ? 0.7 : 1, boxShadow: '0 8px 28px rgba(22,48,38,0.22)' }}
-        >
-          {saving ? 'Sauvegarde...' : 'Terminer la session'}
-        </button>
-      </div>
-    );
+          {/* S2 — Récitation */}
+          {finalTestPhase === 'recitation' && (
+            <motion.div
+              key="recitation"
+              variants={screenVariants}
+              initial="initial" animate="animate" exit="exit"
+              style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '32px 24px', textAlign: 'center' }}
+            >
+              <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '12px', fontWeight: 600, letterSpacing: '1.5px', color: '#B8962E', textTransform: 'uppercase', margin: '0 0 16px 0' }}>
+                À réciter
+              </p>
+              <h2 className="font-playfair" style={{ fontSize: '22px', fontWeight: 700, color: '#163026', margin: '0 0 40px 0', lineHeight: 1.3 }}>
+                {ref}
+              </h2>
+              <p className="font-playfair" style={{ fontSize: '16px', fontStyle: 'italic', color: '#6B6357', margin: '0 0 48px 0', lineHeight: 1.6, maxWidth: '300px' }}>
+                Récite de mémoire, sans regarder le texte.
+              </p>
+              {!revealShown ? (
+                <button
+                  type="button"
+                  className="font-playfair"
+                  onClick={() => setRevealShown(true)}
+                  style={{ width: '100%', maxWidth: '360px', padding: '16px', fontSize: '16px', fontWeight: 600, backgroundColor: 'transparent', color: '#163026', border: '1.5px solid #163026', borderRadius: '14px', cursor: 'pointer' }}
+                >
+                  Voir la réponse
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  className="font-playfair"
+                  onClick={() => { setRevealShown(false); setFinalTestPhase('sincerity'); }}
+                  style={{ width: '100%', maxWidth: '360px', padding: '16px', fontSize: '16px', fontWeight: 600, backgroundColor: '#163026', color: '#fff', border: 'none', borderRadius: '14px', cursor: 'pointer', boxShadow: '0 8px 28px rgba(22,48,38,0.22)' }}
+                >
+                  Continuer →
+                </button>
+              )}
+            </motion.div>
+          )}
 
-    // S4b — Renforcement
-    if (finalTestPhase === 'reinforce') return (
-      <div style={{ minHeight: '100vh', backgroundColor: '#F5F0E6', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '32px 24px', textAlign: 'center', gap: '0' }}>
-        <style>{CSS}</style>
-        <span style={{ fontSize: '48px', marginBottom: '24px' }}>📖</span>
-        <h2 className="font-playfair" style={{ fontSize: '24px', fontWeight: 700, color: '#163026', margin: '0 0 16px 0', lineHeight: 1.25 }}>
-          Session terminée — à renforcer
-        </h2>
-        <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '15px', color: '#163026', margin: '0 0 10px 0', lineHeight: 1.65, maxWidth: '320px', fontWeight: 500 }}>
-          Tu as avancé, mais ces versets ne sont pas encore parfaitement ancrés.
-        </p>
-        <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '14px', color: '#6B6357', margin: '0 0 40px 0', lineHeight: 1.65, maxWidth: '320px' }}>
-          Tu peux les retrouver et les revoir à tout moment dans &ldquo;Mon Hifz&rdquo;.
-        </p>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', width: '100%', maxWidth: '360px' }}>
-          <button
-            type="button"
-            className="font-playfair"
-            onClick={handleFinalRetry}
-            style={{ padding: '18px', fontSize: '17px', fontWeight: 600, backgroundColor: '#163026', color: '#fff', border: 'none', borderRadius: '14px', cursor: 'pointer', boxShadow: '0 8px 28px rgba(22,48,38,0.22)' }}
-          >
-            Refaire maintenant
-          </button>
-          <button
-            type="button"
-            className="font-playfair"
-            onClick={() => handleFinalContinue(false)}
-            disabled={saving}
-            style={{ padding: '16px', fontSize: '16px', fontWeight: 600, backgroundColor: 'transparent', color: '#6B6357', border: '1.5px solid #D4CCC2', borderRadius: '14px', cursor: saving ? 'wait' : 'pointer', opacity: saving ? 0.7 : 1 }}
-          >
-            {saving ? 'Sauvegarde...' : 'Continuer'}
-          </button>
-        </div>
+          {/* S3 — Sincérité */}
+          {finalTestPhase === 'sincerity' && (
+            <motion.div
+              key="sincerity"
+              variants={screenVariants}
+              initial="initial" animate="animate" exit="exit"
+              style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '32px 24px', textAlign: 'center' }}
+            >
+              <h2 className="font-playfair" style={{ fontSize: '24px', fontWeight: 700, color: '#163026', margin: '0 0 20px 0', lineHeight: 1.3 }}>
+                As-tu réussi à réciter sans aide&nbsp;?
+              </h2>
+              <div style={{ backgroundColor: '#EDE5D0', borderRadius: '16px', padding: '20px 24px', maxWidth: '360px', marginBottom: '36px' }}>
+                <p className="font-playfair" style={{ fontSize: '14px', fontStyle: 'italic', color: '#163026', lineHeight: 1.7, margin: '0 0 10px 0' }}>
+                  &ldquo;La vérité mène au bien, et le mensonge mène à l&apos;égarement.&rdquo;
+                </p>
+                <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '11px', color: '#9B9189', margin: '0 0 12px 0', letterSpacing: '0.05em' }}>Rapporté par al-Bukhari et Muslim</p>
+                <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '13px', color: '#6B6357', margin: 0, fontWeight: 500 }}>Sois sincère avec toi-même.</p>
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', width: '100%', maxWidth: '360px' }}>
+                <button
+                  type="button"
+                  className="font-playfair"
+                  onClick={handleFinalSuccess}
+                  style={{ padding: '18px', fontSize: '16px', fontWeight: 600, backgroundColor: '#163026', color: '#fff', border: 'none', borderRadius: '14px', cursor: 'pointer', boxShadow: '0 8px 28px rgba(22,48,38,0.22)' }}
+                >
+                  Oui, j&apos;ai réussi ✓
+                </button>
+                <button
+                  type="button"
+                  className="font-playfair"
+                  onClick={handleFinalReinforce}
+                  style={{ padding: '16px', fontSize: '16px', fontWeight: 600, backgroundColor: 'transparent', color: '#6B6357', border: '1.5px solid #D4CCC2', borderRadius: '14px', cursor: 'pointer' }}
+                >
+                  Non, je dois renforcer
+                </button>
+              </div>
+            </motion.div>
+          )}
+
+          {/* S4a — Succès */}
+          {finalTestPhase === 'success' && (
+            <motion.div
+              key="success"
+              variants={screenVariants}
+              initial="initial" animate="animate" exit="exit"
+              style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '32px 24px', textAlign: 'center' }}
+            >
+              <span style={{ fontSize: '64px', animation: 'checkPop 0.4s ease both', display: 'block', marginBottom: '24px' }}>✓</span>
+              <h2 className="font-playfair" style={{ fontSize: '28px', fontWeight: 700, color: '#163026', margin: '0 0 12px 0', lineHeight: 1.2 }}>Mémorisation validée</h2>
+              <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '15px', color: '#6B6357', margin: '0 0 40px 0', lineHeight: 1.6 }}>
+                Tu connais maintenant ces versets.
+              </p>
+              <button
+                type="button"
+                className="font-playfair"
+                onClick={() => handleFinalContinue(true)}
+                disabled={saving}
+                style={{ width: '100%', maxWidth: '360px', padding: '18px', fontSize: '17px', fontWeight: 600, backgroundColor: '#163026', color: '#fff', border: 'none', borderRadius: '14px', cursor: saving ? 'wait' : 'pointer', opacity: saving ? 0.7 : 1, boxShadow: '0 8px 28px rgba(22,48,38,0.22)' }}
+              >
+                {saving ? 'Sauvegarde...' : 'Terminer la session'}
+              </button>
+            </motion.div>
+          )}
+
+          {/* S4b — Renforcement */}
+          {finalTestPhase === 'reinforce' && (
+            <motion.div
+              key="reinforce"
+              variants={screenVariants}
+              initial="initial" animate="animate" exit="exit"
+              style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '32px 24px', textAlign: 'center' }}
+            >
+              <span style={{ fontSize: '48px', marginBottom: '24px' }}>📖</span>
+              <h2 className="font-playfair" style={{ fontSize: '24px', fontWeight: 700, color: '#163026', margin: '0 0 16px 0', lineHeight: 1.25 }}>
+                Session terminée — à renforcer
+              </h2>
+              <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '15px', color: '#163026', margin: '0 0 10px 0', lineHeight: 1.65, maxWidth: '320px', fontWeight: 500 }}>
+                Tu as avancé, mais ces versets ne sont pas encore parfaitement ancrés.
+              </p>
+              <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '14px', color: '#6B6357', margin: '0 0 40px 0', lineHeight: 1.65, maxWidth: '320px' }}>
+                Tu peux les retrouver et les revoir à tout moment dans &ldquo;Mon Hifz&rdquo;.
+              </p>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', width: '100%', maxWidth: '360px' }}>
+                <button
+                  type="button"
+                  className="font-playfair"
+                  onClick={handleFinalRetry}
+                  style={{ padding: '18px', fontSize: '17px', fontWeight: 600, backgroundColor: '#163026', color: '#fff', border: 'none', borderRadius: '14px', cursor: 'pointer', boxShadow: '0 8px 28px rgba(22,48,38,0.22)' }}
+                >
+                  Refaire maintenant
+                </button>
+                <button
+                  type="button"
+                  className="font-playfair"
+                  onClick={() => handleFinalContinue(false)}
+                  disabled={saving}
+                  style={{ padding: '16px', fontSize: '16px', fontWeight: 600, backgroundColor: 'transparent', color: '#6B6357', border: '1.5px solid #D4CCC2', borderRadius: '14px', cursor: saving ? 'wait' : 'pointer', opacity: saving ? 0.7 : 1 }}
+                >
+                  {saving ? 'Sauvegarde...' : 'Continuer'}
+                </button>
+              </div>
+            </motion.div>
+          )}
+
+        </AnimatePresence>
       </div>
     );
   }

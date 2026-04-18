@@ -166,6 +166,7 @@ export default function Home() {
 
       {/* HERO */}
       <section
+        className="flex flex-col items-center justify-center min-h-screen md:block md:min-h-0"
         style={{
           paddingTop: 'clamp(100px, 20vw, 180px)',
           paddingBottom: '120px',
@@ -195,7 +196,7 @@ export default function Home() {
           الله
         </span>
 
-        <RevealSection>
+        <RevealSection className="pb-10 md:pb-0">
           <h1
             className="font-playfair"
             style={{

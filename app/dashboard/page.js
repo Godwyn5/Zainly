@@ -679,7 +679,7 @@ export default function DashboardPage() {
                 {pushStatus === 'asking'                          && 'Activation...'}
                 {pushStatus === 'denied'                          && 'Notifications bloquées'}
                 {(pushStatus === 'error' || pushStatus.startsWith('error:')) && 'Erreur — réessayer'}
-                {pushStatus === 'idle'                            && 'Activer les rappels quotidiens'}
+                {pushStatus === 'idle'                            && 'Activer les notifications'}
               </span>
             </button>
             {pushStatus === 'denied' && (

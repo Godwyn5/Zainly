@@ -499,11 +499,17 @@ function OnboardingInner() {
               <div>
                 <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '13px', color: '#B8962E', letterSpacing: '0.1em', fontWeight: 600, textAlign: 'center', margin: '0 0 12px 0' }}>ETAPE 2 / 2</p>
                 <h1 className="font-playfair" style={{ fontSize: '32px', fontWeight: 600, color: '#163026', textAlign: 'center', lineHeight: 1.3, margin: '0 0 8px 0' }}>
-                  Quelles sourates maitrise-tu deja ?
+                  Quelles sourates maîtrises-tu déjà ?
                 </h1>
-                <p className="font-playfair" style={{ fontSize: '16px', fontStyle: 'italic', color: '#6B6357', textAlign: 'center', margin: '0 0 24px 0', lineHeight: 1.6 }}>
-                  Coche celles que tu maitrises — si aucune, Zainly commence par Al-Fatiha.
+                <p className="font-playfair" style={{ fontSize: '16px', fontStyle: 'italic', color: '#6B6357', textAlign: 'center', margin: '0 0 16px 0', lineHeight: 1.6 }}>
+                  Coche uniquement les sourates que tu sais déjà réciter correctement.
                 </p>
+                <div style={{ backgroundColor: 'rgba(184,150,46,0.10)', border: '1.5px solid rgba(184,150,46,0.35)', borderRadius: '12px', padding: '14px 18px', marginBottom: '12px' }}>
+                  <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '13px', color: '#7a5c00', margin: '0 0 6px 0', fontWeight: 700 }}>Important :</p>
+                  <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '13px', color: '#7a5c00', margin: '0 0 2px 0', lineHeight: 1.6 }}>Ne coche pas les sourates que tu veux apprendre.</p>
+                  <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '13px', color: '#7a5c00', margin: 0, lineHeight: 1.6 }}>Coche seulement celles que tu connais déjà.</p>
+                </div>
+                <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '12px', color: '#9B8F80', margin: '0 0 20px 0', lineHeight: 1.5, textAlign: 'center' }}>Cela permet à Zainly de ne pas te faire recommencer ce que tu maîtrises déjà.</p>
 
                 {/* Estimated years badge */}
                 {ayahPerDay && (

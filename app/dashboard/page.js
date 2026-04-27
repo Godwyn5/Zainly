@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 import { nextZainlySurah, ZAINLY_ORDER } from '@/lib/zainlyOrder';
 import { LegalFooter } from '@/components/LegalLayout';
+import PremiumProgressBar from '@/components/PremiumProgressBar';
 
 // ─── Data ────────────────────────────────────────────────────────────────────
 
@@ -856,10 +857,17 @@ export default function DashboardPage() {
         {/* ── PROGRESSION CARD ── */}
         <div style={{ margin: '24px 16px 0 16px', ...card, padding: '24px 28px', animation: 'fadeUp 0.6s ease 0.4s both' }}>
           <span style={{ fontFamily: 'DM Sans, sans-serif', fontWeight: 500, fontSize: '10px', color: '#B8962E', textTransform: 'uppercase', letterSpacing: '2px' }}>TON OBJECTIF</span>
-          <div style={{ marginTop: '16px', backgroundColor: '#E2D9CC', height: '6px', borderRadius: '3px', overflow: 'hidden' }}>
-            <div style={{ height: '100%', width: `${progressPct}%`, background: 'linear-gradient(90deg, #163026, #B8962E)', borderRadius: '3px', transition: 'width 1.2s ease' }} />
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginTop: '14px', marginBottom: '10px' }}>
+            <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '13px', color: '#6B6357' }}>{totalMemorized} / 6236 ayat</span>
+            <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '12px', color: '#163026', fontWeight: 600 }}>{progressPct.toFixed(1)}%</span>
           </div>
-          <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '13px', color: '#6B6357', margin: '10px 0 0 0' }}>{totalMemorized} / 6236 ayat</p>
+          <PremiumProgressBar
+            value={totalMemorized}
+            max={6236}
+            percentage={progressPct}
+            label="Progression vers le Coran complet"
+            size="md"
+          />
           <p className="font-playfair" style={{ fontSize: '14px', fontStyle: 'italic', color: '#6B6357', margin: '8px 0 0 0', lineHeight: 1.6 }}>
             {estMonths === null ? 'Calcul en cours...' : estMonths === 0 ? 'Tu as mémorisé tout le Coran. MashaAllah !' : `Il te reste environ ${estMonths} mois pour atteindre ton objectif.`}
           </p>
@@ -972,13 +980,18 @@ export default function DashboardPage() {
           <span style={{ fontFamily: 'DM Sans, sans-serif', fontWeight: 500, fontSize: '10px', color: '#B8962E', textTransform: 'uppercase', letterSpacing: '2px' }}>
             VERS LE CORAN COMPLET
           </span>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '14px', marginBottom: '10px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginTop: '14px', marginBottom: '10px' }}>
             <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '13px', color: '#6B6357' }}>{totalMemorized} / {TOTAL_QURAN} ayat</span>
-            <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '13px', color: '#163026', fontWeight: 600 }}>{progressPct.toFixed(1)}%</span>
+            <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '13px', color: '#163026', fontWeight: 700 }}>{progressPct.toFixed(1)}%</span>
           </div>
-          <div style={{ backgroundColor: '#E2D9CC', height: '8px', borderRadius: '4px', overflow: 'hidden' }}>
-            <div style={{ height: '100%', width: `${progressPct}%`, background: 'linear-gradient(90deg, #163026, #B8962E)', borderRadius: '4px', transition: 'width 1.2s ease' }} />
-          </div>
+          <PremiumProgressBar
+            value={totalMemorized}
+            max={TOTAL_QURAN}
+            percentage={progressPct}
+            label="Vers le Coran complet"
+            size="lg"
+            motif={totalMemorized > 0 ? 'Chaque ayat compte.' : undefined}
+          />
         </div>
 
         {/* ── CALENDRIER ── */}

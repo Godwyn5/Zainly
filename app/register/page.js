@@ -17,6 +17,7 @@ export default function RegisterPage() {
   const [pageVisible, setPageVisible] = useState(false);
   const [confirmMsg, setConfirmMsg] = useState('');
   const [pwdFocused, setPwdFocused] = useState(false);
+  const [cooldown, setCooldown] = useState(0); // seconds remaining after rate limit
 
   useEffect(() => {
     async function checkAuth() {
@@ -31,8 +32,39 @@ export default function RegisterPage() {
     checkAuth();
   }, [router]);
 
+  function mapSupabaseError(msg) {
+    const m = (msg || '').toLowerCase();
+    if (m.includes('rate limit') || m.includes('email rate limit') || m.includes('too many requests')) {
+      return '__rate_limit__';
+    }
+    if (m.includes('already registered') || m.includes('already been registered') || m.includes('email already') || m.includes('user already')) {
+      return 'already_registered';
+    }
+    if (m.includes('password') && (m.includes('short') || m.includes('least') || m.includes('characters'))) {
+      return 'Le mot de passe doit faire au moins 8 caractères.';
+    }
+    if (m.includes('invalid email') || m.includes('email address') || m.includes('valid email')) {
+      return 'Entre une adresse email valide.';
+    }
+    if (m.includes('network') || m.includes('fetch') || m.includes('failed')) {
+      return 'Impossible de se connecter. Vérifie ta connexion et réessaie.';
+    }
+    return 'Une erreur est survenue. Réessaie dans quelques instants.';
+  }
+
+  function startCooldown(seconds) {
+    setCooldown(seconds);
+    const interval = setInterval(() => {
+      setCooldown(prev => {
+        if (prev <= 1) { clearInterval(interval); return 0; }
+        return prev - 1;
+      });
+    }, 1000);
+  }
+
   async function handleSubmit(e) {
     e.preventDefault();
+    if (loading || cooldown > 0) return;
     setError('');
     setPrenomError('');
     if (!prenom.trim()) {
@@ -44,27 +76,27 @@ export default function RegisterPage() {
       setError('Le mot de passe doit faire au moins 8 caractères.');
       return;
     }
-    const emailParts = email.trim().split('@');
+    const cleanEmail = email.trim().toLowerCase();
+    const emailParts = cleanEmail.split('@');
     if (emailParts.length !== 2 || !emailParts[0] || !emailParts[1].includes('.')) {
-      setError('Adresse email invalide.');
+      setError('Entre une adresse email valide.');
       return;
     }
 
     setLoading(true);
 
     const { error: signUpError } = await supabase.auth.signUp({
-      email: email.trim(),
+      email: cleanEmail,
       password,
       options: { data: { prenom: prenom.trim() } },
     });
     if (signUpError) {
-      const msg = signUpError.message || '';
-      if (msg.toLowerCase().includes('already registered') || msg.toLowerCase().includes('already been registered') || msg.toLowerCase().includes('email already')) {
-        setError('already_registered');
-      } else if (msg.toLowerCase().includes('password')) {
-        setError('Le mot de passe doit faire au moins 8 caractères.');
+      const mapped = mapSupabaseError(signUpError.message);
+      if (mapped === '__rate_limit__') {
+        setError('__rate_limit__');
+        startCooldown(60);
       } else {
-        setError(msg);
+        setError(mapped);
       }
       setLoading(false);
       return;
@@ -249,12 +281,14 @@ export default function RegisterPage() {
 
           {/* Erreur */}
           {error && (
-            <div style={{ fontSize: '13px', color: '#c0392b', margin: 0 }}>
+            <div style={{ fontSize: '13px', color: '#c0392b', backgroundColor: 'rgba(192,57,43,0.06)', borderRadius: '10px', padding: '10px 14px', margin: 0 }}>
               {error === 'already_registered' ? (
                 <>
-                  <p style={{ margin: '0 0 4px 0' }}>Un compte existe déjà avec cet email. Connecte-toi plutôt.</p>
-                  <Link href="/login" style={{ color: '#c0392b', fontWeight: 600, textDecoration: 'underline' }}>Se connecter</Link>
+                  <p style={{ margin: '0 0 6px 0' }}>Un compte existe déjà avec cet email. Connecte-toi à la place.</p>
+                  <Link href="/login" style={{ color: '#c0392b', fontWeight: 700, textDecoration: 'underline' }}>Se connecter →</Link>
                 </>
+              ) : error === '__rate_limit__' ? (
+                <p style={{ margin: 0 }}>Trop de tentatives. Attends quelques minutes puis réessaie.{cooldown > 0 ? ` (${cooldown}s)` : ''}</p>
               ) : (
                 <p style={{ margin: 0 }}>{error}</p>
               )}
@@ -264,7 +298,7 @@ export default function RegisterPage() {
           {/* Submit */}
           <button
             type="submit"
-            disabled={loading}
+            disabled={loading || cooldown > 0}
             className="font-playfair"
             style={{
               width: '100%',
@@ -275,14 +309,14 @@ export default function RegisterPage() {
               color: '#FFFFFF',
               border: 'none',
               borderRadius: '12px',
-              cursor: loading ? 'not-allowed' : 'pointer',
-              opacity: loading ? 0.7 : 1,
+              cursor: (loading || cooldown > 0) ? 'not-allowed' : 'pointer',
+              opacity: (loading || cooldown > 0) ? 0.6 : 1,
               transition: 'opacity 0.2s',
             }}
-            onMouseEnter={(e) => { if (!loading) e.currentTarget.style.opacity = '0.88'; }}
-            onMouseLeave={(e) => { if (!loading) e.currentTarget.style.opacity = '1'; }}
+            onMouseEnter={(e) => { if (!loading && !cooldown) e.currentTarget.style.opacity = '0.88'; }}
+            onMouseLeave={(e) => { if (!loading && !cooldown) e.currentTarget.style.opacity = '1'; }}
           >
-            {loading ? 'Chargement...' : 'Créer mon compte →'}
+            {loading ? 'Création du compte…' : cooldown > 0 ? `Réessaie dans ${cooldown}s` : 'Créer mon compte →'}
           </button>
         </form>
 

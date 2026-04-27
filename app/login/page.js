@@ -55,17 +55,38 @@ function LoginInner() {
 
   async function handleForgot(e) {
     e.preventDefault();
-    if (!forgotEmail.trim()) return;
-    setForgotLoading(true);
+    if (forgotLoading) return;
     setForgotError('');
+
+    const cleanEmail = forgotEmail.trim().toLowerCase();
+
+    if (!cleanEmail) {
+      setForgotError('Entre ton adresse email.');
+      return;
+    }
+    const emailParts = cleanEmail.split('@');
+    if (emailParts.length !== 2 || !emailParts[0] || !emailParts[1].includes('.')) {
+      setForgotError('Entre une adresse email valide.');
+      return;
+    }
+
+    setForgotLoading(true);
     const redirectUrl = `${process.env.NEXT_PUBLIC_APP_URL ?? 'https://zainly-alpha.vercel.app'}/reset-password`;
-    const { error: resetErr } = await supabase.auth.resetPasswordForEmail(forgotEmail.trim(), {
+    const { error: resetErr } = await supabase.auth.resetPasswordForEmail(cleanEmail, {
       redirectTo: redirectUrl,
     });
-    console.log('[forgot] resetPasswordForEmail result — email:', forgotEmail.trim(), '| redirectTo:', redirectUrl, '| error:', resetErr);
+    console.log('[forgot] resetPasswordForEmail — email:', cleanEmail, '| error:', resetErr?.message ?? 'none');
     setForgotLoading(false);
+
     if (resetErr) {
-      setForgotError('Une erreur est survenue. Vérifie ton adresse et réessaie.');
+      const m = (resetErr.message || '').toLowerCase();
+      if (m.includes('rate limit') || m.includes('too many requests') || m.includes('email rate limit')) {
+        setForgotError('Trop de demandes en peu de temps. Attends quelques minutes puis réessaie.');
+      } else if (m.includes('user not found') || m.includes('no user') || m.includes('not found')) {
+        setForgotError('Aucun compte n\u2019existe avec cet email. Crée un compte pour commencer.');
+      } else {
+        setForgotError('Une erreur est survenue. Vérifie ton adresse et réessaie.');
+      }
       return;
     }
     setForgotSent(true);
@@ -179,7 +200,7 @@ function LoginInner() {
           <div>
             {forgotSent ? (
               <p style={{ fontSize: '14px', color: '#163026', backgroundColor: 'rgba(22,48,38,0.06)', borderRadius: '8px', padding: '12px 16px', textAlign: 'center', margin: 0 }}>
-                Un lien de réinitialisation a été envoyé à ton email.
+                Lien envoyé. Vérifie ta boîte mail, y compris les spams.
               </p>
             ) : (
               <form onSubmit={handleForgot} noValidate style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
@@ -194,11 +215,16 @@ function LoginInner() {
                   onFocus={(e) => (e.target.style.borderColor = '#163026')}
                   onBlur={(e) => (e.target.style.borderColor = '#E2D9CC')}
                 />
-                <button type="submit" disabled={forgotLoading} className="font-playfair" style={{ width: '100%', padding: '16px', fontSize: '17px', fontWeight: 600, backgroundColor: '#163026', color: '#FFFFFF', border: 'none', borderRadius: '12px', cursor: forgotLoading ? 'not-allowed' : 'pointer', opacity: forgotLoading ? 0.7 : 1 }}>
-                  {forgotLoading ? 'Envoi...' : 'Envoyer le lien'}
+                <button type="submit" disabled={forgotLoading} className="font-playfair" style={{ width: '100%', padding: '16px', fontSize: '17px', fontWeight: 600, backgroundColor: '#163026', color: '#FFFFFF', border: 'none', borderRadius: '12px', cursor: forgotLoading ? 'not-allowed' : 'pointer', opacity: forgotLoading ? 0.6 : 1, transition: 'opacity 0.2s' }}>
+                  {forgotLoading ? 'Envoi du lien...' : 'Envoyer le lien'}
                 </button>
                 {forgotError && (
-                  <p style={{ fontSize: '13px', color: '#c0392b', margin: '4px 0 0 0', textAlign: 'center' }}>{forgotError}</p>
+                  <div style={{ fontSize: '13px', color: '#c0392b', backgroundColor: 'rgba(192,57,43,0.06)', borderRadius: '10px', padding: '10px 14px', margin: 0 }}>
+                    <p style={{ margin: 0 }}>{forgotError}</p>
+                    {forgotError.includes('Crée un compte') && (
+                      <Link href="/register" style={{ color: '#c0392b', fontWeight: 700, textDecoration: 'underline', display: 'inline-block', marginTop: '6px' }}>Créer un compte →</Link>
+                    )}
+                  </div>
                 )}
               </form>
             )}

@@ -298,6 +298,70 @@ export default function SettingsPage() {
           </div>
         )}
 
+        {/* ── APPLICATION ── */}
+        <div style={{ animation: 'fadeUp 0.35s ease 0.19s both' }}>
+          <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '11px', fontWeight: 600, letterSpacing: '1.5px', color: '#B8962E', textTransform: 'uppercase', margin: '0 4px 8px' }}>
+            Application
+          </p>
+          <button
+            type="button"
+            onClick={() => router.push('/installer-zainly')}
+            style={{
+              width: '100%', textAlign: 'left',
+              background: '#fff',
+              borderRadius: '20px',
+              boxShadow: '0 4px 24px rgba(15,35,24,0.06)',
+              border: '1px solid #E8E0D4',
+              padding: '18px 20px',
+              cursor: 'pointer',
+              display: 'flex', alignItems: 'center', gap: '16px',
+              transition: 'box-shadow 0.15s, border-color 0.15s',
+            }}
+            onMouseEnter={e => { e.currentTarget.style.boxShadow = '0 6px 28px rgba(15,35,24,0.10)'; e.currentTarget.style.borderColor = '#C8B99A'; }}
+            onMouseLeave={e => { e.currentTarget.style.boxShadow = '0 4px 24px rgba(15,35,24,0.06)'; e.currentTarget.style.borderColor = '#E8E0D4'; }}
+          >
+            {/* Icon */}
+            <div style={{
+              width: '44px', height: '44px', flexShrink: 0,
+              backgroundColor: '#163026', borderRadius: '12px',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+            }}>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#B8962E" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="5" y="2" width="14" height="20" rx="2" ry="2"/>
+                <line x1="12" y1="18" x2="12" y2="18" strokeWidth="3"/>
+              </svg>
+            </div>
+
+            {/* Text */}
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '3px' }}>
+                <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '15px', fontWeight: 700, color: '#163026' }}>
+                  Installer Zainly
+                </span>
+                <span style={{
+                  fontFamily: 'DM Sans, sans-serif', fontSize: '10px', fontWeight: 700,
+                  color: '#B8962E', backgroundColor: 'rgba(184,150,46,0.12)',
+                  borderRadius: '20px', padding: '2px 7px', letterSpacing: '0.3px',
+                  whiteSpace: 'nowrap',
+                }}>
+                  2 min
+                </span>
+              </div>
+              <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '13px', color: '#6B6357', margin: '0 0 4px', lineHeight: 1.4 }}>
+                Ajoute Zainly à ton écran d&apos;accueil comme une vraie app.
+              </p>
+              <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '12px', color: '#A09890', margin: 0 }}>
+                iPhone : Safari &nbsp;·&nbsp; Android : Chrome
+              </p>
+            </div>
+
+            {/* Chevron */}
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C8B99A" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+              <polyline points="9 18 15 12 9 6"/>
+            </svg>
+          </button>
+        </div>
+
         <LegalFooter />
 
       </div>

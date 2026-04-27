@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 
@@ -38,6 +38,10 @@ export default function AdminPage() {
   const [token, setToken]       = useState('');
   const [resyncing, setResyncing] = useState(false);
   const [resyncResult, setResyncResult] = useState(null);
+  const [search, setSearch]           = useState('');
+  const [searchInput, setSearchInput] = useState(''); // raw input before debounce
+  const [fetching, setFetching]       = useState(false);
+  const debounceRef = useRef(null);
 
   useEffect(() => {
     async function init() {
@@ -56,32 +60,51 @@ export default function AdminPage() {
     init();
   }, [router]);
 
-  const fetchUsers = useCallback(async (p, f, s, d) => {
+  const fetchUsers = useCallback(async (p, f, s, d, q) => {
     if (!token) return;
     setError('');
+    setFetching(true);
     try {
-      const res = await fetch(
-        `/api/admin/users?page=${p}&filter=${f}&sort=${s}&dir=${d}`,
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      const qs = new URLSearchParams({ page: p, filter: f, sort: s, dir: d });
+      if (q) qs.set('search', q);
+      const res = await fetch(`/api/admin/users?${qs}`, { headers: { Authorization: `Bearer ${token}` } });
       const body = await res.json();
       if (!res.ok) { setError(body.error ?? 'Erreur inconnue'); return; }
       setUsers(body.users ?? []);
       setTotal(body.total ?? 0);
     } catch (e) {
       setError(e.message);
+    } finally {
+      setFetching(false);
     }
   }, [token]);
 
   useEffect(() => {
     if (loading || !token) return;
-    fetchUsers(page, filter, sortBy, sortDir);
-  }, [loading, token, page, filter, sortBy, sortDir, fetchUsers]);
+    fetchUsers(page, filter, sortBy, sortDir, search);
+  }, [loading, token, page, filter, sortBy, sortDir, search, fetchUsers]);
+
+  // Debounce search input → update `search` state after 300ms
+  function handleSearchInput(val) {
+    setSearchInput(val);
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(() => {
+      setSearch(val.trim());
+      setPage(0);
+    }, 300);
+  }
+
+  function clearSearch() {
+    setSearchInput('');
+    setSearch('');
+    setPage(0);
+  }
 
   function handleFilterChange(f) {
     setFilter(f);
     setPage(0);
   }
+
 
   function handleSort(col) {
     if (sortBy === col) {
@@ -205,6 +228,47 @@ export default function AdminPage() {
           </div>
         )}
 
+        {/* Search bar */}
+        <div style={{ position: 'relative', marginBottom: '16px', maxWidth: '420px' }}>
+          <svg
+            width="15" height="15" viewBox="0 0 24 24" fill="none"
+            stroke="#9B9088" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+            style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }}
+          >
+            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+          <input
+            type="text"
+            value={searchInput}
+            onChange={e => handleSearchInput(e.target.value)}
+            placeholder="Rechercher par prénom ou email…"
+            style={{
+              width: '100%', boxSizing: 'border-box',
+              padding: '9px 36px 9px 36px',
+              fontSize: '14px', fontFamily: 'DM Sans, sans-serif',
+              border: '1.5px solid', borderColor: searchInput ? '#163026' : '#E2D9CC',
+              borderRadius: '10px', backgroundColor: '#fff', color: '#163026',
+              outline: 'none', transition: 'border-color 0.15s',
+            }}
+            onFocus={e => { e.target.style.borderColor = '#163026'; }}
+            onBlur={e => { e.target.style.borderColor = searchInput ? '#163026' : '#E2D9CC'; }}
+          />
+          {searchInput && (
+            <button
+              type="button"
+              onClick={clearSearch}
+              aria-label="Effacer la recherche"
+              style={{
+                position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)',
+                background: 'none', border: 'none', cursor: 'pointer',
+                color: '#9B9088', fontSize: '16px', lineHeight: 1, padding: '4px',
+              }}
+            >
+              ×
+            </button>
+          )}
+        </div>
+
         {/* Filters */}
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '20px' }}>
           {FILTERS.map(f => (
@@ -229,8 +293,22 @@ export default function AdminPage() {
           ))}
         </div>
 
+        {/* Search context + loading */}
+        {(search || fetching) && (
+          <div style={{ marginBottom: '12px', fontSize: '13px', color: '#6B6357' }}>
+            {fetching
+              ? 'Recherche en cours…'
+              : search && total === 0
+                ? `Aucun utilisateur trouvé pour « ${search} ».`
+                : search
+                  ? `${total} résultat${total !== 1 ? 's' : ''} pour « ${search} »`
+                  : null
+            }
+          </div>
+        )}
+
         {/* Table */}
-        <div style={{ backgroundColor: '#fff', borderRadius: '12px', border: '1px solid #E2D9CC', overflow: 'auto' }}>
+        <div style={{ backgroundColor: '#fff', borderRadius: '12px', border: '1px solid #E2D9CC', overflow: 'auto', opacity: fetching ? 0.6 : 1, transition: 'opacity 0.15s' }}>
           <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: '800px' }}>
             <thead>
               <tr style={{ borderBottom: '1px solid #E2D9CC', backgroundColor: '#FAF7F2' }}>

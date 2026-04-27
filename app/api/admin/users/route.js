@@ -114,8 +114,9 @@ export async function GET(request) {
     const filter  = params.filter ?? 'all';      // all | active | recent | inactive | never | premium | free
     const sortBy  = params.sort   ?? 'created_at'; // created_at | last_session | sessions
     const sortDir = params.dir    ?? 'desc';       // asc | desc
+    const search  = (params.search ?? '').trim().toLowerCase().slice(0, 100); // max 100 chars
 
-    console.log(`[admin/users] GET page=${page} filter=${filter} sort=${sortBy} dir=${sortDir}`);
+    console.log(`[admin/users] GET page=${page} filter=${filter} sort=${sortBy} dir=${sortDir} search=${JSON.stringify(search)}`);
 
     const supabaseAdmin = createClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL,
@@ -137,17 +138,29 @@ export async function GET(request) {
     // filter/sort/paginate.
     // ─────────────────────────────────────────────────────────────────────────
 
+    // Search always forces full-load path so we can combine ilike with
+    // activity filters (active/recent/etc.) which are computed post-join.
+    // Exception: search + filter=all + sort=created_at can use a DB-side path
+    // with .or(ilike) + exact count — much faster for the common search case.
     const needsFullLoad = filter !== 'all' || sortBy !== 'created_at';
+    const hasSearch = search.length > 0;
 
     let pagedUsers, total;
 
     if (!needsFullLoad) {
       // ── Fast path: DB-side pagination ──
+      const asc  = sortDir === 'asc';
+
+      // Build base query — add ilike OR filter when search is active
+      const applySearch = (q) => {
+        if (!hasSearch) return q;
+        return q.or(`prenom.ilike.%${search}%,email.ilike.%${search}%`);
+      };
 
       // Exact total (head:true fetches no rows)
-      const { count: exactCount, error: countErr } = await supabaseAdmin
-        .from('profiles')
-        .select('*', { count: 'exact', head: true });
+      const { count: exactCount, error: countErr } = await applySearch(
+        supabaseAdmin.from('profiles').select('*', { count: 'exact', head: true })
+      );
       if (countErr) {
         console.error('[admin/users] count error:', countErr);
         return NextResponse.json({ error: countErr.message }, { status: 500 });
@@ -156,13 +169,14 @@ export async function GET(request) {
 
       const from = page * PAGE_SIZE;
       const to   = from + PAGE_SIZE - 1;
-      const asc  = sortDir === 'asc';
 
-      const { data: profiles, error: profErr } = await supabaseAdmin
-        .from('profiles')
-        .select('id, prenom, email, created_at, is_premium, plan_type, stripe_subscription_id, subscription_status')
-        .order('created_at', { ascending: asc })
-        .range(from, to);
+      const { data: profiles, error: profErr } = await applySearch(
+        supabaseAdmin
+          .from('profiles')
+          .select('id, prenom, email, created_at, is_premium, plan_type, stripe_subscription_id, subscription_status')
+          .order('created_at', { ascending: asc })
+          .range(from, to)
+      );
       if (profErr) {
         console.error('[admin/users] profiles page error:', profErr);
         return NextResponse.json({ error: profErr.message }, { status: 500 });
@@ -212,7 +226,15 @@ export async function GET(request) {
 
       let users = (profResult.data ?? []).map(p => buildUser(p, progressMap[p.id] ?? null));
 
-      // Filter
+      // Search filter (case-insensitive, in-memory for full-load path)
+      if (hasSearch) {
+        users = users.filter(u =>
+          (u.prenom ?? '').toLowerCase().includes(search) ||
+          (u.email  ?? '').toLowerCase().includes(search)
+        );
+      }
+
+      // Activity / plan filter
       if (filter === 'active')   users = users.filter(u => u.status === 'active');
       if (filter === 'recent')   users = users.filter(u => u.status === 'recent');
       if (filter === 'inactive') users = users.filter(u => u.status === 'inactive');

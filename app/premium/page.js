@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, Suspense } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 import { LegalFooter } from '@/components/LegalLayout';
 
@@ -44,11 +44,30 @@ function CTAButton({ loading, onClick, children }) {
   );
 }
 
+const SUPPORT_EMAIL = 'zainlyapp@gmail.com';
+const SUPPORT_MAILTO = `mailto:${SUPPORT_EMAIL}?subject=Probl%C3%A8me%20de%20paiement%20Zainly&body=Bonjour%2C%20j%27ai%20un%20probl%C3%A8me%20avec%20le%20paiement.`;
+
+function logEvent(name) {
+  try {
+    if (typeof window !== 'undefined' && window.gtag) window.gtag('event', name);
+    if (typeof window !== 'undefined' && window.plausible) window.plausible(name);
+  } catch {}
+}
+
 function PremiumPageInner() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [loading, setLoading] = useState(false);
   const [checkoutError, setCheckoutError] = useState('');
   const [plan, setPlan] = useState('monthly');  // 'monthly' | 'yearly'
+  const [showPaymentHelp, setShowPaymentHelp] = useState(false);
+
+  useEffect(() => {
+    if (searchParams.get('canceled') === '1') {
+      setShowPaymentHelp(true);
+      logEvent('payment_failed_seen');
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     supabase.from('profiles')
@@ -245,6 +264,53 @@ function PremiumPageInner() {
             {checkoutError}
           </p>
         )}
+
+        {showPaymentHelp && (
+          <div style={{
+            marginTop: '20px',
+            backgroundColor: '#FDF6EC',
+            border: '1px solid #E8D9B5',
+            borderRadius: '14px',
+            padding: '18px 20px',
+            textAlign: 'left',
+          }}>
+            <p style={{
+              fontFamily: 'DM Sans, sans-serif',
+              fontSize: '14px',
+              color: '#163026',
+              fontWeight: 600,
+              margin: '0 0 8px 0',
+              lineHeight: 1.4,
+            }}>
+              Votre paiement n&apos;a pas abouti
+            </p>
+            <p style={{
+              fontFamily: 'DM Sans, sans-serif',
+              fontSize: '13px',
+              color: '#6B6357',
+              lineHeight: 1.65,
+              margin: '0 0 14px 0',
+            }}>
+              Votre banque a refusé le paiement. Cela peut arriver avec certaines cartes. Essayez une autre carte, Apple Pay / Google Pay si disponible, ou contactez-nous pour une autre solution.
+            </p>
+            <a
+              href={SUPPORT_MAILTO}
+              onClick={() => logEvent('payment_help_clicked')}
+              style={{
+                display: 'inline-block',
+                fontFamily: 'DM Sans, sans-serif',
+                fontSize: '13px',
+                fontWeight: 600,
+                color: '#163026',
+                textDecoration: 'none',
+                borderBottom: '1.5px solid #163026',
+                paddingBottom: '1px',
+              }}
+            >
+              Paiement bloqué ? Contactez-nous →
+            </a>
+          </div>
+        )}
       </div>
 
       {/* ── SECTION 3 — FEATURES ── */}
@@ -375,6 +441,19 @@ function PremiumPageInner() {
           En continuant tu acceptes nos{' '}
           <a href="/legal/terms" style={{ color: '#999', textDecoration: 'underline' }}>
             conditions d&apos;utilisation
+          </a>
+        </p>
+        <p style={{
+          fontFamily: 'DM Sans, sans-serif', fontSize: '12px', color: '#A09890',
+          marginTop: '16px', lineHeight: 1.6,
+        }}>
+          Si votre carte ne passe pas, contactez-nous :{' '}
+          <a
+            href={SUPPORT_MAILTO}
+            onClick={() => logEvent('payment_help_clicked')}
+            style={{ color: '#6B6357', textDecoration: 'underline' }}
+          >
+            {SUPPORT_EMAIL}
           </a>
         </p>
       </div>

@@ -1,5 +1,6 @@
 import { Playfair_Display, DM_Sans, Amiri } from "next/font/google";
 import Script from "next/script";
+import CapacitorBridge from "@/components/CapacitorBridge";
 import "./globals.css";
 
 const playfairDisplay = Playfair_Display({
@@ -22,9 +23,25 @@ const amiri = Amiri({
 });
 
 export const metadata = {
+  metadataBase: new URL('https://zainly.app'),
   title: 'Zainly',
   description: 'Deviens Hafiz. Un ayat à la fois.',
   manifest: '/manifest.json',
+  alternates: {
+    canonical: 'https://zainly.app',
+  },
+  openGraph: {
+    title: 'Zainly',
+    description: 'Deviens Hafiz. Un ayat à la fois.',
+    url: 'https://zainly.app',
+    siteName: 'Zainly',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary',
+    title: 'Zainly',
+    description: 'Deviens Hafiz. Un ayat à la fois.',
+  },
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',
@@ -53,6 +70,7 @@ export default function RootLayout({ children }) {
         style={{ fontFamily: "var(--font-dm-sans), sans-serif", backgroundColor: "#F5F0E6" }}
       >
         {children}
+        <CapacitorBridge />
         <Script
           id="sw-register"
           strategy="afterInteractive"

@@ -71,7 +71,7 @@ function LoginInner() {
     }
 
     setForgotLoading(true);
-    const redirectUrl = `${process.env.NEXT_PUBLIC_APP_URL ?? 'https://zainly-alpha.vercel.app'}/reset-password`;
+    const redirectUrl = `${process.env.NEXT_PUBLIC_APP_URL ?? 'https://zainly.app'}/reset-password`;
     const { error: resetErr } = await supabase.auth.resetPasswordForEmail(cleanEmail, {
       redirectTo: redirectUrl,
     });

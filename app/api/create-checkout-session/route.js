@@ -56,7 +56,7 @@ export async function POST(request) {
     const appUrl =
       process.env.NEXT_PUBLIC_APP_URL ||
       request.headers.get('origin') ||
-      'https://zainly-alpha.vercel.app';
+      'https://zainly.app';
 
     const session = await stripe.checkout.sessions.create({
       mode: 'subscription',

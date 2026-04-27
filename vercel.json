@@ -1,4 +1,12 @@
 {
+  "redirects": [
+    {
+      "source": "/(.*)",
+      "has": [{ "type": "host", "value": "zainly-alpha.vercel.app" }],
+      "destination": "https://zainly.app/$1",
+      "permanent": true
+    }
+  ],
   "crons": [
     {
       "path": "/api/send-notifications",

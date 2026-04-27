@@ -21,8 +21,18 @@ function activityStatus(lastSessionDate) {
 
 export async function GET(request) {
   try {
+    // ── Env var guard ──
+    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+      console.error('[admin/users] NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_ANON_KEY is missing');
+      return NextResponse.json({ error: 'Configuration serveur manquante (Supabase URL/anon key)' }, { status: 500 });
+    }
+    if (!process.env.SUPABASE_SERVICE_ROLE_KEY) {
+      console.error('[admin/users] SUPABASE_SERVICE_ROLE_KEY is missing');
+      return NextResponse.json({ error: 'Configuration serveur manquante (service role key)' }, { status: 500 });
+    }
+
     const authHeader = request.headers.get('Authorization');
-    const token = authHeader?.replace('Bearer ', '');
+    const token = authHeader?.replace('Bearer ', '').trim();
     if (!token) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
     // Verify caller is admin
@@ -31,7 +41,11 @@ export async function GET(request) {
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
     );
     const { data: { user }, error: authError } = await supabaseAnon.auth.getUser(token);
-    if (authError || !user || user.email !== ADMIN_EMAIL) {
+    if (authError) {
+      console.error('[admin/users] auth error:', authError.status, authError.message);
+      return NextResponse.json({ error: 'Session invalide ou expirée. Reconnecte-toi.' }, { status: 401 });
+    }
+    if (!user || user.email !== ADMIN_EMAIL) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
@@ -40,6 +54,8 @@ export async function GET(request) {
     const filter    = params.filter ?? 'all';     // all | active | recent | inactive | never | premium | free
     const sortBy    = params.sort ?? 'created_at'; // created_at | last_session | sessions
     const sortDir   = params.dir ?? 'desc';        // asc | desc
+
+    console.log(`[admin/users] GET page=${page} filter=${filter} sort=${sortBy} dir=${sortDir}`);
 
     const supabaseAdmin = createClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL,
@@ -60,12 +76,10 @@ export async function GET(request) {
       return NextResponse.json({ users: [], total: 0 });
     }
 
-    // Fetch latest progress row per user (last_session_date, streak, session_dates)
-    const userIds = profiles.map(p => p.id);
+    // Fetch all progress rows — no .in() filter to avoid PostgREST 400 on large ID arrays
     const { data: progressRows, error: progErr } = await supabaseAdmin
       .from('progress')
-      .select('user_id, last_session_date, streak, session_dates')
-      .in('user_id', userIds);
+      .select('user_id, last_session_date, streak, session_dates');
 
     if (progErr) {
       console.error('[admin/users] progress fetch error:', progErr);

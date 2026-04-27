@@ -44,7 +44,13 @@ export default function AdminPage() {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user || user.email !== ADMIN_EMAIL) { router.replace('/dashboard'); return; }
       const { data: { session } } = await supabase.auth.getSession();
-      setToken(session?.access_token ?? '');
+      const accessToken = session?.access_token ?? '';
+      if (!accessToken) {
+        router.replace('/login');
+        return;
+      }
+      // Set token first so fetchUsers never fires with an empty token
+      setToken(accessToken);
       setLoading(false);
     }
     init();

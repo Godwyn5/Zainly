@@ -1,6 +1,5 @@
 import { Playfair_Display, DM_Sans, Amiri } from "next/font/google";
 import Script from "next/script";
-import CapacitorBridge from "@/components/CapacitorBridge";
 import "./globals.css";
 
 const playfairDisplay = Playfair_Display({
@@ -70,7 +69,6 @@ export default function RootLayout({ children }) {
         style={{ fontFamily: "var(--font-dm-sans), sans-serif", backgroundColor: "#F5F0E6" }}
       >
         {children}
-        <CapacitorBridge />
         <Script
           id="sw-register"
           strategy="afterInteractive"

@@ -768,8 +768,8 @@ export default function DashboardPage() {
                     >
                       <span style={{ fontSize: '22px' }}>🕌</span>
                       <div>
-                        <p style={{ margin: 0, fontWeight: 600 }}>Changer ma sourate de départ</p>
-                        <p style={{ margin: '2px 0 0', fontSize: '12px', color: '#6B6357' }}>Refaire l&apos;onboarding complet</p>
+                        <p style={{ margin: 0, fontWeight: 600 }}>Reconstruire mon programme</p>
+                        <p style={{ margin: '2px 0 0', fontSize: '12px', color: '#6B6357' }}>Choisir un mode, une sourate de départ ou un ordre personnalisé</p>
                       </div>
                     </button>
                     <button
@@ -789,7 +789,8 @@ export default function DashboardPage() {
                       <span style={{ fontSize: '22px' }}>⚡</span>
                       <div>
                         <p style={{ margin: 0, fontWeight: 600 }}>Changer mon rythme</p>
-                        <p style={{ margin: '2px 0 0', fontSize: '12px', color: '#6B6357' }}>Actuellement {plan.ayah_per_day ?? 2} ayat / jour</p>
+                        <p style={{ margin: '2px 0 0', fontSize: '12px', color: '#6B6357' }}>Modifier la quantité à mémoriser chaque jour</p>
+                        <p style={{ margin: '2px 0 0', fontSize: '12px', color: '#9B8F80' }}>Actuellement : {plan?.pace_label ?? `${plan?.ayah_per_day ?? 2} ayat(s) / jour`}</p>
                       </div>
                     </button>
                   </div>

@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
-import { nextZainlySurah, ZAINLY_INDEX_BY_SURAH } from '@/lib/zainlyOrder';
+import { nextZainlySurah, nextSurahInOrder, ZAINLY_INDEX_BY_SURAH } from '@/lib/zainlyOrder';
 import TajweedText from '@/components/TajweedText';
 import { resolveTajweed } from '@/lib/tajweedResolver';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -214,18 +214,41 @@ export default function SessionPage() {
       let currentAyah  = progRow.current_ayah ?? 0;
       const ayahPerDay = plRow.ayah_per_day ?? 2;
 
-      // ── Validate current_surah is in the Zainly order ──
-      if (ZAINLY_INDEX_BY_SURAH[currentSurah] == null) {
+      // ── Determine plan mode and effective order ──
+      const planMode        = plRow.plan_mode ?? 'recommended';
+      const customOrderRaw  = Array.isArray(plRow.custom_surah_order) ? plRow.custom_surah_order : [];
+      // For mode start_surah the effective order is stored in custom_surah_order too
+      const isCustomMode    = planMode === 'custom_order' || planMode === 'start_surah';
+      const effectiveOrder  = isCustomMode && customOrderRaw.length > 0
+        ? customOrderRaw  // int[] stored in plans.custom_surah_order
+        : null;           // null → use ZAINLY_ORDER via nextZainlySurah
+
+      // ── Partial known surahs: { surahNum: { from:1, to:N } } ──
+      // When entering a partially known surah, current_ayah must start at to (so startAyah = to+1)
+      const partialKnownMap = (plRow.partial_known_surahs && typeof plRow.partial_known_surahs === 'object')
+        ? plRow.partial_known_surahs
+        : {};
+      // Returns the correct initial current_ayah for a surah (to if partial, 0 otherwise)
+      function partialStartAyah(surahNum) {
+        const p = partialKnownMap[surahNum] ?? partialKnownMap[String(surahNum)];
+        return p ? p.to : 0;
+      }
+
+      // ── Validate current_surah is reachable ──
+      // For custom modes: surah must be in effectiveOrder
+      // For recommended: surah must be in ZAINLY_INDEX_BY_SURAH
+      const surahIsValid = effectiveOrder
+        ? effectiveOrder.includes(currentSurah)
+        : ZAINLY_INDEX_BY_SURAH[currentSurah] != null;
+      if (!surahIsValid) {
         setError('INVALID_SURAH');
         setLoading(false);
         return;
       }
 
       // ── End-of-surah detection loop ──
-      // Advance surah(s) until we find one with remaining ayats
       while (true) {
         if (currentSurah > 114) {
-          // Completed the entire Quran
           setError('QURAN_COMPLETE');
           setLoading(false);
           return;
@@ -237,16 +260,20 @@ export default function SessionPage() {
 
         const startAyah = currentAyah + 1;
         if (startAyah > surah.verses.length) {
-          // Surah finished — advance to next surah in Zainly order
-          const newSurah = nextZainlySurah(currentSurah);
+          // Surah finished — advance to next surah in the effective order
+          const newSurah = effectiveOrder
+            ? nextSurahInOrder(currentSurah, effectiveOrder)
+            : nextZainlySurah(currentSurah);
           if (newSurah === null) {
-            setError('QURAN_COMPLETE');
+            // End of sequence — distinguish programme complet vs coran complet
+            setError(effectiveOrder ? 'CUSTOM_PLAN_COMPLETE' : 'QURAN_COMPLETE');
             setLoading(false);
             return;
           }
+          const newAyah = partialStartAyah(newSurah);
           const { error: advErr } = await supabase
             .from('progress')
-            .update({ current_surah: newSurah, current_ayah: 0 })
+            .update({ current_surah: newSurah, current_ayah: newAyah })
             .eq('user_id', authUser.id);
           if (advErr) {
             setError('Erreur lors de la progression. Recharge la page.');
@@ -254,7 +281,7 @@ export default function SessionPage() {
             return;
           }
           currentSurah = newSurah;
-          currentAyah  = 0;
+          currentAyah  = newAyah;
           continue;
         }
 
@@ -583,6 +610,31 @@ export default function SessionPage() {
         <button onClick={() => router.push('/dashboard')} className="font-playfair" style={{ marginTop: '8px', padding: '14px 40px', backgroundColor: '#163026', color: '#fff', border: 'none', borderRadius: '12px', cursor: 'pointer', fontSize: '16px', fontWeight: 600 }}>
           Retour au dashboard
         </button>
+      </div>
+    );
+  }
+
+  if (error === 'CUSTOM_PLAN_COMPLETE') {
+    return (
+      <div style={{ minHeight: '100vh', backgroundColor: '#F5F0E6', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '16px', padding: '32px', textAlign: 'center' }}>
+        <span className="font-amiri" style={{ fontSize: '64px', color: '#B8962E' }}>الله</span>
+        <h1 className="font-playfair" style={{ fontSize: '32px', fontWeight: 600, color: '#163026', margin: 0, lineHeight: 1.3 }}>
+          Programme personnalisé terminé
+        </h1>
+        <p className="font-playfair" style={{ fontSize: '18px', fontStyle: 'italic', color: '#B8962E', margin: 0 }}>
+          MashaAllah.
+        </p>
+        <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '15px', color: '#6B6357', margin: 0, maxWidth: '340px', lineHeight: 1.6 }}>
+          Tu as terminé les sourates que tu avais choisies. Tes révisions restent disponibles pour garder tes acquis solides.
+        </p>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', width: '100%', maxWidth: '320px', marginTop: '8px' }}>
+          <button onClick={() => router.push('/revision')} className="font-playfair" style={{ padding: '14px 40px', backgroundColor: '#163026', color: '#fff', border: 'none', borderRadius: '12px', cursor: 'pointer', fontSize: '16px', fontWeight: 600 }}>
+            Voir mes révisions
+          </button>
+          <button onClick={() => router.push('/dashboard')} className="font-playfair" style={{ padding: '14px 40px', backgroundColor: 'transparent', color: '#163026', border: '1.5px solid #163026', borderRadius: '12px', cursor: 'pointer', fontSize: '16px', fontWeight: 600 }}>
+            Retour au tableau de bord
+          </button>
+        </div>
       </div>
     );
   }

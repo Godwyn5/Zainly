@@ -6,10 +6,10 @@ import { supabase } from '@/lib/supabase';
 import { LegalFooter } from '@/components/LegalLayout';
 
 const FEATURES = [
-  'Le Coran complet — toutes les sourates accessibles, sans restriction',
-  'Sessions illimitées — mémorise sans être bloqué',
-  'Révisions quotidiennes — ne perds plus ce que tu apprends',
-  'Accès aux futures améliorations — ton hifz évolue avec Zainly',
+  { title: 'Un accès continu à ton programme',   text: 'Après tes 5 jours gratuits, tu continues ton Hifz sans interruption.' },
+  { title: 'Une session guidée chaque jour',       text: 'Zainly te donne quoi mémoriser aujourd\'hui, étape par étape.' },
+  { title: 'Des révisions quotidiennes',           text: 'Les versets appris reviennent au bon moment pour t\'aider à ne pas oublier.' },
+  { title: 'Le Coran complet, progressivement',   text: 'Ton programme continue sourate après sourate, selon ton rythme.' },
 ];
 
 const REASSURANCES = [
@@ -253,7 +253,7 @@ function PremiumPageInner() {
         {plan === 'monthly' && <div style={{ marginBottom: '20px' }} />}
 
         <CTAButton loading={loading} onClick={handleSubscribe}>
-          {loading ? 'Redirection…' : plan === 'yearly' ? 'Commencer mon Hifz (annuel) →' : 'Commencer mon Hifz →'}
+          {loading ? 'Redirection…' : plan === 'yearly' ? 'Continuer mon Hifz (annuel) →' : 'Continuer mon Hifz →'}
         </CTAButton>
 
         {checkoutError && (
@@ -322,18 +322,19 @@ function PremiumPageInner() {
           textTransform: 'uppercase',
           margin: '0 0 16px 0',
         }}>
-          CE QUE TU DÉBLOQUES
+          CE QUE PREMIUM DÉBLOQUE
         </p>
 
         {FEATURES.map((feat, i) => (
           <div key={i} style={{
-            display: 'flex', alignItems: 'center', gap: '12px',
+            display: 'flex', alignItems: 'flex-start', gap: '12px',
             padding: '16px 0',
             borderBottom: i < FEATURES.length - 1 ? '1px solid #E2D9CC' : 'none',
           }}>
-            <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '16px', color: '#B8962E', flexShrink: 0 }}>◆</span>
-            <span style={{ fontFamily: 'DM Sans, sans-serif', fontWeight: 500, fontSize: '15px', color: '#163026', lineHeight: 1.5 }}>
-              {feat}
+            <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '16px', color: '#B8962E', flexShrink: 0, marginTop: '2px' }}>◆</span>
+            <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '15px', color: '#163026', lineHeight: 1.5 }}>
+              <span style={{ fontWeight: 600, display: 'block', marginBottom: '2px' }}>{feat.title}</span>
+              <span style={{ fontWeight: 400, color: '#6B6357', fontSize: '13px' }}>{feat.text}</span>
             </span>
           </div>
         ))}
@@ -348,7 +349,7 @@ function PremiumPageInner() {
           textTransform: 'uppercase',
           margin: '0 0 16px 0',
         }}>
-          Sans Premium / Avec Premium
+          GRATUIT / PREMIUM
         </p>
         <div className="pw-compare-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
           {/* Colonne gratuit */}
@@ -358,14 +359,17 @@ function PremiumPageInner() {
             padding: '18px 16px',
             border: '1px solid #D4CCC2',
           }}>
-            <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '12px', fontWeight: 600, color: '#6B6357', margin: '0 0 12px', lineHeight: 1.4 }}>
-              Tu peux commencer… mais tu es vite limité
+            <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '12px', fontWeight: 700, color: '#163026', margin: '0 0 4px', lineHeight: 1.4 }}>
+              Gratuit
+            </p>
+            <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '11px', color: '#6B6357', margin: '0 0 12px', lineHeight: 1.4 }}>
+              Tu peux découvrir Zainly pendant 5 jours.
             </p>
             {[
-              '5 sessions gratuites seulement',
-              'Progression restreinte',
-              'Ton rythme peut s\'interrompre',
-              'Difficile d\'avancer sur la durée',
+              '5 jours pour tester ton programme',
+              '1 session guidée par jour',
+              'Révisions incluses pendant l\'essai',
+              'Tu vois comment Zainly organise ton Hifz',
             ].map((line, i) => (
               <p key={i} style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '12px', color: '#6B6357', margin: '0 0 8px', display: 'flex', alignItems: 'flex-start', gap: '6px', lineHeight: 1.5 }}>
                 <span style={{ flexShrink: 0, marginTop: '1px', color: '#C0392B' }}>✗</span>{line}
@@ -378,14 +382,18 @@ function PremiumPageInner() {
             borderRadius: '16px',
             padding: '18px 16px',
           }}>
-            <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '12px', fontWeight: 600, color: '#B8962E', margin: '0 0 12px', lineHeight: 1.4 }}>
-              Tu progresses chaque jour, sans interruption
+            <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '12px', fontWeight: 700, color: '#fff', margin: '0 0 4px', lineHeight: 1.4 }}>
+              Premium
+            </p>
+            <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '11px', color: 'rgba(255,255,255,0.7)', margin: '0 0 12px', lineHeight: 1.4 }}>
+              Tu continues ton Hifz sans interruption.
             </p>
             {[
-              'Sessions illimitées',
-              'Progression continue',
-              'Tu gardes ton rythme',
-              'Tu construis ton hifz sereinement',
+              'Ton programme reste actif après l\'essai',
+              '1 session guidée chaque jour',
+              'Révisions quotidiennes pour consolider tes acquis',
+              'Accès au parcours complet, selon ton rythme',
+              'Futures améliorations incluses',
             ].map((line, i) => (
               <p key={i} style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '12px', color: 'rgba(255,255,255,0.85)', margin: '0 0 8px', display: 'flex', alignItems: 'flex-start', gap: '6px', lineHeight: 1.5 }}>
                 <span style={{ flexShrink: 0, color: '#B8962E', marginTop: '1px' }}>✓</span>{line}
@@ -432,7 +440,7 @@ function PremiumPageInner() {
       {/* ── SECTION 7 — CTA FINAL ── */}
       <div className="pw-s7" style={{ textAlign: 'center' }}>
         <CTAButton loading={loading} onClick={handleSubscribe}>
-          {loading ? 'Redirection…' : 'Commencer mon Hifz →'}
+          {loading ? 'Redirection…' : 'Continuer mon Hifz →'}
         </CTAButton>
         <p style={{
           fontFamily: 'DM Sans, sans-serif', fontSize: '12px', color: '#999',

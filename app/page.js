@@ -100,6 +100,11 @@ export default function Home() {
   }
 
   useEffect(() => {
+    // If the URL contains a recovery token, hand off to /reset-password — never redirect to dashboard.
+    if (typeof window !== 'undefined' && window.location.hash.includes('type=recovery')) {
+      window.location.replace('/reset-password' + window.location.hash);
+      return;
+    }
     supabase.auth.getUser().then(({ data: { user } }) => {
       if (user) { window.location.replace('/dashboard'); return; }
       setTimeout(() => setPageVisible(true), 100);

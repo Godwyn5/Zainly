@@ -1,12 +1,11 @@
 'use client';
 
 import { useState, useEffect, Suspense } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 
 function ResetPasswordInner() {
   const router = useRouter();
-  const searchParams = useSearchParams();
 
   const [password, setPassword]         = useState('');
   const [confirm, setConfirm]           = useState('');
@@ -20,42 +19,33 @@ function ResetPasswordInner() {
     let resolved = false;
 
     function markReady() {
+      if (resolved) return;
       resolved = true;
       setSessionReady(true);
     }
 
-    // ── PKCE flow: Supabase sends ?code= query param ──
-    // Must exchange the code for a session before updateUser will work.
-    const code = searchParams.get('code');
-    if (code) {
-      supabase.auth.exchangeCodeForSession(code)
-        .then(({ error: exchErr }) => {
-          if (exchErr) {
-            console.error('[reset-password] exchangeCodeForSession error:', exchErr.message);
-            setLinkExpired(true);
-          } else {
-            markReady();
-          }
-        });
-      // Don't set up the timeout yet — wait for exchange to resolve
-      return;
-    }
+    // Supabase v2 automatically processes both PKCE (?code=) and implicit (#access_token=)
+    // links on client init via detectSessionInUrl. We must NOT call exchangeCodeForSession
+    // manually — the code is already consumed by the time React mounts.
+    //
+    // Strategy:
+    // 1. getSession() — catches the already-processed PKCE case (session exists immediately).
+    // 2. onAuthStateChange — catches PASSWORD_RECOVERY / SIGNED_IN fired during processing.
+    // 3. Timeout — shows expired state if neither fires within 9s.
 
-    // ── Implicit flow: token in URL hash (#access_token=...&type=recovery) ──
-    // Supabase client processes the hash automatically and fires PASSWORD_RECOVERY.
-
-    // If the user already has a valid session (e.g. page refresh after exchange), mark ready.
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session && !resolved) markReady();
-    });
-
+    // Register the listener BEFORE getSession to avoid a race condition.
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
       if (event === 'PASSWORD_RECOVERY' || event === 'SIGNED_IN') {
         markReady();
       }
     });
 
-    // Timeout: if session not established within 9s, link is likely expired/invalid
+    // Check for an existing session (PKCE code already processed by Supabase client on init).
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session) markReady();
+    });
+
+    // Timeout: if session not established within 9s, link is likely expired/invalid.
     const timer = setTimeout(() => {
       if (!resolved) setLinkExpired(true);
     }, 9000);

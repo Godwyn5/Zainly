@@ -85,7 +85,8 @@ function LoginInner() {
     }
 
     setForgotLoading(true);
-    const redirectUrl = `${process.env.NEXT_PUBLIC_APP_URL ?? 'https://zainly.app'}/reset-password`;
+    const appUrl = (process.env.NEXT_PUBLIC_APP_URL ?? 'https://zainly.app').replace(/\/$/, '');
+    const redirectUrl = `${appUrl}/reset-password`;
     const { error: resetErr } = await supabase.auth.resetPasswordForEmail(cleanEmail, {
       redirectTo: redirectUrl,
     });

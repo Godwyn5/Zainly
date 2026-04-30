@@ -1,34 +1,57 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState, useEffect, Suspense } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 
-export default function ResetPasswordPage() {
+function ResetPasswordInner() {
   const router = useRouter();
+  const searchParams = useSearchParams();
 
-  const [password, setPassword]       = useState('');
-  const [confirm, setConfirm]         = useState('');
-  const [loading, setLoading]         = useState(false);
-  const [success, setSuccess]         = useState(false);
-  const [error, setError]             = useState('');
+  const [password, setPassword]         = useState('');
+  const [confirm, setConfirm]           = useState('');
+  const [loading, setLoading]           = useState(false);
+  const [success, setSuccess]           = useState(false);
+  const [error, setError]               = useState('');
   const [sessionReady, setSessionReady] = useState(false);
   const [linkExpired, setLinkExpired]   = useState(false);
 
-  // Supabase sends the recovery token as a hash fragment — listen for the
-  // PASSWORD_RECOVERY event so the session is established before we try to update.
   useEffect(() => {
     let resolved = false;
 
-    // If the user already has a valid recovery session (e.g. page refresh), mark ready immediately.
+    function markReady() {
+      resolved = true;
+      setSessionReady(true);
+    }
+
+    // ── PKCE flow: Supabase sends ?code= query param ──
+    // Must exchange the code for a session before updateUser will work.
+    const code = searchParams.get('code');
+    if (code) {
+      supabase.auth.exchangeCodeForSession(code)
+        .then(({ error: exchErr }) => {
+          if (exchErr) {
+            console.error('[reset-password] exchangeCodeForSession error:', exchErr.message);
+            setLinkExpired(true);
+          } else {
+            markReady();
+          }
+        });
+      // Don't set up the timeout yet — wait for exchange to resolve
+      return;
+    }
+
+    // ── Implicit flow: token in URL hash (#access_token=...&type=recovery) ──
+    // Supabase client processes the hash automatically and fires PASSWORD_RECOVERY.
+
+    // If the user already has a valid session (e.g. page refresh after exchange), mark ready.
     supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) { resolved = true; setSessionReady(true); }
+      if (session && !resolved) markReady();
     });
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
       if (event === 'PASSWORD_RECOVERY' || event === 'SIGNED_IN') {
-        resolved = true;
-        setSessionReady(true);
+        markReady();
       }
     });
 
@@ -38,7 +61,7 @@ export default function ResetPasswordPage() {
     }, 9000);
 
     return () => { subscription.unsubscribe(); clearTimeout(timer); };
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -223,5 +246,13 @@ export default function ResetPasswordPage() {
         </p>
       </div>
     </div>
+  );
+}
+
+export default function ResetPasswordPage() {
+  return (
+    <Suspense>
+      <ResetPasswordInner />
+    </Suspense>
   );
 }

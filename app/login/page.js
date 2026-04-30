@@ -38,15 +38,29 @@ function LoginInner() {
 
   useEffect(() => {
     async function checkAuth() {
+      // If the URL contains a recovery token fragment, do NOT redirect to dashboard —
+      // the onAuthStateChange handler will fire PASSWORD_RECOVERY and route to /reset-password.
+      if (typeof window !== 'undefined' && window.location.hash.includes('type=recovery')) {
+        setTimeout(() => setPageVisible(true), 100);
+        return;
+      }
       const { data: { user } } = await supabase.auth.getUser();
       if (user) { await routeAfterAuth(user); return; }
       setTimeout(() => setPageVisible(true), 100);
     }
     checkAuth();
 
-    // R1: Listen for SIGNED_IN after email confirmation click
+    // R1: Listen for SIGNED_IN after email confirmation click.
+    // IMPORTANT: do NOT redirect on SIGNED_IN if it comes from a PASSWORD_RECOVERY
+    // token — that case must land on /reset-password, not /dashboard.
+    let recoveryInProgress = false;
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
-      if (event === 'SIGNED_IN' && session?.user) {
+      if (event === 'PASSWORD_RECOVERY') {
+        recoveryInProgress = true;
+        router.replace('/reset-password');
+        return;
+      }
+      if (event === 'SIGNED_IN' && session?.user && !recoveryInProgress) {
         await routeAfterAuth(session.user);
       }
     });
